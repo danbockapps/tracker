@@ -1,0 +1,326 @@
+body {
+   background-color: #01a7e5;
+   font-family: Arial,Helvetica,clean,sans-serif;
+}
+
+a:link, a:visited {
+   color: #8ec63f;
+}
+
+a img {
+   border: 0;
+}
+
+#container {
+   width: 980px;
+   background-color: #fff;
+   margin: 0 auto;
+   /* ESMMWL green */
+   /* border: thick solid #8ec63f; */
+   /* ESMMWL teal */
+   /* border: thick solid #25bdae; */
+   padding: 10px;
+}
+
+.confirmation {
+   background-color: #eaffd0;
+   border: thin solid #8ec63f;
+   padding: 0.3em;
+   margin-bottom: 0.3em;
+}
+
+.error {
+   background-color: #fee;
+   color: #f00;
+   padding: 0.3em;
+   margin-bottom: 0.3em;
+}
+
+.small {
+   font-size: 75%;
+}
+
+#logo {
+   width: 176px;
+   height: 136px;
+   float: left;
+   margin: 16px;
+}
+
+#blogwidget {
+   width: 345px;
+   float: right;
+   margin-left: 5px;
+}
+
+#blogtitle {
+   background-color: #8ec63f;
+   color: #fff;
+   font-weight: bold;
+   padding: 5px 0px;
+   text-align: center;
+}
+
+#bloglinks a:link, #bloglinks a:visited {
+   color: #000;
+}
+
+#bloglinks {
+   background-color: #eaffd0;
+}
+
+#bloglinks p {
+   margin: 0px;
+   padding: 7px 5px 5px 5px;
+   font-size: 82%
+}
+
+#whoami {
+   width: 400px;
+   height: 90px;
+   float: right;
+   margin-left: 22px;
+}
+
+#whoami h1, #whoami p, #whoami div {
+   margin-top: 0px;
+   margin-bottom: 0px;
+}
+
+#loggedinas {
+   font-size: 82%;
+}
+
+#yourclass {
+   font-size: 71%;
+}
+
+#navbar {
+   width: 400px;
+   height: 78px;
+   float: right;
+   margin-left: 22px;
+}
+
+#navbar ul {
+   width: 100%;
+   height: 100%;
+   float: left;
+   margin: 0;
+   padding: 0;
+   list-style: none;
+   background-color: #fff;
+}
+
+#navbar ul li {
+   float: left;
+   height: 100%;
+}
+
+#navbar ul li a {
+   display: block;
+   height: 47px;
+   padding: 31px 20px 0px;
+   text-decoration: none;
+   font-weight: bold;
+   font-size: 16px;
+   background-color: #8ec63f;
+   color: #fff;
+   border-right: 10px solid #fff;
+}
+
+#navbar ul li a:hover {
+   background-color: #9ed64f;
+}
+
+#navend {
+   clear: left;
+   width: 100%;
+   margin-bottom: 15px;
+   height: 5px;
+   color:#8ec63f;
+   background-color:#8ec63f;
+   border: none;
+}
+
+#partnav {
+   margin-bottom: 15px;
+   background-color: #eaffd0;
+   padding: 1em;
+   width: 948px;
+   text-align: center;
+}
+
+#report_form {
+   float: left;
+   width: 75%;
+}
+
+#bmi {
+   float: left;
+   width: 22%;
+   background-color: #eaffd0;
+   padding-bottom: 1em;
+   padding-top: 1em;
+   text-align: center;
+   margin: 1%;
+}
+
+.popup {
+   font-size: small;
+}
+
+span.nodata {
+   font-style: italic;
+   color: #999;
+}
+
+div.card {
+   background-color: #eaffd0;
+   min-height: 314px;
+   margin-bottom: 1em;
+}
+
+div.card > h3, div.cardfooter {
+   text-align: center;
+}
+
+div.cardfooter {
+   margin-bottom: 0.5em
+}
+
+#smartgoal {
+   float: left;
+   width: 281px;
+}
+
+#chart_div {
+   float: right;
+   width: 462px;
+   margin-left: 15px;
+}
+
+#pes {
+   float: right;
+   width: 207px;
+}
+
+#tracker {
+   width: 100%;
+   margin: auto;
+   padding: 1em 0 0 0;
+   clear: both;
+   display: block;
+}
+
+#xfernote {
+   clear: both;
+   padding-top: 1em;
+   font-size: small;
+   text-align: center;
+}
+
+.hide {
+   display: none;
+}
+.showhide_closed {
+   font-size: large;
+   background-image: url('toggle_expand.png');
+   background-repeat: no-repeat;
+   padding-left: 20px;
+   padding-bottom: 0.2em;
+   display: block;
+   margin-top: 0.3em;
+}
+#showhide_strat {
+   font-size: large;
+   background-image: url('toggle_expand.png');
+   background-repeat: no-repeat;
+   padding-left: 20px;
+}
+
+form.admin {
+   padding: 1em 0em 2em; /* top, sides, bottom */
+}
+
+/* Headers in all_messages.php */
+.msg_header, .fdbk_header {
+   margin-top: 2em;
+   margin-bottom: 0.3em;
+   padding: 0.7em;
+}
+.msg_header {
+   background-color: #eee;
+}
+.fdbk_header {
+   background-color: #eaffd0;
+}
+
+/* Tables in reports.php and rosters.php */
+table.wrctable {
+   border-collapse: collapse;
+}
+tr.alt {
+   background-color: #eee;
+}
+table.wrctable th {
+   background-color: #333;
+   color: #fff;
+   padding: 0.3em 0em;
+}
+table.wrctable th a, table.wrctable th a:link, table.wrctable th a:visited {
+   color: #fff;
+   text-decoration: none;
+}
+table.wrctable td {
+   white-space: nowrap;
+}
+table.wrctable td, table.wrctable th {
+   padding-left: 0.5em;
+   padding-right: 0.5em;
+}
+td.center {
+   text-align: center;
+}
+td.green {
+   color: #8ec63f;
+   font-weight: bold;
+}
+table.rosters {
+   font-size: 85%;
+}
+tr.header_row td {
+   padding-top: 3em;
+}
+tr.header_row td span {
+   font-weight: bold;
+   font-size: 120%;
+}
+
+/* Participant lookup table */
+table.pl {
+   background-color: #eee;
+   padding: 0.5em;
+}
+table.pl td {
+   padding: 0.1em 0.3em;
+}
+
+/* Workarounds for the div/span issue with jQuery popups */
+.ui-dialog .ui-dialog-content {
+   padding: 0;
+}
+.ui-widget {
+   padding: 0.5em;
+}
+.ui-dialog-titlebar {
+   margin-bottom: 0.5em;
+}
+
+#footer {
+   width: 100%;
+   text-align: center;   
+}
+#footer a:link, #footer a:visited {
+   color: #fff;
+}
