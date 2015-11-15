@@ -50,6 +50,9 @@ function pdo_connect($db_user) {
 }
 
 function pdo_seleqt($query, $qs) {
+   if(!is_array($qs)) {
+      $qs = array($qs);
+   }
    $dbh = pdo_connect("esmmwl_select");
    $sth = $dbh->prepare($query);
    $sth->setFetchMode(PDO::FETCH_ASSOC);
