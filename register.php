@@ -13,7 +13,8 @@ function page_content() {
       $error = array(); //Declare An Array to store any error message
 
       require_once ('recaptchalib.php');
-      $privatekey = "6LfucdgSAAAAAG_5iDBDstfRHoAeRdz4yRPbRIV3";
+      global $ini;
+      $privatekey = $ini['recaptcha_privatekey'];
       $resp = recaptcha_check_answer(
          $privatekey,
          $_SERVER["REMOTE_ADDR"],
