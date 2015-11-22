@@ -13,10 +13,6 @@ function page_content() {
       exit("The specified user is not an instructor.");
    }
    
-   if(isset($_POST['formsubmitted'])) {
-      
-   }
-   
    ?><h2>Attendance Entry</h2><h3>Select a class</h3><?php
    
    $qr = pdo_seleqt("
