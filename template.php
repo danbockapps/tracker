@@ -28,6 +28,10 @@ function generate_page($require_logged_in, $require_logged_out, $shownav=true) {
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
       <title>ESMMWL Weekly Tracker</title>
       <link
+         href="https://fonts.googleapis.com/icon?family=Material+Icons"
+         rel="stylesheet"
+      />
+      <link
          rel="stylesheet"
          href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.0/themes/base/jquery-ui.css"
       />

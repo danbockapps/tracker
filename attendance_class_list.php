@@ -18,6 +18,7 @@ function page_content() {
    $qr = pdo_seleqt("
       select
          class_id,
+         class_source,
          start_dttm
       from current_classes
       where instructor_id = ?
@@ -26,6 +27,8 @@ function page_content() {
    foreach($qr as $row) {
       ?><li><a href="attendance_entry.php?class_id=<?php
          echo $row['class_id'];
+      ?>&class_source=<?php
+         echo $row['class_source'];
       ?>"><?php
          echo class_times($row['start_dttm']);
       ?></a></li><?php

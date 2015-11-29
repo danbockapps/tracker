@@ -324,3 +324,7 @@ table.pl td {
 #footer a:link, #footer a:visited {
    color: #fff;
 }
+
+.hidden {
+   display:none
+}
