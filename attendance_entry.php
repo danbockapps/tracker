@@ -10,11 +10,14 @@ $aqr = pdo_seleqt("
    where
       class_id = ?
       and class_source = ?
+   order by date_entered
 ", array($_GET['class_id'], $_GET['class_source']));
 
 $iqr = array();
 
-// create indexed array
+// Create indexed array
+// If there are multiple entries for the same user and week, the earlier ones
+// will be overwritten in this loop by the latest, which is exactly what we want.
 foreach($aqr as $row) {
    $iqr[$row['user_id']][$row['week']] = $row['present'];
 }
@@ -33,7 +36,9 @@ function page_content() {
       $(cellId + ' > img').removeClass('hidden');
       $(cellId + ' > a').addClass('hidden');
       $.post('attendance_ajax.php', {
-         userId: userId,
+         user_id: userId,
+         class_id: <?php echo $_GET['class_id']; ?>,
+         class_source: '<?php echo $_GET['class_source']; ?>',
          week: week,
          present: present
       }, function(data) {
