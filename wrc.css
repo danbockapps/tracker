@@ -328,7 +328,10 @@ table.pl td {
 .hidden {
    display:none
 }
-#attendanceEntry td {
-   width: 35px;
+table#attendanceEntry {
+   margin-top: 1em;
+}
+table#attendanceEntry td {
+   width: 45px;
    text-align: center;
 }
