@@ -1165,4 +1165,14 @@ function array_to_csv($qr) {
    return $csv;
 }
 
+function logtxt($string) {
+  global $ini;
+  file_put_contents(
+    $ini['logfile'],
+    date("Y-m-d G:i:s") . " " . $_SERVER['REMOTE_ADDR'] . " " .
+        $_SESSION['userid'] . " " . $string . "\n",
+    FILE_APPEND
+  );
+}
+
 ?>

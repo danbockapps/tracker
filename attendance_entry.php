@@ -29,7 +29,24 @@ function page_content() {
    ?><script>
    
    function submitAttendance(userId, week, present) {
-      alert('hello');
+      var cellId = '#td_' + userId + '_' + week;
+      $(cellId + ' > img').removeClass('hidden');
+      $(cellId + ' > a').addClass('hidden');
+      $.post('attendance_ajax.php', {
+         userId: userId,
+         week: week,
+         present: present
+      }, function(data) {
+         $(cellId + ' > img').addClass('hidden');
+
+         if(data === 'OK') {
+            var classToShow = present ? '.greenCheck' : '.blackBox';
+            $(cellId).children(classToShow).removeClass('hidden');
+         }
+         else {
+            alert('An error occurred.');
+         }
+      });
    }
    
    </script>
@@ -38,23 +55,7 @@ function page_content() {
    global $iqr;
    print_r($iqr);
    ?></pre><?php
-   
-   /*
-   
-   $dbh = pdo_connect("esmmwl_insert");
-   $sth = $dbh->prepare("
-      insert into wrc_attendance (
-         user_id,
-         class_id,
-         class_source,
-         present
-      ) values (?, ?, ?, ?)
-   ");
-   if(!$sth->execute(array(
-   
-   */
-         
-   
+
    $qr = pdo_seleqt("
       select
          e.user_id,
@@ -78,7 +79,7 @@ function page_content() {
       echo $_GET['class_source'];
       ?>">
    
-      <table>
+      <table id="attendanceEntry">
          <tr>
             <th>
                Name
@@ -97,27 +98,29 @@ function page_content() {
                echo $row['fname'] . ' ' . $row['lname'];
             ?></td><?php
                for($j=1; $j<=$qr[0]['weeks']; $j++) {
-                  /*
-                  ?><td><input type="checkbox" name="x[<?php
-                     echo $row['user_id'];
-                  ?>][<?php
-                     echo $j;
-                  ?>]" /></td><?php
-                  */
-                  
-                  ?><td>
+                  ?><td id="td_<?php echo $row['user_id'] . '_' . $j ?>">
                      <!-- Black empty box -->
                      <a 
-                        href="javascript:submitAttendance()"
-                        <?php hideClass($row['user_id'], $j, 0); ?>
+                        href="javascript:submitAttendance(<?php
+                           echo $row['user_id'] . ',' . $j . ',1';
+                        ?>)"
+                        class="blackBox<?php
+                           echo hideClass($row['user_id'], $j, 0);
+                        ?>"
                      >
                         <i class="material-icons">&#xE3C1;</i>
                      </a>
                      
-                     <!-- Green checkmark -->
+                     <img src="spinner.gif" class="hidden" />
+
+                     <!-- Green check -->
                      <a
-                        href="javascript:submitAttendance()"
-                        <?php hideClass($row['user_id'], $j, 1); ?>
+                        href="javascript:submitAttendance(<?php
+                           echo $row['user_id'] . ',' . $j . ',0';
+                        ?>)"
+                        class="greenCheck<?php
+                           echo hideClass($row['user_id'], $j, 1);
+                        ?>"
                      >
                         <i class="material-icons">&#xE86C;</i>      
                      </a>
@@ -142,7 +145,7 @@ function page_content() {
 function hideClass($userId, $week, $present) {
    global $iqr;
    if($iqr[$userId][$week] != $present) {
-      echo 'class="hidden"';
+      return ' hidden';
    }
 }
 
