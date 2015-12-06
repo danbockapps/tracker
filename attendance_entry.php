@@ -49,6 +49,8 @@ function page_content() {
             $(cellId).children(classToShow).removeClass('hidden');
          }
          else {
+            var classToShow = present ? '.blackBox' : '.greenCheck';
+            $(cellId).children(classToShow).removeClass('hidden');
             alert('An error occurred.');
          }
       });
