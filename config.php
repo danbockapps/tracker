@@ -1170,9 +1170,31 @@ function logtxt($string) {
   file_put_contents(
     $ini['logfile'],
     date("Y-m-d G:i:s") . " " . $_SERVER['REMOTE_ADDR'] . " " .
-        $_SESSION['userid'] . " " . $string . "\n",
+        $_SESSION['user_id'] . " " . $string . "\n",
     FILE_APPEND
   );
+}
+
+// Is user either the instructor of the class or an admin?
+function can_access_class($class_id, $class_source) {
+   if(am_i_admin()) {
+      return true;
+   }
+
+   $qr = seleqt_one_record("
+      select instructor_id
+      from classes_aw
+      where
+         class_id = ?
+         and class_source = ?
+   ", array($class_id, $class_source));
+
+   if($qr['instructor_id'] == $_SESSION['user_id']) {
+      return true;
+   }
+   else {
+      return false;
+   }
 }
 
 ?>
