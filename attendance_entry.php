@@ -71,6 +71,9 @@ function page_content() {
       where
          e.class_id = ?
          and e.class_source = ?
+      order by
+         lname,
+         fname
    ", array($_GET['class_id'], $_GET['class_source']));
    
    $cqr = seleqt_one_record("
@@ -112,8 +115,8 @@ function page_content() {
 
    <table id="attendanceEntry">
       <tr>
-         <th>
-            Name
+         <th class="participantName">
+            Participant Name
          </th>
          <?php
             for($i=1; $i<=$qr[0]['weeks']; $i++) {
@@ -125,7 +128,7 @@ function page_content() {
       </tr>
       <?php
       foreach($qr as $row) {
-         ?><tr><td><?php
+         ?><tr><td class="participantName"><?php
             echo $row['fname'] . ' ' . $row['lname'];
          ?></td><?php
             for($j=1; $j<=$qr[0]['weeks']; $j++) {
@@ -163,6 +166,10 @@ function page_content() {
       ?>
    </table>
    
+   <script>
+      $('#attendanceEntry tr:odd').addClass('alt');
+   </script>
+
    <?php
 }
 

@@ -330,8 +330,16 @@ table.pl td {
 }
 table#attendanceEntry {
    margin-top: 1em;
+   border-spacing: 0;
+   width: 100%;
 }
-table#attendanceEntry td {
-   width: 45px;
+table#attendanceEntry td,th {
    text-align: center;
+   padding: 9px 0px;
+}
+table#attendanceEntry .participantName {
+   text-align: left;
+}
+table#attendanceEntry a.blackBox {
+   color: black;
 }
