@@ -28,6 +28,25 @@ if($_GET['report'] == "attendance") {
       where class_id = ?
    ", array($_GET['class']));
 }
+else if($_GET['report'] == "attendance2") {
+   require_get_vars("class");
+   $qr = pdo_seleqt("
+      select
+         class_name,
+         voucher_code,
+         fname,
+         lname,
+         numclasses,
+         address1,
+         address2,
+         city,
+         state,
+         zip,
+         dob
+      from attendance2
+      where class_id = ?
+   ", array($_GET['class']));
+}
 else if($_GET['report'] == $ini['client1']) {
    require_get_vars("voucher_code");
    $qr = pdo_seleqt("
