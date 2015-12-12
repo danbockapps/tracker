@@ -344,3 +344,7 @@ table#attendanceEntry .participantName {
 table#attendanceEntry a.blackBox {
    color: black;
 }
+
+ul#classList li {
+   padding-bottom: 0.3em;
+}

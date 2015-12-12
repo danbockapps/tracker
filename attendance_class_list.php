@@ -13,15 +13,16 @@ function page_content() {
       exit("The specified user is not an instructor.");
    }
    
-   ?><h2>Attendance Entry</h2><h3>Select a class</h3><?php
-   
+   ?><h2>Attendance Entry</h2><h3>Select a class</h3><ul id="classList"><?php
+
    $qr = pdo_seleqt("
       select
          class_id,
          class_source,
          start_dttm
-      from current_classes
+      from classes_aw
       where instructor_id = ?
+      order by start_dttm desc
    ", $_GET['instr']);
    
    foreach($qr as $row) {
@@ -33,6 +34,9 @@ function page_content() {
          echo class_times($row['start_dttm']);
       ?></a></li><?php
    }
+
+   ?></ul><?php
+
 }
 
 ?>
