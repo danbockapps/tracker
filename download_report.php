@@ -53,6 +53,29 @@ else if($_GET['report'] == "attendance") {
       where class_id in (" . join(",", array_keys($_GET['class'])) . ")
    ", array());
 }
+else if($_GET['report'] == "attendance2") {
+   require_get_vars("class");
+   $qr = pdo_seleqt("
+      select
+         instructor_name,
+         class_name,
+         voucher_code,
+         fname,
+         lname,
+         numclasses,
+         beginning_and_ending_weight,
+         incentive_type,
+         address1,
+         address2,
+         city,
+         state,
+         zip,
+         shirtsize,
+         shirtcolor
+      from attendance2
+      where class_id in (" . join(",", array_keys($_GET['class'])) . ")
+   ", array());
+}
 else if($_GET['report'] == "results") {
    $qr = pdo_seleqt("
       select
