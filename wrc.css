@@ -339,6 +339,7 @@ table#attendanceEntry td,th {
 }
 table#attendanceEntry .participantName {
    text-align: left;
+   padding-left: 0.5em;
 }
 table#attendanceEntry a.blackBox {
    color: black;
