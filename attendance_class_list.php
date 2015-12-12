@@ -13,7 +13,10 @@ function page_content() {
       exit("The specified user is not an instructor.");
    }
    
-   ?><h2>Attendance Entry</h2><h3>Select a class</h3><ul id="classList"><?php
+   ?>
+   <h2>Attendance Entry for <?php echo full_name($_GET['instr']); ?></h2>
+   <h3>Select a class</h3>
+   <ul id="classList"><?php
 
    $qr = pdo_seleqt("
       select
