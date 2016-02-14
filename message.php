@@ -26,11 +26,18 @@ else {
    $smtpinfo["username"] = "tracker+esmmweighless.com";
    $smtpinfo["password"] = EMAIL_PASSWORD;
 
+   /* Suppress mail error messages */
+   $origErrReportingLevel = error_reporting();
+   error_reporting(E_ALL & ~E_STRICT);
+
    /* Create the mail object using the Mail::factory method */
    $mail_object =& Mail::factory("smtp", $smtpinfo);
 
    /* Ok send mail */
    $mail_object->send($recipients, $headers, $mailmsg);
+
+   /* Reset error reporting level */
+   error_reporting($origErrReportingLevel);
 }
 
 ?>

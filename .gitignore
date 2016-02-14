@@ -11,3 +11,4 @@ error_log
 test*
 cgi-bin
 welcome*.txt
+phpinfo.php
