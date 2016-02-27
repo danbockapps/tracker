@@ -92,7 +92,7 @@ td.green {
 }
 
 /* Headers in all_messages.php */
-.msg_header, .fdbk_header {
+.msg_header, .fdbk_header, .sgmsg_header {
    margin-top: 2em;
    margin-bottom: 0.3em;
    padding: 0.7em;
@@ -102,4 +102,7 @@ td.green {
 }
 .fdbk_header {
    background-color: #eaffd0;
+}
+.sgmsg_header {
+   background-color: #cce0ff;
 }
