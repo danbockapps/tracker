@@ -5,6 +5,8 @@ define("BLOWFISH_SUF", "$");
 
 $ini = parse_ini_file('auth.ini');
 
+validate_product();
+
 define("EMAIL_FROM", $ini['email_from']);
 define("EMAIL_LOGGER", $ini['email_logger']);
 define("EMAIL_PASSWORD", $ini['email_password']);
@@ -1194,6 +1196,24 @@ function can_access_class($class_id, $class_source) {
    }
    else {
       return false;
+   }
+}
+
+function validate_product() {
+   // Exit if product in auth.ini is not a valid product (esmmwl or dpp).
+   // (only happens if the developer has screwed something up)
+   global $ini;
+   $valid_products = ['esmmwl', 'dpp'];
+   $product_is_valid = false;
+
+   foreach($valid_products as $s) {
+      if($s == $ini['product']) {
+         $product_is_valid = true;
+      }
+   }
+
+   if(!$product_is_valid) {
+      exit('Invalid value for product in auth.ini.');
    }
 }
 
