@@ -91,7 +91,9 @@ function page_content() {
 
 function add_sg_to_messages($old_sg, $new_sg) {
    $msg = "New SMART Goal:\n" . $new_sg;
-   $msg .= "\n\nOld SMART Goal:\n" . $old_sg;
+   if($old_sg) {
+      $msg .= "\n\nOld SMART Goal:\n" . $old_sg;
+   }
 
    $dbh = pdo_connect('esmmwl_insert');
    $sth = $dbh->prepare("
