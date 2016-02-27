@@ -487,6 +487,21 @@ function page_content() {
                   false
                );
             }
+
+            global $ini;
+            if($ini['product'] == 'dpp') {
+               $err_count += report_var(
+                  'a1c',
+                  $qr['class_id'],
+                  $qr['class_source'],
+                  'a1c',
+                  'A1C level &#40;&#37;&#41;',
+                  null,
+                  null,
+                  null,
+                  true
+               );
+            }
          ?>
          </table>
       </fieldset>
@@ -753,7 +768,7 @@ function report_var (
    $class_source,      //  "a" or "w"
    $db_col,            //  name of the column in the database
    $label,             //  to display next to the input box
-   $popup_link,        //  text for the link to the alert
+   $popup_link,        //  text for the link to the alert. null for no alert.
    $popup_text,        //  text for the alert
    $popup_title,       //  title for the alert
    $rept_enrf,         //  report true, enrollment false
@@ -855,7 +870,9 @@ function report_var (
             }
             else {
                report_input($post_var, $cvqr, $db_col);
-               popup($popup_link, $popup_text, $popup_title);
+               if($popup_link) {
+                  popup($popup_link, $popup_text, $popup_title);
+               }
             }
          }
          else {
