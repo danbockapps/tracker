@@ -244,7 +244,7 @@ form.admin {
 }
 
 /* Headers in all_messages.php */
-.msg_header, .fdbk_header {
+.msg_header, .fdbk_header, .sgmsg_header {
    margin-top: 2em;
    margin-bottom: 0.3em;
    padding: 0.7em;
@@ -254,6 +254,9 @@ form.admin {
 }
 .fdbk_header {
    background-color: #eaffd0;
+}
+.sgmsg_header {
+   background-color: #cce0ff;
 }
 
 /* Tables in reports.php and rosters.php */
@@ -319,7 +322,7 @@ table.pl td {
 
 #footer {
    width: 100%;
-   text-align: center;   
+   text-align: center;
 }
 #footer a:link, #footer a:visited {
    color: #fff;

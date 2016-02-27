@@ -30,6 +30,7 @@ function page_content() {
          $qr['class_id'],
          $qr['class_source']
       ))) {
+         add_sg_to_messages($qr['smart_goal'], $_POST['new_smart_goal']);
          header("Location: reports.php?user=" . $_GET['user']);
       }
       else {
@@ -86,6 +87,18 @@ function page_content() {
       </form>
       <?php
    }
+}
+
+function add_sg_to_messages($old_sg, $new_sg) {
+   $msg = "New SMART Goal:\n" . $new_sg;
+   $msg .= "\n\nOld SMART Goal:\n" . $old_sg;
+
+   $dbh = pdo_connect('esmmwl_insert');
+   $sth = $dbh->prepare("
+      insert into wrc_messages (user_id, recip_id, message, create_dttm)
+      values (?, ?, ?, now())
+   ");
+   return $sth->execute(array($_SESSION['user_id'], $_SESSION['user_id'], $msg));
 }
 
 ?>

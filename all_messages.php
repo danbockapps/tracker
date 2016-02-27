@@ -75,7 +75,15 @@ function page_content() {
    foreach($iqr as $msg) {
       ?>
       <div class="<?php
-         echo ($msg['recip_id'] == $_GET['user'] ? "fdbk" : "msg");
+         if($msg['recip_id'] == $msg['user_id']) {
+            echo "sgmsg";
+         }
+         else if($msg['recip_id'] == $_GET['user']) {
+            echo "fdbk";
+         }
+         else {
+            echo "msg";
+         }
       ?>_header">
          From: <b><?php echo htmlentities($msg['u_name']); ?></b>
          <?php
@@ -91,7 +99,16 @@ function page_content() {
             }
          ?>
          <br />
-         To:      <?php echo htmlentities($msg['r_name']); ?><br />
+
+         <?php
+            // If sender==recipient (e.g. a SMART goal change), don't show "To:"
+            if($msg['recip_id'] != $msg['user_id']) {
+               ?>
+               To:      <?php echo htmlentities($msg['r_name']); ?><br />
+               <?php
+            }
+         ?>
+
          Date:    <?php echo date("D, n/j/Y g:i a",
                strtotime($msg['create_dttm'])); ?>
       </div>
