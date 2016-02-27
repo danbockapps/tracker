@@ -45,6 +45,7 @@ function page_content() {
             weight,
             aerobic_minutes,
             strength_minutes,
+            physact_minutes,
             notes
          from wrc_reports
          where
@@ -62,6 +63,7 @@ function page_content() {
          $reports['weight'][$row['week_id']-1] = $row['weight'];
          $reports['aerobic'][$row['week_id']-1] = $row['aerobic_minutes'];
          $reports['strength'][$row['week_id']-1] = $row['strength_minutes'];
+         $reports['physact'][$row['week_id']-1] = $row['physact_minutes'];
          $reports['notes'][$row['week_id']-1] = $row['notes'];
       }
       ?>
@@ -203,8 +205,26 @@ function page_content() {
             <th>Date</th>
             <th>Weight</th>
             <th>Net <br /> loss/gain</th>
-            <th>Minutes of <br /> aerobic activity</th>
-            <th>Minutes of <br /> strength training</th>
+
+            <?php
+               /**************************************************************/
+               /* COLUMN HEADERS FOR DIFFERENT PRODUCTS
+               ***************************************************************/
+
+               global $ini;
+               if($ini['product'] == 'esmmwl') {
+                  ?>
+                  <th>Minutes of <br /> aerobic activity</th>
+                  <th>Minutes of <br /> strength training</th>
+                  <?php
+               }
+               else if($ini['product'] == 'dpp') {
+                  ?>
+                  <th>Minutes of <br /> physical activity</th>
+                  <?php
+               }
+            ?>
+
             <th>Instructor <br /> feedback</th>
          </tr>
       <?php
@@ -242,13 +262,37 @@ function page_content() {
          echo (isset($reports['weight'][$i]) && isset($reports['weight'][0])
                && $reports['weight'][$i] != 0 ?
                round($reports['weight'][$i] - $reports['weight'][0], 1) : "");
-         ?></td><td class="center"><?php
-         echo (isset($reports['aerobic'][$i]) ?
-               zero_blank($reports['aerobic'][$i]) : "");
-         ?></td><td class="center"><?php
-         echo (isset($reports['strength'][$i]) ?
-               zero_blank($reports['strength'][$i]) : "");
-         ?></td><td class="center"><?php
+         ?></td>
+
+         <?php
+            /**************************************************************/
+            /* TABLE CELLS FOR DIFFERENT PRODUCTS
+            ***************************************************************/
+
+            if($ini['product'] == 'esmmwl') {
+               ?>
+               <td class="center"><?php
+               echo (isset($reports['aerobic'][$i]) ?
+                     zero_blank($reports['aerobic'][$i]) : "");
+               ?></td>
+               <td class="center"><?php
+               echo (isset($reports['strength'][$i]) ?
+                     zero_blank($reports['strength'][$i]) : "");
+               ?></td>
+               <?php
+            }
+            else if($ini['product'] == 'dpp') {
+               ?>
+               <td class="center"><?php
+               echo (isset($reports['physact'][$i]) ?
+                     zero_blank($reports['physact'][$i]) : "");
+               ?></td>
+               <?php
+            }
+         ?>
+
+
+         <td class="center"><?php
             if($link) {
                if(isset($reports['notes'][$i]) && $reports['notes'][$i] != "") {
                   echo linkify("<img src='chat.png' />", $i+1, false);

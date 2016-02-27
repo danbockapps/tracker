@@ -394,34 +394,51 @@ function page_content() {
                <?php
             }
 
-            $err_count += report_var(
-               "aerobic",
-               $qr['class_id'],
-               $qr['class_source'],
-               "aerobic_minutes",
-               "Minutes of aerobic activity",
-               "instructions",
-               "Use this field to record the number of minutes you spent " .
-                  "engaged in aerobic activities like walking, gardening, " .
-                  "or using an elliptical machine over the past week.",
-               "Aerobic activity instructions",
-               true
-            );
+            global $ini;
+            if($ini['product'] == 'esmmwl') {
+               $err_count += report_var(
+                  "aerobic",
+                  $qr['class_id'],
+                  $qr['class_source'],
+                  "aerobic_minutes",
+                  "Minutes of aerobic activity",
+                  "instructions",
+                  "Use this field to record the number of minutes you spent " .
+                     "engaged in aerobic activities like walking, gardening, " .
+                     "or using an elliptical machine over the past week.",
+                  "Aerobic activity instructions",
+                  true
+               );
 
-            $err_count += report_var(
-               "strength",
-               $qr['class_id'],
-               $qr['class_source'],
-               "strength_minutes",
-               "Minutes of strength training",
-               "instructions",
-               "Use this field to record the number of minutes you spent " .
-                  "engaged in strength training activities like yoga, lifting " .
-                  "weights, using stretch bands, or doing push-ups over the " .
-                  "past week.",
-               "Strength training instructions",
-               true
-            );
+               $err_count += report_var(
+                  "strength",
+                  $qr['class_id'],
+                  $qr['class_source'],
+                  "strength_minutes",
+                  "Minutes of strength training",
+                  "instructions",
+                  "Use this field to record the number of minutes you spent " .
+                     "engaged in strength training activities like yoga, lifting " .
+                     "weights, using stretch bands, or doing push-ups over the " .
+                     "past week.",
+                  "Strength training instructions",
+                  true
+               );
+            }
+
+            else if($ini['product'] == 'dpp') {
+               $err_count += report_var(
+                  "physact",
+                  $qr['class_id'],
+                  $qr['class_source'],
+                  "physact_minutes",
+                  "Minutes of physical activity",
+                  null,
+                  null,
+                  null,
+                  true
+               );
+            }
 
             if($first_class || $last_class) {
                $err_count += report_var(
@@ -488,7 +505,6 @@ function page_content() {
                );
             }
 
-            global $ini;
             if($ini['product'] == 'dpp') {
                $err_count += report_var(
                   'a1c',
