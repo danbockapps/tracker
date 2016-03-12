@@ -100,7 +100,8 @@ function page_content() {
             // Finish the page:
             echo cnf_text('
                Thank you for registering! A confirmation email has been sent to '
-               . $email . '. Please follow the instructions in the e-mail
+               . htmlentities($email) . '. Please follow the instructions in
+               the e-mail
                to activate your account. <b>Please check your "spam" or ' .
                '"junk" folder</b> if you do not see the message in your inbox.
             ');
@@ -127,7 +128,7 @@ function page_content() {
          <label for="first_name">First name: </label>
          <input type="text" name="first_name" id="first_name" <?php
          	if(isset($_POST['formsubmitted'])) {
-               echo "value=\"" . $_POST['first_name'] . "\"";
+               echo "value=\"" . htmlentities($_POST['first_name']) . "\"";
             }
          ?>/>
       </p>
@@ -135,7 +136,7 @@ function page_content() {
          <label for="last_name">Last name: </label>
          <input type="text" name="last_name" id="last_name" <?php
             if(isset($_POST['formsubmitted'])) {
-               echo "value=\"" . $_POST['last_name'] . "\"";
+               echo "value=\"" . htmlentities($_POST['last_name']) . "\"";
             }
          ?>/>
       </p>
@@ -143,7 +144,7 @@ function page_content() {
          <label for="email">E-mail address: </label>
          <input type="text" name="email" id="email" <?php
             if(isset($_POST['formsubmitted'])) {
-               echo "value=\"" . $_POST['email'] . "\"";
+               echo "value=\"" . htmlentities($_POST['email']) . "\"";
             }
          ?>/>
       </p>

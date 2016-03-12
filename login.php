@@ -95,7 +95,7 @@ function page_content() {
             <label for="email">Email:</label>
             <input type="text" id="email" name="email" size="25"  <?php
                if(isset($_POST['formsubmitted']) && isset($msg_error)) {
-                  echo "value=\"" . $_POST['email'] . "\"";
+                  echo "value=\"" . htmlspecialchars($_POST['email']) . "\"";
                }
          ?>/>
          </div>

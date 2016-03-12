@@ -22,7 +22,7 @@ function page_content() {
 
    if(strtotime($report_date) > strtotime(date(DATE_RSS) . " + 1 week")) {
       exit(err_text("Too early to create report for " .
-            wrcdate($report_date)));
+            htmlentities(wrcdate($report_date))));
    }
 
    ?>
@@ -269,10 +269,15 @@ function page_content() {
    </script>
    <h2>
       Report for the week of
-      <?php echo wrcdate($report_date); ?>
+      <?php echo htmlentities(wrcdate($report_date)); ?>
    </h2>
-   <form id="report_form" action="report.php?week=<?php echo $_GET['week'];
-         ?>&user=<?php echo $_GET['user']; ?>" method="post">
+   <form id="report_form"
+         action="report.php?week=<?php
+            echo htmlentities($_GET['week']);
+         ?>&user=<?php
+            echo htmlentities($_GET['user']);
+         ?>"
+         method="post">
       <fieldset style="margin-bottom: 0.3em">
          <table>
          <?php
@@ -588,11 +593,11 @@ function page_content() {
                   if($strat['custom'] && $_GET['user'] == $_SESSION['user_id']) {
                      // delete link
                      ?> <a  style="font-size:small" href="report.php?user=<?php
-                        echo $_GET['user'];
+                        echo htmlentities($_GET['user']);
                      ?>&week=<?php
-                        echo $_GET['week'];
+                        echo htmlentities($_GET['week']);
                      ?>&delete=<?php
-                        echo $strat['strategy_id'];
+                        echo htmlentities($strat['strategy_id']);
                      ?>" onclick="return delStratConfirm();">delete</a><?php
                   }
                ?></td><td>
@@ -722,7 +727,7 @@ function page_content() {
          else {
             ?>
             Please enter your height in your <a href="report.php?week=1&user=<?php
-               echo $_GET['user'];
+               echo htmlentities($_GET['user']);
             ?>">week 1 report</a> and weight in this report in order to
             calculate BMI.
             <?php
@@ -745,7 +750,7 @@ function page_content() {
    <div style="display:none" id="height_inches">
       <?php
          if(isset($bmiqr[0]['height_inches'])) {
-            echo $bmiqr[0]['height_inches'];
+            echo htmlentities($bmiqr[0]['height_inches']);
          }
       ?>
    </div>

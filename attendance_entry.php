@@ -28,17 +28,17 @@ function page_content() {
    if(!am_i_admin() && !am_i_instructor()) {
       exit("You must be an admin or instructor to view this page.");
    }
-   
+
    ?><script>
-   
+
    function submitAttendance(userId, week, present) {
       var cellId = '#td_' + userId + '_' + week;
       $(cellId + ' > img').removeClass('hidden');
       $(cellId + ' > a').addClass('hidden');
       $.post('attendance_ajax.php', {
          user_id: userId,
-         class_id: <?php echo $_GET['class_id']; ?>,
-         class_source: '<?php echo $_GET['class_source']; ?>',
+         class_id: <?php echo htmlentities($_GET['class_id']); ?>,
+         class_source: '<?php echo htmlentities($_GET['class_source']); ?>',
          week: week,
          present: present
       }, function(data) {
@@ -55,9 +55,9 @@ function page_content() {
          }
       });
    }
-   
+
    </script>
-   
+
    <?php
 
    $qr = pdo_seleqt("
@@ -77,7 +77,7 @@ function page_content() {
          lname,
          fname
    ", array($_GET['class_id'], $_GET['class_source']));
-   
+
    $cqr = seleqt_one_record("
       select
          c.class_id,
@@ -95,14 +95,14 @@ function page_content() {
    ", array($_GET['class_id'], $_GET['class_source']));
 
    ?><h2>Attendance Entry</h2>
-   
+
    <table>
       <tr>
          <td>
             <strong>Instructor:</strong>
          </td>
          <td>
-            <?php echo $cqr['fname'] . ' ' . $cqr['lname']; ?>
+            <?php echo htmlentities($cqr['fname'] . ' ' . $cqr['lname']); ?>
          </td>
       </tr>
       <tr>
@@ -131,17 +131,17 @@ function page_content() {
       <?php
       foreach($qr as $row) {
          ?><tr><td class="participantName"><?php
-            echo $row['fname'] . ' ' . $row['lname'];
+            echo htmlentities($row['fname'] . ' ' . $row['lname']);
          ?></td><?php
             for($j=1; $j<=$qr[0]['weeks']; $j++) {
-               ?><td id="td_<?php echo $row['user_id'] . '_' . $j ?>">
+               ?><td id="td_<?php echo htmlentities($row['user_id']) . '_' . $j ?>">
                   <!-- Black empty box -->
                   <a
                      href="javascript:submitAttendance(<?php
-                        echo $row['user_id'] . ',' . $j . ',1';
+                        echo htmlentities($row['user_id']) . ',' . $j . ',1';
                      ?>)"
                      class="blackBox<?php
-                        echo hideClass($row['user_id'], $j, 0);
+                        echo htmlentities(hideClass($row['user_id'], $j, 0));
                      ?>"
                   >
                      <i class="material-icons">&#xE3C1;</i>
@@ -152,10 +152,10 @@ function page_content() {
                   <!-- Green check -->
                   <a
                      href="javascript:submitAttendance(<?php
-                        echo $row['user_id'] . ',' . $j . ',0';
+                        echo htmlentities($row['user_id']) . ',' . $j . ',0';
                      ?>)"
                      class="greenCheck<?php
-                        echo hideClass($row['user_id'], $j, 1);
+                        echo htmlentities(hideClass($row['user_id'], $j, 1));
                      ?>"
                   >
                      <i class="material-icons">&#xE86C;</i>
@@ -164,10 +164,10 @@ function page_content() {
             }
          ?></tr><?php
       }
-      
+
       ?>
    </table>
-   
+
    <script>
       $('#attendanceEntry tr:odd').addClass('alt');
    </script>

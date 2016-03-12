@@ -316,7 +316,7 @@ function sg_text($qr, $change) {
    if($change) {
       ?>
       <span class='small'>
-         <a href='smartgoal.php?user=<?php echo $_GET['user']; ?>'>
+         <a href='smartgoal.php?user=<?php echo htmlentities($_GET['user']); ?>'>
             change
          </a>
       </span>
@@ -415,8 +415,12 @@ function participant_nav($class_id, $class_source) {
       ?>
       <div id="partnav">
          You are viewing: <b><?php echo full_name($_GET['user']); ?></b>
-         <a href="reports.php?user=<?php echo $_GET['user']; ?>">reports</a>
-         <a href="all_messages.php?user=<?php echo $_GET['user']; ?>">messages</a>
+         <a href="reports.php?user=<?php
+            echo htmlentities($_GET['user']);
+         ?>">reports</a>
+         <a href="all_messages.php?user=<?php
+            echo htmlentities($_GET['user']);
+         ?>">messages</a>
          <br />
          <?php
             $sqr = seleqt_one_record("
@@ -467,7 +471,11 @@ function message_participant($recip_id, $msg_text) {
          where user_id = ?
       ", array($recip_id));
       sendmail($eqr['email'], "ESMMWL Weekly Tracker - New Message", $message);
-      echo cnf_text("Message sent to " . $eqr['fname'] . " " . $eqr['lname'] . ".");
+      echo cnf_text(
+         "Message sent to " .
+         htmlentities($eqr['fname'] . " " . $eqr['lname']) .
+         "."
+      );
 
       // Update wrc_users table, last_message_from and last_message_to fields
       $dbhf = pdo_connect("esmmwl_update");
@@ -605,7 +613,7 @@ function template_js() {
       x.open(
          "GET",
          "pv_log.php?w=" + screen.width + "&h=" + screen.height +
-            "&r=<?php echo $_SERVER['REQUEST_URI']; ?>",
+            "&r=<?php echo htmlspecialchars($_SERVER['REQUEST_URI']); ?>",
          true
       );
       x.send();
@@ -746,19 +754,19 @@ function template_logo_gc() {
 function linkify($date_string, $week_no, $warn) {
    ?>
    <a href='report.php?week=<?php echo $week_no; ?>&user=<?php
-      echo $_GET['user']; ?>'<?php
+      echo htmlentities($_GET['user']); ?>'<?php
          if($warn) {
             ?> onclick="return oldreport_confirm();"<?php
          }
-      ?>><?php echo $date_string; ?></a>
+      ?>><?php echo htmlentities($date_string); ?></a>
    <?php
 }
 
 function file_and_parameters() {
-   return substr(
+   return htmlspecialchars(substr(
       $_SERVER['REQUEST_URI'],
       strrpos($_SERVER['REQUEST_URI'], "/") + 1
-   );
+   ));
 }
 
 function remove_mode() {
@@ -1139,7 +1147,7 @@ function require_get_vars($getvars) {
    }
    foreach($getvars as $getvar) {
       if(!isset($_GET[$getvar])) {
-         exit("Error: invalid GET variables. " . print_r($_GET, true));
+         exit("Error: invalid GET variables.");
       }
    }
 }

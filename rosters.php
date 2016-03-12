@@ -271,7 +271,7 @@ function rosters_th($header, $sort_get_var) {
 
 function rosters_th_link($header, $sort_get_var) {
    ?><a href="rosters.php?instr=<?php
-      echo $_GET['instr'];
+      echo htmlentities($_GET['instr']);
    ?>&sort=<?php
       echo $sort_get_var;
       if(

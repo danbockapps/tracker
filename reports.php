@@ -127,11 +127,11 @@ function page_content() {
                   "pes.php",
                   {
                      user:<?php
-                        echo $_GET['user'];
+                        echo htmlentities($_GET['user']);
                      ?>, class:<?php
-                        echo $qr['class_id'];
+                        echo htmlentities($qr['class_id']);
                      ?>, source:"<?php
-                        echo $qr['class_source'];
+                        echo htmlentities($qr['class_source']);
                      ?>"
                   }
                )
@@ -253,7 +253,7 @@ function page_content() {
          else {
             // The report is more than a week in the future.
             $link = false;
-            echo wrcdate($qr['start_dttm'] . " + $i weeks");
+            echo wrcdate(htmlentities($qr['start_dttm']) . " + $i weeks");
          }
          ?><td class="center"><?php
          echo (isset($reports['weight'][$i]) ?

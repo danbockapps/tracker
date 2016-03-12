@@ -88,11 +88,11 @@ function page_content() {
          else {
             // The report is more than a week in the future.
             $link = false;
-            echo wrcdate($qr['start_dttm'] . " + $i weeks");
+            echo wrcdate(htmlentities($qr['start_dttm']) . " + $i weeks");
          }
          ?><td class="center"><?php
          echo (isset($reports['weight'][$i]) ?
-               zero_blank($reports['weight'][$i]) : "");
+               zero_blank(htmlentities($reports['weight'][$i])) : "");
          ?></td></tr><?php
       }
       ?>

@@ -73,13 +73,14 @@ function page_content() {
    }
    else {
       ?>
-      <form action="smartgoal.php?user=<?php echo $_GET['user']; ?>" method="post"
-         onsubmit="return confirm('Are you sure you want to change your SMART goal?');">
+      <form action="smartgoal.php?user=<?php echo htmlentities($_GET['user']); ?>"
+            method="post"
+            onsubmit="return confirm('Are you sure you want to change your SMART goal?');">
          <textarea name="new_smart_goal" rows="4" style="width: 100%"
             onkeydown="limit(this.form.new_smart_goal, 99999);"
             onkeyup="limit(this.form.new_smart_goal, 99999);"
          ><?php
-            echo $qr['smart_goal'];
+            echo htmlentities($qr['smart_goal']);
          ?></textarea>
          <br />
          <input type="hidden" name="submitted" value="true" />

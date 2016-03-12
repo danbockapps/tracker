@@ -57,7 +57,7 @@ else if($_GET['report'] == $ini['client1']) {
 }
 
 if(empty($qr)) {
-   exit("No report returned. Parameters: " . print_r($_GET, true));
+   exit("No report returned.");
 }
 
 ?>
@@ -76,7 +76,7 @@ body {background-color:white;}
    <?php
       foreach($qr[0] as $key => $value) {
          ?><th><?php
-            echo $key;
+            echo htmlentities($key);
          ?></th><?php
       }
    ?>

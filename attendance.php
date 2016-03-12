@@ -57,7 +57,8 @@ function page_content() {
                      $_POST['zip'][$key]
                   ))) {
                      $success = false;
-                     echo err_text("Address error with user " . $user_id);
+                     echo err_text("Address error with user " .
+                                   htlmentities($user_id);
                   }
                }
             }
@@ -86,7 +87,8 @@ function page_content() {
             $_POST['class_source'][$key]
          ))) {
             $success = false;
-            echo err_text("Error with user " . $_POST['user_id'][$key]);
+            echo err_text("Error with user " .
+                          htmlentities($_POST['user_id'][$key]);
          }
       }
       if($success) {
@@ -155,7 +157,9 @@ function page_content() {
       }
    ?>
 
-   <form method="post" action="attendance.php?instr=<?php echo $_GET['instr']; ?>">
+   <form method="post" action="attendance.php?instr=<?php
+      echo htmlentities($_GET['instr']);
+   ?>">
       <?php
       for($i=0; $i<count($qr); $i++) {
          if(first_of_class($qr, $i)) {

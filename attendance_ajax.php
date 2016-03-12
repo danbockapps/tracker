@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once('config.php');
-logtxt(print_r($_POST, true));
+logtxt(htmlentities(print_r($_POST, true));
 
 if(can_access_class($_POST['class_id'], $_POST['class_source'])) {
    $dbh = pdo_connect('esmmwl_insert');

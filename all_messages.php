@@ -7,7 +7,10 @@ generate_page(true, false);
 
 function page_content() {
    if(isset($_POST['formsubmitted'])) {
-      message_participant($_POST['recip_id'], $_POST['message_text']);
+      message_participant(
+         htmlentities($_POST['recip_id']),
+         htmlentities($_POST['message_text'])
+      );
    }
 
    $qr = current_class_and_sg();
@@ -44,7 +47,7 @@ function page_content() {
    else {
       // user is the instructor or an admin
       $recip_name = full_name($_GET['user']);
-      $recip_id = $_GET['user'];
+      $recip_id = htmlentities($_GET['user']);
    }
    if($recip_id == null) {
       echo err_text("You cannot send messages because your class does not " .
@@ -55,7 +58,9 @@ function page_content() {
    else {
       ?>
       <script type="text/javascript" src="functions.js"></script>
-      <form action="all_messages.php?user=<?php echo $_GET['user']; ?>"
+      <form action="all_messages.php?user=<?php
+               echo htmlentities($_GET['user']);
+            ?>"
             method="post">
          <fieldset>
             <legend>Compose new message</legend>
@@ -89,12 +94,12 @@ function page_content() {
          <?php
             if($msg['feedback']) {
                ?>(instructor feedback for <a href="report.php?user=<?php
-                  echo $msg['recip_id'];
+                  echo htmlentities($msg['recip_id']);
                ?>&week=<?php
-                  echo $msg['week_id'];
+                  echo htmlentities($msg['week_id']);
                ?>"><?php
-                  echo wrcdate($msg['start_dttm'] . " + " .
-                        ($msg['week_id'] - 1) . " weeks");
+                  echo htmlentities(wrcdate($msg['start_dttm'] . " + " .
+                        ($msg['week_id'] - 1) . " weeks"));
                ?> report</a>)<?php
             }
          ?>

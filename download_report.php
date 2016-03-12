@@ -311,11 +311,11 @@ else if($_GET['report'] == "results") {
 }
 
 if(empty($qr)) {
-   exit("No report returned. Parameters: " . print_r($_GET, true));
+   exit("No report returned.");
 }
 
 header("Content-Type: application/csv");
 header("Content-Disposition: attachment; filename=" . $_GET['report'] . ".csv");
 header("Pragma: no-cache");
-echo array_to_csv($qr);
+echo htmlspecialchars(array_to_csv($qr));
 ?>

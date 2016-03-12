@@ -101,10 +101,10 @@ function enter_new_password() {
       <p>
          <input type="hidden" name="newpwsubmitted" value="TRUE" />
          <input type="hidden" name="email" value="<?php
-            echo $_GET['email'];
+            echo htmlentities($_GET['email']);
          ?>" />
          <input type="hidden" name="key" value="<?php
-            echo $_GET['key'];
+            echo htmlentities($_GET['key']);
          ?>" />
          <input type="submit" />
       </p>

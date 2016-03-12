@@ -182,7 +182,7 @@ else {
          where concat(fname, ' ', lname, ' (', email, ')') = ?
       ", array($_GET['pl_name']));
       if($plcqr['count'] != 1) {
-         echo $_GET['pl_name'];
+         echo htmlentities($_GET['pl_name']);
          ?>: User not found.<?php
       }
       else {
@@ -229,7 +229,7 @@ else {
                <td style="font-weight: bold">First name</td>
                <td>
                   <?php
-                     echo $plqr['fname'];
+                     echo htmlentities($plqr['fname']);
                   ?>
                </td>
             </tr>
@@ -237,7 +237,7 @@ else {
                <td style="font-weight: bold">Last name</td>
                <td>
                   <?php
-                     echo $plqr['lname'];
+                     echo htmlentities($plqr['lname']);
                   ?>
                </td>
             </tr>
@@ -245,7 +245,7 @@ else {
                <td style="font-weight: bold">E-mail address</td>
                <td>
                   <?php
-                     echo $plqr['email'];
+                     echo htmlentities($plqr['email']);
                   ?>
                </td>
             </tr>
@@ -261,7 +261,7 @@ else {
                <td style="font-weight: bold">Last login</td>
                <td>
                   <?php
-                     echo rstr_date($plqr['last_login']);
+                     echo htmlentities(rstr_date($plqr['last_login']));
                   ?>
                </td>
             </tr>
@@ -280,9 +280,12 @@ else {
                                  type: 'POST',
                                  url: 'resend_welcome_email.php',
                                  data: {
-                                    user_id: <?php echo $plqr['user_id']; ?>,
-                                    class_id: <?php echo $plqr['class_id']; ?>,
-                                    class_source: '<?php echo $plqr['class_source']; ?>'
+                                    user_id: <?php echo
+                                       htmlentities($plqr['user_id']); ?>,
+                                    class_id: <?php echo
+                                       htmlentities($plqr['class_id']); ?>,
+                                    class_source: '<?php echo
+                                       htmlentities($plqr['class_source']); ?>'
                                  }
                               });
                               alert('The welcome e-mail will be re-sent within' +
@@ -301,7 +304,7 @@ else {
                   <?php
                      echo $plqr['instr_name'] == null ?
                            "n/a" :
-                           $plqr['instr_name'];
+                           htmlentities($plqr['instr_name']);
                   ?>
                </td>
             </tr>
@@ -444,7 +447,7 @@ else {
 <ul>
    <?php
       foreach($bqr as $row) {
-         ?><li><a href="view_report.php?report=<?php 
+         ?><li><a href="view_report.php?report=<?php
             echo $ini['client1'];
          ?>&voucher_code=<?php
             echo $row['voucher_code'];
