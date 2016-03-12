@@ -758,7 +758,7 @@ function linkify($date_string, $week_no, $warn) {
          if($warn) {
             ?> onclick="return oldreport_confirm();"<?php
          }
-      ?>><?php echo htmlentities($date_string); ?></a>
+      ?>><?php echo $date_string; ?></a>
    <?php
 }
 

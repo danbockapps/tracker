@@ -248,7 +248,9 @@ function page_content() {
             else {
                $warn = false;
             }
-            echo linkify(wrcdate($qr['start_dttm'] . " + $i weeks"), $i+1, $warn);
+            echo htmlentities(linkify(
+               wrcdate($qr['start_dttm'] . " + $i weeks"), $i+1, $warn
+            ));
          }
          else {
             // The report is more than a week in the future.
