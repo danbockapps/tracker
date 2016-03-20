@@ -14,6 +14,18 @@ if(!isset($_GET['report'])) {
    exit("No report specified.");
 }
 
+$whitelist = [
+   'users_table',
+   'date_test',
+   'attendance',
+   'attendance2',
+   'results'
+];
+
+if(!in_array($_GET['report'],  $whitelist)) {
+   exit('Invalid report specified.');
+}
+
 if($_GET['report'] == "users_table") {
    // For demonstration purposes only
    $qr = pdo_seleqt("
