@@ -764,7 +764,7 @@ function page_content() {
          $_POST['newstrat_desc'] != ""
       )
    ) {
-      header("Location: reports.php?user=" . $_GET['user']);
+      header("Location: reports.php?user=" . getNumericOnly('user'));
    }
 }
 

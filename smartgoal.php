@@ -31,7 +31,7 @@ function page_content() {
          $qr['class_source']
       ))) {
          add_sg_to_messages($qr['smart_goal'], $_POST['new_smart_goal']);
-         header("Location: reports.php?user=" . $_GET['user']);
+         header("Location: reports.php?user=" . getNumericOnly('user'));
       }
       else {
          echo err_text("A database error occurred.");

@@ -758,7 +758,7 @@ function linkify($date_string, $week_no, $warn) {
          if($warn) {
             ?> onclick="return oldreport_confirm();"<?php
          }
-      ?>><?php echo $date_string; ?></a>
+      ?>><?php echo htmlentities($date_string); ?></a>
    <?php
 }
 
@@ -1222,6 +1222,17 @@ function validate_product() {
 
    if(!$product_is_valid) {
       exit('Invalid value for product in auth.ini.');
+   }
+}
+
+function getNumericOnly($getIndex) {
+   $getVar = $_GET[$getIndex];
+
+   if(is_numeric($getVar)) {
+      return $getVar;
+   }
+   else {
+      exit('Invalid parameter in URL.');
    }
 }
 
