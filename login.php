@@ -59,12 +59,7 @@ function page_content() {
                // Login successful
                $_SESSION['user_id'] = $result['user_id'];
                $_SESSION['envt'] = ENVIRONMENT;
-               if(isset($_GET['request_uri'])) {
-                  header("Location: " . $_GET['request_uri']);
-               }
-               else {
-                  header("Location: " . my_home_page());
-               }
+               header("Location: " . my_home_page());
             }
 
             else {
@@ -85,7 +80,7 @@ function page_content() {
 
    ?>
 
-   <form action="login.php?<?php echo http_build_query($_GET); ?>" method="post">
+   <form action="login.php" method="post">
       <fieldset>
          <legend>Login</legend>
 
