@@ -329,5 +329,5 @@ if(empty($qr)) {
 header("Content-Type: application/csv");
 header("Content-Disposition: attachment; filename=" . $_GET['report'] . ".csv");
 header("Pragma: no-cache");
-echo htmlspecialchars(array_to_csv($qr));
+echo array_to_csv($qr);
 ?>
