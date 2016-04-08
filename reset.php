@@ -49,7 +49,7 @@ function send_reset_email() {
       exit("E-mail address not found.");
    }
 
-   sendmail2(get_user_id($_POST['email']), 'RESET_PASSWORD');
+   sendById(get_user_id($_POST['email']), 'RESET_PASSWORD');
 
    echo cnf_text("Password-changing instructions have been sent to your " .
          "email address. <b>Please check your \"spam\" or \"junk\" folder" .

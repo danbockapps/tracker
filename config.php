@@ -159,7 +159,7 @@ function sendmail($to, $subject, $body) {
    exec("php message.php '$to' '$subject' '$body' > /dev/null &");
 }
 
-function sendmail2($recipientId, $messageId) {
+function sendById($recipientId, $messageId) {
    if(!is_numeric($recipientId)) {
       exit("Error: recipient ID is not numeric.");
    }
