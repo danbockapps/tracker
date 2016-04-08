@@ -60,19 +60,7 @@ function page_content() {
       }
 
       if(isset($_POST['notes'])) {
-         $message = "You have received instructor feedback.\n";
-         $message .= "Click here to see it: " . WEBSITE_URL;
-         $message .= "/all_messages.php?user=" . $_GET['user'];
-         $eqr = seleqt_one_record("
-            select email
-            from wrc_users
-            where user_id = ?
-         ", array($_GET['user']));
-         sendmail(
-            $eqr['email'],
-            "ESMMWL Weekly Tracker - New Instructor Feedback",
-            $message
-         );
+         sendById($_GET['user'], 3);
       }
 
       // If record doesn't exist, create it.

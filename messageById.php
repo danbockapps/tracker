@@ -61,6 +61,8 @@ function getSubject() {
       case 2:
          return 'ESMMWL Weekly Tracker - New Message';
          break;
+      case 3:
+         return 'ESMMWL Weekly Tracker - New Instructor Feedback';
       default:
          exit('Invalid message ID.');
    }
@@ -71,20 +73,27 @@ function getMessage($recipientId, $messageId, $recipientEmail) {
       // Reset password
       $email_reset_key = generate_email_reset($recipientEmail);
 
-      return "To reset your password, please click on this link:\n"
+      $message = "To reset your password, please click on this link:\n"
          . WEBSITE_URL . "/reset.php?email=" . urlencode($recipientEmail)
          . "&key=$email_reset_key\n\n"
          . "If you did not make this request, please disregard this message."
          . " Your password has not been changed.";
    }
    else if($messageId == 2) {
+      // message_participant function
       $message = "You have received a new message.\n";
       $message .= "Click here to see it: " . WEBSITE_URL;
-      return $message;
+   }
+   else if($messageId == 3) {
+      // report.php
+      $message = "You have received instructor feedback.\n";
+      $message .= "Click here to see it: " . WEBSITE_URL;
    }
    else {
       exit('Invalid message ID.');
    }
+
+   return $message;
 }
 
 function getSmtpinfo() {
