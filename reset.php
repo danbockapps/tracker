@@ -49,18 +49,7 @@ function send_reset_email() {
       exit("E-mail address not found.");
    }
 
-   $email_reset_key = generate_email_reset($_POST['email']);
-
-   $message = "To reset your password, please click on this link:\n"
-      . WEBSITE_URL . "/reset.php?email=" . urlencode($_POST['email'])
-      . "&key=$email_reset_key\n\n"
-      . "If you did not make this request, please disregard this message."
-      . " Your password has not been changed.";
-   sendmail(
-      $_POST['email'],
-      "ESMMWL Weekly Tracker - Password Reset",
-      $message
-   );
+   sendmail2(get_user_id($_POST['email']), 'RESET_PASSWORD');
 
    echo cnf_text("Password-changing instructions have been sent to your " .
          "email address. <b>Please check your \"spam\" or \"junk\" folder" .

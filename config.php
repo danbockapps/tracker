@@ -155,7 +155,23 @@ function change_email($old_email, $new_email) {
 }
 
 function sendmail($to, $subject, $body) {
+   // All mail sent by the app should go through this function or the next.
    exec("php message.php '$to' '$subject' '$body' > /dev/null &");
+}
+
+function sendmail2($recipientId, $messageId) {
+   if(!is_numeric($recipientId)) {
+      exit("Error: recipient ID is not numeric.");
+   }
+
+   $validMessageIds = [
+      'RESET_PASSWORD'
+   ];
+
+   if(!in_array($messageId, $validMessageIds)) {
+      exit('Invalid message ID.');
+   }
+   exec("php message2.php $recipientId $messageId > /dev/null &");
 }
 
 function full_name($user_id) {
