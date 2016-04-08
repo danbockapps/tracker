@@ -1,5 +1,4 @@
 <?php
-echo "start";
 if(!isset($argv[1]) || !isset($argv[2])) {
    exit('Error: args not set.');
 }
@@ -56,7 +55,7 @@ function getHeaders() {
 function getSubject() {
    global $argv;
    switch($argv[2]) {
-      case 'RESET_PASSWORD':
+      case 1:
          return 'ESMMWL Weekly Tracker - Password Reset';
       default:
          exit('Invalid message ID.');
@@ -64,8 +63,8 @@ function getSubject() {
 }
 
 function getMessage($recipientId, $messageId, $recipientEmail) {
-   //$message = '';
-   if($messageId == 'RESET_PASSWORD') {
+   if($messageId == 1) {
+      // Reset password
       $email_reset_key = generate_email_reset($recipientEmail);
 
       return "To reset your password, please click on this link:\n"

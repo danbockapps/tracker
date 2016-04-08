@@ -163,15 +163,11 @@ function sendById($recipientId, $messageId) {
    if(!is_numeric($recipientId)) {
       exit("Error: recipient ID is not numeric.");
    }
-
-   $validMessageIds = [
-      'RESET_PASSWORD'
-   ];
-
-   if(!in_array($messageId, $validMessageIds)) {
-      exit('Invalid message ID.');
+   if(!is_numeric($messageId)) {
+      exit("Error: message ID is not numeric.");
    }
-   exec("php message2.php $recipientId $messageId > /dev/null &");
+
+   exec("php messageById.php $recipientId $messageId > /dev/null &");
 }
 
 function full_name($user_id) {
