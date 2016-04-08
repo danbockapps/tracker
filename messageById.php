@@ -57,6 +57,10 @@ function getSubject() {
    switch($argv[2]) {
       case 1:
          return 'ESMMWL Weekly Tracker - Password Reset';
+         break;
+      case 2:
+         return 'ESMMWL Weekly Tracker - New Message';
+         break;
       default:
          exit('Invalid message ID.');
    }
@@ -72,6 +76,11 @@ function getMessage($recipientId, $messageId, $recipientEmail) {
          . "&key=$email_reset_key\n\n"
          . "If you did not make this request, please disregard this message."
          . " Your password has not been changed.";
+   }
+   else if($messageId == 2) {
+      $message = "You have received a new message.\n";
+      $message .= "Click here to see it: " . WEBSITE_URL;
+      return $message;
    }
    else {
       exit('Invalid message ID.');

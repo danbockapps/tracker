@@ -469,20 +469,15 @@ function message_participant($recip_id, $msg_text) {
    ");
    if($sth->execute(array($_SESSION['user_id'], $recip_id, $msg_text))) {
       // Message inserted into database.
+      sendById($recip_id, 2);
 
-      $message = "You have received a new message.\n";
-      $message .= "Click here to see it: " . WEBSITE_URL;
-      $message .= "/all_messages.php?user=";
-      $message .= am_i_instructor($recip_id) ? $_SESSION['user_id'] : $recip_id;
       $eqr = seleqt_one_record("
          select
             fname,
-            lname,
-            email
+            lname
          from wrc_users
          where user_id = ?
       ", array($recip_id));
-      sendmail($eqr['email'], "ESMMWL Weekly Tracker - New Message", $message);
       echo cnf_text(
          "Message sent to " .
          htmlentities($eqr['fname'] . " " . $eqr['lname']) .
