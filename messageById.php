@@ -63,6 +63,10 @@ function getSubject() {
          break;
       case 3:
          return 'ESMMWL Weekly Tracker - New Instructor Feedback';
+         break;
+      case 4:
+         return 'Eat Smart, Move More, Weigh Less Weekly Tracker Registration Confirmation';
+         break;
       default:
          exit('Invalid message ID.');
    }
@@ -88,6 +92,19 @@ function getMessage($recipientId, $messageId, $recipientEmail) {
       // report.php
       $message = "You have received instructor feedback.\n";
       $message .= "Click here to see it: " . WEBSITE_URL;
+   }
+   else if($messageId == 4) {
+      // register.php
+
+      $qr = seleqt_one_record('
+         select activation
+         from wrc_users
+         where user_id = ?
+      ', $recipientId);
+
+      $message = " To activate your account, please click on this link:\n";
+      $message .= WEBSITE_URL . '/activate.php?email='
+               . urlencode($recipientEmail) . "&key=" . $qr['activation'];
    }
    else {
       exit('Invalid message ID.');

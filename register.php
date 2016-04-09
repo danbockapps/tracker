@@ -88,14 +88,7 @@ function page_content() {
             false
          )) {
             // Send the email:
-            $message = " To activate your account, please click on this link:\n";
-            $message .= WEBSITE_URL . '/activate.php?email='
-                        . urlencode($email) . "&key=$activation";
-            sendmail(
-               $email,
-               'Eat Smart, Move More, Weigh Less Weekly Tracker Registration Confirmation',
-               $message
-            );
+            sendById(get_user_id($_POST['email']), 4);
 
             // Finish the page:
             echo cnf_text('

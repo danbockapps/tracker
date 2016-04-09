@@ -950,15 +950,6 @@ function transfer_participant(
       return true;
    }
    else {
-      sendmail(
-         "danbock@gmail.com",
-         "Participant transfer error",
-         $result . "\n" .
-            "Parameters:\n" .
-            "E-mail address: " . $email_address . "\n" .
-            "Old class: " . $old_class . "\n" .
-            "New class: " . $new_class
-      );
       return $result;
    }
 }
