@@ -4,7 +4,7 @@ generate_page(true, false);
 
 function page_content() {
    if(isset($_POST['formsubmitted'])) {
-      foreach(unserialize($_POST['recips']) as $recip) {
+      foreach(json_decode($_POST['recips']) as $recip) {
          message_participant($recip, $_POST['message_text']);
       }
       ?>Return to <a href="rosters.php">Rosters</a><?php
@@ -44,7 +44,7 @@ function page_content() {
                onkeyup="limit(this.form.message_text, 99999);"
             ></textarea><br />
             <input type="hidden" name="recips" value="<?php
-               echo serialize(array_keys($_GET['mm']));
+               echo json_encode(array_keys($_GET['mm']));
             ?>" />
             <input type="hidden" name="formsubmitted" value="true" />
             <input type="submit" value="Send message" />

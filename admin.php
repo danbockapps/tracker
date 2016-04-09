@@ -496,19 +496,12 @@ function addinstructor() {
          where concat(fname, ' ', lname, ' (', email, ')') = ?
       ");
       if($sth->execute(array($_POST['ni_name']))) {
-         $message = "You are now registered as an instructor in the Eat " .
-               "Smart, Move More, Weigh Less Weekly Tracker " .
-               "application. Log in here:\n" . WEBSITE_URL;
          $eqr = seleqt_one_record("
-            select
-               user_id,
-               fname,
-               lname,
-               email
+            select user_id
             from wrc_users
             where concat(fname, ' ', lname, ' (', email, ')') = ?
          ", array($_POST['ni_name']));
-         sendmail($eqr['email'], "You are now an instructor", $message);
+         sendById($eqr['user_id'], 5);
 
          /* Update registration database */
 

@@ -67,6 +67,9 @@ function getSubject() {
       case 4:
          return 'Eat Smart, Move More, Weigh Less Weekly Tracker Registration Confirmation';
          break;
+      case 5:
+         return 'You are now an instructor';
+         break;
       default:
          exit('Invalid message ID.');
    }
@@ -74,7 +77,7 @@ function getSubject() {
 
 function getMessage($recipientId, $messageId, $recipientEmail) {
    if($messageId == 1) {
-      // Reset password
+      // This is called from reset.php
       $email_reset_key = generate_email_reset($recipientEmail);
 
       $message = "To reset your password, please click on this link:\n"
@@ -84,17 +87,17 @@ function getMessage($recipientId, $messageId, $recipientEmail) {
          . " Your password has not been changed.";
    }
    else if($messageId == 2) {
-      // message_participant function
+      // This is called from the message_participant function in config.php
       $message = "You have received a new message.\n";
       $message .= "Click here to see it: " . WEBSITE_URL;
    }
    else if($messageId == 3) {
-      // report.php
+      // This is called from report.php
       $message = "You have received instructor feedback.\n";
       $message .= "Click here to see it: " . WEBSITE_URL;
    }
    else if($messageId == 4) {
-      // register.php
+      // This is called from register.php
 
       $qr = seleqt_one_record('
          select activation
@@ -105,6 +108,12 @@ function getMessage($recipientId, $messageId, $recipientEmail) {
       $message = " To activate your account, please click on this link:\n";
       $message .= WEBSITE_URL . '/activate.php?email='
                . urlencode($recipientEmail) . "&key=" . $qr['activation'];
+   }
+   else if($messageId == 5) {
+      // This is called from addinstructor() in admin.php
+      $message = "You are now registered as an instructor in the Eat " .
+               "Smart, Move More, Weigh Less Weekly Tracker " .
+               "application. Log in here:\n" . WEBSITE_URL;
    }
    else {
       exit('Invalid message ID.');
