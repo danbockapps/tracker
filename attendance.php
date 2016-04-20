@@ -58,7 +58,7 @@ function page_content() {
                   ))) {
                      $success = false;
                      echo err_text("Address error with user " .
-                                   htlmentities($user_id);
+                                   htmlentities($user_id));
                   }
                }
             }
@@ -88,7 +88,7 @@ function page_content() {
          ))) {
             $success = false;
             echo err_text("Error with user " .
-                          htmlentities($_POST['user_id'][$key]);
+                          htmlentities($_POST['user_id'][$key]));
          }
       }
       if($success) {
