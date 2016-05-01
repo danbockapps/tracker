@@ -357,6 +357,7 @@ else {
 
 <a href="#" class="showhide_closed">Attendance reports</a>
 <?php
+   /* Classes will show up here on the Monday after they end */
    $aqr = pdo_seleqt("
       select
          c.class_id,
