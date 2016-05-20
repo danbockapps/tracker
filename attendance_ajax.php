@@ -4,7 +4,7 @@ require_once('config.php');
 logtxt(htmlentities(print_r($_POST, true));
 
 if(can_access_class($_POST['class_id'], $_POST['class_source'])) {
-   $dbh = pdo_connect('esmmwl_insert');
+   $dbh = pdo_connect($ini['db_prefix'] . '_insert');
    $sth = $dbh->prepare('
       insert into wrc_attendance (user_id, class_id, class_source, week, present)
       values (?, ?, ?, ?, ?)

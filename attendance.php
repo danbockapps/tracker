@@ -3,6 +3,8 @@ require_once("template.php");
 generate_page(true, false);
 
 function page_content() {
+   global $ini;
+
    /* Duplication of rosters.php code */
    if(!am_i_admin() && !am_i_instructor()) {
       exit("You must be an admin or instructor to view this page.");
@@ -36,7 +38,7 @@ function page_content() {
                   $row['zip']      != $_POST['zip'][$key]
                ) {
                   /*insert*/
-                  $dbh = pdo_connect("esmmwl_insert");
+                  $dbh = pdo_connect($ini['db_prefix'] . "_insert");
                   $sth = $dbh->prepare("
                      insert into wrc_addresses (
                         user_id,
@@ -66,7 +68,7 @@ function page_content() {
 
          /* UPDATE ENROLLMENT TABLE */
 
-         $dbh = pdo_connect("esmmwl_update");
+         $dbh = pdo_connect($ini['db_prefix'] . "_update");
          $sth = $dbh->prepare("
             update wrc_enrollment
             set

@@ -6,6 +6,7 @@ require_once($reportphp_mode . "template.php");
 generate_page(true, false);
 
 function page_content() {
+   global $ini;
    $qr = current_class_and_sg();
    access_restrict($qr);
    participant_nav($qr['class_id'], $qr['class_source']);
@@ -36,7 +37,7 @@ function page_content() {
 
    // Delete row from strategy table if so requested
    if(isset($_GET['delete']) && $_GET['user'] == $_SESSION['user_id']) {
-      $dbh = pdo_connect("esmmwl_delete");
+      $dbh = pdo_connect($ini['db_prefix'] . "_delete");
       $sth = $dbh->prepare("
             delete from wrc_strategy_user
             where
@@ -74,7 +75,7 @@ function page_content() {
             and week_id = ?
       ", array($_GET['user'], $qr['class_id'], $qr['class_source'], $_GET['week']));
       if($uqr['count'] == 0) {
-         $dbh = pdo_connect("esmmwl_insert");
+         $dbh = pdo_connect($ini['db_prefix'] . "_insert");
          $sth = $dbh->prepare("
             insert into wrc_reports (
                user_id,
@@ -100,7 +101,7 @@ function page_content() {
             $selects[] = "select " . $row . " as strategy_id";
          }
 
-         $dbh = pdo_connect("esmmwl_inssel");
+         $dbh = pdo_connect($ini['db_prefix'] . "_inssel");
          $sth = $dbh->prepare("
             insert into wrc_strategy_report
             select
@@ -144,7 +145,7 @@ function page_content() {
          }
 
          if(count($whens) > 0) {
-            $dbh = pdo_connect("esmmwl_update");
+            $dbh = pdo_connect($ini['db_prefix'] . "_update");
             $sth = $dbh->prepare("
                update wrc_strategy_report set
                   num_days = case strategy_id
@@ -170,7 +171,7 @@ function page_content() {
                $_POST['newstrat_desc'] != "" &&
                $_GET['user'] == $_SESSION['user_id']
          ) {
-            $dbh = pdo_connect("esmmwl_inssel");
+            $dbh = pdo_connect($ini['db_prefix'] . "_inssel");
             $sth = $dbh->prepare("
                insert into wrc_strategies
                (strategy_description) values (?)
@@ -313,7 +314,7 @@ function page_content() {
                   if(isset($_POST['height_inches'])) {
                      $height_total += $_POST['height_inches'];
                   }
-                  $dbh = pdo_connect("esmmwl_update");
+                  $dbh = pdo_connect($ini['db_prefix'] . "_update");
                   $sth = $dbh->prepare("
                      update wrc_users
                      set height_inches = ?
@@ -784,6 +785,8 @@ function report_var (
    $req_num=true,      //  required to be numeric
    $inst_input=false   //  instructor inputs this field.
 ) {
+   global $ini;
+
    $err_count = 0;
    if(isset($_POST['formsubmitted']) && isset($_POST[$post_var])) {
       if(
@@ -796,7 +799,7 @@ function report_var (
       }
       else {
          // form is submitted, post_var is set and is numeric if required.
-         $dbh = pdo_connect("esmmwl_update");
+         $dbh = pdo_connect($ini['db_prefix'] . "_update");
          if($rept_enrf) {
             // update wrc_reports table
             $sth = $dbh->prepare("

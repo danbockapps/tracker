@@ -62,7 +62,7 @@ foreach($qr as $row) {
       "Eat Smart, Move More, Weigh Less Weekly Tracker",
       $msg
    );
-   $dbh = pdo_connect("esmmwl_update");
+   $dbh = pdo_connect($ini['db_prefix'] . "_update");
    $sth = $dbh->prepare("
       update wrc_enrollment
       set welcome_sent = now()

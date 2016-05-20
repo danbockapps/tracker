@@ -6,6 +6,7 @@ require_once($smartgoalphp_mode . "template.php");
 generate_page(true, false);
 
 function page_content() {
+   global $ini;
    $qr = current_class_and_sg();
    access_restrict($qr);
 
@@ -15,7 +16,7 @@ function page_content() {
          exit("Your SMART goal is too long.");
       }
 
-      $dbh = pdo_connect("esmmwl_update");
+      $dbh = pdo_connect($ini['db_prefix'] . "_update");
       $sth = $dbh->prepare("
          update wrc_enrollment
          set smart_goal = ?
@@ -91,12 +92,13 @@ function page_content() {
 }
 
 function add_sg_to_messages($old_sg, $new_sg) {
+   global $ini;
    $msg = "New SMART Goal:\n" . $new_sg;
    if($old_sg) {
       $msg .= "\n\nOld SMART Goal:\n" . $old_sg;
    }
 
-   $dbh = pdo_connect('esmmwl_insert');
+   $dbh = pdo_connect($ini['db_prefix'] . '_insert');
    $sth = $dbh->prepare("
       insert into wrc_messages (user_id, recip_id, message, create_dttm)
       values (?, ?, ?, now())

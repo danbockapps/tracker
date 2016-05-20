@@ -9,7 +9,7 @@ $count = seleqt_one_record("
 ", array($_SERVER['HTTP_USER_AGENT']));
 
 if($count['count'] == 0) {
-   $dbh0 = pdo_connect("esmmwl_insert");
+   $dbh0 = pdo_connect($ini['db_prefix'] . "_insert");
    $sth = $dbh0->prepare("
       insert into wrc_user_agents
       (ua_desc) values (?)
@@ -23,7 +23,7 @@ $ua_id = seleqt_one_record("
    where ua_desc = ?
 ", array($_SERVER['HTTP_USER_AGENT']));
 
-$dbh=pdo_connect("esmmwl_insert");
+$dbh=pdo_connect($ini['db_prefix'] . "_insert");
 
 $data = array("user" => (isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null),
               "uri" => $_GET['r'],
@@ -55,7 +55,7 @@ $sth = $dbh->prepare("
 $sth->execute($data);
 
 if(isset($_SESSION['user_id'])) {
-   $dbh0 = pdo_connect("esmmwl_update");
+   $dbh0 = pdo_connect($ini['db_prefix'] . "_update");
    $sth0 = $dbh0->prepare("
       update wrc_users
       set last_login = now()

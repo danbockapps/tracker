@@ -12,6 +12,7 @@ if(!is_email_address($_GET['email'])) {
 generate_page(false, false);
 
 function page_content() {
+   global $ini;
    if(
       !isset($_GET['email']) ||
       !isset($_GET['key']) ||
@@ -41,7 +42,7 @@ function page_content() {
 
       else {
          // Send to database
-         $dbh = pdo_connect("esmmwl_update");
+         $dbh = pdo_connect($ini['db_prefix'] . "_update");
          $sth = $dbh->prepare("
             update wrc_users
             set

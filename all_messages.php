@@ -6,6 +6,8 @@ require_once($all_messagesphp_mode . "template.php");
 generate_page(true, false);
 
 function page_content() {
+   global $ini;
+
    if(isset($_POST['formsubmitted'])) {
       message_participant(
          htmlentities($_POST['recip_id']),
@@ -125,7 +127,7 @@ function page_content() {
 
    // Mark all as read. If I am instructor, mark only those messages
    // from $_GET['user'] as read.
-   $dbh = pdo_connect("esmmwl_update");
+   $dbh = pdo_connect($ini['db_prefix'] . "_update");
    $sth = $dbh->prepare("
       update wrc_messages
       set mread = true

@@ -4,7 +4,8 @@ session_start();
 require_once("config.php");
 
 if(am_i_admin()) {
-   $dbh = pdo_connect("esmmwl_update");
+   global $ini;
+   $dbh = pdo_connect($ini['db_prefix'] . "_update");
    $sth = $dbh->prepare("
       update wrc_enrollment
       set

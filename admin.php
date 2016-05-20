@@ -486,11 +486,12 @@ function is_user($f_l_e_combo) {
 }
 
 function addinstructor() {
+   global $ini;
    if(!is_user($_POST['ni_name'])) {
       return err_text("User not found.");
    }
    else {
-      $dbh = pdo_connect("esmmwl_update");
+      $dbh = pdo_connect($ini['db_prefix'] . "_update");
       $sth = $dbh->prepare("
          update wrc_users
          set instructor = 1
@@ -506,7 +507,7 @@ function addinstructor() {
 
          /* Update registration database */
 
-         $aidbh = pdo_connect("esmmwl_insert");
+         $aidbh = pdo_connect($ini['db_prefix'] . "_insert");
          $aisth = $aidbh->prepare("
             insert into esmmwl_wpnew.z_instructors
             values (null, ?, ?, ?, ?, '', now())
@@ -532,11 +533,12 @@ function addinstructor() {
 }
 
 function addadmin() {
+   global $ini;
    if(!is_user($_POST['na_name'])) {
       return err_text("User not found.");
    }
    else {
-      $dbh = pdo_connect("esmmwl_update");
+      $dbh = pdo_connect($ini['db_prefix'] . "_update");
       $sth = $dbh->prepare("
          update wrc_users
          set administrator = 1
@@ -572,6 +574,7 @@ function instructor_selector($all_instructors, $select_name) {
 }
 
 function rminstructor() {
+   global $ini;
    $qr = seleqt_one_record("
       select count(*) as count
       from classes_aw
@@ -582,7 +585,7 @@ function rminstructor() {
                "Please assign them to other instructors before " .
                "removing this instructor.");
    }
-   $dbh = pdo_connect("esmmwl_update");
+   $dbh = pdo_connect($ini['db_prefix'] . "_update");
    $sth = $dbh->prepare("
       update wrc_users
       set instructor = 0
@@ -597,7 +600,8 @@ function rminstructor() {
 }
 
 function rmadmin() {
-   $dbh = pdo_connect("esmmwl_update");
+   global $ini;
+   $dbh = pdo_connect($ini['db_prefix'] . "_update");
    $sth = $dbh->prepare("
       update wrc_users
       set administrator = 0

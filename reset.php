@@ -102,6 +102,7 @@ function enter_new_password() {
 }
 
 function change_password() {
+   global $ini;
    if($_POST['password'] !== $_POST['password2']) {
       exit("Your password entries did not match.");
    }
@@ -121,7 +122,7 @@ function change_password() {
    }
 
    // If we haven't exited yet, then change password.
-   $dbh = pdo_connect("esmmwl_update");
+   $dbh = pdo_connect($ini['db_prefix'] . "_update");
    $sth = $dbh->prepare("
       update wrc_users
       set

@@ -38,7 +38,7 @@ function pdo_connect($db_user) {
 
    try {
       $dbh = new PDO(
-         "mysql:host=localhost;dbname=" . DATABASE_NAME,
+         "mysql:host=" . $ini['db_host'] . ";dbname=" . DATABASE_NAME,
          $db_user,
          $password
       );
@@ -55,7 +55,8 @@ function pdo_seleqt($query, $qs) {
    if(!is_array($qs)) {
       $qs = array($qs);
    }
-   $dbh = pdo_connect("esmmwl_select");
+   global $ini;
+   $dbh = pdo_connect($ini['db_prefix'] . "_select");
    $sth = $dbh->prepare($query);
    $sth->setFetchMode(PDO::FETCH_ASSOC);
    $sth->execute($qs);
@@ -88,7 +89,8 @@ function pdo_insert_user(
    $administrator,
    $research
 ) {
-   $dbh = pdo_connect("esmmwl_insert");
+   global $ini;
+   $dbh = pdo_connect($ini['db_prefix'] . "_insert");
    $data = array(
       "password" => $password,
       "activation" => $activation,
@@ -130,7 +132,8 @@ function pdo_insert_user(
 }
 
 function pdo_nullify_activation($email) {
-   $dbh = pdo_connect("esmmwl_update");
+   global $ini;
+   $dbh = pdo_connect($ini['db_prefix'] . "_update");
    $sth = $dbh->prepare("
       update wrc_users
       set activation = null
@@ -143,7 +146,8 @@ function change_email($old_email, $new_email) {
    if(!is_email_address($new_email) || email_already_in_db($new_email))
       return false;
 
-   $dbh = pdo_connect("esmmwl_update");
+   global $ini;
+   $dbh = pdo_connect($ini['db_prefix'] . "_update");
    $sth = $dbh->prepare("
       update wrc_users
       set email = ?
@@ -462,7 +466,8 @@ function message_participant($recip_id, $msg_text) {
       exit(err_text("Your message is too long."));
    }
 
-   $dbh = pdo_connect("esmmwl_insert");
+   global $ini;
+   $dbh = pdo_connect($ini['db_prefix'] . "_insert");
    $sth = $dbh->prepare("
       insert into wrc_messages (user_id, recip_id, message, create_dttm)
       values (?, ?, ?, now())
@@ -485,7 +490,8 @@ function message_participant($recip_id, $msg_text) {
       );
 
       // Update wrc_users table, last_message_from and last_message_to fields
-      $dbhf = pdo_connect("esmmwl_update");
+      global $ini;
+      $dbhf = pdo_connect($ini['db_prefix'] . "_update");
       $sthf = $dbhf->prepare("
          update wrc_users
          set last_message_from = now()
@@ -493,7 +499,7 @@ function message_participant($recip_id, $msg_text) {
       ");
       $sthf->execute(array($_SESSION['user_id']));
 
-      $dbht = pdo_connect("esmmwl_update");
+      $dbht = pdo_connect($ini['db_prefix'] . "_update");
       $stht = $dbht->prepare("
          update wrc_users
          set last_message_to = now()
@@ -518,7 +524,8 @@ function generate_email_reset($email) {
    }
    else {
       $email_reset_key = md5(uniqid(rand(), true));
-      $dbh = pdo_connect("esmmwl_update");
+      global $ini;
+      $dbh = pdo_connect($ini['db_prefix'] . "_update");
       $sth = $dbh->prepare("
             update wrc_users
             set email_reset = ?
@@ -898,7 +905,8 @@ function create_enrollment_record(
    $subscriber_id,
    $member_number
 ) {
-   $dbh = pdo_connect("esmmwl_insert");
+   global $ini;
+   $dbh = pdo_connect($ini['db_prefix'] . "_insert");
    $sth = $dbh->prepare("
       insert into wrc_enrollment (
          class_id,
@@ -1004,7 +1012,8 @@ function xferpart(
             /* Is the participant enrolled in a class with a start date within
              10 weeks of the start date of the new class? */
             if($fqr['count'] == 0) {
-               $dbh0 = pdo_connect("esmmwl_update");
+               global $ini;
+               $dbh0 = pdo_connect($ini['db_prefix'] . "_update");
                $sth0 = $dbh0->prepare("
                   update wrc_reports
                   set class_id = ?
@@ -1020,7 +1029,7 @@ function xferpart(
                   $class_source
                ));
 
-               $dbh = pdo_connect("esmmwl_update");
+               $dbh = pdo_connect($ini['db_prefix'] . "_update");
                $sth = $dbh->prepare("
                   update wrc_enrollment
                   set
@@ -1038,7 +1047,7 @@ function xferpart(
                   $class_source
                ));
 
-               $dbh1 = pdo_connect("esmmwl_update");
+               $dbh1 = pdo_connect($ini['db_prefix'] . "_update");
                $sth = $dbh1->prepare("
                   update wrc_strategy_report
                   set class_id = ?
@@ -1106,8 +1115,9 @@ function remove_participant_from_class(
 
 function rmpart($class_id, $user_id, $class_source) {
    if(class_valid($class_id, $class_source) && $user_id > 0) {
-      $dbh0 = pdo_connect("esmmwl_delete");
-      $dbh1 = pdo_connect("esmmwl_delete");
+      global $ini;
+      $dbh0 = pdo_connect($ini['db_prefix'] . "_delete");
+      $dbh1 = pdo_connect($ini['db_prefix'] . "_delete");
       $sth0 = $dbh0->prepare("
          delete from wrc_reports
          where
