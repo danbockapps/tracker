@@ -509,7 +509,7 @@ function addinstructor() {
 
          $aidbh = pdo_connect($ini['db_prefix'] . "_insert");
          $aisth = $aidbh->prepare("
-            insert into esmmwl_wpnew.z_instructors
+            insert into " . $ini['instructors_table'] . "
             values (null, ?, ?, ?, ?, '', now())
          ");
 

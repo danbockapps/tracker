@@ -649,17 +649,20 @@ function template_js() {
 }
 
 function template_logo_gc() {
+   global $blogqr;
    global $am_i_instructor;
+   global $ini;
    $am_i_instructor = am_i_instructor();
    ?>
    <a href="<?php echo my_home_page(); ?>">
       <img
          id="logo"
-         src="https://esmmweighless.com/WLOnlineLogoR-sm.png"
+         src="<?php echo $ini['logo_url']; ?>"
       />
    </a>
 
    <div id="blogwidget">
+      <?php if ($blogqr) { ?>
       <div id="blogtitle">
          Recent posts from the <br />
          <a
@@ -672,7 +675,6 @@ function template_logo_gc() {
       </div>
       <div id="bloglinks">
          <?php
-         global $blogqr;
          foreach($blogqr as $row) {
             echo "<p>";
             echo "<a href='" . $row['guid'] . "' target='_blank'>";
@@ -692,6 +694,7 @@ function template_logo_gc() {
          }
          ?>
       </div>
+      <?php } ?>
    </div>
 
    <div id="whoami">

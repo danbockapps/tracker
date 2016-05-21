@@ -49,6 +49,7 @@ a img {
 
 #blogwidget {
    width: 345px;
+   min-height: 127px;
    float: right;
    margin-left: 5px;
 }
