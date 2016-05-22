@@ -82,10 +82,10 @@ function page_content() {
             $_POST['first_name'],
             $_POST['last_name'],
             $_POST['email'],
-            true,
-            false,
-            false,
-            false
+            1,
+            0,
+            0,
+            0
          )) {
             // Send the email:
             sendById(get_user_id($_POST['email']), 4);
