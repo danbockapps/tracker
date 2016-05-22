@@ -14,6 +14,7 @@ define("MIN_PW_LEN", $ini['min_pw_len']);
 define('ENVIRONMENT', $ini['environment']);
 define('DATABASE_NAME', $ini['database_name']);
 define('WEBSITE_URL', $ini['website_url']);
+define('ENR_TBL', $ini['enrollment_table']);
 
 if (get_magic_quotes_gpc() === 1) {
    // Strip slashes on ESMMWL server
@@ -258,7 +259,7 @@ function current_class_and_sg($close_tags="") {
          smart_goal,
          instructor_id
       from
-         wrc_enrollment
+         " . ENR_TBL . "
          natural join current_classes
       where
          user_id = ? and
@@ -267,7 +268,7 @@ function current_class_and_sg($close_tags="") {
          start_dttm in (
             select max(start_dttm)
             from
-               wrc_enrollment
+               " . ENR_TBL . "
                natural join current_classes
             where user_id = ?
          )
@@ -441,7 +442,7 @@ function participant_nav($class_id, $class_source) {
          <?php
             $sqr = seleqt_one_record("
                select smart_goal
-               from wrc_enrollment
+               from " . ENR_TBL . "
                where
                   class_id = ?
                   and class_source = ?
@@ -720,7 +721,7 @@ function template_logo_gc() {
                         else concat(u.fname, ' ', u.lname)
                      end as instr_name
                   from
-                     wrc_enrollment e
+                     " . ENR_TBL . " e
                      natural join current_classes c
                      left join wrc_users u
                         on c.instructor_id = u.user_id
@@ -731,7 +732,7 @@ function template_logo_gc() {
                      c.start_dttm in (
                         select max(start_dttm)
                         from
-                           wrc_enrollment
+                           " . ENR_TBL . "
                            natural join current_classes
                         where user_id = ?
                      )
@@ -772,7 +773,7 @@ function linkify($date_string, $week_no, $warn) {
          if($warn) {
             ?> onclick="return oldreport_confirm();"<?php
          }
-      ?>><?php echo htmlentities($date_string); ?></a>
+      ?>><?php echo $date_string; ?></a>
    <?php
 }
 
@@ -911,7 +912,7 @@ function create_enrollment_record(
    global $ini;
    $dbh = pdo_connect($ini['db_prefix'] . "_insert");
    $sth = $dbh->prepare("
-      insert into wrc_enrollment (
+      insert into " . ENR_TBL . " (
          class_id,
          user_id,
          voucher_code,
@@ -979,7 +980,7 @@ function xferpart(
       if($part_for_reassign >= 0) {
          $cqr = seleqt_one_record("
             select count(*) as count
-            from wrc_enrollment
+            from " . ENR_TBL . "
             where
                user_id = ?
                and class_id = ?
@@ -991,7 +992,7 @@ function xferpart(
                "
                   select count(*) as count
                   from
-                     wrc_enrollment e
+                     " . ENR_TBL . " e
                      natural join classes_aw c
                   where
                      user_id = ?
@@ -1034,7 +1035,7 @@ function xferpart(
 
                $dbh = pdo_connect($ini['db_prefix'] . "_update");
                $sth = $dbh->prepare("
-                  update wrc_enrollment
+                  update " . ENR_TBL . "
                   set
                      class_id = ?,
                      reg_date = now()
@@ -1129,7 +1130,7 @@ function rmpart($class_id, $user_id, $class_source) {
             and class_source = ?
       ");
       $sth1 = $dbh1->prepare("
-         delete from wrc_enrollment
+         delete from " . ENR_TBL . "
          where
             class_id = ?
             and user_id = ?

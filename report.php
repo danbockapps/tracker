@@ -824,7 +824,7 @@ function report_var (
          else {
             // update wrc_enrollment table
             $sth = $dbh->prepare("
-               update wrc_enrollment
+               update " . ENR_TBL . "
                set " . $db_col . " = ?
                where
                   user_id = ?
@@ -868,7 +868,7 @@ function report_var (
          else {
             $cvqr = pdo_seleqt("
                select " . $db_col . "
-               from wrc_enrollment
+               from " . ENR_TBL . "
                where
                   user_id = ? and
                   class_id = ? and

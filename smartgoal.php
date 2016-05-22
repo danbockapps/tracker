@@ -18,7 +18,7 @@ function page_content() {
 
       $dbh = pdo_connect($ini['db_prefix'] . "_update");
       $sth = $dbh->prepare("
-         update wrc_enrollment
+         update " . ENR_TBL . "
          set smart_goal = ?
          where
             user_id = ?

@@ -70,7 +70,7 @@ function page_content() {
 
          $dbh = pdo_connect($ini['db_prefix'] . "_update");
          $sth = $dbh->prepare("
-            update wrc_enrollment
+            update " . ENR_TBL . "
             set
                numclasses = ?,
                shirtsize = ?,
@@ -119,7 +119,7 @@ function page_content() {
          zr.zip
       from
          wrc_users u
-         natural join wrc_enrollment e
+         natural join " . ENR_TBL . " e
          natural join classes_aw c
          natural left join latest_addresses zr
       where

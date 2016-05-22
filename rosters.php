@@ -81,7 +81,7 @@ function page_content() {
          last_message_to,
          class_id
       from
-         wrc_enrollment
+         " . ENR_TBL . "
          natural join current_classes
          natural join wrc_users
          natural left join (

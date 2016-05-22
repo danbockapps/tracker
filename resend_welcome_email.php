@@ -7,7 +7,7 @@ if(am_i_admin()) {
    global $ini;
    $dbh = pdo_connect($ini['db_prefix'] . "_update");
    $sth = $dbh->prepare("
-      update wrc_enrollment
+      update " . ENR_TBL . "
       set
          welcome_sent = null
       where

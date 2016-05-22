@@ -67,7 +67,7 @@ function page_content() {
          u.lname,
          c.weeks
       from
-         wrc_enrollment e
+         " . ENR_TBL . " e
          natural join wrc_users u
          natural join classes_aw c
       where

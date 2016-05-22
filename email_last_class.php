@@ -8,7 +8,7 @@ $qr = pdo_seleqt("
     c.start_dttm,
     c.weeks
   from
-    wrc_enrollment e
+    " . ENR_TBL . " e
     natural left join classes_aw c
     natural left join wrc_users u
   /* It's 3 days before the end of class */

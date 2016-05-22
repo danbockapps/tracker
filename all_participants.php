@@ -5,7 +5,7 @@ require_once("config.php");
 
 if(am_i_admin()) {
    if(isset($_GET['current'])) {
-      $limiter = " natural join wrc_enrollment natural join current_classes ";
+      $limiter = " natural join " . ENR_TBL . " natural join current_classes ";
    }
    else {
       $limiter = "";

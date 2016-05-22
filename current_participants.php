@@ -10,7 +10,7 @@ if(am_i_admin()) {
          concat(fname, ' ', lname, ' (', email, ')') as label
       from
          wrc_users
-         natural join wrc_enrollment
+         natural join " . ENR_TBL . "
          natural join current_classes
       where concat_ws(' ', fname, lname) like ?
    ", array("%" . $_GET['term'] . "%")));
