@@ -22,7 +22,7 @@ function generate_page($require_logged_in, $require_logged_out, $shownav=true) {
 <html>
    <head>
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-      <title>ESMMWL Weekly Tracker</title>
+      <title><?php echo PRODUCT_TITLE; ?></title>
       <link rel="stylesheet" href="m_wrc.css" />
       <?php template_js(); ?>
    </head>

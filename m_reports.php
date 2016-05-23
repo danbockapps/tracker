@@ -9,7 +9,7 @@ function page_content() {
 
    if(empty($qr)) {
       ?><p>
-         Welcome to the Eat Smart, Move More, Weigh Less Weekly Tracker
+         Welcome to the <?php echo PRODUCT_TITLE; ?>
          application. You are not registered for a current class. Please
          e-mail us at <a href="mailto:Administrator@ESMMWeighLess.com">
          Administrator@ESMMWeighLess.com</a> if you believe this is in error.

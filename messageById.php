@@ -56,19 +56,19 @@ function getSubject() {
    global $argv;
    switch($argv[2]) {
       case 1:
-         return 'ESMMWL Weekly Tracker - Password Reset';
+         return PRODUCT_TITLE . ' - Password Reset';
          break;
       case 2:
-         return 'ESMMWL Weekly Tracker - New Message';
+         return PRODUCT_TITLE . ' - New Message';
          break;
       case 3:
-         return 'ESMMWL Weekly Tracker - New Instructor Feedback';
+         return PRODUCT_TITLE . ' - New Instructor Feedback';
          break;
       case 4:
-         return 'Eat Smart, Move More, Weigh Less Weekly Tracker Registration Confirmation';
+         return PRODUCT_TITLE . ' - Registration Confirmation';
          break;
       case 5:
-         return 'You are now an instructor';
+         return PRODUCT_TITLE . ' - You are now an instructor';
          break;
       default:
          exit('Invalid message ID.');

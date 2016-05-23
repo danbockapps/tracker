@@ -29,7 +29,7 @@ function generate_page($require_logged_in, $require_logged_out, $shownav=true) {
 <html>
    <head>
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-      <title>ESMMWL Weekly Tracker</title>
+      <title><?php echo PRODUCT_TITLE; ?></title>
       <link
          href="https://fonts.googleapis.com/icon?family=Material+Icons"
          rel="stylesheet"

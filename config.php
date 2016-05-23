@@ -16,6 +16,11 @@ define('DATABASE_NAME', $ini['database_name']);
 define('WEBSITE_URL', $ini['website_url']);
 define('ENR_TBL', $ini['enrollment_table']);
 
+if($ini['product'] == 'dpp')
+   define('PRODUCT_TITLE', 'My Progress Portal');
+else if($ini['product'] == 'esmmwl')
+   define('PRODUCT_TITLE', 'Weekly Tracker');
+
 if (get_magic_quotes_gpc() === 1) {
    // Strip slashes on ESMMWL server
    foreach($_POST as $key => $post_item) {
@@ -699,7 +704,7 @@ function template_logo_gc() {
    </div>
 
    <div id="whoami">
-      <h1>Weekly Tracker</h1>
+      <h1><?php echo PRODUCT_TITLE; ?></h1>
       <?php
          if(isset($_SESSION['user_id'])) {
             ?>
