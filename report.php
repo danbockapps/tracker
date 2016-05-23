@@ -515,6 +515,9 @@ function page_content() {
          ?>
          </table>
       </fieldset>
+
+      <?php if(!$ini['hide_strategies']) { ?>
+
       <script type="text/javascript">
          $(function() {
              $("#showhide_strat").showhide({
@@ -637,6 +640,9 @@ function page_content() {
             ?>
          </table>
       </fieldset>
+
+      <?php } ?>
+
       <?php
          $nqr = pdo_seleqt("
             select
