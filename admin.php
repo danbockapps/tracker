@@ -438,6 +438,8 @@ else {
                                                                 CLIENT1 REPORTS
 --------------------------------------------------------------------------- -->
 
+<?php if(isset($ini['client1'])) { ?>
+
 <a href="#" class="showhide_closed"><?php echo $ini['client1']; ?> reports</a>
 <?php
    $bqr = pdo_seleqt("
@@ -458,6 +460,8 @@ else {
       }
    ?>
 </ul>
+
+<?php } ?>
 
 <!-- --------------------------------------------------------------------------
                                                                   OTHER REPORTS
