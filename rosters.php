@@ -71,35 +71,39 @@ function page_content() {
             when m.user_id is null then false
             else true
          end as unread,
-         user_id,
-         start_dttm,
-         fname,
-         lname,
-         last_login,
-         wt_chg,
-         last_message_from,
-         last_message_to,
-         class_id
+         e.user_id,
+         c.start_dttm,
+         u.fname,
+         u.lname,
+         u.last_login,
+         weight_changes.wt_chg,
+         u.last_message_from,
+         u.last_message_to,
+         e.class_id
       from
-         " . ENR_TBL . "
-         natural join current_classes
-         natural join wrc_users
-         natural left join (
+         " . ENR_TBL . " e
+         inner join current_classes c
+            on e.class_id = c.class_id
+            and e.class_source = c.class_source 
+         inner join wrc_users u
+            on e.user_id = u.user_id
+         left join (
             select distinct user_id
             from wrc_messages
             where
                mread = ?
                and recip_id = ?
          ) m
-         natural left join (
+            on e.user_id = m.user_id
+         left join (
             select
-               user_id,
-               class_id,
-               class_source,
-               weight - starting_weight as wt_chg
+               r.user_id,
+               r.class_id,
+               r.class_source,
+               r.weight - starting_weights.starting_weight as wt_chg
             from
                wrc_reports r
-               natural join (
+               inner join (
                   select
                      user_id,
                      class_id,
@@ -112,7 +116,11 @@ function page_content() {
                      class_id,
                      class_source
                ) current_weight_limiter
-               natural left join (
+                  on r.user_id = current_weight_limiter.user_id
+                  and r.class_id = current_weight_limiter.class_id
+                  and r.class_source = current_weight_limiter.class_source
+                  and r.week_id = current_weight_limiter.week_id
+               left join (
                   select
                      user_id,
                      class_id,
@@ -121,9 +129,15 @@ function page_content() {
                   from wrc_reports
                   where week_id=1
                ) starting_weights
+                  on r.user_id = starting_weights.user_id
+       	       	  and r.class_id = starting_weights.class_id
+       	       	  and r.class_source = starting_weights.class_source
          ) weight_changes
+            on e.user_id = weight_changes.user_id
+            and e.class_id = weight_changes.class_id
+            and e.class_source = weight_changes.class_source
       where
-         instructor_id = ?
+         c.instructor_id = ?
    " . $orderby, array(0, $_GET['instr'], $_GET['instr']));
 
    ?>
