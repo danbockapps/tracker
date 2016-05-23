@@ -177,7 +177,8 @@ function sendById($recipientId, $messageId) {
       exit("Error: message ID is not numeric.");
    }
 
-   exec("php messageById.php $recipientId $messageId > /dev/null &");
+   $executable = "php-cli messageById.php $recipientId $messageId > /dev/null &";
+   exec($executable);
 }
 
 function full_name($user_id) {

@@ -10,14 +10,22 @@ $nonHiddenRecipient = getNonHiddenRecipient();
 $recipients = getRecipients();
 $headers = getHeaders();
 $msg = getMessage($argv[1], $argv[2], $nonHiddenRecipient);
-$smtpinfo = getSmtpinfo();
 
 /* Suppress mail error messages */
 $origErrReportingLevel = error_reporting();
 error_reporting(E_ALL & ~E_STRICT);
 
 /* Create the mail object using the Mail::factory method */
-$mail_object =& Mail::factory("smtp", $smtpinfo);
+if(isset($ini['sendmail_path'])) {
+   // Works on new server
+   $params['sendmail_path'] = $ini['sendmail_path'];
+   $mail_object =& Mail::factory('sendmail', $params);
+}
+else {
+   // Works on old server
+   $smtpinfo = getSmtpinfo();
+   $mail_object =& Mail::factory("smtp", $smtpinfo);
+}
 
 /* Ok send mail */
 $mail_object->send($recipients, $headers, $msg);
