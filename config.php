@@ -170,7 +170,7 @@ function change_email($old_email, $new_email) {
 
 function sendmail($to, $subject, $body) {
    // All mail sent by the app should go through this function or the next.
-   exec("php message.php '$to' '$subject' '$body' > /dev/null &");
+   exec("php-cli message.php '$to' '$subject' '$body' > /dev/null &");
 }
 
 function sendById($recipientId, $messageId) {
