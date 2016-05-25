@@ -43,17 +43,6 @@ function generate_page($require_logged_in, $require_logged_out, $shownav=true) {
          href="wrc.css"
       />
       <?php template_js(); ?>
-      <?php if(ENVIRONMENT != "prod") { ?>
-      <script type='text/javascript'>
-         (function (d, t) {
-            var bh = d.createElement(t), s = d.getElementsByTagName(t)[0];
-            bh.type = 'text/javascript';
-            bh.src = '//www.bugherd.com/sidebarv2.js?apikey=pu1w3t4arxzklg33syqjpw';
-            s.parentNode.insertBefore(bh, s);
-         })(document, 'script');
-      </script>
-      <?php } ?>
-
    </head>
    <body>
       <div id="container">

@@ -604,6 +604,7 @@ function template_start($require_logged_in, $require_logged_out) {
 }
 
 function template_js() {
+   global $ini;
    ?>
    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js">
    </script>
@@ -641,7 +642,7 @@ function template_js() {
       x.send();
    </script>
 
-   <?php if(ENVIRONMENT == "prod") { ?>
+   <?php if(ENVIRONMENT == "prod" && $ini['product'] == "esmmwl") { ?>
       <script type="text/javascript">
          var _gaq = _gaq || [];
          _gaq.push(['_setAccount', 'UA-37552350-1']);
