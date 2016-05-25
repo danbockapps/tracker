@@ -15,6 +15,7 @@ define('ENVIRONMENT', $ini['environment']);
 define('DATABASE_NAME', $ini['database_name']);
 define('WEBSITE_URL', $ini['website_url']);
 define('ENR_TBL', $ini['enrollment_table']);
+define('ADMIN_EMAIL', $ini['admin_email']);
 
 // added this so the old natural joins work
 define('ENR_VIEW', $ini['enrollment_view']);

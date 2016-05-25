@@ -54,8 +54,8 @@ function page_content() {
    if($recip_id == null) {
       echo err_text("You cannot send messages because your class does not " .
             "have an instructor assigned. Please " .
-            "e-mail us at <a href=\"mailto:Administrator@ESMMWeighLess.com\">" .
-            "Administrator@ESMMWeighLess.com</a>.");
+            "e-mail us at <a href=\"" . ADMIN_EMAIL . "\">" . ADMIN_EMAIL .
+            "</a>.");
    }
    else {
       ?>

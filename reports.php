@@ -10,8 +10,8 @@ function page_content() {
       ?><p>
          Welcome to the <?php echo PRODUCT_TITLE; ?>
          application. You are not registered for a current class. Please
-         e-mail us at <a href="mailto:Administrator@ESMMWeighLess.com">
-         Administrator@ESMMWeighLess.com</a> if you believe this is in error.
+         e-mail us at <a href="mailto:<?php echo ADMIN_EMAIL; ?>">
+         <?php echo ADMIN_EMAIL; ?></a> if you believe this is in error.
       </p><?php
    }
    else {
