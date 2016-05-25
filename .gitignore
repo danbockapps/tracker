@@ -13,3 +13,4 @@ cgi-bin
 welcome*.txt
 phpinfo.php
 rips-0.55
+.htaccess
