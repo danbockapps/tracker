@@ -67,7 +67,7 @@ function page_content() {
          u.lname,
          c.weeks
       from
-         " . ENR_TBL . " e
+         " . ENR_VIEW . " e
          natural join wrc_users u
          natural join classes_aw c
       where

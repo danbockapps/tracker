@@ -71,9 +71,21 @@ function generate_page($require_logged_in, $require_logged_out, $shownav=true) {
                      <li><a href="rosters.php?instr=<?php
                         echo $_SESSION['user_id'];
                      ?>">Rosters</a></li>
-                     <li><a href="attendance.php?instr=<?php
-                        echo $_SESSION['user_id'];
-                     ?>">Attendance</a></li>
+
+                     <?php if($ini['product'] == 'esmmwl') { ?>
+
+                        <li><a href="attendance.php?instr=<?php
+                           echo $_SESSION['user_id'];
+                        ?>">Attendance</a></li>
+
+                     <?php } else if($ini['product'] == 'dpp') { ?>
+
+                        <li><a href="attendance_class_list.php?instr=<?php
+                           echo $_SESSION['user_id'];
+                        ?>">Attendance</a></li>
+
+                     <?php } ?>
+
                      <?php
                   }
                   else {

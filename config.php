@@ -16,6 +16,9 @@ define('DATABASE_NAME', $ini['database_name']);
 define('WEBSITE_URL', $ini['website_url']);
 define('ENR_TBL', $ini['enrollment_table']);
 
+// added this so the old natural joins work
+define('ENR_VIEW', $ini['enrollment_view']);
+
 if($ini['product'] == 'dpp')
    define('PRODUCT_TITLE', 'My Progress Portal');
 else if($ini['product'] == 'esmmwl')
