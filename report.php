@@ -820,7 +820,7 @@ function report_var (
                   week_id = ?
             ");
             $db_array = array(
-               $_POST[$post_var],
+               blank_zero($db_col, $_POST[$post_var]),
                $_GET['user'],
                $class_id,
                $class_source,
@@ -838,7 +838,7 @@ function report_var (
                   and class_source = ?
             ");
             $db_array = array(
-               $_POST[$post_var],
+               blank_zero($db_col, $_POST[$post_var]),
                $_GET['user'],
                $class_id,
                $class_source
@@ -978,6 +978,34 @@ function strat_numdays_dd($form_name, $selected = -1) {
             }
          ?></b><?php
       }
+   }
+}
+
+function blank_zero($dbCol, $postedValue) {
+   // For fields in this list, the database wants a zero and not a ''.
+   // Note that some of these fields are in the reports table and some
+   // are in the enrollment table.
+
+   if(
+      trim($postedValue) == '' &&
+      in_array($dbCol, array(
+         'weight',
+         'aerobic_minutes',
+         'strength_minutes',
+         'a1c',
+         'physact_minutes',
+         'syst_start',
+         'syst_end',
+         'dias_start',
+         'dias_end',
+         'waist_start',
+         'waist_end'
+      ))
+   ) {
+      return 0;
+   }
+   else {
+      return $postedValue;
    }
 }
 ?>
