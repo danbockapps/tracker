@@ -126,7 +126,7 @@ else if($_GET['report'] == "results") {
          s9.count as Weeks_Entered_Strength_Training,
          s9.num_days as Combined_Days_Strength_Training
       from
-         " . ENR_TBL . " e
+         " . ENR_VIEW . " e
          natural left join classes_aw c
          natural left join wrc_users u
          left join wrc_users instr

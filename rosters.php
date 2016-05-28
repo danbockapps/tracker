@@ -81,7 +81,7 @@ function page_content() {
          u.last_message_to,
          e.class_id
       from
-         " . ENR_TBL . " e
+         " . ENR_VIEW . " e
          inner join current_classes c
             on e.class_id = c.class_id
             and e.class_source = c.class_source 

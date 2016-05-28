@@ -201,7 +201,7 @@ else {
                u.email_reset
             from
                wrc_users u
-               natural left join " . ENR_TBL . " e
+               natural left join " . ENR_VIEW . " e
                natural left join current_classes c
                natural left join (
                   select
@@ -217,7 +217,7 @@ else {
                and c.start_dttm in (
                   select max(c.start_dttm)
                   from
-                     " . ENR_TBL . " e
+                     " . ENR_VIEW . " e
                      natural join current_classes c
                      natural join wrc_users u
                   where concat(u.fname, ' ', u.lname, ' (', u.email, ')') = ?

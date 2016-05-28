@@ -12,6 +12,7 @@ define("EMAIL_LOGGER", $ini['email_logger']);
 define("EMAIL_PASSWORD", $ini['email_password']);
 define("MIN_PW_LEN", $ini['min_pw_len']);
 define('ENVIRONMENT', $ini['environment']);
+define('PRODUCT', $ini['product']);
 define('DATABASE_NAME', $ini['database_name']);
 define('WEBSITE_URL', $ini['website_url']);
 define('ENR_TBL', $ini['enrollment_table']);
@@ -269,7 +270,7 @@ function current_class_and_sg($close_tags="") {
          smart_goal,
          instructor_id
       from
-         " . ENR_TBL . "
+         " . ENR_VIEW . "
          natural join current_classes
       where
          user_id = ? and
@@ -278,7 +279,7 @@ function current_class_and_sg($close_tags="") {
          start_dttm in (
             select max(start_dttm)
             from
-               " . ENR_TBL . "
+               " . ENR_VIEW . "
                natural join current_classes
             where user_id = ?
          )
@@ -452,7 +453,7 @@ function participant_nav($class_id, $class_source) {
          <?php
             $sqr = seleqt_one_record("
                select smart_goal
-               from " . ENR_TBL . "
+               from " . ENR_VIEW . "
                where
                   class_id = ?
                   and class_source = ?
@@ -732,7 +733,7 @@ function template_logo_gc() {
                         else concat(u.fname, ' ', u.lname)
                      end as instr_name
                   from
-                     " . ENR_TBL . " e
+                     " . ENR_VIEW . " e
                      natural join current_classes c
                      left join wrc_users u
                         on c.instructor_id = u.user_id
@@ -743,7 +744,7 @@ function template_logo_gc() {
                      c.start_dttm in (
                         select max(start_dttm)
                         from
-                           " . ENR_TBL . "
+                           " . ENR_VIEW . "
                            natural join current_classes
                         where user_id = ?
                      )
@@ -920,6 +921,10 @@ function create_enrollment_record(
    $subscriber_id,
    $member_number
 ) {
+   if(PRODUCT == 'dpp') {
+      throw new Exception('Unsupported action for this product.');
+   }
+
    global $ini;
    $dbh = pdo_connect($ini['db_prefix'] . "_insert");
    $sth = $dbh->prepare("
@@ -991,7 +996,7 @@ function xferpart(
       if($part_for_reassign >= 0) {
          $cqr = seleqt_one_record("
             select count(*) as count
-            from " . ENR_TBL . "
+            from " . ENR_VIEW . "
             where
                user_id = ?
                and class_id = ?
@@ -1003,7 +1008,7 @@ function xferpart(
                "
                   select count(*) as count
                   from
-                     " . ENR_TBL . " e
+                     " . ENR_VIEW . " e
                      natural join classes_aw c
                   where
                      user_id = ?
@@ -1129,7 +1134,10 @@ function remove_participant_from_class(
 }
 
 function rmpart($class_id, $user_id, $class_source) {
-   if(class_valid($class_id, $class_source) && $user_id > 0) {
+   if(PRODUCT == 'dpp') {
+      throw new Exception('Unsupported action for this product.');
+   }
+   else if(class_valid($class_id, $class_source) && $user_id > 0) {
       global $ini;
       $dbh0 = pdo_connect($ini['db_prefix'] . "_delete");
       $dbh1 = pdo_connect($ini['db_prefix'] . "_delete");
