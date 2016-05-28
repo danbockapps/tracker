@@ -12,7 +12,7 @@ $qr = pdo_seleqt("
       e.voucher_code
    from
       wrc_users u
-      natural join " . ENR_TBL . " e
+      natural join " . ENR_VIEW . " e
       natural join classes_aw c
    where
       e.welcome_sent is null

@@ -874,7 +874,7 @@ function report_var (
          else {
             $cvqr = pdo_seleqt("
                select " . $db_col . "
-               from " . ENR_TBL . "
+               from " . ENR_VIEW . "
                where
                   user_id = ? and
                   class_id = ? and

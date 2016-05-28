@@ -119,7 +119,7 @@ function page_content() {
          zr.zip
       from
          wrc_users u
-         natural join " . ENR_TBL . " e
+         natural join " . ENR_VIEW . " e
          natural join classes_aw c
          natural left join latest_addresses zr
       where
