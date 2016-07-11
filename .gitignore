@@ -3,7 +3,7 @@ recycle_bin
 aso_*
 email_b*
 *.png
-create_or_replace_view.sql
+create_or_replace_view_client1.sql
 Mail.php
 Mail
 Net

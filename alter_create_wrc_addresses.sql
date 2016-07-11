@@ -47,4 +47,4 @@ from
          rt.tracker_id = lel.tracker_id and
          rt.id = lel.id
    left join latest_wrc_addresses a
-      on rt.tracker_id = a.user_id
+      on rt.tracker_id = a.user_id;
