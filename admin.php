@@ -355,6 +355,9 @@ else {
                                                              ATTENDANCE REPORTS
 --------------------------------------------------------------------------- -->
 
+
+<!-- Commenting out old attendance reports for now. Will someday be deleted.
+
 <a href="#" class="showhide_closed">Attendance reports</a>
 <?php
    /* Classes will show up here on the Monday after they end */
@@ -394,6 +397,8 @@ else {
    <input type="hidden" name="report" value="attendance" />
    <input type="submit" value="Download report" />
 </form>
+
+-->
 
 <!-- --------------------------------------------------------------------------
                                                          NEW ATTENDANCE REPORTS
