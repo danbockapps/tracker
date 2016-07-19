@@ -1,0 +1,44 @@
+a:link, a:visited {
+  color: #80298f;
+}
+
+#blogtitle {
+  background-color: #80298f;
+}
+
+#navbar ul li a {
+  background-color: #80298f;
+}
+
+#navbar ul li a:hover {
+  background-color: #90399f;
+}
+
+#navend {
+  color: #80298f;
+  background-color: #80298f;
+}
+
+td.green {
+  color: #80298f;
+}
+
+#partnav {
+  background-color: #f099ff;
+}
+
+#bmi {
+  background-color: #f099ff;
+}
+
+div.card {
+  background-color: #f099ff;
+}
+
+.fdbk_header {
+  background-color: #f099ff;
+}
+
+#bloglinks {
+  background-color: #f099ff;
+}

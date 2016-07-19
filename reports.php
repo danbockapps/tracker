@@ -94,8 +94,22 @@ function page_content() {
                width: 462,
                height: 236,
                pointSize: 6,
-               colors: ['#8ec63f'],
-               backgroundColor: '#eaffd0',
+               colors: ['<?php
+                  if(PRODUCT ==   'dpp') {
+               ?>#80298f<?php
+                  }
+                  else {
+               ?>#8ec63f<?php
+                  }
+               ?>'],
+               backgroundColor: '<?php
+                  if(PRODUCT == 'dpp') {
+               ?>#f099ff<?php
+                  }
+                  else {
+               ?>#eaffd0<?php
+                  }
+               ?>',
                legend: {position: 'none'}
             };
 
@@ -147,8 +161,22 @@ function page_content() {
                         width: 189,
                         height: 200,
                         legend: { position: "none" },
-                        colors: ["#8ec63f"],
-                        backgroundColor: "#eaffd0",
+                        colors: ["<?php
+                           if(PRODUCT ==   'dpp') {
+                        ?>#80298f<?php
+                           }
+                           else {
+                        ?>#8ec63f<?php
+                           }
+                        ?>"],
+                        backgroundColor: "<?php
+                           if(PRODUCT ==   'dpp') {
+                        ?>#f099ff<?php
+                           }
+                        else {
+                        ?>#eaffd0<?php
+                           }
+                        ?>",
                         vAxis: {viewWindow: {min: 0}}
                      }
                   );
