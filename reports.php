@@ -104,7 +104,7 @@ function page_content() {
                ?>'],
                backgroundColor: '<?php
                   if(PRODUCT == 'dpp') {
-               ?>#f099ff<?php
+               ?>#eee<?php
                   }
                   else {
                ?>#eaffd0<?php
@@ -171,7 +171,7 @@ function page_content() {
                         ?>"],
                         backgroundColor: "<?php
                            if(PRODUCT ==   'dpp') {
-                        ?>#f099ff<?php
+                        ?>#eee<?php
                            }
                         else {
                         ?>#eaffd0<?php
