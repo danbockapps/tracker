@@ -505,10 +505,13 @@ function page_content() {
                   $qr['class_id'],
                   $qr['class_source'],
                   'a1c',
-                  'A1C level &#40;&#37;&#41;',
-                  null,
-                  null,
-                  null,
+                  'A1c level',
+                  'instructions',
+                  'You will not enter this every week. Please enter your ' .
+                  'most recent A1c. When you have your A1c tested again ' .
+                  'during this program, please enter your updated A1c in ' .
+                  'the week the test occurred.',
+                  'A1c instructions',
                   true
                );
             }
