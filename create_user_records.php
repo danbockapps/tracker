@@ -34,7 +34,7 @@ foreach($qr as $row) {
       ');
 
       $sth->execute(array(
-         $row['user_id'],
+         next_user_id(),
          'TRACKER_NO_REG',
          md5(uniqid(rand(), true)),
          $row['fname'],
@@ -47,5 +47,20 @@ foreach($qr as $row) {
       ));
    }
 }
+
+/* set tracker_user_id in registrants/enrollment table */
+$dbh = pdo_connect($ini['db_prefix'] . '_update');
+$sth = $dbh->prepare('
+   update
+      ' . ENR_TBL . ' r
+      inner join wrc_users u
+         on r.email = u.email
+   set r.tracker_user_id = u.user_id
+   where
+      r.tracker_user_id is null
+      and r.paid != "0"
+');
+$sth->execute();
+
 
 ?>
