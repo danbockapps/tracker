@@ -11,7 +11,7 @@ if(am_i_admin()) {
       set
          welcome_sent = null
       where
-         user_id = ?
+         tracker_user_id = ?
          and class_id = ?
          and class_source = ?
    ");

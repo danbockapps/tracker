@@ -21,7 +21,7 @@ function page_content() {
          update " . ENR_TBL . "
          set smart_goal = ?
          where
-            user_id = ?
+            tracker_user_id = ?
             and class_id = ?
             and class_source = ?
       ");

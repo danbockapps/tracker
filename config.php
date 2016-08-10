@@ -930,7 +930,7 @@ function create_enrollment_record(
    $sth = $dbh->prepare("
       insert into " . ENR_TBL . " (
          class_id,
-         user_id,
+         tracker_user_id,
          voucher_code,
          class_source,
          referrer,
@@ -1056,7 +1056,7 @@ function xferpart(
                      class_id = ?,
                      reg_date = now()
                   where
-                     user_id = ?
+                     tracker_user_id = ?
                      and class_id = ?
                      and class_source = ?
                ");
@@ -1152,7 +1152,7 @@ function rmpart($class_id, $user_id, $class_source) {
          delete from " . ENR_TBL . "
          where
             class_id = ?
-            and user_id = ?
+            and tracker_user_id = ?
             and class_source = ?
       ");
       $q0 = array($class_id, $user_id, $class_source);

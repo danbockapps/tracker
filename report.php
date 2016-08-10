@@ -836,7 +836,7 @@ function report_var (
                update " . ENR_TBL . "
                set " . $db_col . " = ?
                where
-                  user_id = ?
+                  tracker_user_id = ?
                   and class_id = ?
                   and class_source = ?
             ");

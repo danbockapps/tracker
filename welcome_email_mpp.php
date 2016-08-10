@@ -85,7 +85,7 @@ The Eat Smart, Move More, Prevent Diabetes Team';
       update " . ENR_TBL . "
       set welcome_sent = now()
       where
-         user_id = ?
+         tracker_user_id = ?
          and class_id = ?
          and class_source = ?
    ");
