@@ -103,6 +103,7 @@ function pdo_insert_user(
    global $ini;
    $dbh = pdo_connect($ini['db_prefix'] . "_insert");
    $data = array(
+      "user_id" => next_user_id(),
       "password" => $password,
       "activation" => $activation,
       "fname" => $fname,
@@ -115,6 +116,7 @@ function pdo_insert_user(
    );
    $sth = $dbh->prepare("
       insert into wrc_users (
+         user_id,
          password,
          activation,
          fname,
@@ -127,6 +129,7 @@ function pdo_insert_user(
          date_added
       )
       values (
+         :user_id,
          :password,
          :activation,
          :fname,
@@ -865,42 +868,6 @@ function mobilize_path($path) {
       "m_" .
       substr($path, $last_slash_pos + 1);
    return $returnable;
-}
-
-function register_new_participant(
-   $first_name,    /* String: New participant's first name */
-   $last_name,     /* String: New participant's last name */
-   $email_address, /* String: New participant's e-mail address */
-   $class_id,      /* Integer: Class ID from esmmwl_wpnew.z_classes.id */
-   $voucher_code,  /* String: Voucher/coupon code entered by new participant */
-   $referrer,      /* String: Response to "How did you hear about ESMMWL?" */
-   $subscriber_id, /* String: client1 Substriber ID (e.g. "TRNA55290182" */
-   $member_number  /* String: client1 Member Number (e.g. "01") */
-) {
-   if(!email_already_in_db($email_address)) {
-      if(!pdo_insert_user(
-         "TRACKER_NO_REG",
-         md5(uniqid(rand(), true)),
-         $first_name,
-         $last_name,
-         $email_address,
-         true,
-         false,
-         false,
-         false
-      )) {
-         return false;
-      }
-   }
-   return create_enrollment_record(
-      get_user_id($email_address),
-      $class_id,
-      "a",
-      $voucher_code,
-      $referrer,
-      $subscriber_id,
-      $member_number
-   );
 }
 
 function get_user_id($email_address) {
