@@ -39,6 +39,15 @@ function page_content() {
       ", array($qr['class_id'], $qr['class_source']));
       $num_weeks = $weekqr['weeks'];
 
+      /*
+      8/24/2016: This query now pulls reports for any class that started in
+      the same month as the participant's current class. So if the
+      participant transfers from one class to another that starts in the
+      same month, no data has to be transferred. (If the participant
+      transfers to another class in a different month, the data disappears
+      from their view, as intended.)
+      */
+
       $qr2 = pdo_seleqt("
          select
             week_id,
@@ -47,13 +56,22 @@ function page_content() {
             strength_minutes,
             physact_minutes,
             notes
-         from wrc_reports
+         from
+            wrc_reports r
+            inner join classes_aw c 
+               on r.class_id = c.class_id
+               and r.class_source = c.class_source
          where
-            user_id = ?
-            and class_id = ?
-            and class_source = ?
-         order by week_id
-      ", array($_GET['user'], $qr['class_id'], $qr['class_source']));
+            r.user_id = ?
+            and year(c.start_dttm) = ?
+            and month(c.start_dttm) = ?
+         order by r.create_dttm /* reports created earlier will be overwritten
+                                   in the next step by reports created later. */
+      ", array(
+            $_GET['user'],
+            date('Y', strtotime($qr['start_dttm'])),
+            date('n', strtotime($qr['start_dttm']))
+      ));
 
       $reports_empty = true;
       foreach($qr2 as $row) {

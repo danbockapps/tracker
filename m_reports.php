@@ -30,17 +30,28 @@ function page_content() {
       ", array($qr['class_id'], $qr['class_source']));
       $num_weeks = $weekqr['weeks'];
 
+      /* 8/24/2016: see note in reports.php */
+
       $qr2 = pdo_seleqt("
          select
-            week_id,
-            weight
-         from wrc_reports
+            r.week_id,
+            r.weight
+         from
+            wrc_reports r
+            inner join classes_aw c
+               on r.class_id = c.class_id
+               and r.class_source = c.class_source
          where
-            user_id = ?
-            and class_id = ?
-            and class_source = ?
-         order by week_id
-      ", array($_GET['user'], $qr['class_id'], $qr['class_source']));
+            r.user_id = ?
+            and year(c.start_dttm) = ?
+            and month(c.start_dttm) = ?
+         order by r.create_dttm
+      ", array(
+            $_GET['user'],
+            date('Y', strtotime($qr['start_dttm'])),
+            date('n', strtotime($qr['start_dttm']))
+      ));
+
 
       foreach($qr2 as $row) {
          $reports['weight'][$row['week_id']-1] = $row['weight'];
