@@ -42,29 +42,6 @@ else if($_GET['report'] == "date_test") {
       where date(date_added) > ?
    ", array($_GET['start_date']));
 }
-else if($_GET['report'] == "attendance") {
-   require_get_vars("class");
-   $qr = pdo_seleqt("
-      select
-         instructor_name,
-         class_name,
-         voucher_code,
-         fname,
-         lname,
-         numclasses,
-         beginning_and_ending_weight,
-         incentive_type,
-         address1,
-         address2,
-         city,
-         state,
-         zip,
-         shirtsize,
-         shirtcolor
-      from attendance
-      where class_id in (" . join(",", array_keys($_GET['class'])) . ")
-   ", array());
-}
 else if($_GET['report'] == "attendance2") {
    require_get_vars("class");
    $qr = pdo_seleqt("

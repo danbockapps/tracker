@@ -9,26 +9,7 @@ if(!isset($_GET['report'])) {
    exit("No report specified.");
 }
 
-if($_GET['report'] == "attendance") {
-   require_get_vars("class");
-   $qr = pdo_seleqt("
-      select
-         class_name,
-         voucher_code,
-         fname,
-         lname,
-         numclasses,
-         address1,
-         address2,
-         city,
-         state,
-         zip,
-         dob
-      from attendance
-      where class_id = ?
-   ", array($_GET['class']));
-}
-else if($_GET['report'] == "attendance2") {
+if($_GET['report'] == "attendance2") {
    require_get_vars("class");
    $qr = pdo_seleqt("
       select

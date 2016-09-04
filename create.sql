@@ -98,17 +98,6 @@ create table if not exists wrc_reports (
    constraint foreign key (user_id) references wrc_users (user_id)
 ) engine=innodb;
 
-create table if not exists wrc_addresses (
-   address_id int unsigned auto_increment primary key,
-   user_id int unsigned,
-   address1 varchar(255),
-   address2 varchar(255),
-   city varchar(50),
-   state varchar(2),
-   zip varchar(10),
-   address_dttm timestamp default current_timestamp
-) engine=innodb;
-
 create table if not exists wrc_strategies (
    strategy_id int unsigned auto_increment primary key,
    custom boolean default true,
