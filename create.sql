@@ -57,30 +57,6 @@ create table if not exists wrc_classes (
    constraint foreign key (instructor_id) references wrc_users (user_id)
 ) engine=innodb;
 
-create table if not exists wrc_enrollment (
-   user_id int unsigned,
-   class_id int unsigned,
-   smart_goal text,
-   reg_date timestamp,
-   syst_start tinyint unsigned,
-   dias_start tinyint unsigned,
-   waist_start tinyint unsigned,
-   syst_end tinyint unsigned,
-   dias_end tinyint unsigned,
-   waist_end tinyint unsigned,
-   voucher_code varchar(100) default null,
-   class_source varchar(1) default "w", /* w=wrc database, a=admin database */
-   referrer varchar(200) default null,
-   subscriber_id varchar(50) default null,
-   member_number varchar(2) default null,
-   numclasses tinyint unsigned,
-   shirtsize varchar(3) default null,
-   shirtcolor varchar(20) default null,
-   welcome_sent datetime,
-   constraint primary key (user_id, class_id, class_source),
-   constraint foreign key (user_id) references wrc_users (user_id)
-) engine=innodb;
-
 create table if not exists wrc_reports (
    user_id int unsigned,
    class_id int unsigned,

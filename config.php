@@ -1083,7 +1083,7 @@ function next_user_id() {
       select greatest(wrc_max_user_id, registrants_max_user_id) + 1 as next_user_id
       from (
          select max(user_id) as wrc_max_user_id
-         from dbreg_mpp.wrc_users
+         from wrc_users
       ) one
       cross join (
          select max(user_id) as registrants_max_user_id

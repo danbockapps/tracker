@@ -514,31 +514,7 @@ function addinstructor() {
          ", array($_POST['ni_name']));
          sendById($eqr['user_id'], 5);
 
-         if($ini['product'] == 'esmmwl') {
-            /* Update registration database */
-
-            $aidbh = pdo_connect($ini['db_prefix'] . "_insert");
-            $aisth = $aidbh->prepare("
-               insert into " . $ini['instructors_table'] . "
-               values (null, ?, ?, ?, ?, '', now())
-            ");
-
-            if($aisth->execute(array(
-               $eqr['fname'],
-               $eqr['lname'],
-               $eqr['email'],
-               $eqr['user_id']
-            ))) {
-               return cnf_text($_POST['ni_name'] . " is now an instructor.");
-            }
-            else {
-               return err_text("Database error 002.");
-            }
-         }
-         else {
-            return cnf_text($_POST['ni_name'] . " is now an instructor.");
-         }
-
+         return cnf_text($_POST['ni_name'] . " is now an instructor.");
       }
       else {
          return err_text("Database error 001.");

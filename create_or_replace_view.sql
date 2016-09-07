@@ -1,3 +1,25 @@
+create or replace view enrollment_view as select
+   tracker_user_id as user_id,
+   class_id,
+   smart_goal,
+   reg_date,
+   syst_start,
+   dias_start,
+   waist_start,
+   syst_end,
+   dias_end,
+   waist_end,
+   voucher_code,
+   class_source,
+   referrer,
+   subscriber_id,
+   member_number,
+   welcome_sent,
+   numclasses,
+   shirtsize,
+   shirtcolor
+from registrants
+where paid != '0';
 
 create or replace view u as
    select
@@ -38,7 +60,7 @@ select
    c.start_date_time as start_dttm,
    c.instructor_tracker_id,
    c.num_wks as weeks,
-   convert("a" using latin1) as class_source
+   convert("w" using latin1) as class_source
 from
    z_classes c;
 
@@ -144,6 +166,8 @@ from
    wrc_reports r
    natural join last_reports lr;
 
+/* Probably simpler not to have this view and just join from registrants to
+z_shpmember as part of attendance2. */
 create or replace view regn_shpm as
 select
    r.tracker_user_id,
@@ -155,6 +179,7 @@ from
    inner join z_shpmember zs
       on r.unique_id = zs.unique_id;
 
+/* Same as above */
 create or replace view regn_ince as
 select
    r.tracker_user_id,
@@ -162,7 +187,7 @@ select
    zi.class_id,
    zi.incentive_type
 from
-   registrants rt
+   registrants r
    inner join z_incentives zi
       on r.unique_id = zi.unique_id;
 
@@ -205,23 +230,21 @@ group by
    class_id,
    class_source;
 
-/* 7/11/2016
-9/3: I don't know why this is commented out.
 
 create or replace view attendance2 as
 select
-   e.user_id,
+   e.tracker_user_id,
    e.class_id,
    zc.class_name,
    e.voucher_code,
    u.fname,
    u.lname,
    coalesce(am.numclasses, 0) as numclasses,
-   la.address1,
-   la.address2,
-   la.city,
-   la.state,
-   la.zip,
+   e.address1,
+   e.address2,
+   e.city,
+   e.state,
+   e.zip,
    concat(instrs.fname, " ", instrs.lname) as instructor_name,
    bw.weight as bw_weight,
    ew.weight as ew_weight,
@@ -234,41 +257,39 @@ select
    e.shirtcolor,
    rs.bdate as dob
 from
-   wrc_enrollment e
-   natural join wrc_users u
+   registrants e
+   inner join wrc_users u on
+      e.tracker_user_id = u.user_id
    natural join classes_aw c
-   natural left join latest_addresses la
    left join beginning_weights bw on
-      e.user_id = bw.user_id and
+      e.tracker_user_id = bw.user_id and
       e.class_id = bw.class_id and
       e.class_source = bw.class_source
    left join ending_weights ew on
-      e.user_id = ew.user_id and
+      e.tracker_user_id = ew.user_id and
       e.class_id = ew.class_id and
       e.class_source = ew.class_source
    left join z_classes zc
       on e.class_id = zc.id
    left join regn_shpm rs on
-      e.user_id = rs.tracker_id and
+      e.tracker_user_id = rs.tracker_user_id and
       e.class_id = rs.class_id
    left join regn_ince zi on
-      e.user_id = zi.tracker_id and
+      e.tracker_user_id = zi.tracker_user_id and
       e.class_id = zi.class_id
    left join wrc_users instrs
       on c.instructor_id = instrs.user_id
    left join attendance_sum am on
-      e.user_id = am.user_id and
+      e.tracker_user_id = am.user_id and
       e.class_id = am.class_id and
       e.class_source = am.class_source
 where
    instrs.instructor = 1
-   and e.class_source = "a"
    -- datediff on c.start_dttm was here. Not sure why.
 order by
    start_dttm desc,
    lname,
    fname;
-*/
 
 create or replace view pes_reports_summ as
 select
@@ -314,7 +335,7 @@ select
   m.message,
   floor(datediff(m.create_dttm, c.start_dttm) / 7) + 1 as week_id
 from
-  wrc_enrollment e
+  enrollment_view e
   natural join classes_aw c
   natural left join wrc_messages m
 where m.message_id is not null;
@@ -394,7 +415,7 @@ select
   ) as pts_log_msgs,
   least(datediff(now(), c.start_dttm) / 7, c.weeks) as week_num
 from
-  wrc_enrollment e
+  enrollment_view e
   natural join classes_aw c
   natural left join pes_reports_summ
   natural left join pes_avg_word_counts
