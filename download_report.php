@@ -68,7 +68,7 @@ else if($_GET['report'] == "attendance2") {
 else if($_GET['report'] == "results") {
    $qr = pdo_seleqt("
       select
-         e.user_id as User_ID,
+         e.tracker_user_id as User_ID,
          c.start_dttm as Class_Start,
          concat(instr.fname, ' ', instr.lname) as Instructor,
          e.smart_goal as SMART_Goal,
@@ -103,21 +103,23 @@ else if($_GET['report'] == "results") {
          s9.count as Weeks_Entered_Strength_Training,
          s9.num_days as Combined_Days_Strength_Training
       from
-         " . ENR_VIEW . " e
-         natural left join classes_aw c
-         natural left join wrc_users u
+         " . ENR_TBL . " e
+         left join classes_aw c
+            on e.class_id = c.class_id
+         left join wrc_users u
+            on e.tracker_user_id = u.user_id
          left join wrc_users instr
             on c.instructor_id = instr.user_id
          left join beginning_weights bw on
-            e.user_id = bw.user_id and
+            e.tracker_user_id = bw.user_id and
             e.class_id = bw.class_id and
             e.class_source = bw.class_source
          left join ending_weights ew on
-            e.user_id = ew.user_id and
+            e.tracker_user_id = ew.user_id and
             e.class_id = ew.class_id and
             e.class_source = ew.class_source
          left join pes on
-            e.user_id = pes.user_id and
+            e.tracker_user_id = pes.user_id and
             e.class_id = pes.class_id and
             e.class_source = pes.class_source
          left join (
@@ -136,7 +138,7 @@ else if($_GET['report'] == "results") {
                class_id,
                class_source
          ) s1 on
-            e.user_id = s1.user_id and
+            e.tracker_user_id = s1.user_id and
             e.class_id = s1.class_id and
             e.class_source = s1.class_source
          left join (
@@ -155,7 +157,7 @@ else if($_GET['report'] == "results") {
                class_id,
                class_source
          ) s2 on
-            e.user_id = s2.user_id and
+            e.tracker_user_id = s2.user_id and
             e.class_id = s2.class_id and
             e.class_source = s2.class_source
          left join (
@@ -174,7 +176,7 @@ else if($_GET['report'] == "results") {
                class_id,
                class_source
          ) s3 on
-            e.user_id = s3.user_id and
+            e.tracker_user_id = s3.user_id and
             e.class_id = s3.class_id and
             e.class_source = s3.class_source
          left join (
@@ -193,7 +195,7 @@ else if($_GET['report'] == "results") {
                class_id,
                class_source
          ) s4 on
-            e.user_id = s4.user_id and
+            e.tracker_user_id = s4.user_id and
             e.class_id = s4.class_id and
             e.class_source = s4.class_source
          left join (
@@ -212,7 +214,7 @@ else if($_GET['report'] == "results") {
                class_id,
                class_source
          ) s5 on
-            e.user_id = s5.user_id and
+            e.tracker_user_id = s5.user_id and
             e.class_id = s5.class_id and
             e.class_source = s5.class_source
          left join (
@@ -231,7 +233,7 @@ else if($_GET['report'] == "results") {
                class_id,
                class_source
          ) s6 on
-            e.user_id = s6.user_id and
+            e.tracker_user_id = s6.user_id and
             e.class_id = s6.class_id and
             e.class_source = s6.class_source
          left join (
@@ -250,7 +252,7 @@ else if($_GET['report'] == "results") {
                class_id,
                class_source
          ) s7 on
-            e.user_id = s7.user_id and
+            e.tracker_user_id = s7.user_id and
             e.class_id = s7.class_id and
             e.class_source = s7.class_source
          left join (
@@ -269,7 +271,7 @@ else if($_GET['report'] == "results") {
                class_id,
                class_source
          ) s8 on
-            e.user_id = s8.user_id and
+            e.tracker_user_id = s8.user_id and
             e.class_id = s8.class_id and
             e.class_source = s8.class_source
          left join (
@@ -288,14 +290,14 @@ else if($_GET['report'] == "results") {
                class_id,
                class_source
          ) s9 on
-            e.user_id = s9.user_id and
+            e.tracker_user_id = s9.user_id and
             e.class_id = s9.class_id and
             e.class_source = s9.class_source
       order by
          c.start_dttm desc,
          instr.lname,
          instr.fname,
-         e.user_id;
+         e.tracker_user_id;
    ", array());
 }
 

@@ -3,6 +3,7 @@
 This script creates the tables in the dev/test environment that correspond
 to tables outside the tracker database on prod.
 Run this after create.sql (or before. it probably doesn't matter). 
+In prod, there need to be views with these names that point to the admin db tables.
 
 */
 
@@ -10,6 +11,7 @@ create table if not exists z_classes (
   id int unsigned,
   class_name varchar(50),
   start_date_time datetime,
+  phase1_end date,
   num_wks tinyint unsigned,
   instructor_tracker_id int unsigned
 ) engine=innodb;

@@ -19,7 +19,9 @@ create or replace view enrollment_view as select
    shirtsize,
    shirtcolor
 from registrants
-where paid != '0';
+where
+   paid != '0' and
+   status = '1';
 
 create or replace view u as
    select
@@ -52,7 +54,8 @@ select
    w.start_dttm,
    w.instructor_id,
    w.weeks,
-   convert("w" using latin1) as class_source
+   convert("w" using latin1) as class_source,
+   null as phase1_end
 from wrc_classes w
 union
 select
@@ -60,7 +63,8 @@ select
    c.start_date_time as start_dttm,
    c.instructor_tracker_id,
    c.num_wks as weeks,
-   convert("w" using latin1) as class_source
+   convert("w" using latin1) as class_source,
+   c.phase1_end
 from
    z_classes c;
 
@@ -80,6 +84,11 @@ where
       start_dttm - interval dayofweek(start_dttm) day
    ) - 2 < weeks * 7;
 /* Classes drop off this list Sunday night after the last class. */
+
+create or replace view classes_p1ending_today as
+select *
+from classes_aw
+where phase1_end = curdate();
 
 create or replace view msgfdbk0 as
 select
