@@ -14,7 +14,7 @@ $sth = $dbh->prepare('
    set status="0"
    where class_id in (
       select class_id
-      from classes_p1ending_today
+      from classes_deadline_today
    ) and tracker_user_id not in (
       select user_id
       from attendance_sum
@@ -22,7 +22,7 @@ $sth = $dbh->prepare('
          numclasses >= 9 and
          class_id in (
             select class_id
-            from classes_p1ending_today
+            from classes_deadline_today
          )
    )
 ');

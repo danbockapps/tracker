@@ -55,7 +55,7 @@ select
    w.instructor_id,
    w.weeks,
    convert("w" using latin1) as class_source,
-   null as phase1_end
+   null as eligibilty_deadline
 from wrc_classes w
 union
 select
@@ -64,7 +64,7 @@ select
    c.instructor_tracker_id,
    c.num_wks as weeks,
    convert("w" using latin1) as class_source,
-   c.phase1_end
+   c.eligibilty_deadline
 from
    z_classes c;
 
@@ -85,10 +85,10 @@ where
    ) - 2 < weeks * 7;
 /* Classes drop off this list Sunday night after the last class. */
 
-create or replace view classes_p1ending_today as
+create or replace view classes_deadline_today as
 select *
 from classes_aw
-where phase1_end = curdate();
+where eligibilty_deadline = curdate();
 
 create or replace view msgfdbk0 as
 select
