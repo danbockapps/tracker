@@ -9,7 +9,7 @@ create or replace view enrollment_view as select
    syst_end,
    dias_end,
    waist_end,
-   voucher_code,
+   coup_voucher as voucher_code,
    class_source,
    referrer,
    subscriber_id,
@@ -177,18 +177,6 @@ from
 
 /* Probably simpler not to have this view and just join from registrants to
 z_shpmember as part of attendance2. */
-create or replace view regn_shpm as
-select
-   r.tracker_user_id,
-   r.unique_id,
-   zs.class_id,
-   zs.bdate
-from
-   registrants r
-   inner join z_shpmember zs
-      on r.unique_id = zs.unique_id;
-
-/* Same as above */
 create or replace view regn_ince as
 select
    r.tracker_user_id,
@@ -261,10 +249,10 @@ select
       when bw.weight > 0 and ew.weight > 0 then "Yes"
       else "No"
    end as beginning_and_ending_weight,
-   zi.incentive_type,
+   '' as incentive_type,
    e.shirtsize,
    e.shirtcolor,
-   rs.bdate as dob
+   e.birthdate as dob
 from
    registrants e
    inner join wrc_users u on
@@ -280,12 +268,6 @@ from
       e.class_source = ew.class_source
    left join z_classes zc
       on e.class_id = zc.id
-   left join regn_shpm rs on
-      e.tracker_user_id = rs.tracker_user_id and
-      e.class_id = rs.class_id
-   left join regn_ince zi on
-      e.tracker_user_id = zi.tracker_user_id and
-      e.class_id = zi.class_id
    left join wrc_users instrs
       on c.instructor_id = instrs.user_id
    left join attendance_sum am on
