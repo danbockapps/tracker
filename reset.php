@@ -8,6 +8,8 @@ function page_content() {
       offer_to_reset();
    }
    else if(isset($_POST['reqsubmitted'])) {
+      logtxt('Password reset request submitted: ' . $_POST['email']);
+
       // 2. Check for email address in db. If found, send reset email.
       send_reset_email();
    }
@@ -46,6 +48,7 @@ function offer_to_reset() {
 
 function send_reset_email() {
    if(!email_already_in_db($_POST['email'], false)) {
+      logtxt('Email not found: ' . $_POST['email']);
       exit("E-mail address not found.");
    }
 
