@@ -175,19 +175,6 @@ from
    wrc_reports r
    natural join last_reports lr;
 
-/* Probably simpler not to have this view and just join from registrants to
-z_shpmember as part of attendance2. */
-create or replace view regn_ince as
-select
-   r.tracker_user_id,
-   r.unique_id,
-   zi.class_id,
-   zi.incentive_type
-from
-   registrants r
-   inner join z_incentives zi
-      on r.unique_id = zi.unique_id;
-
 
 /*
 attendance_limiter, attendance_summary, attendance_sum and attendance2
@@ -249,7 +236,7 @@ select
       when bw.weight > 0 and ew.weight > 0 then "Yes"
       else "No"
    end as beginning_and_ending_weight,
-   '' as incentive_type,
+   e.incentive as incentive_type,
    e.shirtsize,
    e.shirtcolor,
    e.birthdate as dob
