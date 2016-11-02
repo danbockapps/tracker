@@ -332,6 +332,8 @@ function page_content() {
 
             $first_class = first_class();
             $last_class = last_class($qr['class_id'], $qr['class_source']);
+            $p1end_class = $_GET['week'] == 20 && PRODUCT == 'dpp';
+
             if($first_class) {
                $hiqr = seleqt_one_record("
                   select height_inches
@@ -434,12 +436,22 @@ function page_content() {
                );
             }
 
-            if($first_class || $last_class) {
+            if($first_class || $last_class || $p1end_class) {
+               if($first_class) {
+                  $suffix = "_start";
+               }
+               else if ($last_class) {
+                  $suffix = "_end";
+               }
+               else if ($p1end_class) {
+                  $suffix = "_mid";
+               }
+
                $err_count += report_var(
-                  ($first_class ? "syst_start" : "syst_end"),
+                  "syst" . $suffix,
                   $qr['class_id'],
                   $qr['class_source'],
-                  ($first_class ? "syst_start" : "syst_end"),
+                  "syst" . $suffix,
                   "Systolic blood pressure",
                   "instructions",
                   "Use this field to record the top number in your blood " .
@@ -456,10 +468,10 @@ function page_content() {
                );
 
                $err_count += report_var(
-                  ($first_class ? "dias_start" : "dias_end"),
+                  "dias" . $suffix,
                   $qr['class_id'],
                   $qr['class_source'],
-                  ($first_class ? "dias_start" : "dias_end"),
+                  "dias" . $suffix,
                   "Diastolic blood pressure",
                   "instructions",
                   "Use this field to record the bottom number in your " .
@@ -476,10 +488,10 @@ function page_content() {
                );
 
                $err_count += report_var(
-                  ($first_class ? "waist_start" : "waist_end"),
+                  "waist" . $suffix,
                   $qr['class_id'],
                   $qr['class_source'],
-                  ($first_class ? "waist_start" : "waist_end"),
+                  "waist" . $suffix,
                   "Waist circumference",
                   "instructions",
                   "To measure your waist circumference, position a " .
