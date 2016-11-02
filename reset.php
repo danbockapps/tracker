@@ -47,7 +47,7 @@ function offer_to_reset() {
 }
 
 function send_reset_email() {
-   if(!email_already_in_db($_POST['email'], false)) {
+   if(!email_already_in_db($_POST['email'])) {
       logtxt('Email not found: ' . $_POST['email']);
       exit("E-mail address not found.");
    }
