@@ -23,27 +23,6 @@ create or replace view pv as
    order by pv_dttm desc
    limit 50;
 
-create or replace view classes_aw as
-select
-   w.class_id,
-   w.start_dttm,
-   w.instructor_id,
-   w.weeks,
-   convert("w" using latin1) as class_source,
-   null as eligibilty_deadline
-from wrc_classes w
-union
-select
-   c.id as class_id,
-   c.start_date_time as start_dttm,
-   c.instructor_tracker_id,
-   c.num_wks as weeks,
-   convert("w" using latin1) as class_source,
-   c.eligibilty_deadline
-from
-   z_classes c;
-
-
 create or replace view current_classes_for_rosters as
 select
    class_id,
@@ -64,11 +43,6 @@ create or replace view current_classes as
 select *
 from current_classes_for_rosters
 where start_dttm < now();
-
-create or replace view classes_deadline_today as
-select *
-from classes_aw
-where eligibilty_deadline = curdate();
 
 create or replace view msgfdbk0 as
 select
