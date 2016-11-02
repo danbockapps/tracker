@@ -12,6 +12,7 @@ create table if not exists z_classes (
   class_name varchar(50),
   start_date_time datetime,
   phase1_end date,
+  eligibilty_deadline date,
   num_wks tinyint unsigned,
   instructor_tracker_id int unsigned
 ) engine=innodb;
@@ -20,12 +21,6 @@ create table if not exists z_shpmember (
   unique_id varchar(20),
   class_id int,
   bdate date
-) engine=innodb;
-
-create table if not exists z_incentives (
-  unique_id varchar(20),
-  class_id int,
-  incentive_type enum('required', 'optional')
 ) engine=innodb;
 
 create table if not exists wp_posts (
@@ -52,6 +47,7 @@ create table if not exists registrants (
   `needs_medical` enum('yes','no') DEFAULT 'yes',
   `user_report` enum('yes','no') DEFAULT 'no',
   `follow_up` enum('yes','no') DEFAULT 'no',
+  `incentive` varchar(20),
   `shp_member` enum('yes','no','n-a') DEFAULT 'n-a',
   `coup_voucher` varchar(255) DEFAULT NULL,
   `referred_by` varchar(255) DEFAULT NULL,
@@ -75,6 +71,7 @@ create table if not exists registrants (
   `age` int(11),
   `race` varchar(255),
   `paid` varchar(50) DEFAULT '0',
+  `birthdate' date,
   `smart_goal` text,
   `reg_date` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `syst_start` tinyint(3) unsigned DEFAULT NULL,
