@@ -69,7 +69,7 @@ from
    z_classes c;
 
 
-create or replace view current_classes as
+create or replace view current_classes_for_rosters as
 select
    class_id,
    start_dttm,
@@ -78,12 +78,17 @@ select
    class_source
 from classes_aw
 where
-   start_dttm < now() and
+   start_dttm < now() + interval 3 day and
    datediff(
       now(),
       start_dttm - interval dayofweek(start_dttm) day
    ) - 2 < weeks * 7;
 /* Classes drop off this list Sunday night after the last class. */
+
+create or replace view current_classes as
+select *
+from current_classes_for_rosters
+where start_dttm < now();
 
 create or replace view classes_deadline_today as
 select *

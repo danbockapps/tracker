@@ -202,7 +202,7 @@ else {
             from
                wrc_users u
                natural left join " . ENR_VIEW . " e
-               natural left join current_classes c
+               natural left join current_classes_for_rosters c
                natural left join (
                   select
                      user_id,
@@ -218,7 +218,7 @@ else {
                   select max(c.start_dttm)
                   from
                      " . ENR_VIEW . " e
-                     natural join current_classes c
+                     natural join current_classes_for_rosters c
                      natural join wrc_users u
                   where concat(u.fname, ' ', u.lname, ' (', u.email, ')') = ?
                )

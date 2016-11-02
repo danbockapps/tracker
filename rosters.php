@@ -82,7 +82,7 @@ function page_content() {
          e.class_id
       from
          " . ENR_VIEW . " e
-         inner join current_classes c
+         inner join current_classes_for_rosters c
             on e.class_id = c.class_id
             and e.class_source = c.class_source 
          inner join wrc_users u
