@@ -33,7 +33,8 @@ select
    w.instructor_id,
    w.weeks,
    convert("w" using latin1) as class_source,
-   null as eligibilty_deadline
+   null as eligibilty_deadline,
+   null as phase1_end
 from wrc_classes w
 union
 select
@@ -42,7 +43,8 @@ select
    c.instructor_tracker_id,
    c.num_wks as weeks,
    convert("w" using latin1) as class_source,
-   c.eligibilty_deadline
+   c.eligibilty_deadline,
+   c.phase1_end
 from
    z_classes c;
 

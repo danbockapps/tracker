@@ -332,7 +332,7 @@ function page_content() {
 
             $first_class = first_class();
             $last_class = last_class($qr['class_id'], $qr['class_source']);
-            $p1end_class = $_GET['week'] == 20 && PRODUCT == 'dpp';
+            $p1end_class = PRODUCT == 'dpp' && isP1End($qr['class_id'], $_GET['week']);
 
             if($first_class) {
                $hiqr = seleqt_one_record("
@@ -1022,5 +1022,17 @@ function blank_zero($dbCol, $postedValue) {
    else {
       return $postedValue;
    }
+}
+
+function isP1End($classId, $week) {
+   $iqr = seleqt_one_record("
+      select
+         phase1_end,
+         cast(start_dttm + interval ? week as date) as report_date
+      from classes_aw
+      where class_id = ?
+   ", array($week - 1, $classId));
+
+   return $iqr['phase1_end'] == $iqr['report_date'];
 }
 ?>
