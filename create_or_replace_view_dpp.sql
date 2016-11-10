@@ -74,10 +74,10 @@ select
       when bw.weight > 0 and ew.weight > 0 then "Yes"
       else "No"
    end as beginning_and_ending_weight,
-   -- no incentive in DPP
+   '' as incentive_type,
    e.shirtsize,
-   e.shirtcolor
-   -- no birthdate in DPP
+   e.shirtcolor,
+   '' as dob
 from
    registrants e
    inner join wrc_users u on
