@@ -48,7 +48,7 @@ select
    e.tracker_user_id,
    e.class_id,
    zc.class_name,
-   e.voucher_code,
+   e.coup_voucher as voucher_code,
    u.fname,
    u.lname,
    coalesce(am.numclasses, 0) as numclasses,
