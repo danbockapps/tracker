@@ -51,7 +51,6 @@ function page_content() {
             // Change attendanceSum cell
             var sumCell = $(cellId).siblings('.attendanceSum');
             var delta = present ? 1 : -1;
-            //sumCell.html(parseInt(sumCell.html(), 10) + delta);
             sumCell.fadeOut('fast', function() {
                $(this).html(parseInt(sumCell.html(), 10) + delta).fadeIn('slow');
             });
@@ -74,7 +73,7 @@ function page_content() {
          e.user_id,
          u.fname,
          u.lname,
-         a.numclasses,
+         coalesce(a.numclasses, 0) as numclasses,
          c.weeks
       from
          " . ENR_VIEW . " e
