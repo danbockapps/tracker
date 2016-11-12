@@ -18,7 +18,6 @@ create or replace view enrollment_view as select
    subscriber_id,
    member_number,
    welcome_sent,
-   numclasses,
    shirtsize,
    shirtcolor
 from registrants

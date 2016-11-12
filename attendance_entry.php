@@ -47,6 +47,15 @@ function page_content() {
          if(data === 'OK') {
             var classToShow = present ? '.greenCheck' : '.blackBox';
             $(cellId).children(classToShow).removeClass('hidden');
+
+            // Change attendanceSum cell
+            var sumCell = $(cellId).siblings('.attendanceSum');
+            var delta = present ? 1 : -1;
+            //sumCell.html(parseInt(sumCell.html(), 10) + delta);
+            sumCell.fadeOut('fast', function() {
+               $(this).html(parseInt(sumCell.html(), 10) + delta).fadeIn('slow');
+            });
+
          }
          else {
             var classToShow = present ? '.blackBox' : '.greenCheck';
@@ -65,10 +74,12 @@ function page_content() {
          e.user_id,
          u.fname,
          u.lname,
+         a.numclasses,
          c.weeks
       from
          " . ENR_VIEW . " e
          natural join wrc_users u
+         natural left join attendance_sum a
          natural join classes_aw c
       where
          e.class_id = ?
@@ -120,6 +131,9 @@ function page_content() {
          <th class="participantName">
             Participant Name
          </th>
+         <th>
+            Total
+         </th>
          <?php
             for($i=1; $i<=$qr[0]['weeks']; $i++) {
                ?><th><?php
@@ -132,6 +146,8 @@ function page_content() {
       foreach($qr as $row) {
          ?><tr><td class="participantName"><?php
             echo htmlentities($row['fname'] . ' ' . $row['lname']);
+         ?></td><td class="attendanceSum"><?php
+            echo htmlentities($row['numclasses']);
          ?></td><?php
             for($j=1; $j<=$qr[0]['weeks']; $j++) {
                ?><td id="td_<?php echo htmlentities($row['user_id']) . '_' . $j ?>">
