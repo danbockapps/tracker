@@ -109,3 +109,33 @@ order by
    lname,
    fname;
 
+create or replace view reports_with_attendance as
+select
+   r.user_id,
+   r.class_id,
+   r.week_id as week,
+   r.weight,
+   r.physact_minutes,
+   r.a1c,
+   a.present
+from
+   wrc_reports r
+   left join wrc_attendance a
+      on r.user_id = a.user_id
+      and r.class_id = a.class_id
+      and r.week_id = a.week
+union
+select
+   a.user_id,
+   a.class_id,
+   a.week,
+   r.weight,
+   r.physact_minutes,
+   r.a1c,
+   a.present
+from
+   wrc_reports r
+   right join wrc_attendance a
+      on r.user_id = a.user_id
+      and r.class_id = a.class_id
+      and r.week_id = a.week;

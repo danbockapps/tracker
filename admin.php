@@ -479,6 +479,13 @@ else {
          Deidentified participant results report
       </a>
    </li>
+   <?php if(PRODUCT == 'dpp') { ?>
+      <li>
+         <a href="download_report.php?report=cdc">
+            CDC report
+         </a>
+      </li>
+   <?php } ?>
 </ul>
 
    <?php
