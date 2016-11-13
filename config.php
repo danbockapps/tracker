@@ -446,6 +446,11 @@ function participant_nav($class_id, $class_source) {
       ?>
       <div id="partnav">
          You are viewing: <b><?php echo full_name($_GET['user']); ?></b>
+         (<a href="mailto:<?php
+            echo get_email_address($_GET['user']);
+         ?>"><?php
+            echo get_email_address($_GET['user']);
+         ?></a>)
          <a href="reports.php?user=<?php
             echo htmlentities($_GET['user']);
          ?>">reports</a>
@@ -877,6 +882,15 @@ function get_user_id($email_address) {
       where email = ?
    ", array($email_address));
    return $qr['user_id'];
+}
+
+function get_email_address($user_id) {
+   $qr = seleqt_one_record("
+      select email
+      from wrc_users
+      where user_id = ?
+   ", $user_id);
+   return $qr['email'];
 }
 
 function create_enrollment_record(

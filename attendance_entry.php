@@ -143,9 +143,11 @@ function page_content() {
       </tr>
       <?php
       foreach($qr as $row) {
-         ?><tr><td class="participantName"><?php
+         ?><tr><td class="participantName"><a href="reports.php?user=<?php
+            echo htmlentities($row['user_id']);
+         ?>"><?php
             echo htmlentities($row['fname'] . ' ' . $row['lname']);
-         ?></td><td class="attendanceSum"><?php
+         ?></a></td><td class="attendanceSum"><?php
             echo htmlentities($row['numclasses']);
          ?></td><?php
             for($j=1; $j<=$qr[0]['weeks']; $j++) {
