@@ -488,6 +488,38 @@ else {
    <?php } ?>
 </ul>
 
+<!-- --------------------------------------------------------------------------
+                                                                INSTRUCTOR VIEW
+--------------------------------------------------------------------------- -->
+
+<a href="#" class="showhide_closed">Instructor view</a>
+<ul>
+<?php
+   $ivqr = pdo_seleqt("
+      select
+         user_id,
+         fname,
+         lname
+      from wrc_users
+      where instructor = 1
+      order by
+         lname,
+         fname
+   ", array());
+
+   foreach($ivqr as $row) {
+      ?><li><?php
+         echo $row['fname'] . ' ' . $row['lname'] . ' ';
+      ?><a href="rosters.php?instr=<?php
+         echo $row['user_id'];
+      ?>">rosters</a> <a href="attendance_class_list.php?instr=<?php
+         echo $row['user_id'];
+      ?>">attendance</a></li><?php
+   }
+?>
+</ul>
+
+
    <?php
    }
 }
