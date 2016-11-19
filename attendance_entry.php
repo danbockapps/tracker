@@ -73,13 +73,11 @@ function page_content() {
          e.user_id,
          u.fname,
          u.lname,
-         coalesce(a.numclasses, 0) as numclasses,
-         c.weeks
+         coalesce(a.numclasses, 0) as numclasses
       from
          " . ENR_VIEW . " e
          natural join wrc_users u
          natural left join attendance_sum a
-         natural join classes_aw c
       where
          e.class_id = ?
          and e.class_source = ?
@@ -92,7 +90,6 @@ function page_content() {
       select
          c.class_id,
          c.start_dttm,
-         c.weeks,
          u.fname,
          u.lname
       from
@@ -103,6 +100,13 @@ function page_content() {
          c.class_id = ?
          and c.class_source = ?
    ", array($_GET['class_id'], $_GET['class_source']));
+
+   if(PRODUCT == 'dpp') {
+      $numLessons = 24;
+   }
+   else {
+      $numLessons = 15;
+   }
 
    ?><h2>Attendance Entry</h2>
 
@@ -134,7 +138,7 @@ function page_content() {
             Total
          </th>
          <?php
-            for($i=1; $i<=$qr[0]['weeks']; $i++) {
+            for($i=1; $i<=$numLessons; $i++) {
                ?><th><?php
                echo $i;
                ?></th><?php
@@ -150,7 +154,7 @@ function page_content() {
          ?></a></td><td class="attendanceSum"><?php
             echo htmlentities($row['numclasses']);
          ?></td><?php
-            for($j=1; $j<=$qr[0]['weeks']; $j++) {
+            for($j=1; $j<=$numLessons; $j++) {
                ?><td id="td_<?php echo htmlentities($row['user_id']) . '_' . $j ?>">
                   <!-- Black empty box -->
                   <a
