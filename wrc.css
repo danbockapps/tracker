@@ -267,6 +267,12 @@ table.wrctable {
 tr.alt {
    background-color: #eee;
 }
+tr>td.phase2 {
+   background-color: #fdf;
+}
+tr.alt>td.phase2 {
+   background-color: #c9c;
+}
 table.wrctable th {
    background-color: #333;
    color: #fff;

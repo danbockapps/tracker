@@ -139,7 +139,9 @@ function page_content() {
          </th>
          <?php
             for($i=1; $i<=$numLessons; $i++) {
-               ?><th class="checkboxCell"><?php
+               ?><th class="checkboxCell<?php
+                  if($i >= 17) echo ' phase2';
+               ?>"><?php
                   echo $i;
                ?></th><?php
             }
@@ -157,7 +159,9 @@ function page_content() {
             echo htmlentities($row['numclasses']);
          ?></td><?php
             for($j=1; $j<=$numLessons; $j++) {
-               ?><td class="checkboxCell" id="td_<?php
+               ?><td class="checkboxCell<?php
+                  if($j >= 17) echo ' phase2';
+               ?>" id="td_<?php
                   echo htmlentities($row['user_id']) . '_' . $j;
                ?>">
                   <!-- Black empty box -->
