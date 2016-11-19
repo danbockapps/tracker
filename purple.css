@@ -42,3 +42,10 @@ div.card {
 #bloglinks {
   background-color: #f099ff;
 }
+
+/* This is not about the color purple, but about spacing */
+table#attendanceEntry .checkboxCell {
+   min-width: 22px;
+   max-width: 22px;
+}
+

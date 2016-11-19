@@ -332,21 +332,45 @@ table.pl td {
 .hidden {
    display:none
 }
-table#attendanceEntry {
-   margin-top: 1em;
-   border-spacing: 0;
-   width: 100%;
-}
-table#attendanceEntry td,th {
-   text-align: center;
-   padding: 9px 0px;
-}
-table#attendanceEntry .participantName {
-   text-align: left;
-   padding-left: 0.5em;
-}
+
 table#attendanceEntry a.blackBox {
    color: black;
+}
+
+/* Fixed header table via https://codepen.io/tjvantoll/pen/JEKIu */
+
+table#attendanceEntry {
+   margin-top: 1em;
+   width: 100%;
+   table-layout: fixed;
+   border-collapse: collapse;
+}
+table#attendanceEntry th, td {
+    padding: 5px;
+}
+table#attendanceEntry thead tr {
+   display: block;
+   position: relative;
+}
+table#attendanceEntry tbody {
+   display: block;
+   overflow: auto;
+   height: 100px;
+}
+table#attendanceEntry .participantName {
+   min-width: 150px;
+   max-width: 150px;
+   text-align: left;
+}
+table#attendanceEntry .attendanceSum {
+   min-width: 23px;
+   max-width: 23px;
+   text-align: center;
+}
+table#attendanceEntry .checkboxCell {
+   min-width: 41px;
+   max-width: 41px;
+   text-align: center;
 }
 
 ul#classList li {

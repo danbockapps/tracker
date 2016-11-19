@@ -130,21 +130,23 @@ function page_content() {
    </table>
 
    <table id="attendanceEntry">
+      <thead>
       <tr>
          <th class="participantName">
             Participant Name
          </th>
-         <th>
-            Total
+         <th class="attendanceSum">
          </th>
          <?php
             for($i=1; $i<=$numLessons; $i++) {
-               ?><th><?php
-               echo $i;
+               ?><th class="checkboxCell"><?php
+                  echo $i;
                ?></th><?php
             }
          ?>
       </tr>
+      </thead>
+      <tbody>
       <?php
       foreach($qr as $row) {
          ?><tr><td class="participantName"><a href="reports.php?user=<?php
@@ -155,7 +157,9 @@ function page_content() {
             echo htmlentities($row['numclasses']);
          ?></td><?php
             for($j=1; $j<=$numLessons; $j++) {
-               ?><td id="td_<?php echo htmlentities($row['user_id']) . '_' . $j ?>">
+               ?><td class="checkboxCell" id="td_<?php
+                  echo htmlentities($row['user_id']) . '_' . $j;
+               ?>">
                   <!-- Black empty box -->
                   <a
                      href="javascript:submitAttendance(<?php
@@ -187,6 +191,7 @@ function page_content() {
       }
 
       ?>
+      </tbody>
    </table>
 
    <script>
