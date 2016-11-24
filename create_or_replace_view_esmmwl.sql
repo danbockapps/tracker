@@ -15,8 +15,7 @@ create or replace view enrollment_view as select
    subscriber_id,
    member_number,
    welcome_sent,
-   shirtsize,
-   shirtcolor
+   shirtchoice,
 from registrants
 where
    paid != '0' and
@@ -64,8 +63,7 @@ select
       else "No"
    end as beginning_and_ending_weight,
    e.incentive as incentive_type,
-   e.shirtsize,
-   e.shirtcolor,
+   e.shirtchoice,
    e.birthdate as dob
 from
    registrants e
