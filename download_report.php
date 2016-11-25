@@ -307,7 +307,8 @@ else if($_GET['report'] == 'cdc') {
          r.class_id as Class_ID,
          e.user_id as Participant_ID,
          cast(c.start_dttm + interval (r.week - 1) week as date) as Report_Date,
-         coalesce(r.present, 0) as Present,
+         /* Commenting out - sending email to Sarah 11/12 */
+         /* coalesce(r.present, 0) as Present, */
          r.weight as Weight,
          u.height_inches as Height_Inches,
          r.physact_minutes as Physical_Activity_Minutes,
