@@ -18,8 +18,7 @@ create or replace view enrollment_view as select
    subscriber_id,
    member_number,
    welcome_sent,
-   shirtsize,
-   shirtcolor
+   shirtchoice
 from registrants
 where
    paid != '0' and
@@ -76,8 +75,7 @@ select
       else "No"
    end as beginning_and_ending_weight,
    '' as incentive_type,
-   e.shirtsize,
-   e.shirtcolor,
+   e.shirtchoice,
    '' as dob
 from
    registrants e
@@ -138,3 +136,13 @@ from
       on r.user_id = a.user_id
       and r.class_id = a.class_id
       and r.week_id = a.week;
+
+create or replace view shp_members_current as
+select
+   b.registrant_id as user_id
+from
+   shp_members_base b
+   inner join shp_members_updated u
+      on password(to_base64(b.subscriber_id)) = u.SubscriberId
+      and b.birthdate = u.BirthDate
+where u.CoverageEffectiveDate < now();

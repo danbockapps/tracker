@@ -28,4 +28,26 @@ $sth = $dbh->prepare('
 ');
 $sth->execute();
 
+
+/* Also deactivate SHP members who have lost eligibility */
+$sth = $dbh->prepare('
+   update registrants
+   set status="0"
+   where
+      class_id in (
+         select class_id
+         from classes_deadline_today
+      )
+      and user_id in (
+         select registrant_id
+         from shp_members_base
+      )
+      and user_id not in (
+         select user_id
+         from shp_members_current
+      )
+');
+$sth->execute();
+      
+
 ?>

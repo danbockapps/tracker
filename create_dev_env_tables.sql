@@ -71,7 +71,7 @@ create table if not exists registrants (
   `age` int(11),
   `race` varchar(255),
   `paid` varchar(50) DEFAULT '0',
-  `birthdate' date,
+  `birthdate` date,
   `smart_goal` text,
   `reg_date` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `syst_start` tinyint(3) unsigned DEFAULT NULL,
@@ -90,8 +90,22 @@ create table if not exists registrants (
   `member_number` varchar(2) DEFAULT NULL,
   `welcome_sent` datetime DEFAULT NULL,
   `numclasses` tinyint(3) unsigned DEFAULT NULL,
-  `shirtsize` varchar(3) DEFAULT NULL,
-  `shirtcolor` varchar(20) DEFAULT NULL,
+  `shirtchoice` varchar(20) DEFAULT NULL,
   `tracker_user_id` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`user_id`)
+) engine=innodb;
+
+create table if not exists shp_members_base (
+  id int,
+  registrant_id int,
+  birthdate date,
+  subscriber_id varchar(50),
+  pcp_provider varchar(255),
+  date_added datetime
+) engine=innodb;
+
+create table if not exists shp_members_updated (
+  SubscriberId varchar(255) not null,
+  BirthDate date,
+  CoverageEffectiveDate date
 ) engine=innodb;

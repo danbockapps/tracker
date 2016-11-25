@@ -31,6 +31,40 @@ function page_content() {
 
    ?><script>
 
+   var iqr = <?php global $iqr; echo json_encode($iqr, JSON_NUMERIC_CHECK); ?>;
+
+   function shirtRequirementsMet(userId) {
+      <?php if(PRODUCT == 'dpp') { ?>
+         // Return true if participant attended 9 of the first 16
+         var outOf16 = 0;
+         for(var i=1; i<=16; i++) {
+            if(!iqr[userId][i]) {
+               // Change nonexistent to zero
+               iqr[userId][i] = 0;
+            }
+            outOf16 += iqr[userId][i];
+         }
+
+         return outOf16 >= 9;
+
+
+      <?php } else if(PRODUCT == 'esmmwl') { ?>
+         // Return true if participant attended all of the first 15
+         var outOf15 = 0;
+         for(var i=1; i<=15; i++) {
+            if(!iqr[userId][i]) {
+               // Change nonexistent to zero
+               iqr[userId][i] = 0;
+            }
+            outOf15 += iqr[userId][i];
+         }
+
+         return outOf15 >= 15;
+
+
+      <?php } ?>
+   }
+
    function submitAttendance(userId, week, present) {
       var cellId = '#td_' + userId + '_' + week;
       $(cellId + ' > img').removeClass('hidden');
@@ -53,8 +87,22 @@ function page_content() {
             var delta = present ? 1 : -1;
             sumCell.fadeOut('fast', function() {
                $(this).html(parseInt(sumCell.html(), 10) + delta).fadeIn('slow');
-            });
 
+               // Update client-side array
+               if(!iqr[userId][week]) {
+                  // Change nonexistent to zero
+                  iqr[userId][week] = 0;
+               }
+               iqr[userId][week] += delta;
+
+               // Show or hide shirt dropdown
+               if(shirtRequirementsMet(userId)) {
+                  $(this).siblings('.participantName').children('.shirtChoice').removeClass('hidden');
+               }
+               else {
+                  $(this).siblings('.participantName').children('.shirtChoice').addClass('hidden');
+               }
+            });
          }
          else {
             var classToShow = present ? '.blackBox' : '.greenCheck';
@@ -151,11 +199,29 @@ function page_content() {
       <tbody>
       <?php
       foreach($qr as $row) {
-         ?><tr><td class="participantName"><a href="reports.php?user=<?php
+         ?><tr id="userRow<?php
+            echo htmlentities($row['user_id']);
+         ?>"><td class="participantName"><a href="reports.php?user=<?php
             echo htmlentities($row['user_id']);
          ?>"><?php
             echo htmlentities($row['fname'] . ' ' . $row['lname']);
-         ?></a></td><td class="attendanceSum"><?php
+         ?></a><div class="shirtChoice">Shirt choice: <select>
+               <?php
+                  global $ini;
+                  foreach($ini['shirtColors'] as $shirtColor) {
+                     foreach($ini['shirtSizes'] as $shirtSize) {
+                        $shirtChoice = $shirtColor . ' ' . $shirtSize;
+                        ?><option value="<?php
+                           echo $shirtChoice;
+                        ?>"><?php
+                           echo $shirtChoice;
+                        ?></option><?php
+                     }
+                  }
+               ?>
+            </select></div>
+         </td>
+         <td class="attendanceSum"><?php
             echo htmlentities($row['numclasses']);
          ?></td><?php
             for($j=1; $j<=$numLessons; $j++) {
@@ -191,7 +257,22 @@ function page_content() {
                   </a>
                </td><?php
             }
-         ?></tr><?php
+         ?></tr><script>
+            var userIdThisRow = <?php echo htmlentities($row['user_id']); ?>;
+            var shirtChoiceDiv = $('#userRow' + userIdThisRow + ' .shirtChoice');
+
+            //Make sure user is in iqr
+            if(!iqr[userIdThisRow]) {
+               iqr[userIdThisRow] = [];
+            }
+
+            if(shirtRequirementsMet(userIdThisRow)) {
+               shirtChoiceDiv.removeClass('hidden');
+            }
+            else {
+               shirtChoiceDiv.addClass('hidden');
+            }
+         </script><?php
       }
 
       ?>
@@ -221,4 +302,26 @@ function admin_user() {
    }
 }
 
+function shirtRequirementsMet($userId) {
+   global $iqr;
+   if(PRODUCT == 'dpp') {
+      if(array_sum(array_slice($iqr[$userId], 0, 16)) >= 9) {
+         // Participant has attended at least 9 of the first 16 lessons
+         return true;
+      }
+      else {
+         return false;
+      } 
+   }
+   else if(PRODUCT == 'esmmwl') {
+      if(array_sum($iqr[$userId]) >= 15) {
+         return true;
+      }
+      else {
+         return false;
+      }
+   }
+}
+
 ?>
+
