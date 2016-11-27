@@ -1,4 +1,11 @@
 <?php
+/*
+PLEASE NOTE: Throughout this file and the attendance table in the database, the
+word "week" is a misnomer. Attendance is tracked by lesson, which may or may
+not correspond 1:1 to weeks. TODO: change varibles and fields named "week"
+here and in the database to "lesson".
+*/
+
 require_once("template.php");
 
 $aqr = pdo_seleqt("
@@ -199,13 +206,16 @@ function page_content() {
       <tbody>
       <?php
       foreach($qr as $row) {
-         ?><tr id="userRow<?php
+         ?><tr user-id="<?php
+            echo htmlentities($row['user_id']);
+         ?>" id="userRow<?php
             echo htmlentities($row['user_id']);
          ?>"><td class="participantName"><a href="reports.php?user=<?php
             echo htmlentities($row['user_id']);
          ?>"><?php
             echo htmlentities($row['fname'] . ' ' . $row['lname']);
          ?></a><div class="shirtChoice">Shirt choice: <select>
+               <option value=""></option>
                <?php
                   global $ini;
                   foreach($ini['shirtColors'] as $shirtColor) {
@@ -219,7 +229,10 @@ function page_content() {
                      }
                   }
                ?>
-            </select></div>
+            </select>
+            <img src="spinner.gif" style="height:13px" class="spinner hidden" />
+            <i class="material-icons checkmark" style="font-size:small">&#xE86C;</i>
+            </div>
          </td>
          <td class="attendanceSum"><?php
             echo htmlentities($row['numclasses']);
@@ -281,6 +294,32 @@ function page_content() {
 
    <script>
       $('#attendanceEntry tr:odd').addClass('alt');
+
+      $('.shirtChoice select').each(function() {
+         if($(this).val() === '') {
+            // hide checkmark
+            $(this).siblings('.checkmark').addClass('hidden');
+         }
+      });
+
+      $('.shirtChoice select').change(function() {
+         var thisSelect = $(this);
+         thisSelect.siblings('.spinner').removeClass('hidden');
+         thisSelect.siblings('.checkmark').addClass('hidden');
+         $.post('shirt.php', {
+            user_id: thisSelect.closest('tr').attr("user-id"),
+            class_id: <?php echo $_GET['class_id']; ?>,
+            shirt_choice: thisSelect.val()
+         }, function(data) {
+            thisSelect.siblings('.spinner').addClass('hidden');
+            if(data === 'OK') {
+               thisSelect.siblings('.checkmark').removeClass('hidden');
+            }
+            else {
+               alert('A database error occurred while selecting a t-shirt.');
+            }
+         });
+      });
    </script>
 
    <?php
