@@ -331,35 +331,5 @@ function hideClass($userId, $week, $present) {
    }
 }
 
-function admin_user() {
-   if(am_i_admin() && isset($_GET['instr'])) {
-      return "?instr=" . $_GET['instr'];
-   }
-   else {
-      return "";
-   }
-}
-
-function shirtRequirementsMet($userId) {
-   global $iqr;
-   if(PRODUCT == 'dpp') {
-      if(array_sum(array_slice($iqr[$userId], 0, 16)) >= 9) {
-         // Participant has attended at least 9 of the first 16 lessons
-         return true;
-      }
-      else {
-         return false;
-      } 
-   }
-   else if(PRODUCT == 'esmmwl') {
-      if(array_sum($iqr[$userId]) >= 15) {
-         return true;
-      }
-      else {
-         return false;
-      }
-   }
-}
-
 ?>
 
