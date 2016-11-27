@@ -8,27 +8,6 @@ here and in the database to "lesson".
 
 require_once("template.php");
 
-$aqr = pdo_seleqt("
-   select
-      user_id,
-      week,
-      present
-   from wrc_attendance
-   where
-      class_id = ?
-      and class_source = ?
-   order by date_entered
-", array($_GET['class_id'], $_GET['class_source']));
-
-$iqr = array();
-
-// Create indexed array
-// If there are multiple entries for the same user and week, the earlier ones
-// will be overwritten in this loop by the latest, which is exactly what we want.
-foreach($aqr as $row) {
-   $iqr[$row['user_id']][$row['week']] = $row['present'];
-}
-
 generate_page(true, false);
 
 function page_content() {
@@ -36,9 +15,53 @@ function page_content() {
       exit("You must be an admin or instructor to view this page.");
    }
 
-   ?><script>
+   $aqr = pdo_seleqt("
+      select
+         user_id,
+         week,
+         present
+      from wrc_attendance
+      where
+         class_id = ?
+         and class_source = ?
+      order by date_entered
+   ", array($_GET['class_id'], $_GET['class_source']));
 
-   var iqr = <?php global $iqr; echo json_encode($iqr, JSON_NUMERIC_CHECK); ?>;
+   $qr = pdo_seleqt("
+      select
+         e.user_id,
+         u.fname,
+         u.lname,
+         coalesce(a.numclasses, 0) as numclasses
+      from
+         " . ENR_VIEW . " e
+         natural join wrc_users u
+         natural left join attendance_sum a
+      where
+         e.class_id = ?
+         and e.class_source = ?
+      order by
+         lname,
+         fname
+   ", array($_GET['class_id'], $_GET['class_source']));
+
+
+   $iqr = array();
+
+   // Create indexed array
+   // First, create an empty row for each participant
+   foreach($qr as $row) {
+      $iqr[$row['user_id']] = array();
+   }
+
+   // Next, populate the array.
+   // If there are multiple entries for the same user and week, the earlier ones
+   // will be overwritten in this loop by the latest, which is exactly what we want.
+   foreach($aqr as $row) {
+      $iqr[$row['user_id']][$row['week']] = $row['present'];
+   }
+
+   ?><script>
 
    function shirtRequirementsMet(userId) {
       <?php if(PRODUCT == 'dpp') { ?>
@@ -123,24 +146,6 @@ function page_content() {
 
    <?php
 
-   $qr = pdo_seleqt("
-      select
-         e.user_id,
-         u.fname,
-         u.lname,
-         coalesce(a.numclasses, 0) as numclasses
-      from
-         " . ENR_VIEW . " e
-         natural join wrc_users u
-         natural left join attendance_sum a
-      where
-         e.class_id = ?
-         and e.class_source = ?
-      order by
-         lname,
-         fname
-   ", array($_GET['class_id'], $_GET['class_source']));
-
    $cqr = seleqt_one_record("
       select
          c.class_id,
@@ -194,9 +199,7 @@ function page_content() {
          </th>
          <?php
             for($i=1; $i<=$numLessons; $i++) {
-               ?><th class="checkboxCell<?php
-                  if($i >= 17) echo ' phase2';
-               ?>"><?php
+               ?><th class="checkboxCell"><?php
                   echo $i;
                ?></th><?php
             }
@@ -240,15 +243,15 @@ function page_content() {
                   if($j >= 17) echo ' phase2';
                ?>" id="td_<?php
                   echo htmlentities($row['user_id']) . '_' . $j;
+               ?>" lesson-id="<?php
+                  echo $j;
                ?>">
                   <!-- Black empty box -->
                   <a
                      href="javascript:submitAttendance(<?php
                         echo htmlentities($row['user_id']) . ',' . $j . ',1';
                      ?>)"
-                     class="blackBox<?php
-                        echo htmlentities(hideClass($row['user_id'], $j, 0));
-                     ?>"
+                     class="hidden entryPoint blackBox"
                   >
                      <i class="material-icons">&#xE3C1;</i>
                   </a>
@@ -260,9 +263,7 @@ function page_content() {
                      href="javascript:submitAttendance(<?php
                         echo htmlentities($row['user_id']) . ',' . $j . ',0';
                      ?>)"
-                     class="greenCheck<?php
-                        echo htmlentities(hideClass($row['user_id'], $j, 1));
-                     ?>"
+                     class="hidden entryPoint greenCheck"
                   >
                      <i class="material-icons">&#xE86C;</i>
                   </a>
@@ -276,14 +277,30 @@ function page_content() {
    </table>
 
    <script>
+      var iqr = <?php echo json_encode($iqr, JSON_NUMERIC_CHECK); ?>;
+
       $('#attendanceEntry tr:odd').addClass('alt');
+
+      $('.checkboxCell').each(function() {
+         if($(this).attr('lesson-id') >= 17) {
+            $(this).addClass('phase2');
+         }
+      });
+
+      $('.entryPoint').each(function() {
+         var userId = $(this).closest('tr').attr('user-id');
+         var lessonId = $(this).closest('td').attr('lesson-id');
+         if(
+            $(this).hasClass('greenCheck') && iqr[userId][lessonId]
+            ||
+            $(this).hasClass('blackBox') && !iqr[userId][lessonId]
+         ) {
+            $(this).removeClass('hidden');
+         }
+      });
 
       $('.shirtChoice').each(function() {
          var userIdThisRow = $(this).closest('tr').attr('user-id');
-         //Make sure user is in iqr
-         if(!iqr[userIdThisRow]) {
-            iqr[userIdThisRow] = [];
-         }
 
          if(shirtRequirementsMet(userIdThisRow)) {
             $(this).removeClass('hidden');
@@ -322,13 +339,6 @@ function page_content() {
    </script>
 
    <?php
-}
-
-function hideClass($userId, $week, $present) {
-   global $iqr;
-   if($iqr[$userId][$week] != $present) {
-      return ' hidden';
-   }
 }
 
 ?>
