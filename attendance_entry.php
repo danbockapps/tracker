@@ -208,13 +208,11 @@ function page_content() {
       foreach($qr as $row) {
          ?><tr user-id="<?php
             echo htmlentities($row['user_id']);
-         ?>" id="userRow<?php
-            echo htmlentities($row['user_id']);
          ?>"><td class="participantName"><a href="reports.php?user=<?php
             echo htmlentities($row['user_id']);
          ?>"><?php
             echo htmlentities($row['fname'] . ' ' . $row['lname']);
-         ?></a><div class="shirtChoice">Shirt choice: <select>
+         ?></a><div class="shirtChoice hidden">Shirt choice: <select>
                <option value=""></option>
                <?php
                   global $ini;
@@ -270,22 +268,7 @@ function page_content() {
                   </a>
                </td><?php
             }
-         ?></tr><script>
-            var userIdThisRow = <?php echo htmlentities($row['user_id']); ?>;
-            var shirtChoiceDiv = $('#userRow' + userIdThisRow + ' .shirtChoice');
-
-            //Make sure user is in iqr
-            if(!iqr[userIdThisRow]) {
-               iqr[userIdThisRow] = [];
-            }
-
-            if(shirtRequirementsMet(userIdThisRow)) {
-               shirtChoiceDiv.removeClass('hidden');
-            }
-            else {
-               shirtChoiceDiv.addClass('hidden');
-            }
-         </script><?php
+         ?></tr><?php
       }
 
       ?>
@@ -294,6 +277,22 @@ function page_content() {
 
    <script>
       $('#attendanceEntry tr:odd').addClass('alt');
+
+      $('.shirtChoice').each(function() {
+         var userIdThisRow = $(this).closest('tr').attr('user-id');
+         //Make sure user is in iqr
+         if(!iqr[userIdThisRow]) {
+            iqr[userIdThisRow] = [];
+         }
+
+         if(shirtRequirementsMet(userIdThisRow)) {
+            $(this).removeClass('hidden');
+         }
+         else {
+            $(this).addClass('hidden');
+         }
+
+      });
 
       $('.shirtChoice select').each(function() {
          if($(this).val() === '') {
