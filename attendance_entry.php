@@ -256,11 +256,7 @@ function page_content() {
             // Return true if participant attended 9 of the first 16
             var outOf16 = 0;
             for(var i=1; i<=16; i++) {
-               if(!iqr[userId][i]) {
-                  // Change nonexistent to zero
-                  iqr[userId][i] = 0;
-               }
-               outOf16 += iqr[userId][i];
+               outOf16 += iqr[userId][i] ? 1 : 0;
             }
 
             return outOf16 >= 9;
@@ -270,11 +266,7 @@ function page_content() {
             // Return true if participant attended all of the first 15
             var outOf15 = 0;
             for(var i=1; i<=15; i++) {
-               if(!iqr[userId][i]) {
-                  // Change nonexistent to zero
-                  iqr[userId][i] = 0;
-               }
-               outOf15 += iqr[userId][i];
+               outOf15 += iqr[userId][i] ? 1 : 0;
             }
 
             return outOf15 >= 15;
@@ -307,11 +299,7 @@ function page_content() {
                   $(this).html(parseInt(sumCell.html(), 10) + delta).fadeIn('slow');
 
                   // Update client-side array
-                  if(!iqr[userId][week]) {
-                     // Change nonexistent to zero
-                     iqr[userId][week] = 0;
-                  }
-                  iqr[userId][week] += delta;
+                  iqr[userId][week] = present ? 1 : 0;
 
                   // Show or hide shirt dropdown
                   if(shirtRequirementsMet(userId)) {
