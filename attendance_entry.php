@@ -7,7 +7,6 @@ here and in the database to "lesson".
 */
 
 require_once("template.php");
-
 generate_page(true, false);
 
 function page_content() {
@@ -60,91 +59,6 @@ function page_content() {
    foreach($aqr as $row) {
       $iqr[$row['user_id']][$row['week']] = $row['present'];
    }
-
-   ?><script>
-
-   function shirtRequirementsMet(userId) {
-      <?php if(PRODUCT == 'dpp') { ?>
-         // Return true if participant attended 9 of the first 16
-         var outOf16 = 0;
-         for(var i=1; i<=16; i++) {
-            if(!iqr[userId][i]) {
-               // Change nonexistent to zero
-               iqr[userId][i] = 0;
-            }
-            outOf16 += iqr[userId][i];
-         }
-
-         return outOf16 >= 9;
-
-
-      <?php } else if(PRODUCT == 'esmmwl') { ?>
-         // Return true if participant attended all of the first 15
-         var outOf15 = 0;
-         for(var i=1; i<=15; i++) {
-            if(!iqr[userId][i]) {
-               // Change nonexistent to zero
-               iqr[userId][i] = 0;
-            }
-            outOf15 += iqr[userId][i];
-         }
-
-         return outOf15 >= 15;
-
-
-      <?php } ?>
-   }
-
-   function submitAttendance(userId, week, present) {
-      var cellId = '#td_' + userId + '_' + week;
-      $(cellId + ' > img').removeClass('hidden');
-      $(cellId + ' > a').addClass('hidden');
-      $.post('attendance_ajax.php', {
-         user_id: userId,
-         class_id: <?php echo htmlentities($_GET['class_id']); ?>,
-         class_source: '<?php echo htmlentities($_GET['class_source']); ?>',
-         week: week,
-         present: present
-      }, function(data) {
-         $(cellId + ' > img').addClass('hidden');
-
-         if(data === 'OK') {
-            var classToShow = present ? '.greenCheck' : '.blackBox';
-            $(cellId).children(classToShow).removeClass('hidden');
-
-            // Change attendanceSum cell
-            var sumCell = $(cellId).siblings('.attendanceSum');
-            var delta = present ? 1 : -1;
-            sumCell.fadeOut('fast', function() {
-               $(this).html(parseInt(sumCell.html(), 10) + delta).fadeIn('slow');
-
-               // Update client-side array
-               if(!iqr[userId][week]) {
-                  // Change nonexistent to zero
-                  iqr[userId][week] = 0;
-               }
-               iqr[userId][week] += delta;
-
-               // Show or hide shirt dropdown
-               if(shirtRequirementsMet(userId)) {
-                  $(this).siblings('.participantName').children('.shirtChoice').removeClass('hidden');
-               }
-               else {
-                  $(this).siblings('.participantName').children('.shirtChoice').addClass('hidden');
-               }
-            });
-         }
-         else {
-            var classToShow = present ? '.blackBox' : '.greenCheck';
-            $(cellId).children(classToShow).removeClass('hidden');
-            alert('An error occurred.');
-         }
-      });
-   }
-
-   </script>
-
-   <?php
 
    $cqr = seleqt_one_record("
       select
@@ -336,6 +250,86 @@ function page_content() {
             }
          });
       });
+
+      function shirtRequirementsMet(userId) {
+         <?php if(PRODUCT == 'dpp') { ?>
+            // Return true if participant attended 9 of the first 16
+            var outOf16 = 0;
+            for(var i=1; i<=16; i++) {
+               if(!iqr[userId][i]) {
+                  // Change nonexistent to zero
+                  iqr[userId][i] = 0;
+               }
+               outOf16 += iqr[userId][i];
+            }
+
+            return outOf16 >= 9;
+
+
+         <?php } else if(PRODUCT == 'esmmwl') { ?>
+            // Return true if participant attended all of the first 15
+            var outOf15 = 0;
+            for(var i=1; i<=15; i++) {
+               if(!iqr[userId][i]) {
+                  // Change nonexistent to zero
+                  iqr[userId][i] = 0;
+               }
+               outOf15 += iqr[userId][i];
+            }
+
+            return outOf15 >= 15;
+
+
+         <?php } ?>
+      }
+
+      function submitAttendance(userId, week, present) {
+         var cellId = '#td_' + userId + '_' + week;
+         $(cellId + ' > img').removeClass('hidden');
+         $(cellId + ' > a').addClass('hidden');
+         $.post('attendance_ajax.php', {
+            user_id: userId,
+            class_id: <?php echo htmlentities($_GET['class_id']); ?>,
+            class_source: '<?php echo htmlentities($_GET['class_source']); ?>',
+            week: week,
+            present: present
+         }, function(data) {
+            $(cellId + ' > img').addClass('hidden');
+
+            if(data === 'OK') {
+               var classToShow = present ? '.greenCheck' : '.blackBox';
+               $(cellId).children(classToShow).removeClass('hidden');
+
+               // Change attendanceSum cell
+               var sumCell = $(cellId).siblings('.attendanceSum');
+               var delta = present ? 1 : -1;
+               sumCell.fadeOut('fast', function() {
+                  $(this).html(parseInt(sumCell.html(), 10) + delta).fadeIn('slow');
+
+                  // Update client-side array
+                  if(!iqr[userId][week]) {
+                     // Change nonexistent to zero
+                     iqr[userId][week] = 0;
+                  }
+                  iqr[userId][week] += delta;
+
+                  // Show or hide shirt dropdown
+                  if(shirtRequirementsMet(userId)) {
+                     $(this).siblings('.participantName').children('.shirtChoice').removeClass('hidden');
+                  }
+                  else {
+                     $(this).siblings('.participantName').children('.shirtChoice').addClass('hidden');
+                  }
+               });
+            }
+            else {
+               var classToShow = present ? '.blackBox' : '.greenCheck';
+               $(cellId).children(classToShow).removeClass('hidden');
+               alert('An error occurred.');
+            }
+         });
+      }
+
    </script>
 
    <?php
