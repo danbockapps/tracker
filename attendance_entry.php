@@ -41,8 +41,8 @@ function page_content() {
          e.class_id = ?
          and e.class_source = ?
       order by
-         lname,
-         fname
+         fname,
+         lname
    ", array($_GET['class_id'], $_GET['class_source']));
 
 
