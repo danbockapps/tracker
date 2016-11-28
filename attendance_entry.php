@@ -1,27 +1,12 @@
 <?php
+/*
+PLEASE NOTE: Throughout this file and the attendance table in the database, the
+word "week" is a misnomer. Attendance is tracked by lesson, which may or may
+not correspond 1:1 to weeks. TODO: change varibles and fields named "week"
+here and in the database to "lesson".
+*/
+
 require_once("template.php");
-
-$aqr = pdo_seleqt("
-   select
-      user_id,
-      week,
-      present
-   from wrc_attendance
-   where
-      class_id = ?
-      and class_source = ?
-   order by date_entered
-", array($_GET['class_id'], $_GET['class_source']));
-
-$iqr = array();
-
-// Create indexed array
-// If there are multiple entries for the same user and week, the earlier ones
-// will be overwritten in this loop by the latest, which is exactly what we want.
-foreach($aqr as $row) {
-   $iqr[$row['user_id']][$row['week']] = $row['present'];
-}
-
 generate_page(true, false);
 
 function page_content() {
@@ -29,99 +14,25 @@ function page_content() {
       exit("You must be an admin or instructor to view this page.");
    }
 
-   ?><script>
-
-   var iqr = <?php global $iqr; echo json_encode($iqr, JSON_NUMERIC_CHECK); ?>;
-
-   function shirtRequirementsMet(userId) {
-      <?php if(PRODUCT == 'dpp') { ?>
-         // Return true if participant attended 9 of the first 16
-         var outOf16 = 0;
-         for(var i=1; i<=16; i++) {
-            if(!iqr[userId][i]) {
-               // Change nonexistent to zero
-               iqr[userId][i] = 0;
-            }
-            outOf16 += iqr[userId][i];
-         }
-
-         return outOf16 >= 9;
-
-
-      <?php } else if(PRODUCT == 'esmmwl') { ?>
-         // Return true if participant attended all of the first 15
-         var outOf15 = 0;
-         for(var i=1; i<=15; i++) {
-            if(!iqr[userId][i]) {
-               // Change nonexistent to zero
-               iqr[userId][i] = 0;
-            }
-            outOf15 += iqr[userId][i];
-         }
-
-         return outOf15 >= 15;
-
-
-      <?php } ?>
-   }
-
-   function submitAttendance(userId, week, present) {
-      var cellId = '#td_' + userId + '_' + week;
-      $(cellId + ' > img').removeClass('hidden');
-      $(cellId + ' > a').addClass('hidden');
-      $.post('attendance_ajax.php', {
-         user_id: userId,
-         class_id: <?php echo htmlentities($_GET['class_id']); ?>,
-         class_source: '<?php echo htmlentities($_GET['class_source']); ?>',
-         week: week,
-         present: present
-      }, function(data) {
-         $(cellId + ' > img').addClass('hidden');
-
-         if(data === 'OK') {
-            var classToShow = present ? '.greenCheck' : '.blackBox';
-            $(cellId).children(classToShow).removeClass('hidden');
-
-            // Change attendanceSum cell
-            var sumCell = $(cellId).siblings('.attendanceSum');
-            var delta = present ? 1 : -1;
-            sumCell.fadeOut('fast', function() {
-               $(this).html(parseInt(sumCell.html(), 10) + delta).fadeIn('slow');
-
-               // Update client-side array
-               if(!iqr[userId][week]) {
-                  // Change nonexistent to zero
-                  iqr[userId][week] = 0;
-               }
-               iqr[userId][week] += delta;
-
-               // Show or hide shirt dropdown
-               if(shirtRequirementsMet(userId)) {
-                  $(this).siblings('.participantName').children('.shirtChoice').removeClass('hidden');
-               }
-               else {
-                  $(this).siblings('.participantName').children('.shirtChoice').addClass('hidden');
-               }
-            });
-         }
-         else {
-            var classToShow = present ? '.blackBox' : '.greenCheck';
-            $(cellId).children(classToShow).removeClass('hidden');
-            alert('An error occurred.');
-         }
-      });
-   }
-
-   </script>
-
-   <?php
+   $aqr = pdo_seleqt("
+      select
+         user_id,
+         week,
+         present
+      from wrc_attendance
+      where
+         class_id = ?
+         and class_source = ?
+      order by date_entered
+   ", array($_GET['class_id'], $_GET['class_source']));
 
    $qr = pdo_seleqt("
       select
          e.user_id,
          u.fname,
          u.lname,
-         coalesce(a.numclasses, 0) as numclasses
+         coalesce(a.numclasses, 0) as numclasses,
+         e.shirtchoice
       from
          " . ENR_VIEW . " e
          natural join wrc_users u
@@ -133,6 +44,22 @@ function page_content() {
          lname,
          fname
    ", array($_GET['class_id'], $_GET['class_source']));
+
+
+   $iqr = array();
+
+   // Create indexed array
+   // First, create an empty row for each participant
+   foreach($qr as $row) {
+      $iqr[$row['user_id']] = array();
+   }
+
+   // Next, populate the array.
+   // If there are multiple entries for the same user and week, the earlier ones
+   // will be overwritten in this loop by the latest, which is exactly what we want.
+   foreach($aqr as $row) {
+      $iqr[$row['user_id']][$row['week']] = $row['present'];
+   }
 
    $cqr = seleqt_one_record("
       select
@@ -187,9 +114,7 @@ function page_content() {
          </th>
          <?php
             for($i=1; $i<=$numLessons; $i++) {
-               ?><th class="checkboxCell<?php
-                  if($i >= 17) echo ' phase2';
-               ?>"><?php
+               ?><th class="checkboxCell"><?php
                   echo $i;
                ?></th><?php
             }
@@ -199,19 +124,22 @@ function page_content() {
       <tbody>
       <?php
       foreach($qr as $row) {
-         ?><tr id="userRow<?php
+         ?><tr user-id="<?php
             echo htmlentities($row['user_id']);
          ?>"><td class="participantName"><a href="reports.php?user=<?php
             echo htmlentities($row['user_id']);
          ?>"><?php
             echo htmlentities($row['fname'] . ' ' . $row['lname']);
-         ?></a><div class="shirtChoice">Shirt choice: <select>
+         ?></a><div class="shirtChoice hidden">Shirt choice: <select>
+               <option value=""></option>
                <?php
                   global $ini;
                   foreach($ini['shirtColors'] as $shirtColor) {
                      foreach($ini['shirtSizes'] as $shirtSize) {
                         $shirtChoice = $shirtColor . ' ' . $shirtSize;
-                        ?><option value="<?php
+                        ?><option <?php
+                           if($shirtChoice == $row['shirtchoice']) echo 'selected ';
+                        ?>value="<?php
                            echo $shirtChoice;
                         ?>"><?php
                            echo $shirtChoice;
@@ -219,7 +147,10 @@ function page_content() {
                      }
                   }
                ?>
-            </select></div>
+            </select>
+            <img src="spinner.gif" style="height:13px" class="spinner hidden" />
+            <i class="material-icons checkmark" style="font-size:small">&#xE86C;</i>
+            </div>
          </td>
          <td class="attendanceSum"><?php
             echo htmlentities($row['numclasses']);
@@ -227,52 +158,19 @@ function page_content() {
             for($j=1; $j<=$numLessons; $j++) {
                ?><td class="checkboxCell<?php
                   if($j >= 17) echo ' phase2';
-               ?>" id="td_<?php
-                  echo htmlentities($row['user_id']) . '_' . $j;
+               ?>" lesson-id="<?php
+                  echo $j;
                ?>">
                   <!-- Black empty box -->
-                  <a
-                     href="javascript:submitAttendance(<?php
-                        echo htmlentities($row['user_id']) . ',' . $j . ',1';
-                     ?>)"
-                     class="blackBox<?php
-                        echo htmlentities(hideClass($row['user_id'], $j, 0));
-                     ?>"
-                  >
-                     <i class="material-icons">&#xE3C1;</i>
-                  </a>
+                  <i class="material-icons hidden entryPoint blackBox">&#xE3C1;</i>
 
                   <img src="spinner.gif" class="hidden" />
 
                   <!-- Green check -->
-                  <a
-                     href="javascript:submitAttendance(<?php
-                        echo htmlentities($row['user_id']) . ',' . $j . ',0';
-                     ?>)"
-                     class="greenCheck<?php
-                        echo htmlentities(hideClass($row['user_id'], $j, 1));
-                     ?>"
-                  >
-                     <i class="material-icons">&#xE86C;</i>
-                  </a>
+                  <i class="material-icons hidden entryPoint greenCheck">&#xE86C;</i>
                </td><?php
             }
-         ?></tr><script>
-            var userIdThisRow = <?php echo htmlentities($row['user_id']); ?>;
-            var shirtChoiceDiv = $('#userRow' + userIdThisRow + ' .shirtChoice');
-
-            //Make sure user is in iqr
-            if(!iqr[userIdThisRow]) {
-               iqr[userIdThisRow] = [];
-            }
-
-            if(shirtRequirementsMet(userIdThisRow)) {
-               shirtChoiceDiv.removeClass('hidden');
-            }
-            else {
-               shirtChoiceDiv.addClass('hidden');
-            }
-         </script><?php
+         ?></tr><?php
       }
 
       ?>
@@ -280,47 +178,143 @@ function page_content() {
    </table>
 
    <script>
+      var iqr = <?php echo json_encode($iqr, JSON_NUMERIC_CHECK); ?>;
+
       $('#attendanceEntry tr:odd').addClass('alt');
+
+      $('.checkboxCell').each(function() {
+         if($(this).attr('lesson-id') >= 17) {
+            $(this).addClass('phase2');
+         }
+      });
+
+      $('.entryPoint').each(function() {
+         var userId = $(this).closest('tr').attr('user-id');
+         var lessonId = $(this).closest('td').attr('lesson-id');
+         if(
+            $(this).hasClass('greenCheck') && iqr[userId][lessonId]
+            ||
+            $(this).hasClass('blackBox') && !iqr[userId][lessonId]
+         ) {
+            $(this).removeClass('hidden');
+         }
+      });
+
+      $('.shirtChoice').each(function() {
+         var userIdThisRow = $(this).closest('tr').attr('user-id');
+
+         if(shirtRequirementsMet(userIdThisRow)) {
+            $(this).removeClass('hidden');
+         }
+         else {
+            $(this).addClass('hidden');
+         }
+
+      });
+
+      $('.entryPoint').click(function() {
+         var userId = $(this).closest('tr').attr('user-id');
+         var lessonId = $(this).closest('td').attr('lesson-id');
+         var present = Number($(this).hasClass('blackBox'));
+         var cell = $(this).closest('td');
+         submitAttendance(userId, lessonId, present, cell);
+      });
+
+      $('.shirtChoice select').each(function() {
+         if($(this).val() === '') {
+            // hide checkmark
+            $(this).siblings('.checkmark').addClass('hidden');
+         }
+      });
+
+      $('.shirtChoice select').change(function() {
+         var thisSelect = $(this);
+         thisSelect.siblings('.spinner').removeClass('hidden');
+         thisSelect.siblings('.checkmark').addClass('hidden');
+         $.post('shirt.php', {
+            user_id: thisSelect.closest('tr').attr("user-id"),
+            class_id: <?php echo $_GET['class_id']; ?>,
+            shirt_choice: thisSelect.val()
+         }, function(data) {
+            thisSelect.siblings('.spinner').addClass('hidden');
+            if(data === 'OK') {
+               thisSelect.siblings('.checkmark').removeClass('hidden');
+            }
+            else {
+               alert('A database error occurred while selecting a t-shirt.');
+            }
+         });
+      });
+
+      function shirtRequirementsMet(userId) {
+         <?php if(PRODUCT == 'dpp') { ?>
+            // Return true if participant attended 9 of the first 16
+            var outOf16 = 0;
+            for(var i=1; i<=16; i++) {
+               outOf16 += iqr[userId][i] ? 1 : 0;
+            }
+
+            return outOf16 >= 9;
+
+
+         <?php } else if(PRODUCT == 'esmmwl') { ?>
+            // Return true if participant attended all of the first 15
+            var outOf15 = 0;
+            for(var i=1; i<=15; i++) {
+               outOf15 += iqr[userId][i] ? 1 : 0;
+            }
+
+            return outOf15 >= 15;
+
+
+         <?php } ?>
+      }
+
+      function submitAttendance(userId, week, present, cell) {
+         cell.children('img').removeClass('hidden');
+         cell.children('.entryPoint').addClass('hidden');
+         $.post('attendance_ajax.php', {
+            user_id: userId,
+            class_id: <?php echo htmlentities($_GET['class_id']); ?>,
+            class_source: '<?php echo htmlentities($_GET['class_source']); ?>',
+            week: week,
+            present: present
+         }, function(data) {
+            cell.children('img').addClass('hidden');
+
+            if(data === 'OK') {
+               var classToShow = present ? '.greenCheck' : '.blackBox';
+               cell.children(classToShow).removeClass('hidden');
+
+               // Change attendanceSum cell
+               var sumCell = cell.siblings('.attendanceSum');
+               var delta = present ? 1 : -1;
+               sumCell.fadeOut('fast', function() {
+                  $(this).html(parseInt(sumCell.html(), 10) + delta).fadeIn('slow');
+
+                  // Update client-side array
+                  iqr[userId][week] = present ? 1 : 0;
+
+                  // Show or hide shirt dropdown
+                  if(shirtRequirementsMet(userId)) {
+                     $(this).siblings('.participantName').children('.shirtChoice').removeClass('hidden');
+                  }
+                  else {
+                     $(this).siblings('.participantName').children('.shirtChoice').addClass('hidden');
+                  }
+               });
+            }
+            else {
+               var classToShow = present ? '.blackBox' : '.greenCheck';
+               cell.children(classToShow).removeClass('hidden');
+               alert('An error occurred.');
+            }
+         });
+      }
+
    </script>
 
    <?php
-}
-
-function hideClass($userId, $week, $present) {
-   global $iqr;
-   if($iqr[$userId][$week] != $present) {
-      return ' hidden';
-   }
-}
-
-function admin_user() {
-   if(am_i_admin() && isset($_GET['instr'])) {
-      return "?instr=" . $_GET['instr'];
-   }
-   else {
-      return "";
-   }
-}
-
-function shirtRequirementsMet($userId) {
-   global $iqr;
-   if(PRODUCT == 'dpp') {
-      if(array_sum(array_slice($iqr[$userId], 0, 16)) >= 9) {
-         // Participant has attended at least 9 of the first 16 lessons
-         return true;
-      }
-      else {
-         return false;
-      } 
-   }
-   else if(PRODUCT == 'esmmwl') {
-      if(array_sum($iqr[$userId]) >= 15) {
-         return true;
-      }
-      else {
-         return false;
-      }
-   }
 }
 
 ?>

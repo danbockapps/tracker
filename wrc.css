@@ -3,7 +3,7 @@ body {
    font-family: Arial,Helvetica,clean,sans-serif;
 }
 
-a:link, a:visited {
+a:link, a:visited, .entryPoint.greenCheck {
    color: #8ec63f;
 }
 
@@ -381,4 +381,8 @@ table#attendanceEntry .checkboxCell {
 
 ul#classList li {
    padding-bottom: 0.3em;
+}
+
+.entryPoint {
+   cursor: pointer;
 }
