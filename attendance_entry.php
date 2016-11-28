@@ -31,7 +31,8 @@ function page_content() {
          e.user_id,
          u.fname,
          u.lname,
-         coalesce(a.numclasses, 0) as numclasses
+         coalesce(a.numclasses, 0) as numclasses,
+         e.shirtchoice
       from
          " . ENR_VIEW . " e
          natural join wrc_users u
@@ -136,7 +137,9 @@ function page_content() {
                   foreach($ini['shirtColors'] as $shirtColor) {
                      foreach($ini['shirtSizes'] as $shirtSize) {
                         $shirtChoice = $shirtColor . ' ' . $shirtSize;
-                        ?><option value="<?php
+                        ?><option <?php
+                           if($shirtChoice == $row['shirtchoice']) echo 'selected ';
+                        ?>value="<?php
                            echo $shirtChoice;
                         ?>"><?php
                            echo $shirtChoice;
