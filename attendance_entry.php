@@ -155,32 +155,16 @@ function page_content() {
             for($j=1; $j<=$numLessons; $j++) {
                ?><td class="checkboxCell<?php
                   if($j >= 17) echo ' phase2';
-               ?>" id="td_<?php
-                  echo htmlentities($row['user_id']) . '_' . $j;
                ?>" lesson-id="<?php
                   echo $j;
                ?>">
                   <!-- Black empty box -->
-                  <a
-                     href="javascript:submitAttendance(<?php
-                        echo htmlentities($row['user_id']) . ',' . $j . ',1';
-                     ?>)"
-                     class="hidden entryPoint blackBox"
-                  >
-                     <i class="material-icons">&#xE3C1;</i>
-                  </a>
+                  <i class="material-icons hidden entryPoint blackBox">&#xE3C1;</i>
 
                   <img src="spinner.gif" class="hidden" />
 
                   <!-- Green check -->
-                  <a
-                     href="javascript:submitAttendance(<?php
-                        echo htmlentities($row['user_id']) . ',' . $j . ',0';
-                     ?>)"
-                     class="hidden entryPoint greenCheck"
-                  >
-                     <i class="material-icons">&#xE86C;</i>
-                  </a>
+                  <i class="material-icons hidden entryPoint greenCheck">&#xE86C;</i>
                </td><?php
             }
          ?></tr><?php
@@ -223,6 +207,14 @@ function page_content() {
             $(this).addClass('hidden');
          }
 
+      });
+
+      $('.entryPoint').click(function() {
+         var userId = $(this).closest('tr').attr('user-id');
+         var lessonId = $(this).closest('td').attr('lesson-id');
+         var present = Number($(this).hasClass('blackBox'));
+         var cell = $(this).closest('td');
+         submitAttendance(userId, lessonId, present, cell);
       });
 
       $('.shirtChoice select').each(function() {
@@ -275,10 +267,9 @@ function page_content() {
          <?php } ?>
       }
 
-      function submitAttendance(userId, week, present) {
-         var cellId = '#td_' + userId + '_' + week;
-         $(cellId + ' > img').removeClass('hidden');
-         $(cellId + ' > a').addClass('hidden');
+      function submitAttendance(userId, week, present, cell) {
+         cell.children('img').removeClass('hidden');
+         cell.children('.entryPoint').addClass('hidden');
          $.post('attendance_ajax.php', {
             user_id: userId,
             class_id: <?php echo htmlentities($_GET['class_id']); ?>,
@@ -286,14 +277,14 @@ function page_content() {
             week: week,
             present: present
          }, function(data) {
-            $(cellId + ' > img').addClass('hidden');
+            cell.children('img').addClass('hidden');
 
             if(data === 'OK') {
                var classToShow = present ? '.greenCheck' : '.blackBox';
-               $(cellId).children(classToShow).removeClass('hidden');
+               cell.children(classToShow).removeClass('hidden');
 
                // Change attendanceSum cell
-               var sumCell = $(cellId).siblings('.attendanceSum');
+               var sumCell = cell.siblings('.attendanceSum');
                var delta = present ? 1 : -1;
                sumCell.fadeOut('fast', function() {
                   $(this).html(parseInt(sumCell.html(), 10) + delta).fadeIn('slow');
@@ -312,7 +303,7 @@ function page_content() {
             }
             else {
                var classToShow = present ? '.blackBox' : '.greenCheck';
-               $(cellId).children(classToShow).removeClass('hidden');
+               cell.children(classToShow).removeClass('hidden');
                alert('An error occurred.');
             }
          });
