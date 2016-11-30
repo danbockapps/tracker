@@ -150,7 +150,15 @@ select
    a.class_id,
    a.class_source,
    a.week,
-   a.present
+   a.present,
+   case
+      when week <= 16 then a.present
+      else 0
+   end as present_phase1,
+   case
+      when week >= 17 then a.present
+      else 0
+   end as present_phase2
 from
    wrc_attendance a
    inner join attendance_limiter l
@@ -161,7 +169,9 @@ select
    user_id,
    class_id,
    class_source,
-   sum(present) as numclasses
+   sum(present) as numclasses,
+   sum(present_phase1) as numclasses_phase1,
+   sum(present_phase2) as numclasses_phase2
 from attendance_summary
 group by
    user_id,

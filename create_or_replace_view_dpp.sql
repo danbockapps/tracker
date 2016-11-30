@@ -62,6 +62,8 @@ select
    u.fname,
    u.lname,
    coalesce(am.numclasses, 0) as numclasses,
+   coalesce(am.numclasses_phase1, 0) as numclasses_phase1,
+   coalesce(am.numclasses_phase2, 0) as numclasses_phase2,
    e.address1,
    e.address2,
    e.city,

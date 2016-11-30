@@ -18,6 +18,8 @@ if($_GET['report'] == "attendance2") {
          fname,
          lname,
          numclasses,
+         numclasses_phase1,
+         numclasses_phase2,
          address1,
          address2,
          city,
