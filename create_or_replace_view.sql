@@ -241,7 +241,39 @@ select
   log(13, sum(case when week_id=17 then 1 else 0 end) + 1) as log_msgs_week_17,
   log(13, sum(case when week_id=18 then 1 else 0 end) + 1) as log_msgs_week_18,
   log(13, sum(case when week_id=19 then 1 else 0 end) + 1) as log_msgs_week_19,
-  log(13, sum(case when week_id=20 then 1 else 0 end) + 1) as log_msgs_week_20
+  log(13, sum(case when week_id=20 then 1 else 0 end) + 1) as log_msgs_week_20,
+  log(13, sum(case when week_id=21 then 1 else 0 end) + 1) as log_msgs_week_21,
+  log(13, sum(case when week_id=22 then 1 else 0 end) + 1) as log_msgs_week_22,
+  log(13, sum(case when week_id=23 then 1 else 0 end) + 1) as log_msgs_week_23,
+  log(13, sum(case when week_id=24 then 1 else 0 end) + 1) as log_msgs_week_24,
+  log(13, sum(case when week_id=25 then 1 else 0 end) + 1) as log_msgs_week_25,
+  log(13, sum(case when week_id=26 then 1 else 0 end) + 1) as log_msgs_week_26,
+  log(13, sum(case when week_id=27 then 1 else 0 end) + 1) as log_msgs_week_27,
+  log(13, sum(case when week_id=28 then 1 else 0 end) + 1) as log_msgs_week_28,
+  log(13, sum(case when week_id=29 then 1 else 0 end) + 1) as log_msgs_week_29,
+  log(13, sum(case when week_id=30 then 1 else 0 end) + 1) as log_msgs_week_30,
+  log(13, sum(case when week_id=31 then 1 else 0 end) + 1) as log_msgs_week_31,
+  log(13, sum(case when week_id=32 then 1 else 0 end) + 1) as log_msgs_week_32,
+  log(13, sum(case when week_id=33 then 1 else 0 end) + 1) as log_msgs_week_33,
+  log(13, sum(case when week_id=34 then 1 else 0 end) + 1) as log_msgs_week_34,
+  log(13, sum(case when week_id=35 then 1 else 0 end) + 1) as log_msgs_week_35,
+  log(13, sum(case when week_id=36 then 1 else 0 end) + 1) as log_msgs_week_36,
+  log(13, sum(case when week_id=37 then 1 else 0 end) + 1) as log_msgs_week_37,
+  log(13, sum(case when week_id=38 then 1 else 0 end) + 1) as log_msgs_week_38,
+  log(13, sum(case when week_id=39 then 1 else 0 end) + 1) as log_msgs_week_39,
+  log(13, sum(case when week_id=40 then 1 else 0 end) + 1) as log_msgs_week_40,
+  log(13, sum(case when week_id=41 then 1 else 0 end) + 1) as log_msgs_week_41,
+  log(13, sum(case when week_id=42 then 1 else 0 end) + 1) as log_msgs_week_42,
+  log(13, sum(case when week_id=43 then 1 else 0 end) + 1) as log_msgs_week_43,
+  log(13, sum(case when week_id=44 then 1 else 0 end) + 1) as log_msgs_week_44,
+  log(13, sum(case when week_id=45 then 1 else 0 end) + 1) as log_msgs_week_45,
+  log(13, sum(case when week_id=46 then 1 else 0 end) + 1) as log_msgs_week_46,
+  log(13, sum(case when week_id=47 then 1 else 0 end) + 1) as log_msgs_week_47,
+  log(13, sum(case when week_id=48 then 1 else 0 end) + 1) as log_msgs_week_48,
+  log(13, sum(case when week_id=49 then 1 else 0 end) + 1) as log_msgs_week_49,
+  log(13, sum(case when week_id=50 then 1 else 0 end) + 1) as log_msgs_week_50,
+  log(13, sum(case when week_id=51 then 1 else 0 end) + 1) as log_msgs_week_51,
+  log(13, sum(case when week_id=52 then 1 else 0 end) + 1) as log_msgs_week_52
 from pes_msgs
 group by
   user_id,
@@ -287,7 +319,39 @@ select
     pes_logarithms.log_msgs_week_17 +
     pes_logarithms.log_msgs_week_18 +
     pes_logarithms.log_msgs_week_19 +
-    pes_logarithms.log_msgs_week_20,
+    pes_logarithms.log_msgs_week_20 +
+    pes_logarithms.log_msgs_week_21 +
+    pes_logarithms.log_msgs_week_22 +
+    pes_logarithms.log_msgs_week_23 +
+    pes_logarithms.log_msgs_week_24 +
+    pes_logarithms.log_msgs_week_25 +
+    pes_logarithms.log_msgs_week_26 +
+    pes_logarithms.log_msgs_week_27 +
+    pes_logarithms.log_msgs_week_28 +
+    pes_logarithms.log_msgs_week_29 +
+    pes_logarithms.log_msgs_week_30 +
+    pes_logarithms.log_msgs_week_31 +
+    pes_logarithms.log_msgs_week_32 +
+    pes_logarithms.log_msgs_week_33 +
+    pes_logarithms.log_msgs_week_34 +
+    pes_logarithms.log_msgs_week_35 +
+    pes_logarithms.log_msgs_week_36 +
+    pes_logarithms.log_msgs_week_37 +
+    pes_logarithms.log_msgs_week_38 +
+    pes_logarithms.log_msgs_week_39 +
+    pes_logarithms.log_msgs_week_40 +
+    pes_logarithms.log_msgs_week_41 +
+    pes_logarithms.log_msgs_week_42 +
+    pes_logarithms.log_msgs_week_43 +
+    pes_logarithms.log_msgs_week_44 +
+    pes_logarithms.log_msgs_week_45 +
+    pes_logarithms.log_msgs_week_46 +
+    pes_logarithms.log_msgs_week_47 +
+    pes_logarithms.log_msgs_week_48 +
+    pes_logarithms.log_msgs_week_49 +
+    pes_logarithms.log_msgs_week_50 +
+    pes_logarithms.log_msgs_week_51 +
+    pes_logarithms.log_msgs_week_52,
     0
   ) as pts_log_msgs,
   least(datediff(now(), c.start_dttm) / 7, c.weeks) as week_num
