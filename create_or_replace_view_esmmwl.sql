@@ -96,3 +96,10 @@ order by
    lname,
    fname;
 
+create or replace view attendance_sum_legacy as
+select
+   tracker_user_id as user_id,
+   class_id,
+   class_source,
+   numclasses
+from registrants
