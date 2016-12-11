@@ -424,7 +424,28 @@ else {
 
 <form action="download_report.php" method="get">
    <?php
-      foreach($aqr as $row) {
+      for($i=0; $i<count($aqr); $i++) {
+         $row = $aqr[$i];
+         $firstOfMonth = false;
+         $firstOfYear = false;
+
+         if($i == 0 || !monthSame($row['start_dttm'], $aqr[$i-1]['start_dttm'])) {
+            // $row is the first class listed for this month
+            $firstOfMonth = true;
+            if(!yearSame($row['start_dttm'], $aqr[$i-1]['start_dttm'])) {
+               // $row is the first class listed for this year
+               $firstOfYear = true;
+            }
+         }
+
+         if($firstOfYear) {
+            echo '<p>' . date('Y', strtotime($row['start_dttm'])) . '</p>';
+         }
+
+         if($firstOfMonth) {
+            echo '<p>' . date('F', strtotime($row['start_dttm'])) . '</p>';
+         }
+
          ?><input type="checkbox" name="class[<?php
             echo $row['class_id'];
          ?>]"><?php
@@ -642,6 +663,15 @@ function rmadmin() {
    else {
       return err_text("A database error occurred.");
    }
+}
+
+function yearSame($dateString1, $dateString2) {
+   return date('Y', strtotime($dateString1)) == date('Y', strtotime($dateString2));
+}
+
+function monthSame($dateString1, $dateString2) {
+   // returns true if month AND year are the same
+   return date('Y F', strtotime($dateString1)) == date('Y F', strtotime($dateString2));
 }
 
 ?>
