@@ -386,3 +386,12 @@ ul#classList li {
 .entryPoint {
    cursor: pointer;
 }
+
+.attendance-reports-section {
+   padding-left: 1em;
+}
+.attendance-reports-section .showhide_closed {
+   color: black;
+   font-size: medium;
+   text-decoration: none;
+}

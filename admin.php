@@ -422,28 +422,67 @@ else {
    ", array());
 ?>
 
-<form action="download_report.php" method="get">
+<form action="download_report.php" method="get" class="attendance-reports-section">
    <?php
       for($i=0; $i<count($aqr); $i++) {
          $row = $aqr[$i];
+
+
+         // // // SET FIRSTS AND LASTS // // //
+
          $firstOfMonth = false;
          $firstOfYear = false;
+         $lastOfMonth = false;
+         $lastOfYear = false;
 
-         if($i == 0 || !monthSame($row['start_dttm'], $aqr[$i-1]['start_dttm'])) {
-            // $row is the first class listed for this month
+         if($i == 0) {
             $firstOfMonth = true;
+            $firstOfYear = true;
+         }
+         else {
+            if(!monthSame($row['start_dttm'], $aqr[$i-1]['start_dttm'])) {
+               $firstOfMonth = true;
+            }
             if(!yearSame($row['start_dttm'], $aqr[$i-1]['start_dttm'])) {
-               // $row is the first class listed for this year
                $firstOfYear = true;
             }
          }
 
+         if($i == count($aqr)) {
+            $lastOfMonth = true;
+            $lastOfYear = true;
+         }
+         else {
+            if(!monthSame($row['start_dttm'], $aqr[$i+1]['start_dttm'])) {
+               $lastOfMonth = true;
+            }
+            if(!yearSame($row['start_dttm'], $aqr[$i+1]['start_dttm'])) {
+               $lastOfYear = true;
+            }
+         }
+
+         // // // DONE SETTING FIRSTS AND LASTS // // //
+
+
+         // showhide saves cookies for which sections the user has open, so it
+         // can have the same ones open when the user closes and reopens the
+         // browser. That feature is going to be buggy in this section as it
+         // saves cookies based on section name, and this section may have
+         // multiple sections with the same name (e.g. "January"). This is a
+         // very low-priority bug.
+
          if($firstOfYear) {
-            echo '<p>' . date('Y', strtotime($row['start_dttm'])) . '</p>';
+            echo '<a href="#" class="showhide_closed">' .
+                    date('Y', strtotime($row['start_dttm'])) .
+                 '</a>';
+            echo '<div class="attendance-reports-section">';
          }
 
          if($firstOfMonth) {
-            echo '<p>' . date('F', strtotime($row['start_dttm'])) . '</p>';
+            echo '<a href="#" class="showhide_closed">' .
+                    date('F', strtotime($row['start_dttm'])) .
+                 '</a>';
+            echo '<div class="attendance-reports-section">';
          }
 
          ?><input type="checkbox" name="class[<?php
@@ -454,6 +493,14 @@ else {
          ?><a href="view_report.php?report=attendance2&class=<?php
             echo $row['class_id'];
          ?>"> web view</a><br /><?php
+
+         if($lastOfMonth) {
+            echo '</div> <!-- close attendance-reports-section for month -->';
+         }
+         if($lastOfYear) {
+            echo '</div> <!-- close attendance-reports-section for year -->';
+         }
+
       }
    ?>
    <input type="hidden" name="report" value="attendance2" />
