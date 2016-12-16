@@ -422,7 +422,7 @@ else {
       order by
          year(c.start_dttm) desc,
          month(c.start_dttm) desc,
-         c.class_type,
+         c.class_type > 1, /* true for SHP, false for public */
          c.start_dttm desc
    ", array());
 ?>
