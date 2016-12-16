@@ -487,7 +487,9 @@ else {
 
          ?><input type="checkbox" name="class[<?php
             echo $row['class_id'];
-         ?>]"><?php
+         ?>]"><strong><?php
+            echo $row['class_id'] . ". ";
+         ?></strong><?php
             echo class_times($row['start_dttm']) . " (" . $row['fname'] . " " .
                   $row['lname'] . ") ";
          ?><a href="view_report.php?report=attendance2&class=<?php
