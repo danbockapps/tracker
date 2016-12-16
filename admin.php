@@ -442,44 +442,30 @@ else {
          $lastOfYear = false;
          $lastOfType = false;
 
-         if($i == 0) {
-            $firstOfMonth = true;
+         if($i == 0 || !yearSame($row['start_dttm'], $aqr[$i-1]['start_dttm'])) {
             $firstOfYear = true;
+            $firstOfMonth = true;
             $firstOfType = true;
          }
-         else {
-            if(!yearSame($row['start_dttm'], $aqr[$i-1]['start_dttm'])) {
-               $firstOfYear = true;
-               $firstOfMonth = true;
-               $firstOfType = true;
-            }
-            else if(!monthSame($row['start_dttm'], $aqr[$i-1]['start_dttm'])) {
-               $firstOfMonth = true;
-               $firstOfType = true;
-            }
-            else if(!typeSame($row['class_type'], $aqr[$i-1]['class_type'])) {
-               $firstOfType = true;
-            }
+         else if(!monthSame($row['start_dttm'], $aqr[$i-1]['start_dttm'])) {
+            $firstOfMonth = true;
+            $firstOfType = true;
+         }
+         else if(!typeSame($row['class_type'], $aqr[$i-1]['class_type'])) {
+            $firstOfType = true;
          }
 
-         if($i == count($aqr)) {
-            $lastOfMonth = true;
+         if($i == count($aqr) || !yearSame($row['start_dttm'], $aqr[$i+1]['start_dttm'])) {
             $lastOfYear = true;
+            $lastOfMonth = true;
             $lastOfType = true;
          }
-         else {
-            if(!yearSame($row['start_dttm'], $aqr[$i+1]['start_dttm'])) {
-               $lastOfYear = true;
-               $lastOfMonth = true;
-               $lastOfType = true;
-            }
-            else if(!monthSame($row['start_dttm'], $aqr[$i+1]['start_dttm'])) {
-               $lastOfMonth = true;
-               $lastOfType = true;
-            }
-            else if(!typeSame($row['class_type'], $aqr[$i+1]['class_type'])) {
-               $lastOfType = true;
-            }
+         else if(!monthSame($row['start_dttm'], $aqr[$i+1]['start_dttm'])) {
+            $lastOfMonth = true;
+            $lastOfType = true;
+         }
+         else if(!typeSame($row['class_type'], $aqr[$i+1]['class_type'])) {
+            $lastOfType = true;
          }
 
          // // // DONE SETTING FIRSTS AND LASTS // // //
