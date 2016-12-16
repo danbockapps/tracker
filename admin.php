@@ -448,13 +448,16 @@ else {
             $firstOfType = true;
          }
          else {
-            if(!monthSame($row['start_dttm'], $aqr[$i-1]['start_dttm'])) {
-               $firstOfMonth = true;
-            }
             if(!yearSame($row['start_dttm'], $aqr[$i-1]['start_dttm'])) {
                $firstOfYear = true;
+               $firstOfMonth = true;
+               $firstOfType = true;
             }
-            if(!typeSame($row['class_type'], $aqr[$i-1]['class_type'])) {
+            else if(!monthSame($row['start_dttm'], $aqr[$i-1]['start_dttm'])) {
+               $firstOfMonth = true;
+               $firstOfType = true;
+            }
+            else if(!typeSame($row['class_type'], $aqr[$i-1]['class_type'])) {
                $firstOfType = true;
             }
          }
@@ -465,13 +468,16 @@ else {
             $lastOfType = true;
          }
          else {
-            if(!monthSame($row['start_dttm'], $aqr[$i+1]['start_dttm'])) {
-               $lastOfMonth = true;
-            }
             if(!yearSame($row['start_dttm'], $aqr[$i+1]['start_dttm'])) {
                $lastOfYear = true;
+               $lastOfMonth = true;
+               $lastOfType = true;
             }
-            if(!typeSame($row['class_type'], $aqr[$i+1]['class_type'])) {
+            else if(!monthSame($row['start_dttm'], $aqr[$i+1]['start_dttm'])) {
+               $lastOfMonth = true;
+               $lastOfType = true;
+            }
+            else if(!typeSame($row['class_type'], $aqr[$i+1]['class_type'])) {
                $lastOfType = true;
             }
          }
