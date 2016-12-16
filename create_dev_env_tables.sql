@@ -9,6 +9,7 @@ In prod, there need to be views with these names that point to the admin db tabl
 
 create table if not exists z_classes (
   id int unsigned,
+  class_type int unsigned,
   class_name varchar(50),
   start_date_time datetime,
   phase1_end date,

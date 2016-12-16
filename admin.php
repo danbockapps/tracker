@@ -409,6 +409,7 @@ else {
    $aqr = pdo_seleqt("
       select
          c.class_id,
+         c.class_type,
          c.start_dttm,
          u.fname,
          u.lname
@@ -418,7 +419,7 @@ else {
             on c.instructor_id = u.user_id
       where
          c.start_dttm > '2015-01-01 00:00:00'
-      order by c.start_dttm desc
+      order by year(c.start_dttm) desc, month(c.start_dttm) desc, c.class_type
    ", array());
 ?>
 
@@ -432,12 +433,15 @@ else {
 
          $firstOfMonth = false;
          $firstOfYear = false;
+         $firstOfType = false;
          $lastOfMonth = false;
          $lastOfYear = false;
+         $lastOfType = false;
 
          if($i == 0) {
             $firstOfMonth = true;
             $firstOfYear = true;
+            $firstOfType = true;
          }
          else {
             if(!monthSame($row['start_dttm'], $aqr[$i-1]['start_dttm'])) {
@@ -446,11 +450,15 @@ else {
             if(!yearSame($row['start_dttm'], $aqr[$i-1]['start_dttm'])) {
                $firstOfYear = true;
             }
+            if(!typeSame($row['class_type'], $aqr[$i-1]['class_type'])) {
+               $firstOfType = true;
+            }
          }
 
          if($i == count($aqr)) {
             $lastOfMonth = true;
             $lastOfYear = true;
+            $lastOfType = true;
          }
          else {
             if(!monthSame($row['start_dttm'], $aqr[$i+1]['start_dttm'])) {
@@ -458,6 +466,9 @@ else {
             }
             if(!yearSame($row['start_dttm'], $aqr[$i+1]['start_dttm'])) {
                $lastOfYear = true;
+            }
+            if(!typeSame($row['class_type'], $aqr[$i+1]['class_type'])) {
+               $lastOfType = true;
             }
          }
 
@@ -485,6 +496,13 @@ else {
             echo '<div class="attendance-reports-section">';
          }
 
+         if($firstOfType) {
+            echo '<a href="#" class="showhide_closed">' .
+                     classType($row['class_type']) .
+                  '</a>';
+            echo '<div class="attendance-reports-section">';
+         }
+
          ?><input type="checkbox" name="class[<?php
             echo $row['class_id'];
          ?>]"><strong><?php
@@ -496,6 +514,10 @@ else {
             echo $row['class_id'];
          ?>"> web view</a><br /><?php
 
+         
+         if($lastOfType) {
+            echo '</div> <!-- close attendance-reports-section for type -->';
+         }         
          if($lastOfMonth) {
             echo '</div> <!-- close attendance-reports-section for month -->';
          }
@@ -721,6 +743,19 @@ function yearSame($dateString1, $dateString2) {
 function monthSame($dateString1, $dateString2) {
    // returns true if month AND year are the same
    return date('Y F', strtotime($dateString1)) == date('Y F', strtotime($dateString2));
+}
+
+function typeSame($typeInt1, $typeInt2) {
+   return classType($typeInt1) == classType($typeInt2);
+}
+
+function classType($classTypeInt) {
+   if($classTypeInt == 1) {
+      return 'Public';
+   }
+   else if($classTypeInt >= 2 && $classTypeInt <= 4) {
+      return 'SHP';
+   }
 }
 
 ?>

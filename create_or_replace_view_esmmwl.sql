@@ -24,6 +24,7 @@ where
 create or replace view classes_aw as
 select
    w.class_id,
+   0 as class_type,
    w.start_dttm,
    w.instructor_id,
    w.weeks,
@@ -32,6 +33,7 @@ from wrc_classes w
 union
 select
    c.id as class_id,
+   c.class_type,
    c.start_date_time as start_dttm,
    c.instructor_tracker_id,
    c.num_wks as weeks,
