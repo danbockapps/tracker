@@ -474,33 +474,29 @@ else {
 
          // // // DONE SETTING FIRSTS AND LASTS // // //
 
-
-         // showhide saves cookies for which sections the user has open, so it
-         // can have the same ones open when the user closes and reopens the
-         // browser. That feature is going to be buggy in this section as it
-         // saves cookies based on section name, and this section may have
-         // multiple sections with the same name (e.g. "January"). This is a
-         // very low-priority bug.
-
          if($firstOfYear) {
-            echo '<a href="#" class="showhide_closed">' .
-                    date('Y', strtotime($row['start_dttm'])) .
-                 '</a>';
-            echo '<div class="attendance-reports-section">';
+            ?><a href="#" class="showhide_closed" cookie-name="<?php
+               echo date('Y', strtotime($row['start_dttm']));
+            ?>"><?php
+               echo date('Y', strtotime($row['start_dttm']));
+            ?></a><div class="attendance-reports-section"><?php
          }
 
          if($firstOfMonth) {
-            echo '<a href="#" class="showhide_closed">' .
-                    date('F', strtotime($row['start_dttm'])) .
-                 '</a>';
-            echo '<div class="attendance-reports-section">';
+            ?><a href="#" class="showhide_closed" cookie-name="<?php
+               echo date('YF', strtotime($row['start_dttm']));
+            ?>"><?php
+               echo date('F', strtotime($row['start_dttm']));
+            ?></a><div class="attendance-reports-section"><?php
          }
 
          if($firstOfType) {
-            echo '<a href="#" class="showhide_closed">' .
-                     classType($row['class_type']) .
-                  '</a>';
-            echo '<div class="attendance-reports-section">';
+            ?><a href="#" class="showhide_closed" cookie-name="<?php
+               echo date('YF', strtotime($row['start_dttm'])) .
+                     classType($row['class_type']);
+            ?>"><?php
+               echo classType($row['class_type']);
+            ?></a><div class="attendance-reports-section"><?php
          }
 
          ?><input type="checkbox" name="class[<?php

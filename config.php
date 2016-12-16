@@ -626,10 +626,14 @@ function template_js() {
    <script type="text/javascript">
       $(function() {
          $('.showhide_closed').each(function(i) {
+            var cookieName = $(this).attr('cookie-name');
+            if(!cookieName) {
+               cookieName = $(this).text();
+            }
             $(this).showhide({
                default_open: false,
                use_cookie: true,
-               cookie_name: $(this).text()
+               cookie_name: cookieName
             });
          });
       });
