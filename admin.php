@@ -419,7 +419,11 @@ else {
             on c.instructor_id = u.user_id
       where
          c.start_dttm > '2015-01-01 00:00:00'
-      order by year(c.start_dttm) desc, month(c.start_dttm) desc, c.class_type
+      order by
+         year(c.start_dttm) desc,
+         month(c.start_dttm) desc,
+         c.class_type,
+         c.start_dttm desc
    ", array());
 ?>
 
