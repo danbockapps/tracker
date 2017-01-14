@@ -802,10 +802,11 @@ function linkify($date_string, $week_no, $warn) {
 }
 
 function file_and_parameters() {
-   return htmlspecialchars(substr(
+   // htmlspecialchars was used here. You can't use htmlspecialchars on a URL!
+   return substr(
       $_SERVER['REQUEST_URI'],
       strrpos($_SERVER['REQUEST_URI'], "/") + 1
-   ));
+   );
 }
 
 function remove_mode() {
