@@ -56,6 +56,7 @@ else if($_GET['report'] == "attendance2") {
          numclasses_phase1,
          numclasses_phase2,
          beginning_and_ending_weight,
+         height,
          incentive_type,
          address1,
          address2,

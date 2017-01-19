@@ -55,6 +55,35 @@ where eligibilty_deadline = curdate();
 
 source create_or_replace_view.sql;
 
+-- Reports within 2 weeks before eligibilty deadline
+create or replace view reports_near_ed0 as
+select
+   user_id,
+   class_id,
+   class_source,
+   week_id,
+   start_dttm + interval (week_id-1) week as report_date,
+   weight,
+   eligibilty_deadline
+from
+   wrc_reports
+   natural join classes_aw
+where
+   start_dttm + interval (week_id-1) week < eligibilty_deadline
+   and start_dttm + interval (week_id-1) week > eligibilty_deadline - interval 2 week;
+
+create or replace view reports_near_ed as
+select
+   user_id,
+   class_id,
+   class_source,
+   max(weight) as weight
+from reports_near_ed0
+group by
+   user_id,
+   class_id,
+   class_source;
+
 create or replace view attendance2 as
 select
    e.tracker_user_id,
@@ -75,9 +104,13 @@ select
    bw.weight as bw_weight,
    ew.weight as ew_weight,
    case
-      when bw.weight > 0 and ew.weight > 0 then "Yes"
+      when bw.weight > 0 and rne.weight > 0 then "Yes"
       else "No"
    end as beginning_and_ending_weight,
+   case
+      when u.height_inches > 0 then "Yes"
+      else "No"
+   end as height,
    '' as incentive_type,
    e.shirtchoice,
    '' as dob
@@ -94,6 +127,10 @@ from
       e.tracker_user_id = ew.user_id and
       e.class_id = ew.class_id and
       e.class_source = ew.class_source
+   left join reports_near_ed rne on
+      e.tracker_user_id = rne.user_id and
+      e.class_id = rne.class_id and
+      e.class_source = rne.class_source
    left join z_classes zc
       on e.class_id = zc.id
    left join wrc_users instrs
