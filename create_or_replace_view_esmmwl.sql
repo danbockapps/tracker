@@ -66,6 +66,7 @@ select
       when bw.weight > 0 and ew.weight > 0 then "Yes"
       else "No"
    end as beginning_and_ending_weight,
+   '' as height,
    e.incentive as incentive_type,
    e.shirtchoice,
    e.birthdate as dob
