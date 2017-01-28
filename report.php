@@ -456,8 +456,8 @@ function page_content() {
                   "instructions",
                   "Use this field to record the top number in your blood " .
                      "pressure reading. You will only be recording your " .
-                     "blood pressure for Eat Smart, Move More, Weigh Less " .
-                     "twice: once at the beginning and once at the end of " .
+                     "blood pressure for " . PROGRAM_NAME .
+                     " twice: once at the beginning and once at the end of " .
                      "the 15 weeks. Try " .
                      "to use the same monitor both times. High blood " .
                      "pressure is a risk factor for stroke and heart " .
@@ -476,8 +476,8 @@ function page_content() {
                   "instructions",
                   "Use this field to record the bottom number in your " .
                      "blood pressure reading. You will only be recording " .
-                     "your blood pressure for Eat Smart, Move More, Weigh " .
-                     "Less twice: once at the beginning and once at the end " .
+                     "your blood pressure for " . PROGRAM_NAME .
+                     " twice: once at the beginning and once at the end " .
                      "of the 15 weeks. " .
                      "Try to use the same monitor both times. High blood " .
                      "pressure is a risk factor for stroke and heart " .
@@ -498,8 +498,8 @@ function page_content() {
                      "measuring tape around your waist (right above your " .
                      "belly button), take a deep breath, and then exhale. " .
                      "Take the measurement after you have exhaled. You will " .
-                     "only be recording your waist circumference for Eat " .
-                     "Smart, Move More, Weigh Less twice: once at the " .
+                     "only be recording your waist circumference for " .
+                     PROGRAM_NAME . " twice: once at the " .
                      "beginning and once " .
                      "at the end of the 15 weeks. Try to measure on the same " .
                      "place on your waist both times. Your waist " .
@@ -548,7 +548,7 @@ function page_content() {
          popup(
             "instructions",
             "These are weight management strategies you will work on during " .
-            "your Eat Smart, Move More, Weigh Less class. Being more " .
+            "your " . PROGRAM_NAME . " class. Being more " .
             "mindful of these behaviors " .
             "and reporting your progress on them to your " .
             "instructor helps reinforce these strategies so they will stick " .
@@ -636,8 +636,8 @@ function page_content() {
                            "you enter " .
                            "will appear in your other reports so that you " .
                            "can continue to track your improvement on them " .
-                           "throughout your Eat " .
-                           "Smart, Move More, Weigh Less class. If you want " .
+                           "throughout your " . PROGRAM_NAME .
+                           " class. If you want " .
                            "to delete a custom strategy just click the " .
                            "delete link to the right of the strategy.",
                            "Custom strategies"

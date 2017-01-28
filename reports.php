@@ -215,13 +215,13 @@ function page_content() {
             popup(
                "What is an Engagement Score?",
                "Your Engagement Score tells you how active you are on the " .
-               "Weekly Tracker compared to the average Eat Smart, Move More, " .
-               "Weigh Less participant. We think that how active you are on " .
-               "the Weekly Tracker is strongly associated with how engaged " .
-               "you are with the Eat Smart, Move More, Weigh Less program; " .
+               "Weekly Tracker compared to the average " . PROGRAM_NAME .
+               " participant. We think that how active you are on " .
+               PRODUCT_TITLE . " is strongly associated with how engaged " .
+               "you are with the " . PROGRAM_NAME . " program; " .
                "therefore higher Engagement Scores should predict greater " .
-               "success in achieving your Eat Smart, Move More, Weigh Less " .
-               "goals. Weekly Tracker Engagement Scores can be increased by " .
+               "success in achieving your " . PROGRAM_NAME .
+               " goals. " . PRODUCT_TITLE . " Engagement Scores can be increased by " .
                "doing things like: 1) setting SMART goals, 2) tracking " .
                "strategies, 3) submitting weekly weight and minutes of " .
                "physical activity and 4) sending messages to your " .

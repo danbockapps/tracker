@@ -5,8 +5,6 @@ define("BLOWFISH_SUF", "$");
 
 $ini = parse_ini_file('auth.ini');
 
-validate_product();
-
 define("EMAIL_FROM", $ini['email_from']);
 define("EMAIL_LOGGER", $ini['email_logger']);
 define("EMAIL_PASSWORD", $ini['email_password']);
@@ -18,13 +16,23 @@ define('WEBSITE_URL', $ini['website_url']);
 define('ENR_TBL', $ini['enrollment_table']);
 define('ADMIN_EMAIL', $ini['admin_email']);
 
+validate_product();
+
 // added this so the old natural joins work
 define('ENR_VIEW', $ini['enrollment_view']);
 
-if($ini['product'] == 'dpp')
+if(PRODUCT == 'dpp') {
+   define('PROGRAM_NAME', 'Eat Smart, Move More, Prevent Diabetes');
    define('PRODUCT_TITLE', 'My Progress Portal');
-else if($ini['product'] == 'esmmwl')
+}
+else if(PRODUCT == 'esmmwl') {
+   define('PROGRAM_NAME', 'Eat Smart, Move More, Weigh Less');
    define('PRODUCT_TITLE', 'Weekly Tracker');
+}
+else if(PRODUCT == 'esmmwl2') {
+   define('PROGRAM_NAME', 'Eat Smart, Move More, Weigh Less 2');
+   define('PRODUCT_TITLE', 'Weekly Tracker 2');
+}
 
 if (get_magic_quotes_gpc() === 1) {
    // Strip slashes on ESMMWL server
@@ -323,8 +331,8 @@ function sg_popup() {
       "accomplish. Losing more than two pounds a week or more than 10 " .
       "percent of your body-weight over the course of the program is " .
       "neither realistic nor attainable. Lastly, you should know when " .
-      "you plan to achieve your SMART goal. \"By the end of the Eat " .
-      "Smart, Move More, Weigh Less program\" is a timely marker. " .
+      "you plan to achieve your SMART goal. \"By the end of the " .
+      PROGRAM_NAME . " program\" is a timely marker. " .
       "Setting a goal for a specific event or date is timely as well; " .
       "for example, maybe you want to be able to hike 10 miles with " .
       "your kids during your family vacation in April.",
@@ -1072,17 +1080,17 @@ function validate_product() {
    // Exit if product in auth.ini is not a valid product (esmmwl or dpp).
    // (only happens if the developer has screwed something up)
    global $ini;
-   $valid_products = ['esmmwl', 'dpp'];
+   $valid_products = ['esmmwl', 'dpp', 'esmmwl2'];
    $product_is_valid = false;
 
    foreach($valid_products as $s) {
-      if($s == $ini['product']) {
+      if($s == PRODUCT) {
          $product_is_valid = true;
       }
    }
 
    if(!$product_is_valid) {
-      exit('Invalid value for product in auth.ini.');
+      exit('Invalid value for product in auth.ini: ' . PRODUCT);
    }
 }
 

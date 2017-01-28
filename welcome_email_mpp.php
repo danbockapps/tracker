@@ -72,14 +72,6 @@ The Eat Smart, Move More, Prevent Diabetes Team';
 
 
 
-
-/*
-   sendmail(
-      $row['email'],
-      "Eat Smart, Move More, Weigh Less Weekly Tracker",
-      $msg
-   );
-*/
    $dbh = pdo_connect($ini['db_prefix'] . "_update");
    $sth = $dbh->prepare("
       update " . ENR_TBL . "
