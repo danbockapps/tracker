@@ -553,6 +553,34 @@ else {
 <?php } ?>
 
 <!-- --------------------------------------------------------------------------
+                                           LIKE CLIENT1 BUT FOR NON-ASO REPORTS
+--------------------------------------------------------------------------- -->
+
+<a href="#" class="showhide_closed">Non-ASO voucher code reports</a>
+<?php
+   $nasoqr = pdo_seleqt("
+      select distinct voucher_code
+      from " . ENR_VIEW . "
+      where voucher_code not like 'ASO%'
+   ", array());
+?>
+<ul>
+   <?php
+      foreach($nasoqr as $row) {
+         ?><li><a href="view_report.php?report=<?php
+            echo $ini['client1'];
+         ?>&voucher_code=<?php
+            echo $row['voucher_code'];
+         ?>"><?php
+            echo $row['voucher_code'];
+         ?></a></li><?php
+      }
+   ?>
+</ul>
+
+
+
+<!-- --------------------------------------------------------------------------
                                                                   OTHER REPORTS
 --------------------------------------------------------------------------- -->
 
