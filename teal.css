@@ -1,0 +1,51 @@
+a:link, a:visited, .entryPoint.greenCheck {
+  color: #25bdad;
+}
+
+#blogtitle {
+  background-color: #27bdad;
+}
+
+#navbar ul li a {
+  background-color: #27bdad;
+}
+
+#navbar ul li a:hover {
+  background-color: #27bdad;
+}
+
+#navend {
+  color: #27bdad;
+  background-color: #27bdad;
+}
+
+td.green {
+  color: #27bdad;
+}
+
+#partnav {
+  background-color: #95fded;
+}
+
+#bmi {
+  background-color: #95fded;
+}
+
+div.card {
+  background-color: #eee;
+}
+
+.fdbk_header {
+  background-color: #95fded;
+}
+
+#bloglinks {
+  background-color: #95fded;
+}
+
+/* This is not about the color purple, but about spacing */
+table#attendanceEntry .checkboxCell {
+   min-width: 22px;
+   max-width: 22px;
+}
+

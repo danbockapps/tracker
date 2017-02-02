@@ -49,6 +49,12 @@ function generate_page($require_logged_in, $require_logged_out, $shownav=true) {
             href="purple.css"
          />
       <?php } ?>
+      <?php if(PRODUCT == 'esmmwl2') { ?>
+         <link
+            rel="stylesheet"
+            href="teal.css"
+         />
+      <?php } ?>
 
       <?php template_js(); ?>
    </head>

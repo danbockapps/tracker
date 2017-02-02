@@ -113,15 +113,18 @@ function page_content() {
                height: 236,
                pointSize: 6,
                colors: ['<?php
-                  if(PRODUCT ==   'dpp') {
+                  if(PRODUCT == 'dpp') {
                ?>#80298f<?php
+                  }
+                  else if(PRODUCT == 'esmmwl2') {
+               ?>#27bdad<?php
                   }
                   else {
                ?>#8ec63f<?php
                   }
                ?>'],
                backgroundColor: '<?php
-                  if(PRODUCT == 'dpp') {
+                  if(PRODUCT == 'dpp' or PRODUCT == 'esmmwl2') {
                ?>#eee<?php
                   }
                   else {
@@ -180,15 +183,18 @@ function page_content() {
                         height: 200,
                         legend: { position: "none" },
                         colors: ["<?php
-                           if(PRODUCT ==   'dpp') {
+                           if(PRODUCT == 'dpp') {
                         ?>#80298f<?php
+                           }
+                           else if(PRODUCT == 'esmmwl2') {
+                        ?>#27bdad<?php
                            }
                            else {
                         ?>#8ec63f<?php
                            }
                         ?>"],
                         backgroundColor: "<?php
-                           if(PRODUCT ==   'dpp') {
+                           if(PRODUCT == 'dpp' || PRODUCT == 'esmmwl2') {
                         ?>#eee<?php
                            }
                         else {

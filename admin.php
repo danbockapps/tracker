@@ -556,6 +556,8 @@ else {
                                            LIKE CLIENT1 BUT FOR NON-ASO REPORTS
 --------------------------------------------------------------------------- -->
 
+<?php if(isset($ini['client1'])) { ?>
+
 <a href="#" class="showhide_closed">Non-ASO voucher code reports</a>
 <?php
    $nasoqr = pdo_seleqt("
@@ -578,6 +580,7 @@ else {
    ?>
 </ul>
 
+<?php } ?>
 
 
 <!-- --------------------------------------------------------------------------
