@@ -391,7 +391,7 @@ function page_content() {
             }
 
             global $ini;
-            if($ini['product'] == 'esmmwl') {
+            if($ini['product'] == 'esmmwl' || $ini['product'] == 'esmmwl2') {
                $err_count += report_var(
                   "aerobic",
                   $qr['class_id'],
