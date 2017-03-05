@@ -19,7 +19,11 @@ function page_content() {
       ?><div id="smartgoal">
          <h2>SMART Goal</h2><?php
       sg_text($qr, $_GET['user'] == $_SESSION['user_id']);
-      ?></div><?php
+      ?></div>
+
+      <?php
+
+      goalWeightCard($_GET['user'], $qr['class_id'], $qr['class_source']);
 
       $weekqr = seleqt_one_record("
          select weeks

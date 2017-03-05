@@ -250,38 +250,7 @@ function page_content() {
       </script>
 
       <?php
-         if(PRODUCT == 'dpp') {
-
-            $gwqr = pdo_seleqt('
-               select weight
-               from first_reports_with_weights
-               where
-                  user_id = ?
-                  and class_id = ?
-                  and class_source = ?
-            ', array($_GET['user'], $qr['class_id'], $qr['class_source']));
-
-            if(count($gwqr) == 1) {
-      ?>
-
-
-      <div id="goalweight">
-         Your goal weight at the end of
-         <?php echo currentPhaseForClass($qr['class_id'], $qr['class_source']); ?>
-         is
-         <span style="font-weight: bold">
-            <?php echo round($gwqr[0]['weight'] * .95, 1); ?>
-         </span>
-         pounds.<br />
-         <span style="font-style: italic">
-            A 5% weight loss decreases your risk of diabetes.
-         </span>
-      </div>
-
-
-      <?php
-            } // end if count qr == 1
-         } // end if product == mpp
+         goalWeightCard($_GET['user'], $qr['class_id'], $qr['class_source']);
       ?>
 
 

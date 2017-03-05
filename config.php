@@ -1138,4 +1138,40 @@ function currentPhaseForClass($class_id, $class_source) {
    }
 }
 
+function goalWeightCard($userId, $classId, $classSource) {
+   /*
+   An MPP-only feature. If PRODUCT is not set to 'dpp', this does nothing.
+   */
+
+   if(PRODUCT == 'dpp') {
+      $gwqr = pdo_seleqt('
+         select weight
+         from first_reports_with_weights
+         where
+            user_id = ?
+            and class_id = ?
+            and class_source = ?
+      ', array($userId, $classId, $classSource));
+
+      if(count($gwqr) == 1) {
+         ?>
+
+         <div id="goalweight">
+            Your goal weight at the end of
+            <?php echo currentPhaseForClass($classId, $classSource); ?>
+            is
+            <span style="font-weight: bold">
+               <?php echo round($gwqr[0]['weight'] * .95, 1); ?>
+            </span>
+            pounds.<br />
+            <span style="font-style: italic">
+               A 5% weight loss decreases your risk of diabetes.
+            </span>
+         </div>
+
+         <?php
+      } // end if count qr == 1
+   } // end if product == mpp
+}
+
 ?>

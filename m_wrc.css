@@ -107,3 +107,13 @@ td.green {
 .sgmsg_header {
    background-color: #cce0ff;
 }
+
+/* This is an MPP-only feature. */
+#goalweight {
+   clear: both;
+   margin-bottom: 15px;
+   background-color: #f099ff;
+   padding: 1em;
+   text-align: center;
+}
+
