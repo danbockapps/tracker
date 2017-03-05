@@ -1121,4 +1121,21 @@ function next_user_id() {
    return $qr['next_user_id'];
 }
 
+function currentPhaseForClass($class_id, $class_source) {
+   $qr = seleqt_one_record('
+      select phase1_end
+      from classes_aw
+      where
+         class_id = ?
+         and class_source = ?
+   ', array($class_id, $class_source));
+
+   if(strtotime($qr['phase1_end']) > time()) {
+      return "Phase 1";
+   }
+   else {
+      return "Phase 2";
+   }
+}
+
 ?>

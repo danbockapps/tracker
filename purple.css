@@ -49,3 +49,12 @@ table#attendanceEntry .checkboxCell {
    max-width: 22px;
 }
 
+/* This is an MPP-only feature. */
+#goalweight {
+   clear: both;
+   margin-bottom: 15px;
+   background-color: #f099ff;
+   padding: 1em;
+   width: 948px;
+   text-align: center;
+}

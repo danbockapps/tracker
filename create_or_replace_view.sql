@@ -129,6 +129,22 @@ from
    wrc_reports r
    natural join last_reports lr;
 
+create or replace view first_reports_with_weights as
+select
+   user_id,
+   class_id,
+   class_source,
+   min(week_id),
+   week_id,
+   weight
+from wrc_reports r
+where weight > 0
+group by
+   user_id,
+   class_id,
+   class_source
+having week_id = min(week_id);
+
 
 /*
 attendance_limiter, attendance_summary, attendance_sum and attendance2
