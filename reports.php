@@ -92,15 +92,29 @@ function page_content() {
             google.setOnLoadCallback(drawChart);
          <?php } ?>
          function drawChart() {
+            var dimensions = ['Week', 'Weight'];
+
+            <?php if(PRODUCT == 'dpp') { ?>
+               dimensions.push('Goal');
+            <?php } ?>
+
             var data = google.visualization.arrayToDataTable([
-               ['Week', 'Weight'],
+               dimensions,
                <?php
+                  $goalWeight = goalWeight($_GET['user'], $qr['class_id'], $qr['class_source']);
                   for($i=0; $i<$num_weeks; $i++) {
-                     echo "['" . date("n/j", strtotime($qr['start_dttm'] .
+                     $dataString = "['" . date("n/j", strtotime($qr['start_dttm'] .
                            " + $i weeks")) . "'," .
                            (isset($reports['weight'][$i]) &&
                            $reports['weight'][$i] != 0 ?
-                           $reports['weight'][$i] : "null") . "]";
+                           $reports['weight'][$i] : "null");
+                     if(PRODUCT == 'dpp') {
+                        $dataString .= "," . $goalWeight;
+                     }
+                     $dataString .= ']';
+
+                     echo $dataString;
+
                      if($i != $num_weeks - 1) {
                         echo ",";
                      }
@@ -109,29 +123,17 @@ function page_content() {
             ]);
 
             var options = {
-               width: 462,
                height: 236,
-               pointSize: 6,
-               colors: ['<?php
-                  if(PRODUCT == 'dpp') {
-               ?>#80298f<?php
-                  }
-                  else if(PRODUCT == 'esmmwl2') {
-               ?>#27bdad<?php
-                  }
-                  else {
-               ?>#8ec63f<?php
-                  }
-               ?>'],
-               backgroundColor: '<?php
-                  if(PRODUCT == 'dpp' or PRODUCT == 'esmmwl2') {
-               ?>#eee<?php
-                  }
-                  else {
-               ?>#eaffd0<?php
-                  }
-               ?>',
-               legend: {position: 'none'}
+               width: 462,
+               colors: getColor(),
+               backgroundColor: getBackgroundColor(),
+               legend: {position: 'none'},
+               series: {
+                  0: {
+                     pointSize: 6
+                  },
+                  1: {}
+               }
             };
 
             var chart = new google.visualization.LineChart(
@@ -139,6 +141,28 @@ function page_content() {
             );
             chart.draw(data, options);
          }
+
+         function getColor() {
+            <?php      if(PRODUCT == 'dpp') { ?>     return ['#80298f']; <?php }
+                  else if(PRODUCT == 'esmmwl2') { ?> return ['#27bdad']; <?php }
+                  else                          { ?> return ['#8ec63f']; <?php }
+            ?>
+         }
+
+         function getBackgroundColor() {
+            <?php
+               if(PRODUCT == 'dpp' or PRODUCT == 'esmmwl2') {
+            ?>
+                  return '#eee';
+            <?php
+               } else {
+            ?>
+                  return '#eaffd0';
+            <?php
+               }
+            ?>
+         }
+
       </script>
 
       <div id="chart_div" class="card">

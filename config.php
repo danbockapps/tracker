@@ -1138,11 +1138,7 @@ function currentPhaseForClass($class_id, $class_source) {
    }
 }
 
-function goalWeightCard($userId, $classId, $classSource) {
-   /*
-   An MPP-only feature. If PRODUCT is not set to 'dpp', this does nothing.
-   */
-
+function goalWeight($userId, $classId, $classSource) {
    if(PRODUCT == 'dpp') {
       $gwqr = pdo_seleqt('
          select weight
@@ -1154,6 +1150,20 @@ function goalWeightCard($userId, $classId, $classSource) {
       ', array($userId, $classId, $classSource));
 
       if(count($gwqr) == 1) {
+         return $gwqr[0]['weight'] * .95;
+      }
+   }
+}
+
+function goalWeightCard($userId, $classId, $classSource) {
+   /*
+   An MPP-only feature. If PRODUCT is not set to 'dpp', this does nothing.
+   */
+
+   if(PRODUCT == 'dpp') {
+      $goalWeight = goalWeight($userId, $classId, $classSource);
+
+      if($goalWeight) {
          ?>
 
          <div id="goalweight">
@@ -1161,7 +1171,7 @@ function goalWeightCard($userId, $classId, $classSource) {
             <?php echo currentPhaseForClass($classId, $classSource); ?>
             is
             <span style="font-weight: bold">
-               <?php echo round($gwqr[0]['weight'] * .95, 1); ?>
+               <?php echo round($goalWeight, 1); ?>
             </span>
             pounds.<br />
             <span style="font-style: italic">
@@ -1170,7 +1180,7 @@ function goalWeightCard($userId, $classId, $classSource) {
          </div>
 
          <?php
-      } // end if count qr == 1
+      } // end if goalWeight
    } // end if product == mpp
 }
 
