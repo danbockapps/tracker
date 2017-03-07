@@ -76,7 +76,8 @@ function page_content() {
          u.fname,
          u.lname,
          u.last_login,
-         weight_changes.wt_chg,
+         lrww.weight - frww.weight as wt_chg,
+         (lrww.weight - frww.weight) / frww.weight as wt_chg_pct,
          u.last_message_from,
          u.last_message_to,
          e.class_id
@@ -95,51 +96,17 @@ function page_content() {
                and recip_id = ?
          ) m
             on e.user_id = m.user_id
-         left join (
-            select
-               r.user_id,
-               r.class_id,
-               r.class_source,
-               r.weight - starting_weights.starting_weight as wt_chg
-            from
-               wrc_reports r
-               inner join (
-                  select
-                     user_id,
-                     class_id,
-                     class_source,
-                     max(week_id) as week_id
-                  from wrc_reports
-                  where weight > 0
-                  group by
-                     user_id,
-                     class_id,
-                     class_source
-               ) current_weight_limiter
-                  on r.user_id = current_weight_limiter.user_id
-                  and r.class_id = current_weight_limiter.class_id
-                  and r.class_source = current_weight_limiter.class_source
-                  and r.week_id = current_weight_limiter.week_id
-               left join (
-                  select
-                     user_id,
-                     class_id,
-                     class_source,
-                     weight as starting_weight
-                  from wrc_reports
-                  where week_id=1
-               ) starting_weights
-                  on r.user_id = starting_weights.user_id
-       	       	  and r.class_id = starting_weights.class_id
-       	       	  and r.class_source = starting_weights.class_source
-         ) weight_changes
-            on e.user_id = weight_changes.user_id
-            and e.class_id = weight_changes.class_id
-            and e.class_source = weight_changes.class_source
+         left join first_reports_with_weights frww
+            on e.user_id = frww.user_id
+            and e.class_id = frww.class_id
+            and e.class_source = frww.class_source
+         left join last_reports_with_weights lrww
+            on e.user_id = lrww.user_id
+            and e.class_id = lrww.class_id
+            and e.class_source = lrww.class_source
       where
          c.instructor_id = ?
    " . $orderby, array(0, $_GET['instr'], $_GET['instr']));
-
    ?>
    <h2>
       Rosters for instructor: <?php echo full_name($_GET['instr']); ?>
@@ -163,7 +130,7 @@ function page_content() {
             <?php rosters_th("Last message<br />to participant", "ltp"); ?>
             <?php rosters_th("Last message<br />from participant", "lfp"); ?>
             <?php rosters_th("Weight<br />change", "wc"); ?>
-            <th>Weekly<br />tracker</th>
+            <?php rosters_th("Percent<br />change", "pc"); ?>
             <th>Messages</th>
          </tr>
          <?php
@@ -202,8 +169,12 @@ function page_content() {
                      ?>" />
                   </td>
                   <td>
-                     <?php echo htmlentities($qr[$i]['lname'] . ", " .
-                           $qr[$i]['fname']); ?>
+                     <a target="_blank" href="reports.php?user=<?php
+                        echo $qr[$i]['user_id'];
+                     ?>">
+                        <?php echo htmlentities($qr[$i]['lname'] . ", " .
+                              $qr[$i]['fname']); ?>
+                     </a>
                   </td>
                   <td>
                      <?php echo rstr_date($qr[$i]['start_dttm']); ?>
@@ -238,12 +209,15 @@ function page_content() {
                         echo $qr[$i]['wt_chg'];
                      ?>
                   </td>
-                  <td class="center">
-                     <a target="_blank" href="reports.php?user=<?php
-                        echo $qr[$i]['user_id'];
-                     ?>">
-                        <img src="report.png" />
-                     </a>
+                  <td class="center<?php
+                     if(isset($qr[$i]['wt_chg_pct']) && $qr[$i]['wt_chg_pct'] <= -.05) {
+                        echo " green";
+                     }
+                  ?>">
+                     <?php
+                        if(isset($qr[$i]['wt_chg_pct']))
+                           echo round($qr[$i]['wt_chg_pct'] * 100, 1) . '%';
+                     ?>
                   </td>
                   <td class="center">
                       <a target="_blank" href="all_messages.php?user=<?php

@@ -129,21 +129,54 @@ from
    wrc_reports r
    natural join last_reports lr;
 
-create or replace view first_reports_with_weights as
+create or replace view first_reports_with_weights_weeks as
 select
    user_id,
    class_id,
    class_source,
-   min(week_id),
-   week_id,
-   weight
-from wrc_reports r
+   min(week_id) as week_id
+from wrc_reports
 where weight > 0
 group by
    user_id,
    class_id,
-   class_source
-having week_id = min(week_id);
+   class_source;
+
+create or replace view first_reports_with_weights as
+select
+   r.user_id,
+   r.class_id,
+   r.class_source,
+   r.week_id,
+   r.weight
+from
+   wrc_reports r
+   natural join first_reports_with_weights_weeks f;
+
+create or replace view last_reports_with_weights_weeks as
+select
+   user_id,
+   class_id,
+   class_source,
+   max(week_id) as week_id
+from wrc_reports
+where weight > 0
+group by
+   user_id,
+   class_id,
+   class_source;
+
+create or replace view last_reports_with_weights as
+select
+   r.user_id,
+   r.class_id,
+   r.class_source,
+   r.week_id,
+   r.weight
+from
+   wrc_reports r
+   natural join last_reports_with_weights_weeks f;
+
 
 
 /*
