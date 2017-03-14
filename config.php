@@ -1167,16 +1167,18 @@ function goalWeightCard($userId, $classId, $classSource) {
          ?>
 
          <div id="goalweight">
-            Your goal weight at the end of
-            <?php echo currentPhaseForClass($classId, $classSource); ?>
-            is
-            <span style="font-weight: bold">
-               <?php echo round($goalWeight, 1); ?>
-            </span>
-            pounds.<br />
-            <span style="font-style: italic">
+            <div style="font-size: 1.17em">
+               Your goal weight at the end of
+               <?php echo currentPhaseForClass($classId, $classSource); ?>
+               is
+               <span style="font-weight: bold">
+                  <?php echo round($goalWeight, 1); ?>
+               </span>
+               pounds.<br />
+            </div>
+            <div style="font-style: italic; margin-top: 0.5em">
                A 5% weight loss decreases your risk of diabetes.
-            </span>
+            </div>
          </div>
 
          <?php
