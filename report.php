@@ -1011,10 +1011,13 @@ function blank_zero($dbCol, $postedValue) {
          'physact_minutes',
          'syst_start',
          'syst_end',
+         'syst_mid',
          'dias_start',
          'dias_end',
+         'dias_mid',
          'waist_start',
-         'waist_end'
+         'waist_end',
+         'waist_mid'
       ))
    ) {
       return 0;
