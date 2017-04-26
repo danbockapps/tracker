@@ -7,12 +7,7 @@ function page_content() {
    access_restrict($qr);
 
    if(empty($qr)) {
-      ?><p>
-         Welcome to the <?php echo PRODUCT_TITLE; ?>
-         application. You are not registered for a current class. Please
-         e-mail us at <a href="mailto:<?php echo ADMIN_EMAIL; ?>">
-         <?php echo ADMIN_EMAIL; ?></a> if you believe this is in error.
-      </p><?php
+      noCurrentClass();
    }
    else {
       participant_nav($qr['class_id'], $qr['class_source']);

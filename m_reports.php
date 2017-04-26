@@ -8,12 +8,7 @@ function page_content() {
    participant_nav($qr['class_id'], $qr['class_source']);
 
    if(empty($qr)) {
-      ?><p>
-         Welcome to the <?php echo PRODUCT_TITLE; ?>
-         application. You are not registered for a current class. Please
-         e-mail us at <a href="<?php echo ADMIN_EMAIL; ?>">
-         <?php echo ADMIN_EMAIL; ?></a> if you believe this is in error.
-      </p><?php
+      noCurrentClass();
    }
    else {
       ?><div id="smartgoal">

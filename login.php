@@ -30,7 +30,7 @@ function page_content() {
       }
 
       if (!email_already_in_db($_POST['email'])) {
-      	$error[] = "There is no registered account with that e-mail address.";
+      	$error[] = noCurrentClassText();
       }
 
       if (empty($error)) { //if the array is empty, it means no error found
