@@ -186,6 +186,49 @@ developed December 2015 for new week-by-week attendance entry
 
 create or replace view attendance_limiter as
    select max(attendance_id) as attendance_id
+   from wrc_attendance
+   group by
+      user_id,
+      class_id,
+      class_source,
+      week;
+
+create or replace view attendance_summary as
+select
+   a.user_id,
+   a.class_id,
+   a.class_source,
+   a.week,
+   a.present,
+   case
+      when week <= 16 then a.present
+      else 0
+   end as present_phase1,
+   case
+      when week >= 17 then a.present
+      else 0
+   end as present_phase2
+from
+   wrc_attendance a
+   inner join attendance_limiter l
+   on a.attendance_id = l.attendance_id;
+
+create or replace view attendance_sum as
+select
+   user_id,
+   class_id,
+   class_source,
+   sum(present) as numclasses,
+   sum(present_phase1) as numclasses_phase1,
+   sum(present_phase2) as numclasses_phase2
+from attendance_summary
+group by
+   user_id,
+   class_id,
+   class_source;
+
+create or replace view attendance_limiter2 as
+   select max(attendance_id) as attendance_id
    from
       wrc_attendance a
       inner join classes_aw c
@@ -197,7 +240,7 @@ create or replace view attendance_limiter as
       month(c.start_dttm),
       year(c.start_dttm);
 
-create or replace view attendance_summary as
+create or replace view attendance_summary2 as
 select
    a.user_id,
    month(c.start_dttm) as month,
@@ -214,13 +257,13 @@ select
    end as present_phase2
 from
    wrc_attendance a
-   inner join attendance_limiter l
+   inner join attendance_limiter2 l
       on a.attendance_id = l.attendance_id
    inner join classes_aw c
       on a.class_id = c.class_id
       and a.class_source = c.class_source;
 
-create or replace view attendance_sum as
+create or replace view attendance_sum2 as
 select
    user_id,
    month,
@@ -228,7 +271,7 @@ select
    sum(present) as numclasses,
    sum(present_phase1) as numclasses_phase1,
    sum(present_phase2) as numclasses_phase2
-from attendance_summary
+from attendance_summary2
 group by
    user_id,
    month,
