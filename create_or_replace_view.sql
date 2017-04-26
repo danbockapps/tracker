@@ -186,18 +186,22 @@ developed December 2015 for new week-by-week attendance entry
 
 create or replace view attendance_limiter as
    select max(attendance_id) as attendance_id
-   from wrc_attendance
+   from
+      wrc_attendance a
+      inner join classes_aw c
+         on a.class_id = c.class_id
+         and a.class_source = c.class_source
    group by
-      user_id,
-      class_id,
-      class_source,
-      week;
+      a.user_id,
+      a.week,
+      month(c.start_dttm),
+      year(c.start_dttm);
 
 create or replace view attendance_summary as
 select
    a.user_id,
-   a.class_id,
-   a.class_source,
+   month(c.start_dttm) as month,
+   year(c.start_dttm) as year,
    a.week,
    a.present,
    case
@@ -211,21 +215,24 @@ select
 from
    wrc_attendance a
    inner join attendance_limiter l
-   on a.attendance_id = l.attendance_id;
+      on a.attendance_id = l.attendance_id
+   inner join classes_aw c
+      on a.class_id = c.class_id
+      and a.class_source = c.class_source;
 
 create or replace view attendance_sum as
 select
    user_id,
-   class_id,
-   class_source,
+   month,
+   year,
    sum(present) as numclasses,
    sum(present_phase1) as numclasses_phase1,
    sum(present_phase2) as numclasses_phase2
 from attendance_summary
 group by
    user_id,
-   class_id,
-   class_source;
+   month,
+   year;
 
 create or replace view pes_reports_summ as
 select
