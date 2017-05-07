@@ -617,7 +617,7 @@ function template_start($require_logged_in, $require_logged_out) {
    }
    if($require_logged_in && !isset($_SESSION['user_id'])) {
       // You need to be logged in, but you're not.
-      header("Location: login.php");
+      header("Location: login.php?request_uri=" . basename($_SERVER['REQUEST_URI']));
       exit();
    }
    else if($require_logged_out & isset($_SESSION['user_id'])) {
