@@ -185,15 +185,18 @@ function sendmail($to, $subject, $body) {
    exec("php-cli message.php '$to' '$subject' '$body' > /dev/null &");
 }
 
-function sendById($recipientId, $messageId) {
+function sendById($recipientId, $messageId, $participantId=-1) {
    if(!is_numeric($recipientId)) {
       exit("Error: recipient ID is not numeric.");
    }
    if(!is_numeric($messageId)) {
       exit("Error: message ID is not numeric.");
    }
+   if(!is_numeric($participantId)) {
+      exit("Error: participant ID is not numeric.");
+   }
 
-   $executable = "php-cli messageById.php $recipientId $messageId > /dev/null &";
+   $executable = "php-cli messageById.php $recipientId $messageId $participantId > /dev/null &";
    exec($executable);
 }
 
@@ -489,7 +492,11 @@ function participant_nav($class_id, $class_source) {
    }
 }
 
-function message_participant($recip_id, $msg_text) {
+function message_participant($recip_id, $msg_text, $participant_id=-1) {
+   if($participant_id == -1) {
+      $participant_id = $recip_id;
+   }
+
    if(strlen($msg_text) > 99999) {
       exit(err_text("Your message is too long."));
    }
@@ -502,7 +509,7 @@ function message_participant($recip_id, $msg_text) {
    ");
    if($sth->execute(array($_SESSION['user_id'], $recip_id, $msg_text))) {
       // Message inserted into database.
-      sendById($recip_id, 2);
+      sendById($recip_id, 2, $participant_id);
 
       $eqr = seleqt_one_record("
          select

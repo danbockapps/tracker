@@ -9,7 +9,7 @@ require_once('Mail.php');
 $nonHiddenRecipient = getNonHiddenRecipient();
 $recipients = getRecipients();
 $headers = getHeaders();
-$msg = getMessage($argv[1], $argv[2], $nonHiddenRecipient);
+$msg = getMessage($argv[1], $argv[2], $argv[3], $nonHiddenRecipient);
 
 /* Suppress mail error messages */
 $origErrReportingLevel = error_reporting();
@@ -83,7 +83,7 @@ function getSubject() {
    }
 }
 
-function getMessage($recipientId, $messageId, $recipientEmail) {
+function getMessage($recipientId, $messageId, $participantId, $recipientEmail) {
    if($messageId == 1) {
       // This is called from reset.php
       $email_reset_key = generate_email_reset($recipientEmail);
@@ -98,6 +98,7 @@ function getMessage($recipientId, $messageId, $recipientEmail) {
       // This is called from the message_participant function in config.php
       $message = "You have received a new message.\n";
       $message .= "Click here to see it: " . WEBSITE_URL;
+      $message .= "/all_messages.php?user=$participantId";
    }
    else if($messageId == 3) {
       // This is called from report.php
