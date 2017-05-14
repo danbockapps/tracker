@@ -352,11 +352,11 @@ function page_content() {
                ?>
                <td class="center"><?php
                echo (isset($reports['aerobic'][$i]) ?
-                     zero_blank($reports['aerobic'][$i]) : "");
+                     $reports['aerobic'][$i] : "");
                ?></td>
                <td class="center"><?php
                echo (isset($reports['strength'][$i]) ?
-                     zero_blank($reports['strength'][$i]) : "");
+                     $reports['strength'][$i] : "");
                ?></td>
                <?php
             }
@@ -364,7 +364,7 @@ function page_content() {
                ?>
                <td class="center"><?php
                echo (isset($reports['physact'][$i]) ?
-                     zero_blank($reports['physact'][$i]) : "");
+                     $reports['physact'][$i] : "");
                ?></td>
                <?php
             }
