@@ -16,15 +16,31 @@ function page_content() {
 
    $aqr = pdo_seleqt("
       select
-         user_id,
-         week,
-         present
-      from wrc_attendance
+         a.user_id,
+         a.week,
+         a.present
+      from
+         wrc_attendance a
+         inner join classes_aw c
+            on a.class_id = c.class_id
+            and a.class_source = c.class_source
       where
-         class_id = ?
-         and class_source = ?
+         year(c.start_dttm) in (
+            select year(start_dttm)
+            from classes_aw
+            where
+               class_id = ?
+               and class_source = ?
+         )
+         and month(c.start_dttm) in (
+            select month(start_dttm)
+            from classes_aw
+            where
+               class_id = ?
+               and class_source = ?
+         )
       order by date_entered
-   ", array($_GET['class_id'], $_GET['class_source']));
+   ", array($_GET['class_id'], $_GET['class_source'], $_GET['class_id'], $_GET['class_source']));
 
    $qr = pdo_seleqt("
       select

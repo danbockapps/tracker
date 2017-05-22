@@ -137,8 +137,8 @@ from
       on c.instructor_id = instrs.user_id
    left join attendance_sum am on
       e.tracker_user_id = am.user_id and
-      e.class_id = am.class_id and
-      e.class_source = am.class_source
+      month(c.start_dttm) = am.month and
+      year(c.start_dttm) = am.year
 where
    instrs.instructor = 1
    -- datediff on c.start_dttm was here. Not sure why.

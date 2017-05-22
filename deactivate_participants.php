@@ -17,11 +17,16 @@ $sth = $dbh->prepare('
       from classes_deadline_today
    ) and tracker_user_id not in (
       select user_id
-      from attendance_sum
+      from attendance_sum2
       where
          numclasses >= 9 and
-         class_id in (
-            select class_id
+         /* TODO this should require a match of month AND year */
+         month in (
+            select month
+            from classes_deadline_today
+         ) and
+         year in (
+            select year
             from classes_deadline_today
          )
    )
