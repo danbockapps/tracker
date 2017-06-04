@@ -47,12 +47,11 @@ function page_content() {
          e.user_id,
          u.fname,
          u.lname,
-         coalesce(a.numclasses, 0) as numclasses,
+         0 as numclasses,
          e.shirtchoice
       from
          " . ENR_VIEW . " e
          natural join wrc_users u
-         natural left join attendance_sum a
       where
          e.class_id = ?
          and e.class_source = ?
@@ -169,7 +168,7 @@ function page_content() {
             </div>
          </td>
          <td class="attendanceSum"><?php
-            echo htmlentities($row['numclasses']);
+            echo numclasses($row['user_id'], $iqr);
          ?></td><?php
             for($j=1; $j<=$numLessons; $j++) {
                ?><td class="checkboxCell<?php
@@ -331,6 +330,17 @@ function page_content() {
    </script>
 
    <?php
+
+}
+
+function numclasses($user_id, $iqr) {
+   $count = 0;
+
+   foreach($iqr[$user_id] as $entryItem) {
+      $count += $entryItem;
+   }
+
+   return $count;
 }
 
 ?>
