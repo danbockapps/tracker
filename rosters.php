@@ -80,7 +80,8 @@ function page_content() {
          (lrww.weight - frww.weight) / frww.weight as wt_chg_pct,
          u.last_message_from,
          u.last_message_to,
-         e.class_id
+         e.class_id,
+         u.email
       from
          " . ENR_VIEW . " e
          inner join current_classes_for_rosters c
@@ -142,20 +143,37 @@ function page_content() {
                   )
                ) {
                   ?>
+
                   <tr class="header_row">
                      <td class="center" colspan="9">
                         <span><?php echo class_times($qr[$i]['start_dttm']); ?></span>
                      </td>
                   </tr>
+
                   <tr>
                      <td colspan="9">
                         <a href="javascript:mailClass(<?php
                            echo $qr[$i]['class_id'];
                         ?>)">
-                           message entire class
+                           message entire class</a>
+                        &nbsp;
+                        <a href="#" class="showEmailLink">
+                           show email addresses
                         </a>
                      </td>
                   </tr>
+
+                  <tr class="emailList" style="display:none">
+                     <td colspan="9">
+                        <p style="font-style:italic">
+                           This list can be copied and pasted into your email client.
+                        </p>
+                        <p>
+                           <?php printEmailAddresses($qr[$i]['class_id'], $qr); ?>
+                        </p>
+                     </td>
+                  </tr>
+
                   <?php
                }
                ?>
@@ -246,6 +264,11 @@ function page_content() {
             $(".class" + class_id).prop("checked", true);
             $("#multi_message").submit();
          }
+
+         $('.showEmailLink').click(function(e) {
+            $(this).parent().parent().parent().find('.emailList').show();
+            e.preventDefault();
+         });
       </script>
       <?php
    }
@@ -272,5 +295,17 @@ function rosters_th_link($header, $sort_get_var) {
    ?>"><?php
       echo $header;
    ?> <img src="sort_icon.png" /></a><?php
+}
+
+function printEmailAddresses($classId, $qr) {
+   $emailArray = array();
+
+   foreach($qr as $row) {
+      if($row['class_id'] == $classId) {
+         $emailArray[] = $row['email'];
+      }
+   }
+
+   echo implode(',', $emailArray);
 }
 ?>
