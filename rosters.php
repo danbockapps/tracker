@@ -164,7 +164,7 @@ function page_content() {
                   </tr>
 
                   <tr class="emailList" style="display:none">
-                     <td colspan="9">
+                     <td colspan="9" style="white-space:normal">
                         <p style="font-style:italic">
                            This list can be copied and pasted into your email client.
                         </p>
@@ -266,7 +266,7 @@ function page_content() {
          }
 
          $('.showEmailLink').click(function(e) {
-            $(this).parent().parent().parent().find('.emailList').show();
+            $(this).parent().parent().next('.emailList').show();
             e.preventDefault();
          });
       </script>
@@ -306,6 +306,6 @@ function printEmailAddresses($classId, $qr) {
       }
    }
 
-   echo implode(',', $emailArray);
+   echo implode(', ', $emailArray);
 }
 ?>
