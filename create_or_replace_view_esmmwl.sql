@@ -87,10 +87,10 @@ from
       on e.class_id = zc.id
    left join wrc_users instrs
       on c.instructor_id = instrs.user_id
-   left join attendance_sum am on
+   left join attendance_sum2 am on
       e.tracker_user_id = am.user_id and
-      e.class_id = am.class_id and
-      e.class_source = am.class_source
+      month(zc.start_date_time) = am.month and
+      year(zc.start_date_time) = am.year
 where
    instrs.instructor = 1
    -- datediff on c.start_dttm was here. Not sure why.

@@ -135,7 +135,7 @@ from
       on e.class_id = zc.id
    left join wrc_users instrs
       on c.instructor_id = instrs.user_id
-   left join attendance_sum am on
+   left join attendance_sum2 am on
       e.tracker_user_id = am.user_id and
       month(c.start_dttm) = am.month and
       year(c.start_dttm) = am.year
