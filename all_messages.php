@@ -126,6 +126,12 @@ function page_content() {
       <?php
    }
 
+   ?>
+   <script>
+      $('.message').linkify({target: '_blank'});
+   </script>
+   <?php
+
    // Mark all as read. If I am instructor, mark only those messages
    // from $_GET['user'] as read.
    $dbh = pdo_connect($ini['db_prefix'] . "_update");

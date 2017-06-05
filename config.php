@@ -636,6 +636,10 @@ function template_js() {
    </script>
    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.3.1/jquery.cookie.min.js">
    </script>
+   <script src="//cdnjs.cloudflare.com/ajax/libs/jQuery-linkify/2.1.4/linkify.min.js">
+   </script>
+   <script src="//cdnjs.cloudflare.com/ajax/libs/jQuery-linkify/2.1.4/linkify-jquery.min.js">
+   </script>
    <script type="text/javascript" src="jquery.showhide.pack.js">
    </script>
    <script type="text/javascript">
