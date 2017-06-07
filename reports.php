@@ -289,7 +289,7 @@ function page_content() {
                ***************************************************************/
 
                global $ini;
-               if($ini['product'] == 'esmmwl') {
+               if($ini['product'] == 'esmmwl' || $ini['product'] == 'esmmwl2') {
                   ?>
                   <th>Minutes of <br /> aerobic activity</th>
                   <th>Minutes of <br /> strength training</th>
@@ -348,7 +348,7 @@ function page_content() {
             /* TABLE CELLS FOR DIFFERENT PRODUCTS
             ***************************************************************/
 
-            if($ini['product'] == 'esmmwl') {
+            if($ini['product'] == 'esmmwl' || $ini['product'] == 'esmmwl2') {
                ?>
                <td class="center"><?php
                echo (isset($reports['aerobic'][$i]) ?
