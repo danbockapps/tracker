@@ -15,6 +15,7 @@ define('DATABASE_NAME', $ini['database_name']);
 define('WEBSITE_URL', $ini['website_url']);
 define('ENR_TBL', $ini['enrollment_table']);
 define('ADMIN_EMAIL', $ini['admin_email']);
+define('FITBIT_SVC', $ini['fitbit_svc']);
 
 validate_product();
 
