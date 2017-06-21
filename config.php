@@ -2,6 +2,7 @@
 CRYPT_BLOWFISH or die ('No Blowfish found.');
 define("BLOWFISH_PRE", "$2y$05$");
 define("BLOWFISH_SUF", "$");
+date_default_timezone_set('America/New_York');
 
 $ini = parse_ini_file('auth.ini');
 
