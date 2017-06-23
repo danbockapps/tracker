@@ -17,6 +17,9 @@ define('WEBSITE_URL', $ini['website_url']);
 define('ENR_TBL', $ini['enrollment_table']);
 define('ADMIN_EMAIL', $ini['admin_email']);
 define('FITBIT_SVC', $ini['fitbit_svc']);
+define('FITBIT_CLIENT_ID', $ini['fitbit_client_id']);
+define('FITBIT_CLIENT_SECRET', $ini['fitbit_client_secret']);
+define('DB_PREFIX', $ini['db_prefix']);
 
 validate_product();
 
@@ -1220,6 +1223,16 @@ function noCurrentClassText() {
    }
 
    return $text;
+}
+
+function uriWithQueryString() {
+   $returnable = $_SERVER['SCRIPT_URI'];
+
+   if(strlen($_SERVER['QUERY_STRING']) > 0) {
+      $returnable .= '?' . $_SERVER['QUERY_STRING'];
+   }
+
+   return $returnable;
 }
 
 ?>

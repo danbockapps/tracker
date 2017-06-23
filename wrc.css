@@ -395,3 +395,15 @@ ul#classList li {
    font-size: medium;
    text-decoration: none;
 }
+
+#fitbit-button {
+   padding: 9px 9px 5px;
+}
+
+#fitbit-button img {
+   height: 20px;
+   width: 77px;
+   margin-left: 5px;
+   margin-bottom: 5px;
+   vertical-align: middle;
+}
