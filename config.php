@@ -1235,4 +1235,52 @@ function uriWithQueryString() {
    return $returnable;
 }
 
+function getStepsFromFitbit($userId) {
+   $qr = seleqt_one_record('
+      select
+         fitbit_access_token,
+         fitbit_refresh_token
+      from wrc_users
+      where user_id = ?
+   ', array($userId));
+
+   $c = curl_init('https://api.fitbit.com/1/user/-/activities/steps/date/today/30d.json');
+   curl_setopt(
+      $c,
+      CURLOPT_HTTPHEADER,
+      array('Authorization: Bearer ' . $qr['fitbit_access_token'])
+   );
+   curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
+
+   $response = curl_exec($c);
+   $httpCode = curl_getinfo($c, CURLINFO_HTTP_CODE);
+   curl_close($c);
+
+   logtxt('Fitbit response to steps request for user ' . $userId . ':');
+   logtxt($httpCode);
+   logtxt($response);
+
+   if($httpCode == 200) {
+      $stepsArray = json_decode($response)->{'activities-steps'};
+      $sqlValues = array();
+
+      foreach($stepsArray as $day) {
+         $sqlValues[] = '("' .
+            $userId .
+            '", "' .
+            $day->dateTime .
+            '", "steps", ' .
+            $day->value .
+         ')';
+      }
+
+      $sql = 'insert into wrc_fitbit (user_id, date, metric, value) values ' .
+         implode(',', $sqlValues);
+
+      $dbh = pdo_connect(DB_PREFIX . '_insert');
+      $sth = $dbh->prepare($sql);
+      echo $sth->execute();
+   }
+}
+
 ?>
