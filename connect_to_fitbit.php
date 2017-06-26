@@ -27,6 +27,9 @@ else {
 
    saveTokensToDatabase($_SESSION['user_id'], $accessToken, $refreshToken);
 
+   getStepsFromFitbit($_SESSION['user_id']);
+   subscribeToFitbitSteps($_SESSION['user_id'], $accessToken);
+
    $httpReferer = $_SESSION['HTTP_REFERER'];
    unset($_SESSION['HTTP_REFERER']);
    header('Location: ' . $httpReferer);
@@ -88,6 +91,36 @@ function getTokens($code) {
    $params['redirect_uri'] = REDIRECT_URI;
 
    return fitbitTokenRequest($params);
+}
+
+function subscribeToFitbitSteps($userId, $accessToken) {
+   $category = 'activities';
+   $subId = "$userId+$category";
+
+   $url =
+      'https://api.fitbit.com/1/user/-/' .
+      $category .
+      '/apiSubscriptions/' .
+      $subId .
+      '.json';
+
+   debug('Subscribing... ' . $url);
+
+   $subscribeCurl = curl_init($url);
+   curl_setopt($subscribeCurl, CURLOPT_POST, true);
+   curl_setopt(
+      $subscribeCurl,
+      CURLOPT_HTTPHEADER,
+      array('Authorization: Bearer ' . $accessToken)
+   );
+   curl_setopt($subscribeCurl, CURLOPT_RETURNTRANSFER, true);
+   $subscribeResponse = curl_exec($subscribeCurl);
+   $httpCode = curl_getinfo($subscribeCurl, CURLINFO_HTTP_CODE);
+   curl_close($subscribeCurl);
+
+   debug('Subscribe response: ');
+   debug($httpCode);
+   debug($subscribeResponse);
 }
 
 ?>

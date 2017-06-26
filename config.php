@@ -1303,7 +1303,7 @@ function getStepsFromFitbit($userId, $doNotRefresh = false) {
       debug($sql);
 
       $sth = $dbh->prepare($sql);
-      echo $sth->execute();
+      debug('Return value from inserting steps: ' . $sth->execute());
    }
 
    else if(
