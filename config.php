@@ -1401,4 +1401,14 @@ function getStartDateForFitbit($userId, $metric) {
    }
 }
 
+function isConnectedToFitbit($userId) {
+   $qr = seleqt_one_record('
+      select fitbit_access_token
+      from wrc_users
+      where user_id = ?
+   ', array($userId));
+
+   return $qr['fitbit_access_token'] == null ? false : true;
+}
+
 ?>

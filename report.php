@@ -530,9 +530,26 @@ function page_content() {
          ?>
          </table>
 
-         <button type="button" id="fitbit-button" onclick="location.href='connect_to_fitbit.php';">
-            Connect to <img src="fitbitlogo.png" />
-         </button>
+         <?php
+            //TODO restrict this to the participant and not the instructor.
+
+            if(!isConnectedToFitbit($_GET['user'])) {
+         ?>
+
+            <button type="button" id="fitbit-button" onclick="location.href='connect_to_fitbit.php';">
+               Connect to <img src="fitbitlogo.png" />
+            </button>
+
+         <?php
+            }
+            else {
+         ?>
+
+            Connected to Fitbit.
+
+         <?php
+            }
+         ?>
 
       </fieldset>
 
