@@ -1,10 +1,15 @@
 <?php
 session_start();
+
 require_once('config.php');
-define(DEBUG, true);
 define(REDIRECT_URI, WEBSITE_URL . '/connect_to_fitbit.php');
 
 if (!isset($_GET['code'])) {
+
+   if(!isset($_SESSION['user_id'])) {
+      exit('Error: not logged in.');
+   }
+
    debug('Redirecting to Fitbit server from ' . uriWithQueryString());
    $_SESSION['HTTP_REFERER'] = $_SERVER['HTTP_REFERER'];
    authorizationRequest();
@@ -14,20 +19,17 @@ else {
    // We have the code, so we can get a token
    debug('Code received at ' . uriWithQueryString());
 
-   // need this when making actual requests...
-   // $headerText = 'Authorization: Bearer ' . getTokens($_GET['code']);
-
    handleSubdomainCookieProblem();
 
    $tokens = getTokens($_GET['code']);
    $accessToken = $tokens->access_token;
    $refreshToken = $tokens->refresh_token;
 
-   debug('Access token: ' . $accessToken);
-   debug('Refresh token: ' . $refreshToken);
+   saveTokensToDatabase($_SESSION['user_id'], $accessToken, $refreshToken);
 
-   saveTokensToDatabase($accessToken, $refreshToken);
-   header('Location: ' . $_SESSION['HTTP_REFERER']);
+   $httpReferer = $_SESSION['HTTP_REFERER'];
+   unset($_SESSION['HTTP_REFERER']);
+   header('Location: ' . $httpReferer);
 }
 
 function handleSubdomainCookieProblem() {
@@ -79,60 +81,13 @@ function authorizationRequest() {
 function getTokens($code) {
    // Get 2 tokens: access token and refresh token.
 
+   // Body parameters
    $params = array();
    $params['code'] = $code;
    $params['grant_type'] = 'authorization_code';
    $params['redirect_uri'] = REDIRECT_URI;
 
-   $curl = curl_init('https://api.fitbit.com/oauth2/token');
-   curl_setopt($curl, CURLOPT_POST, true);
-   curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($params));
-   curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-   curl_setopt(
-      $curl,
-      CURLOPT_HTTPHEADER,
-      array(
-         'Authorization: Basic ' . base64_encode(FITBIT_CLIENT_ID . ':' . FITBIT_CLIENT_SECRET),
-         'Content-Type: application/x-www-form-urlencoded'
-      )
-   );
-
-   $response = curl_exec($curl);
-   curl_close($curl);
-
-   debug('Response to token request:');
-   debug($response);
-
-   return json_decode($response);
-}
-
-function saveTokensToDatabase($accessToken, $refreshToken) {
-   $dbh = pdo_connect(DB_PREFIX . '_update');
-   $sth = $dbh->prepare('
-      update wrc_users set
-         fitbit_access_token = ?,
-         fitbit_refresh_token = ?
-      where user_id = ?
-   ');
-   $dbArray = array(
-      $accessToken,
-      $refreshToken,
-      $_SESSION['user_id']
-   );
-
-   if($sth->execute($dbArray)) {
-      debug('Successfully inserted tokens into database:');
-      debug(print_r($dbArray, true));
-   }
-   else {
-      exit('Database error with Fitbit tokens.');
-   }
-}
-
-function debug($s) {
-   if(DEBUG) {
-      logtxt($s);
-   }
+   return fitbitTokenRequest($params);
 }
 
 ?>

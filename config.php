@@ -6,6 +6,8 @@ date_default_timezone_set('America/New_York');
 
 $ini = parse_ini_file('auth.ini');
 
+define('DEBUG', true);
+
 define("EMAIL_FROM", $ini['email_from']);
 define("EMAIL_LOGGER", $ini['email_logger']);
 define("EMAIL_PASSWORD", $ini['email_password']);
@@ -1070,6 +1072,12 @@ function logtxt($string) {
   );
 }
 
+function debug($s) {
+   if(DEBUG) {
+      logtxt($s);
+   }
+}
+
 // Is user either the instructor of the class or an admin?
 function can_access_class($class_id, $class_source) {
    if(am_i_admin()) {
@@ -1235,7 +1243,7 @@ function uriWithQueryString() {
    return $returnable;
 }
 
-function getStepsFromFitbit($userId) {
+function getStepsFromFitbit($userId, $doNotRefresh = false) {
    $qr = seleqt_one_record('
       select
          fitbit_access_token,
@@ -1280,6 +1288,78 @@ function getStepsFromFitbit($userId) {
       $dbh = pdo_connect(DB_PREFIX . '_insert');
       $sth = $dbh->prepare($sql);
       echo $sth->execute();
+   }
+
+   else if(
+      $httpCode == 401 &&
+      json_decode($response)->errors[0]->errorType == 'expired_token' &&
+      $doNotRefresh == false
+   ) {
+      refreshFitbitToken($userId, $qr['fitbit_refresh_token']);
+      getStepsFromFitbit($userId, true);
+   }
+}
+
+function refreshFitbitToken($userId, $refreshToken) {
+   // Body parameters
+   $params = array();
+   $params['grant_type'] = 'refresh_token';
+   $params['refresh_token'] = $refreshToken;
+
+   $tokens = fitbitTokenRequest($params);
+   $accessToken = $tokens->access_token;
+   $refreshToken = $tokens->refresh_token;
+
+   saveTokensToDatabase($userId, $accessToken, $refreshToken);
+}
+
+function fitbitTokenRequest($params) {
+   debug('Sending Fitbit token request with parameters:');
+   debug(print_r($params, true));
+
+   $curl = curl_init('https://api.fitbit.com/oauth2/token');
+   curl_setopt($curl, CURLOPT_POST, true);
+   curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($params));
+   curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+   curl_setopt(
+      $curl,
+      CURLOPT_HTTPHEADER,
+      array(
+         'Authorization: Basic ' . base64_encode(FITBIT_CLIENT_ID . ':' .
+            FITBIT_CLIENT_SECRET),
+         'Content-Type: application/x-www-form-urlencoded'
+      )
+   );
+
+   $response = curl_exec($curl);
+   curl_close($curl);
+
+   debug('Response to token request:');
+   debug($response);
+
+   return json_decode($response);
+}
+
+function saveTokensToDatabase($userId, $accessToken, $refreshToken) {
+   $dbh = pdo_connect(DB_PREFIX . '_update');
+   $sth = $dbh->prepare('
+      update wrc_users set
+         fitbit_access_token = ?,
+         fitbit_refresh_token = ?
+      where user_id = ?
+   ');
+   $dbArray = array(
+      $accessToken,
+      $refreshToken,
+      $userId
+   );
+
+   if($sth->execute($dbArray)) {
+      debug('Successfully inserted tokens into database:');
+      debug(print_r($dbArray, true));
+   }
+   else {
+      exit('Database error with Fitbit tokens.');
    }
 }
 
