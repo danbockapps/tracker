@@ -1244,6 +1244,8 @@ function uriWithQueryString() {
 }
 
 function getStepsFromFitbit($userId, $doNotRefresh = false) {
+   $metric = 'activities-steps';
+
    $qr = seleqt_one_record('
       select
          fitbit_access_token,
@@ -1269,23 +1271,27 @@ function getStepsFromFitbit($userId, $doNotRefresh = false) {
    logtxt($response);
 
    if($httpCode == 200) {
-      $stepsArray = json_decode($response)->{'activities-steps'};
+      $stepsArray = json_decode($response)->$metric;
       $sqlValues = array();
+      $dbh = pdo_connect(DB_PREFIX . '_insert');
 
       foreach($stepsArray as $day) {
-         $sqlValues[] = '("' .
-            $userId .
-            '", "' .
-            $day->dateTime .
-            '", "steps", ' .
-            $day->value .
-         ')';
+         $sqlValues[] =
+            '(' .
+            implode(',', array(
+               $dbh->quote($userId),
+               $dbh->quote($day->dateTime),
+               $dbh->quote($metric),
+               $dbh->quote($day->value)
+            )) .
+            ')';
       }
 
       $sql = 'insert into wrc_fitbit (user_id, date, metric, value) values ' .
          implode(',', $sqlValues);
 
-      $dbh = pdo_connect(DB_PREFIX . '_insert');
+      debug($sql);
+
       $sth = $dbh->prepare($sql);
       echo $sth->execute();
    }
@@ -1297,6 +1303,11 @@ function getStepsFromFitbit($userId, $doNotRefresh = false) {
    ) {
       refreshFitbitToken($userId, $qr['fitbit_refresh_token']);
       getStepsFromFitbit($userId, true);
+   }
+
+   else {
+      logtxt('ERROR: Error getting data from Fitbit.');
+      exit('ERROR: Error getting data from Fitbit.');
    }
 }
 
