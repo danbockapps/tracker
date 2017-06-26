@@ -1245,6 +1245,7 @@ function uriWithQueryString() {
 
 function getStepsFromFitbit($userId, $doNotRefresh = false) {
    $metric = 'activities-steps';
+   $urlMetric = 'activities/steps';
 
    $qr = seleqt_one_record('
       select
@@ -1254,7 +1255,16 @@ function getStepsFromFitbit($userId, $doNotRefresh = false) {
       where user_id = ?
    ', array($userId));
 
-   $c = curl_init('https://api.fitbit.com/1/user/-/activities/steps/date/today/30d.json');
+   $c = curl_init(
+      'https://api.fitbit.com/1/user/-/' .
+      $urlMetric .
+      '/date/' .
+      getStartDateForFitbit($userId, $metric) .
+      '/' .
+      date('Y-m-d') .
+      '.json'
+   );
+
    curl_setopt(
       $c,
       CURLOPT_HTTPHEADER,
@@ -1371,6 +1381,23 @@ function saveTokensToDatabase($userId, $accessToken, $refreshToken) {
    }
    else {
       exit('Database error with Fitbit tokens.');
+   }
+}
+
+function getStartDateForFitbit($userId, $metric) {
+   $qr = seleqt_one_record('
+      select max(date) as date
+      from wrc_fitbit
+      where
+         user_id = ?
+         and metric = ?
+   ', array($userId, $metric));
+
+   if($qr['date'] != null) {
+      return $qr['date'];
+   }
+   else {
+      return date('Y-m-d', strtotime('-1 year', time()));
    }
 }
 
