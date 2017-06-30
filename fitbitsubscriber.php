@@ -24,7 +24,7 @@ else {
    $subscriptionId = json_decode($entityBody)[0]->subscriptionId;
    logtxt('Subscription id is ' . $subscriptionId);
 
-   list($userId, $category) = explode('+', $subscriptionId);
+   list($userId, $category) = explode('_', $subscriptionId);
    
    logtxt('User id is: ' . $userId);
    logtxt('Category is: ' . $category);

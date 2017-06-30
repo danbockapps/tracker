@@ -95,7 +95,7 @@ function getTokens($code) {
 
 function subscribeToFitbitSteps($userId, $accessToken) {
    $category = 'activities';
-   $subId = "$userId+$category";
+   $subId = $userId . '_' . $category;
 
    $url =
       'https://api.fitbit.com/1/user/-/' .

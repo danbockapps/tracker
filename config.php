@@ -1276,9 +1276,9 @@ function getStepsFromFitbit($userId, $doNotRefresh = false) {
    $httpCode = curl_getinfo($c, CURLINFO_HTTP_CODE);
    curl_close($c);
 
-   logtxt('Fitbit response to steps request for user ' . $userId . ':');
-   logtxt($httpCode);
-   logtxt($response);
+   debug('Fitbit response to steps request for user ' . $userId . ':');
+   debug($httpCode);
+   debug(substr($response, 0, 400));
 
    if($httpCode == 200) {
       $stepsArray = json_decode($response)->$metric;
@@ -1300,7 +1300,7 @@ function getStepsFromFitbit($userId, $doNotRefresh = false) {
       $sql = 'insert into wrc_fitbit (user_id, date, metric, value) values ' .
          implode(',', $sqlValues);
 
-      debug($sql);
+      debug(substr($sql, 0, 400));
 
       $sth = $dbh->prepare($sql);
       debug('Return value from inserting steps: ' . $sth->execute());
@@ -1311,8 +1311,9 @@ function getStepsFromFitbit($userId, $doNotRefresh = false) {
       json_decode($response)->errors[0]->errorType == 'expired_token' &&
       $doNotRefresh == false
    ) {
-      refreshFitbitToken($userId, $qr['fitbit_refresh_token']);
-      getStepsFromFitbit($userId, true);
+      if(refreshFitbitToken($userId, $qr['fitbit_refresh_token'])) {
+         getStepsFromFitbit($userId, true);
+      }
    }
 
    else {
@@ -1322,6 +1323,11 @@ function getStepsFromFitbit($userId, $doNotRefresh = false) {
 }
 
 function refreshFitbitToken($userId, $refreshToken) {
+   if(strlen($refreshToken) == 0) {
+      logtxt('ERROR: Refresh token length is 0.');
+      return false;
+   }
+
    // Body parameters
    $params = array();
    $params['grant_type'] = 'refresh_token';
@@ -1331,7 +1337,14 @@ function refreshFitbitToken($userId, $refreshToken) {
    $accessToken = $tokens->access_token;
    $refreshToken = $tokens->refresh_token;
 
-   saveTokensToDatabase($userId, $accessToken, $refreshToken);
+   if(strlen($accessToken) > 0 ) {
+      saveTokensToDatabase($userId, $accessToken, $refreshToken);
+      return true;
+   }
+   else {
+      logtxt('ERROR: Access token length is 0.');
+      return false;
+   }
 }
 
 function fitbitTokenRequest($params) {
@@ -1391,6 +1404,7 @@ function getStartDateForFitbit($userId, $metric) {
       where
          user_id = ?
          and metric = ?
+         and value > 0
    ', array($userId, $metric));
 
    if($qr['date'] != null) {
