@@ -527,6 +527,18 @@ function page_content() {
                   true
                );
             }
+
+            $err_count += report_var(
+               'avgsteps',
+               $qr['class_id'],
+               $qr['class_source'],
+               'avgsteps',
+               'Average steps per day',
+               'instructions',
+               'Enter your average steps per day for ' . stepsDateRange($report_date) . '.',
+               'Average Steps instructions',
+               true
+            );
          ?>
          </table>
 
@@ -1060,4 +1072,20 @@ function isP1End($classId, $week) {
 
    return $iqr['phase1_end'] == $iqr['report_date'];
 }
+
+function stepsDateRange($reportDateString) {
+   $reportDate = date('Y-m-d', strtotime($reportDateString));
+   $rangeStart = strtotime($reportDate . ' - 8 day');
+   $rangeEnd =   strtotime($reportDate . ' - 1 day');
+
+   return
+      '<span style="font-weight: bold">' .
+      date('l, F j, Y', $rangeStart) .
+      '</span> ' .
+      'through ' .
+      '<span style="font-weight: bold">' .
+      date('l, F j, Y', $rangeEnd) .
+      '</span>';
+}
+
 ?>

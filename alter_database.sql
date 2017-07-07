@@ -23,3 +23,9 @@ create table wrc_fitbit (
    updated timestamp,
    constraint foreign key (user_id) references wrc_users (user_id)
 ) engine=innodb;
+
+
+-- 7/7/2017
+
+alter table wrc_reports
+add column avgsteps smallint unsigned;
