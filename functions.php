@@ -12,6 +12,7 @@ function getStepsFromFitbit($userId, $doNotRefresh = false) {
       where user_id = ?
    ', array($userId));
 
+   //TODO log this URL
    $c = curl_init(
       'https://api.fitbit.com/1/user/-/' .
       $urlMetric .

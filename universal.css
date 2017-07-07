@@ -1,3 +1,21 @@
+a:link, a:visited, a, .entryPoint.greenCheck {
+   color: #8ec63f;
+}
+
+.confirmation {
+   background-color: #eaffd0;
+   border: thin solid #8ec63f;
+   padding: 0.3em;
+   margin-bottom: 0.3em;
+}
+
+.error {
+   background-color: #fee;
+   color: #f00;
+   padding: 0.3em;
+   margin-bottom: 0.3em;
+}
+
 #fitbit-container img {
    height: 20px;
    width: 77px;
