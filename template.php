@@ -42,6 +42,10 @@ function generate_page($require_logged_in, $require_logged_out, $shownav=true) {
          rel="stylesheet"
          href="wrc.css"
       />
+      <link
+         rel="stylesheet"
+         href="universal.css"
+      />
 
       <?php if(PRODUCT == 'dpp') { ?>
          <link

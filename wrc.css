@@ -396,14 +396,21 @@ ul#classList li {
    text-decoration: none;
 }
 
-#fitbit-button {
-   padding: 9px 9px 5px;
+#metric-entry {
+   float: left;
 }
 
-#fitbit-button img {
-   height: 20px;
-   width: 77px;
-   margin-left: 5px;
-   margin-bottom: 5px;
+#fitbit-container {
+   height: 136px; /* 100% doesn't fill the parent fieldset. */
+   display: table-cell;
    vertical-align: middle;
+   width: 320px;
+}
+
+#fitbit-container p {
+   text-align: center;
+}
+
+#fitbit-button {
+   padding: 9px 9px 5px;
 }

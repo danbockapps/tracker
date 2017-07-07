@@ -268,7 +268,7 @@ function page_content() {
          ?>"
          method="post">
       <fieldset style="margin-bottom: 0.3em">
-         <table>
+         <table id="metric-entry">
          <?php
             $err_count = 0;
             $err_count += report_var(
@@ -543,24 +543,7 @@ function page_content() {
          </table>
 
          <?php
-            //TODO restrict this to the participant and not the instructor.
-
-            if(!isConnectedToFitbit($_GET['user'])) {
-         ?>
-
-            <button type="button" id="fitbit-button" onclick="location.href='connect_to_fitbit.php';">
-               Connect to <img src="fitbitlogo.png" />
-            </button>
-
-         <?php
-            }
-            else {
-         ?>
-
-            Connected to Fitbit.
-
-         <?php
-            }
+            fitbitDiv();
          ?>
 
       </fieldset>
@@ -1082,6 +1065,36 @@ function stepsDateRange($reportDateString) {
       date('l, F j, Y', $rangeStart) .
       ' through ' .
       date('l, F j, Y', $rangeEnd);
+}
+
+function fitbitDiv() {
+   //TODO restrict this to the participant and not the instructor.
+   ?>
+   <div id="fitbit-container">
+   <?php
+
+   if(!isConnectedToFitbit($_GET['user'])) {
+      ?>
+
+      <button type="button" id="fitbit-button" onclick="location.href='connect_to_fitbit.php';">
+         Connect to <img src="fitbitlogo.png" />
+      </button>
+
+      <?php
+         }
+         else {
+      ?>
+
+         <p>
+            
+            Connected to <img src="fitbitlogo.png" />
+         </p>
+
+      <?php
+         }
+      ?>
+   </div>
+   <?php
 }
 
 ?>
