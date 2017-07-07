@@ -1079,13 +1079,9 @@ function stepsDateRange($reportDateString) {
    $rangeEnd =   strtotime($reportDate . ' - 1 day');
 
    return
-      '<span style="font-weight: bold">' .
       date('l, F j, Y', $rangeStart) .
-      '</span> ' .
-      'through ' .
-      '<span style="font-weight: bold">' .
-      date('l, F j, Y', $rangeEnd) .
-      '</span>';
+      ' through ' .
+      date('l, F j, Y', $rangeEnd);
 }
 
 ?>
