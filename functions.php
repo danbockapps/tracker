@@ -274,5 +274,22 @@ function subscribeToFitbitSteps($userId, $accessToken) {
    debug($subscribeResponse);
 }
 
+function getAvgStepsFromDb($userId, $reportDateString) {
+   $reportDate = date('Y-m-d', strtotime($reportDateString));
+   $rangeStart = date('Y-m-d', strtotime($reportDate . ' - 8 day'));
+   $rangeEnd =   date('Y-m-d', strtotime($reportDate . ' - 1 day'));
 
+   //TODO create a view with only the latest value from each date, and use that here.
+
+   $qr = seleqt_one_record('
+      select avg(value) as avgsteps
+      from wrc_fitbit
+      where
+         user_id = ?
+         and metric = ?
+         and date between ? and ?
+   ', array($userId, 'activities-steps', $rangeStart, $rangeEnd));
+
+   return $qr['avgsteps'];
+}
 ?>

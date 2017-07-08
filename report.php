@@ -537,7 +537,10 @@ function page_content() {
                'instructions',
                'Enter your average steps per day for ' . stepsDateRange($report_date) . '.',
                'Average Steps instructions',
-               true
+               true, // report true
+               true, // required numeric
+               false, // instructor input
+               getAvgStepsFromDb($_GET['user'], $report_date)
             );
          ?>
          </table>
@@ -821,7 +824,8 @@ function report_var (
    $popup_title,       //  title for the alert
    $rept_enrf,         //  report true, enrollment false
    $req_num=true,      //  required to be numeric
-   $inst_input=false   //  instructor inputs this field.
+   $inst_input=false,  //  instructor inputs this field.
+   $fitbit_value=0     //  value received from Fitbit
 ) {
    global $ini;
 
@@ -916,10 +920,10 @@ function report_var (
          if($_SESSION['user_id'] == $_GET['user']) {
             // participant is looking at his own report
             if($inst_input) {
-               readonly($cvqr, $db_col);
+               readonly($cvqr, $db_col, $fitbit_value);
             }
             else {
-               report_input($post_var, $cvqr, $db_col);
+               report_input($post_var, $cvqr, $db_col, $fitbit_value);
                if($popup_link) {
                   popup($popup_link, $popup_text, $popup_title);
                }
@@ -928,10 +932,10 @@ function report_var (
          else {
             // instructor or admin is looking at participant's report.
             if($inst_input) {
-               report_input($post_var, $cvqr, $db_col, true);
+               report_input($post_var, $cvqr, $db_col, 0, true);
             }
             else {
-               readonly($cvqr, $db_col);
+               readonly($cvqr, $db_col, $fitbit_value);
             }
          }
       ?>
@@ -940,7 +944,7 @@ function report_var (
    return $err_count;
 }
 
-function report_input($post_var, $cvqr, $db_col, $textarea=false) {
+function report_input($post_var, $cvqr, $db_col, $fitbit_value, $textarea=false) {
    if($textarea) {
       ?>
       <textarea rows="6" cols="60" name="<?php echo $post_var; ?>"><?php
@@ -954,8 +958,11 @@ function report_input($post_var, $cvqr, $db_col, $textarea=false) {
       ?>
       <input type="text" size="3" name="<?php echo $post_var; ?>"
          value="<?php
-            if(isset($cvqr[0][$db_col])) {
+            if($cvqr[0][$db_col] > 0) {
                echo zero_blank($cvqr[0][$db_col]);
+            }
+            else {
+               echo zero_blank($fitbit_value);
             }
          ?>"
          onkeyup="calcBmi();"
@@ -964,10 +971,13 @@ function report_input($post_var, $cvqr, $db_col, $textarea=false) {
    }
 }
 
-function readonly($cvqr, $db_col) {
+function readonly($cvqr, $db_col, $fitbit_value) {
    ?><b><?php
    if(isset($cvqr[0][$db_col])) {
       echo htmlentities($cvqr[0][$db_col]);
+   }
+   else {
+      echo zero_blank($fitbit_value);
    }
    ?></b><?php
 }
