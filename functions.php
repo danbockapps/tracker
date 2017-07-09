@@ -169,6 +169,7 @@ function getStartDateForFitbit($userId, $metric) {
       return $qr['date'];
    }
    else {
+      //TODO limit this to the start date of the class
       return date('Y-m-d', strtotime('-1 year', time()));
    }
 }
@@ -283,13 +284,13 @@ function getAvgStepsFromDb($userId, $reportDateString) {
 
    $qr = seleqt_one_record('
       select avg(value) as avgsteps
-      from wrc_fitbit
+      from fitbit
       where
          user_id = ?
          and metric = ?
          and date between ? and ?
    ', array($userId, 'activities-steps', $rangeStart, $rangeEnd));
 
-   return $qr['avgsteps'];
+   return round($qr['avgsteps']);
 }
 ?>

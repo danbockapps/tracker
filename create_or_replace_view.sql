@@ -488,3 +488,17 @@ select
     ) / week_num
   ) * 15.85 as pes
 from pes_components;
+
+create or replace view fitbit as
+select m1.*
+from
+   wrc_fitbit m1
+   left join wrc_fitbit m2
+      on (
+         m1.date = m2.date
+         and m1.user_id = m2.user_id
+         and m1.metric = m2.metric
+         and m1.id < m2.id
+      )
+where m2.id is null;
+

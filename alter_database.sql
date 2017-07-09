@@ -29,3 +29,8 @@ create table wrc_fitbit (
 
 alter table wrc_reports
 add column avgsteps smallint unsigned;
+
+
+-- 7/9/2017
+
+create index dumi on wrc_fitbit (date, user_id, metric, id);
