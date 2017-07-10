@@ -42,7 +42,12 @@ else {
    ob_flush();
    flush();
 
-   getStepsFromFitbit($userId);
+   if($category == 'activities') {
+      getStepsFromFitbitAndInsert($userId);
+   }
+   else if($category == 'body') {
+      getWeightFromFitbitAndInsert($userId);
+   }
 
 }
 

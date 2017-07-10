@@ -27,8 +27,11 @@ else {
 
    saveTokensToDatabase($_SESSION['user_id'], $accessToken, $refreshToken);
 
-   getStepsFromFitbit($_SESSION['user_id']);
-   subscribeToFitbitSteps($_SESSION['user_id'], $accessToken);
+   getStepsFromFitbitAndInsert($_SESSION['user_id']);
+   getWeightFromFitbitAndInsert($_SESSION['user_id']);
+
+   subscribeToFitbit($_SESSION['user_id'], 'activities', $accessToken);
+   subscribeToFitbit($_SESSION['user_id'], 'body', $accessToken);
 
    $httpReferer = $_SESSION['HTTP_REFERER'];
    unset($_SESSION['HTTP_REFERER']);

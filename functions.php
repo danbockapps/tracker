@@ -1,8 +1,21 @@
 <?php
 
-function getStepsFromFitbit($userId, $doNotRefresh = false) {
-   $metric = 'activities-steps';
-   $urlMetric = 'activities/steps';
+function getStepsFromFitbitAndInsert($userId) {
+   $response = getDataFromFitbit($userId, 'activities-steps');
+   insertFitbitData($userId, 'activities-steps', $response);
+}
+
+function getWeightFromFitbitAndInsert($userId) {
+   $response = getDataFromFitbit($userId, 'body-log-weight');
+   insertFitbitData($userId, 'weight', $response);
+}
+
+function getDataFromFitbit(
+   $userId,
+   $metric,
+   $doNotRefresh = false // avoid infinite loop
+) {
+   $urlMetric = str_replace('-', '/', $metric);
 
    $qr = seleqt_one_record('
       select
@@ -28,7 +41,10 @@ function getStepsFromFitbit($userId, $doNotRefresh = false) {
    curl_setopt(
       $c,
       CURLOPT_HTTPHEADER,
-      array('Authorization: Bearer ' . $qr['fitbit_access_token'])
+      array(
+         'Authorization: Bearer ' . $qr['fitbit_access_token'],
+         'Accept-Language: en_US'
+      )
    );
    curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
 
@@ -36,34 +52,12 @@ function getStepsFromFitbit($userId, $doNotRefresh = false) {
    $httpCode = curl_getinfo($c, CURLINFO_HTTP_CODE);
    curl_close($c);
 
-   debug('Fitbit response to steps request for user ' . $userId . ':');
+   debug('Fitbit response to ' . $metric . ' request for user ' . $userId . ':');
    debug($httpCode);
    debug($response);
 
    if($httpCode == 200) {
-      $stepsArray = json_decode($response)->$metric;
-      $sqlValues = array();
-      $dbh = pdo_connect(DB_PREFIX . '_insert');
-
-      foreach($stepsArray as $day) {
-         $sqlValues[] =
-            '(' .
-            implode(',', array(
-               $dbh->quote($userId),
-               $dbh->quote($day->dateTime),
-               $dbh->quote($metric),
-               $dbh->quote($day->value)
-            )) .
-            ')';
-      }
-
-      $sql = 'insert into wrc_fitbit (user_id, date, metric, value) values ' .
-         implode(',', $sqlValues);
-
-      debug($sql);
-
-      $sth = $dbh->prepare($sql);
-      debug('Return value from inserting steps: ' . $sth->execute());
+      return $response;
    }
 
    else if(
@@ -72,13 +66,57 @@ function getStepsFromFitbit($userId, $doNotRefresh = false) {
       $doNotRefresh == false
    ) {
       if(refreshFitbitToken($userId, $qr['fitbit_refresh_token'])) {
-         getStepsFromFitbit($userId, true);
+         return getDataFromFitbit($userId, $metric, true);
       }
    }
 
    else {
       logtxt('ERROR: Error getting data from Fitbit.');
       exit('ERROR: Error getting data from Fitbit.');
+   }
+}
+
+function insertFitbitData($userId, $metric, $response) {
+   $stepsArray = json_decode($response)->$metric;
+   $sqlValues = array();
+   $dbh = pdo_connect(DB_PREFIX . '_insert');
+
+   foreach($stepsArray as $day) {
+      $sqlValues[] =
+         '(' .
+         implode(',', array(
+            $dbh->quote($userId),
+            $dbh->quote(getDateFromResponse($metric, $day)),
+            $dbh->quote($metric),
+            $dbh->quote(getValueFromResponse($metric, $day))
+         )) .
+         ')';
+   }
+
+   $sql = 'insert into wrc_fitbit (user_id, date, metric, value) values ' .
+      implode(',', $sqlValues);
+
+   debug($sql);
+
+   $sth = $dbh->prepare($sql);
+   debug('Return value from inserting steps: ' . $sth->execute());
+}
+
+function getDateFromResponse($metric, $day) {
+   if($metric == 'activities-steps') {
+      return $day->dateTime;
+   }
+   else if($metric == 'weight') {
+      return $day->date;
+   }
+}
+
+function getValueFromResponse($metric, $day) {
+   if($metric == 'activities-steps') {
+      return $day->value;
+   }
+   else if($metric == 'weight') {
+      return $day->weight;
    }
 }
 
@@ -158,6 +196,11 @@ function saveTokensToDatabase($userId, $accessToken, $refreshToken) {
 }
 
 function getStartDateForFitbit($userId, $metric) {
+   if($metric == 'body-log-weight') {
+      // hack to correct inconsistent Fitbit naming
+      $metric = 'weight';
+   }
+
    $qr = seleqt_one_record('
       select max(date) as date
       from wrc_fitbit
@@ -167,13 +210,28 @@ function getStartDateForFitbit($userId, $metric) {
          and value > 0
    ', array($userId, $metric));
 
-   if($qr['date'] != null) {
-      return $qr['date'];
+   if($metric == 'activities-steps') {
+      if($qr['date'] != null) {
+         return $qr['date'];
+      }
+      else {
+         $class = current_class_by_user($userId);
+         return date('Y-m-d', strtotime($class['start_dttm'] . ' -8 day'));
+      }
    }
-   else {
-      $class = current_class_by_user($userId);
-      return date('Y-m-d', strtotime($class['start_dttm'] . ' -8 day'));
+
+   else if($metric == 'weight') {
+      if($qr['date'] != null ) {
+         $candidate = strtotime($qr['date']);
+      }
+      else {
+         $class = current_class_by_user($userId);
+         $candidate = strtotime($class['start_dttm']);
+      }
+
+      return date('Y-m-d', max($candidate, strtotime('-30 day')));
    }
+
 }
 
 function isConnectedToFitbit($userId) {
@@ -247,8 +305,7 @@ function getTokens($code) {
    return fitbitTokenRequest($params);
 }
 
-function subscribeToFitbitSteps($userId, $accessToken) {
-   $category = 'activities';
+function subscribeToFitbit($userId, $category, $accessToken) {
    $subId = $userId . '_' . $category;
 
    $url =
