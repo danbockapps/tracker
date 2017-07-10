@@ -24,3 +24,9 @@ a:link, a:visited, a, .entryPoint.greenCheck {
    vertical-align: middle;
 }
 
+.fitbit-app-icon {
+   visibility: hidden; /* jQuery reverses this where appropriate */
+   height: 1em;
+   width: 1em;
+   vertical-align: middle;
+}
