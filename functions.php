@@ -12,16 +12,18 @@ function getStepsFromFitbit($userId, $doNotRefresh = false) {
       where user_id = ?
    ', array($userId));
 
-   //TODO log this URL
-   $c = curl_init(
+   $url =
       'https://api.fitbit.com/1/user/-/' .
       $urlMetric .
       '/date/' .
       getStartDateForFitbit($userId, $metric) .
       '/' .
       date('Y-m-d') .
-      '.json'
-   );
+      '.json';
+
+   debug('Sending data request to Fitbit: ');
+   debug($url);
+   $c = curl_init($url);
 
    curl_setopt(
       $c,
@@ -36,7 +38,7 @@ function getStepsFromFitbit($userId, $doNotRefresh = false) {
 
    debug('Fitbit response to steps request for user ' . $userId . ':');
    debug($httpCode);
-   debug(substr($response, 0, 400));
+   debug($response);
 
    if($httpCode == 200) {
       $stepsArray = json_decode($response)->$metric;
@@ -58,7 +60,7 @@ function getStepsFromFitbit($userId, $doNotRefresh = false) {
       $sql = 'insert into wrc_fitbit (user_id, date, metric, value) values ' .
          implode(',', $sqlValues);
 
-      debug(substr($sql, 0, 400));
+      debug($sql);
 
       $sth = $dbh->prepare($sql);
       debug('Return value from inserting steps: ' . $sth->execute());
@@ -169,8 +171,8 @@ function getStartDateForFitbit($userId, $metric) {
       return $qr['date'];
    }
    else {
-      //TODO limit this to the start date of the class
-      return date('Y-m-d', strtotime('-1 year', time()));
+      $class = current_class_by_user($userId);
+      return date('Y-m-d', strtotime($class['start_dttm'] . ' -8 day'));
    }
 }
 

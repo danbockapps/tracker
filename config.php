@@ -279,10 +279,14 @@ function cnf_text($text) {
    return '<div class="confirmation">' . $text . "</div>";
 }
 
-function current_class_and_sg($close_tags="") {
+function current_class_and_sg() {
    if(!isset($_GET['user'])) {
-      exit(err_text("No user specified.") . $close_tags);
+      exit(err_text("No user specified."));
    }
+   return current_class_by_user($_GET['user']);
+}
+
+function current_class_by_user($userId) {
    $qr = pdo_seleqt("
       select
          class_id,
@@ -304,7 +308,7 @@ function current_class_and_sg($close_tags="") {
                natural join current_classes
             where user_id = ?
          )
-   ", array($_GET['user'], $_GET['user']));
+   ", array($userId, $userId));
    if(count($qr) > 1) {
       throw new Exception("Unexpected records returned.");
    }
