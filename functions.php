@@ -282,8 +282,6 @@ function getAvgStepsFromDb($userId, $reportDateString) {
    $rangeStart = date('Y-m-d', strtotime($reportDate . ' - 8 day'));
    $rangeEnd =   date('Y-m-d', strtotime($reportDate . ' - 1 day'));
 
-   //TODO create a view with only the latest value from each date, and use that here.
-
    $qr = seleqt_one_record('
       select avg(value) as avgsteps
       from fitbit

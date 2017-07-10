@@ -42,3 +42,8 @@ a:link, a:visited, a, .entryPoint.greenCheck {
    display: block;
 }
 
+.fine-print {
+   margin-top: 2em;
+   color: gray;
+   font-size: small;
+}

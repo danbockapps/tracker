@@ -717,6 +717,13 @@ function page_content() {
       <br />
       <input type="hidden" name="formsubmitted" value="true" />
       <input type="submit" id="reportsubmit" value="Submit changes" />
+
+      <p class="fine-print">
+         Fitbit is a registered trademark and service mark of Fitbit, Inc.
+         <?php echo PRODUCT_TITLE ?> is designed for use with the Fitbit
+         platform. This product is not put out by Fitbit, and Fitbit does not
+         service or warrant the functionality of this product.
+      </p>
    </form>
 
    <div id="bmi">
