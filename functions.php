@@ -381,4 +381,15 @@ function getWeightFromDb($userId, $reportDateString) {
    }
 }
 
+function fitbitValue($userId, $reportDateString, $postVar, $value) {
+   // Is $value the same as the Fitbit value? (if yes, we won't want
+   // to insert it into the wrc_reports table).
+   if($postVar == 'weight') {
+      return getWeightFromDb($userId, $reportDateString) == $value;
+   }
+   else if($postVar == 'avgsteps') {
+      return getAvgStepsFromDb($userId, $reportDateString) == $value;
+   }
+}
+
 ?>

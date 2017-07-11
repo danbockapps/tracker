@@ -19,6 +19,7 @@ function page_content() {
       exit(err_text("User is not registered for a class."));
    }
 
+   global $report_date;
    $report_date = $qr['start_dttm'] . " + " . ($_GET['week'] - 1) . " weeks";
 
    if(strtotime($report_date) > strtotime(date(DATE_RSS) . " + 1 week")) {
@@ -865,25 +866,31 @@ function report_var (
          // form is submitted, post_var is set and is numeric if required.
          $dbh = pdo_connect($ini['db_prefix'] . "_update");
          if($rept_enrf) {
-            // update wrc_reports table
-            $sth = $dbh->prepare("
-               update wrc_reports
-               set
-                  " . $db_col . " = ?,
-                  " . ($inst_input ? "fdbk_dttm" : "create_dttm") . " = now()
-               where
-                  user_id = ? and
-                  class_id = ? and
-                  class_source = ? and
-                  week_id = ?
-            ");
-            $db_array = array(
-               blank_null($db_col, $_POST[$post_var]),
-               $_GET['user'],
-               $class_id,
-               $class_source,
-               $_GET['week']
-            );
+            global $report_date;
+            if(!fitbitValue($_GET['user'], $report_date, $post_var, $_POST[$post_var])) {
+               // update wrc_reports table
+               $sth = $dbh->prepare("
+                  update wrc_reports
+                  set
+                     " . $db_col . " = ?,
+                     " . ($inst_input ? "fdbk_dttm" : "create_dttm") . " = now()
+                  where
+                     user_id = ? and
+                     class_id = ? and
+                     class_source = ? and
+                     week_id = ?
+               ");
+               $db_array = array(
+                  blank_null($db_col, $_POST[$post_var]),
+                  $_GET['user'],
+                  $class_id,
+                  $class_source,
+                  $_GET['week']
+               );
+            }
+            else {
+               // Fitbit value - don't insert into wrc_reports
+            }
          }
          else {
             // update wrc_enrollment table
@@ -903,12 +910,14 @@ function report_var (
             );
          }
 
-         if($sth->execute($db_array)) {
-            // success
-         }
-         else {
-            $err_count++;
-            echo err_text("A database error occurred with " . $label . ".");
+         if(isset($sth)) {
+            if($sth->execute($db_array)) {
+               // success
+            }
+            else {
+               $err_count++;
+               echo err_text("A database error occurred with " . $label . ".");
+            }
          }
       }
    }
@@ -1001,7 +1010,7 @@ function report_input($post_var, $cvqr, $db_col, $fitbit_value, $textarea=false)
 
 function readonly($cvqr, $db_col, $fitbit_value) {
    ?><b><?php
-   if(isset($cvqr[0][$db_col])) {
+   if($cvqr[0][$db_col] > 0) {
       echo htmlentities($cvqr[0][$db_col]);
    }
    else if($fitbit_value > 0) {
