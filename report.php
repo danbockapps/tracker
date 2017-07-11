@@ -968,6 +968,7 @@ function report_var (
             }
             else {
                readonly($cvqr, $db_col, $fitbit_value);
+               fitbit_icon($db_col);
             }
          }
       ?>
@@ -1009,8 +1010,8 @@ function report_input($post_var, $cvqr, $db_col, $fitbit_value, $textarea=false)
 }
 
 function readonly($cvqr, $db_col, $fitbit_value) {
-   ?><b><?php
-   if($cvqr[0][$db_col] > 0) {
+   ?><b style="vertical-align: middle"><?php
+   if(!is_numeric($cvqr[0][$db_col]) || $cvqr[0][$db_col] > 0) {
       echo htmlentities($cvqr[0][$db_col]);
    }
    else if($fitbit_value > 0) {
@@ -1135,26 +1136,28 @@ function fitbitDiv() {
    //TODO restrict this to the participant and not the instructor.
    ?>
    <div id="fitbit-container">
-   <?php
-
-   if(!isConnectedToFitbit($_GET['user'])) {
-      ?>
-
-      <button type="button" id="fitbit-button" onclick="location.href='connect_to_fitbit.php';">
-         Connect to <img src="fitbitlogo.png" />
-      </button>
-
       <?php
+
+         if(!isConnectedToFitbit($_GET['user'])) {
+            if($_SESSION['user_id'] == $_GET['user']) {
+               // Participant is looking at own report
+               ?>
+               <button
+                  type="button"
+                  id="fitbit-button"
+                  onclick="location.href='connect_to_fitbit.php';"
+               >
+                  Connect to <img src="fitbitlogo.png" />
+               </button>
+               <?php
+            }
          }
          else {
-      ?>
-
-         <p>
-            
-            Connected to <img src="fitbitlogo.png" />
-         </p>
-
-      <?php
+            ?>
+            <p>
+               Connected to <img src="fitbitlogo.png" />
+            </p>
+            <?php
          }
       ?>
    </div>
