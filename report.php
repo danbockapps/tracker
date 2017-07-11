@@ -281,7 +281,10 @@ function page_content() {
                "Try to weigh in at the same day and time on the same " .
                      "scale every week.",
                "Weight instructions",
-               true
+               true,
+               true,
+               false,
+               getWeightFromDb($_GET['user'], $report_date)
             );
 
             if(
@@ -1085,7 +1088,8 @@ function blank_null($dbCol, $postedValue) {
          'dias_mid',
          'waist_start',
          'waist_end',
-         'waist_mid'
+         'waist_mid',
+         'avgsteps'
       ))
    ) {
       return null;

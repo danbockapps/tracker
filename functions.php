@@ -78,28 +78,34 @@ function getDataFromFitbit(
 
 function insertFitbitData($userId, $metric, $response) {
    $stepsArray = json_decode($response)->$metric;
-   $sqlValues = array();
-   $dbh = pdo_connect(DB_PREFIX . '_insert');
 
-   foreach($stepsArray as $day) {
-      $sqlValues[] =
-         '(' .
-         implode(',', array(
-            $dbh->quote($userId),
-            $dbh->quote(getDateFromResponse($metric, $day)),
-            $dbh->quote($metric),
-            $dbh->quote(getValueFromResponse($metric, $day))
-         )) .
-         ')';
+   if(count($stepsArray) > 0) {
+      $sqlValues = array();
+      $dbh = pdo_connect(DB_PREFIX . '_insert');
+
+      foreach($stepsArray as $day) {
+         $sqlValues[] =
+            '(' .
+            implode(',', array(
+               $dbh->quote($userId),
+               $dbh->quote(getDateFromResponse($metric, $day)),
+               $dbh->quote($metric),
+               $dbh->quote(getValueFromResponse($metric, $day))
+            )) .
+            ')';
+      }
+
+      $sql = 'insert into wrc_fitbit (user_id, date, metric, value) values ' .
+         implode(',', $sqlValues);
+
+      debug($sql);
+
+      $sth = $dbh->prepare($sql);
+      debug('Return value from inserting steps: ' . $sth->execute());
    }
-
-   $sql = 'insert into wrc_fitbit (user_id, date, metric, value) values ' .
-      implode(',', $sqlValues);
-
-   debug($sql);
-
-   $sth = $dbh->prepare($sql);
-   debug('Return value from inserting steps: ' . $sth->execute());
+   else {
+      debug('There is no data to insert.');
+   }
 }
 
 function getDateFromResponse($metric, $day) {
@@ -336,7 +342,7 @@ function subscribeToFitbit($userId, $category, $accessToken) {
 
 function getAvgStepsFromDb($userId, $reportDateString) {
    $reportDate = date('Y-m-d', strtotime($reportDateString));
-   $rangeStart = date('Y-m-d', strtotime($reportDate . ' - 8 day'));
+   $rangeStart = date('Y-m-d', strtotime($reportDate . ' - 7 day'));
    $rangeEnd =   date('Y-m-d', strtotime($reportDate . ' - 1 day'));
 
    $qr = seleqt_one_record('
@@ -350,4 +356,29 @@ function getAvgStepsFromDb($userId, $reportDateString) {
 
    return round($qr['avgsteps']);
 }
+
+function getWeightFromDb($userId, $reportDateString) {
+   // Gets the correct weight for the date
+   $reportDate = date('Y-m-d', strtotime($reportDateString));
+   $rangeStart = date('Y-m-d', strtotime($reportDate . ' - 6 day'));
+
+   $qr = pdo_seleqt('
+      select value
+      from fitbit
+      where
+         user_id = ?
+         and metric = ?
+         and date between ? and ?
+      order by date desc
+      limit 1
+   ', array($userId, 'weight', $rangeStart, $reportDate));
+
+   if(count($qr) == 1) {
+      return $qr[0]['value'];
+   }
+   else {
+      return null;
+   }
+}
+
 ?>
