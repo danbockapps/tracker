@@ -5,6 +5,16 @@ function getStepsFromFitbitAndInsert($userId) {
    insertFitbitData($userId, 'activities-steps', $response);
 }
 
+function getMfaFromFitbitAndInsert($userId) {
+   $response = getDataFromFitbit($userId, 'activities-minutesFairlyActive');
+   insertFitbitData($userId, 'activities-minutesFairlyActive', $response);
+}
+
+function getMvaFromFitbitAndInsert($userId) {
+   $response = getDataFromFitbit($userId, 'activities-minutesVeryActive');
+   insertFitbitData($userId, 'activities-minutesVeryActive', $response);
+}
+
 function getWeightFromFitbitAndInsert($userId) {
    $response = getDataFromFitbit($userId, 'body-log-weight');
    insertFitbitData($userId, 'weight', $response);
@@ -109,7 +119,7 @@ function insertFitbitData($userId, $metric, $response) {
 }
 
 function getDateFromResponse($metric, $day) {
-   if($metric == 'activities-steps') {
+   if(substr($metric, 0, 10) == 'activities') {
       return $day->dateTime;
    }
    else if($metric == 'weight') {
@@ -118,7 +128,7 @@ function getDateFromResponse($metric, $day) {
 }
 
 function getValueFromResponse($metric, $day) {
-   if($metric == 'activities-steps') {
+   if(substr($metric, 0, 10) == 'activities') {
       return $day->value;
    }
    else if($metric == 'weight') {
@@ -216,7 +226,7 @@ function getStartDateForFitbit($userId, $metric) {
          and value > 0
    ', array($userId, $metric));
 
-   if($metric == 'activities-steps') {
+   if(substr($metric, 0, 10) == 'activities') {
       if($qr['date'] != null) {
          return $qr['date'];
       }
@@ -357,6 +367,29 @@ function getAvgStepsFromDb($userId, $reportDateString) {
    return round($qr['avgsteps']);
 }
 
+function getActiveMinutesFromDb($userId, $reportDateString) {
+   $reportDate = date('Y-m-d', strtotime($reportDateString));
+   $rangeStart = date('Y-m-d', strtotime($reportDate . ' - 7 day'));
+   $rangeEnd =   date('Y-m-d', strtotime($reportDate . ' - 1 day'));
+
+   $qr = seleqt_one_record('
+      select sum(value) as minutesActive
+      from fitbit
+      where
+         user_id = ?
+         and metric in (?, ?)
+         and date between ? and ?
+   ', array(
+      $userId,
+      'activities-minutesVeryActive',
+      'activities-minutesFairlyActive',
+      $rangeStart,
+      $rangeEnd
+   ));
+
+   return round($qr['minutesActive']);
+}
+
 function getWeightFromDb($userId, $reportDateString) {
    // Gets the correct weight for the date
    $reportDate = date('Y-m-d', strtotime($reportDateString));
@@ -387,8 +420,15 @@ function fitbitValue($userId, $reportDateString, $postVar, $value) {
    if($postVar == 'weight') {
       return getWeightFromDb($userId, $reportDateString) == $value;
    }
+   else if($postVar == 'aerobic' || $postVar == 'physact') {
+      return getActiveMinutesFromDb($userId, $reportDateString) == $value;
+   }
    else if($postVar == 'avgsteps') {
       return getAvgStepsFromDb($userId, $reportDateString) == $value;
+   }
+   else {
+      // It's a metric that doesn't sync with Fitbit.
+      return false;
    }
 }
 

@@ -407,7 +407,10 @@ function page_content() {
                      "engaged in aerobic activities like walking, gardening, " .
                      "or using an elliptical machine over the past week.",
                   "Aerobic activity instructions",
-                  true
+                  true,
+                  true,
+                  false,
+                  getActiveMinutesFromDb($_GET['user'], $report_date)
                );
 
                $err_count += report_var(
@@ -436,7 +439,10 @@ function page_content() {
                   null,
                   null,
                   null,
-                  true
+                  true,
+                  true,
+                  false,
+                  getActiveMinutesFromDb($_GET['user'],  $report_date)
                );
             }
 

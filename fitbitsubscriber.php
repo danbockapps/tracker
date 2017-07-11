@@ -44,6 +44,8 @@ else {
 
    if($category == 'activities') {
       getStepsFromFitbitAndInsert($userId);
+      getMfaFromFitbitAndInsert($userId);
+      getMvaFromFitbitAndInsert($userId);
    }
    else if($category == 'body') {
       getWeightFromFitbitAndInsert($userId);

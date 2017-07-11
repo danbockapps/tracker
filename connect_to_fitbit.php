@@ -28,6 +28,8 @@ else {
    saveTokensToDatabase($_SESSION['user_id'], $accessToken, $refreshToken);
 
    getStepsFromFitbitAndInsert($_SESSION['user_id']);
+   getMfaFromFitbitAndInsert($_SESSION['user_id']);
+   getMvaFromFitbitAndInsert($_SESSION['user_id']);
    getWeightFromFitbitAndInsert($_SESSION['user_id']);
 
    subscribeToFitbit($_SESSION['user_id'], 'activities', $accessToken);
