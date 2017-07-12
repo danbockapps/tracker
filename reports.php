@@ -50,6 +50,7 @@ function page_content() {
             aerobic_minutes,
             strength_minutes,
             physact_minutes,
+            avgsteps,
             notes
          from
             wrc_reports r
@@ -77,8 +78,16 @@ function page_content() {
          $reports['aerobic'][$row['week_id']-1] = $row['aerobic_minutes'];
          $reports['strength'][$row['week_id']-1] = $row['strength_minutes'];
          $reports['physact'][$row['week_id']-1] = $row['physact_minutes'];
+         $reports['avgsteps'][$row['week_id']-1] = $row['avgsteps'];
          $reports['notes'][$row['week_id']-1] = $row['notes'];
       }
+
+      $avgStepsArray = getAvgStepsArray(
+         $_GET['user'],
+         $reports['avgsteps'],
+         $qr['start_dttm'],
+         $num_weeks
+      );
       ?>
       <script type="text/javascript" src="https://www.google.com/jsapi"></script>
       <script>
@@ -302,6 +311,7 @@ function page_content() {
                }
             ?>
 
+            <th>Avg. <br /> steps</th>
             <th>Instructor <br /> feedback</th>
          </tr>
       <?php
@@ -370,7 +380,7 @@ function page_content() {
             }
          ?>
 
-
+         <td class="center"><?php echo round($avgStepsArray[$i]); ?></td>
          <td class="center"><?php
             if($link) {
                if(isset($reports['notes'][$i]) && $reports['notes'][$i] != "") {
