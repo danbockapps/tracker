@@ -502,3 +502,138 @@ from
       )
 where m2.id is null;
 
+create or replace view fitbit_with_weeks as
+select
+   c.class_id,
+   floor(datediff(f.date, c.start_dttm) / 7) + 2 as week_id,
+   f.*
+from
+   fitbit f
+   inner join enrollment_view e
+      on f.user_id = e.user_id
+   inner join current_classes c
+      on e.class_id = c.class_id;
+
+create or replace view fitbit_user_weeks as
+select distinct
+   user_id,
+   class_id,
+   week_id
+from fitbit_with_weeks;
+
+create or replace view fitbit_weight_limiter as
+select
+   user_id,
+   class_id,
+   week_id,
+   max(id) as id
+from fitbit_with_weeks
+where metric = 'weight'
+group by
+   user_id,
+   class_id,
+   week_id;
+
+create or replace view fitbit_weights as
+select
+   a.user_id,
+   a.class_id,
+   a.week_id,
+   a.value as weight
+from
+   fitbit_with_weeks a
+   inner join fitbit_weight_limiter b
+      on a.id = b.id;
+
+create or replace view fitbit_minutes as
+select
+   user_id,
+   class_id,
+   week_id,
+   sum(value) as minutes
+from fitbit_with_weeks
+where metric in ("activities-minutesFairlyActive", "activities-minutesVeryActive")
+group by
+   user_id,
+   class_id,
+   week_id;
+
+create or replace view fitbit_avgsteps as
+select
+   user_id,
+   class_id,
+   week_id,
+   avg(value) as avgsteps
+from fitbit_with_weeks
+where metric="activities-steps"
+group by
+   user_id,
+   class_id,
+   week_id;
+
+create or replace view fitbit_by_week as
+select
+   f.user_id,
+   f.class_id,
+   f.week_id,
+   fw.weight,
+   fm.minutes,
+   fa.avgsteps
+from
+   fitbit_user_weeks f
+   left join fitbit_weights fw
+      on f.user_id = fw.user_id
+      and f.class_id = fw.class_id
+      and f.week_id = fw.week_id
+   left join fitbit_minutes fm
+      on f.user_id = fm.user_id
+      and f.class_id = fm.class_id
+      and f.week_id = fm.week_id
+   left join fitbit_avgsteps fa
+      on f.user_id = fa.user_id
+      and f.class_id = fa.class_id
+      and f.week_id = fa.week_id;
+
+create or replace view reports_with_fitbit as
+select
+   r.user_id,
+   r.class_id,
+   r.class_source,
+   r.week_id,
+   coalesce(nullif(r.weight, 0), f.weight) as weight,
+   coalesce(nullif(r.aerobic_minutes, 0), f.minutes) as aerobic_minutes,
+   r.strength_minutes,
+   r.a1c,
+   coalesce(nullif(r.physact_minutes, 0), f.minutes) as physact_minutes,
+   r.notes,
+   r.create_dttm,
+   r.fdbk_dttm,
+   coalesce(nullif(r.avgsteps, 0), f.avgsteps) as avgsteps
+from
+   wrc_reports r
+   left join fitbit_by_week f
+      on r.user_id = f.user_id
+      and r.class_id = f.class_id
+      and r.week_id = f.week_id
+union
+select
+   f.user_id,
+   f.class_id,
+   'w' as class_source,
+   f.week_id,
+   f.weight,
+   f.minutes as aerobic_minutes,
+   null as strength_minutes,
+   null as a1c,
+   f.minutes as physact_minutes,
+   null as notes,
+   null as create_dttm,
+   null as fdbk_dttm,
+   f.avgsteps
+from
+   fitbit_by_week f
+   left join wrc_reports r
+      on f.user_id = r.user_id
+      and f.class_id = r.class_id
+      and f.week_id = r.week_id
+where r.user_id is null;
