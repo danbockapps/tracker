@@ -597,34 +597,63 @@ from
 create or replace view reports_with_fitbit as
 select
    r.user_id,
+
    r.class_id,
+
    r.class_source,
+
    r.week_id,
-   coalesce(nullif(r.weight, 0), f.weight) as weight,
+
+   case
+      when r.weight > 0 or f.weight = 0 or f.weight is null then r.weight
+      else f.weight
+   end as weight,
+
    case
       when nullif(r.weight, 0) is null then true
       else false
    end as weight_f,
-   coalesce(nullif(r.aerobic_minutes, 0), f.minutes) as aerobic_minutes,
+
+   case
+      when r.aerobic_minutes > 0 or f.minutes = 0 or f.minutes is null then r.aerobic_minutes
+      else f.minutes
+   end as aerobic_minutes,
+
    case
       when nullif(r.aerobic_minutes, 0) is null then true
       else false
    end as aerobic_minutes_f,
+
    r.strength_minutes,
+
    r.a1c,
-   coalesce(nullif(r.physact_minutes, 0), f.minutes) as physact_minutes,
+
+   case
+      when r.physact_minutes > 0 or f.minutes = 0 or f.minutes is null then r.physact_minutes
+      else f.minutes
+   end as physact_minutes,
+
    case
       when nullif(r.physact_minutes, 0) is null then true
       else false
    end as physact_minutes_f,
+
    r.notes,
+
    r.create_dttm,
+
    r.fdbk_dttm,
-   coalesce(nullif(r.avgsteps, 0), f.avgsteps) as avgsteps,
+
+   case
+      when r.avgsteps > 0 or f.avgsteps = 0 or f.avgsteps is null then r.avgsteps
+      else f.avgsteps
+   end as avgsteps,
+
    case
       when nullif(r.avgsteps, 0) is null then true
       else false
    end as avgsteps_f
+
 from
    wrc_reports r
    left join fitbit_by_week f
@@ -637,19 +666,19 @@ select
    f.class_id,
    'w' as class_source,
    f.week_id,
-   f.weight,
+   nullif(f.weight, 0) as weight,
    case
       when nullif(r.weight, 0) is null then true
       else false
    end as weight_f,
-   f.minutes as aerobic_minutes,
+   nullif(f.minutes, 0) as aerobic_minutes,
    case
       when nullif(r.aerobic_minutes, 0) is null then true
       else false
    end as aerobic_minutes_f,
    null as strength_minutes,
    null as a1c,
-   f.minutes as physact_minutes,
+   nullif(f.minutes, 0) as physact_minutes,
    case
       when nullif(r.physact_minutes, 0) is null then true
       else false
@@ -657,7 +686,7 @@ select
    null as notes,
    null as create_dttm,
    null as fdbk_dttm,
-   f.avgsteps,
+   nullif(f.avgsteps, 0) as avgsteps,
    case
       when nullif(r.avgsteps, 0) is null then true
       else false

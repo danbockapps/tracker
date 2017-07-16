@@ -53,7 +53,7 @@ function page_content() {
             avgsteps,
             notes
          from
-            wrc_reports r
+            reports_with_fitbit r
             inner join classes_aw c 
                on r.class_id = c.class_id
                and r.class_source = c.class_source
@@ -81,14 +81,8 @@ function page_content() {
          $reports['avgsteps'][$row['week_id']-1] = $row['avgsteps'];
          $reports['notes'][$row['week_id']-1] = $row['notes'];
       }
-
-      $avgStepsArray = getAvgStepsArray(
-         $_GET['user'],
-         $reports['avgsteps'],
-         $qr['start_dttm'],
-         $num_weeks
-      );
       ?>
+
       <script type="text/javascript" src="https://www.google.com/jsapi"></script>
       <script>
          google.load("visualization", "1", {packages:["corechart"]});
@@ -380,7 +374,9 @@ function page_content() {
             }
          ?>
 
-         <td class="center"><?php echo round($avgStepsArray[$i]); ?></td>
+         <td class="center"><?php
+            echo isset($reports['avgsteps'][$i]) ? round($reports['avgsteps'][$i]) : ''; ?>
+         </td>
          <td class="center"><?php
             if($link) {
                if(isset($reports['notes'][$i]) && $reports['notes'][$i] != "") {

@@ -934,6 +934,9 @@ function report_var (
    </td><td>
       <?php
          if($rept_enrf) {
+
+            // This could be updated to use reports_with_fitbit.
+
             $cvqr = pdo_seleqt("
                select " . $db_col . "
                from wrc_reports

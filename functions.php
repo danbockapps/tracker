@@ -432,42 +432,4 @@ function fitbitValue($userId, $reportDateString, $postVar, $value) {
    }
 }
 
-function getAvgStepsArray($userId, $reportsArray, $startDttm, $numWeeks) {
-   $qr = pdo_seleqt('
-      select
-         week_number,
-         avg(value) as average_steps
-      from (
-         select
-            floor(datediff(date, ?) / 7) + 1 as week_number,
-            value
-         from fitbit
-         where
-            metric = ?
-            and user_id = ?
-      ) fitbit_with_week_numbers
-      group by week_number
-   ', array($startDttm, 'activities-steps', $userId));
-
-   if(empty($qr)) {
-      return $reportsArray;
-   }
-
-   else {
-      // Create indexed array
-      $indexed = array();
-      for($i=0; $i<count($qr); $i++) {
-         $indexed[$qr[$i]['week_number']] = $qr[$i]['average_steps'];
-      }
-
-      for($i=0; $i<$numWeeks; $i++) {
-         if(!($reportsArray[$i] > 0)) {
-            $reportsArray[$i] = $indexed[$i];
-         }
-      }
-   }
-
-   return $reportsArray;
-}
-
 ?>
