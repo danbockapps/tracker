@@ -601,14 +601,30 @@ select
    r.class_source,
    r.week_id,
    coalesce(nullif(r.weight, 0), f.weight) as weight,
+   case
+      when nullif(r.weight, 0) is null then true
+      else false
+   end as weight_f,
    coalesce(nullif(r.aerobic_minutes, 0), f.minutes) as aerobic_minutes,
+   case
+      when nullif(r.aerobic_minutes, 0) is null then true
+      else false
+   end as aerobic_minutes_f,
    r.strength_minutes,
    r.a1c,
    coalesce(nullif(r.physact_minutes, 0), f.minutes) as physact_minutes,
+   case
+      when nullif(r.physact_minutes, 0) is null then true
+      else false
+   end as physact_minutes_f,
    r.notes,
    r.create_dttm,
    r.fdbk_dttm,
-   coalesce(nullif(r.avgsteps, 0), f.avgsteps) as avgsteps
+   coalesce(nullif(r.avgsteps, 0), f.avgsteps) as avgsteps,
+   case
+      when nullif(r.avgsteps, 0) is null then true
+      else false
+   end as avgsteps_f
 from
    wrc_reports r
    left join fitbit_by_week f
@@ -622,14 +638,30 @@ select
    'w' as class_source,
    f.week_id,
    f.weight,
+   case
+      when nullif(r.weight, 0) is null then true
+      else false
+   end as weight_f,
    f.minutes as aerobic_minutes,
+   case
+      when nullif(r.aerobic_minutes, 0) is null then true
+      else false
+   end as aerobic_minutes_f,
    null as strength_minutes,
    null as a1c,
    f.minutes as physact_minutes,
+   case
+      when nullif(r.physact_minutes, 0) is null then true
+      else false
+   end as physact_minutes_f,
    null as notes,
    null as create_dttm,
    null as fdbk_dttm,
-   f.avgsteps
+   f.avgsteps,
+   case
+      when nullif(r.avgsteps, 0) is null then true
+      else false
+   end as avgsteps_f
 from
    fitbit_by_week f
    left join wrc_reports r
