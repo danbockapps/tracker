@@ -29,11 +29,11 @@ if(PRODUCT == 'dpp') {
 }
 else if(PRODUCT == 'esmmwl') {
    define('PROGRAM_NAME', 'Eat Smart, Move More, Weigh Less');
-   define('PRODUCT_TITLE', 'Weekly Tracker');
+   define('PRODUCT_TITLE', 'My Dashboard');
 }
 else if(PRODUCT == 'esmmwl2') {
    define('PROGRAM_NAME', 'Eat Smart, Move More, Weigh Less 2');
-   define('PRODUCT_TITLE', 'Weekly Tracker 2');
+   define('PRODUCT_TITLE', 'My Dashboard 2');
 }
 
 if (get_magic_quotes_gpc() === 1) {

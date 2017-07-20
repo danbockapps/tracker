@@ -63,7 +63,7 @@ foreach($qr as $row) {
    $recipients .= ',danbock@gmail.com';
    $headers["From"] = EMAIL_FROM;
    $headers["To"] = $row['email'];
-   $headers["Subject"] = "Eat Smart, Move More, Weigh Less Weekly Tracker";
+   $headers["Subject"] = "Eat Smart, Move More, Weigh Less My Dashboard";
 
    /* Suppress mail error messages */
    $origErrReportingLevel = error_reporting();

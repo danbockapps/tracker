@@ -240,7 +240,7 @@ function page_content() {
             popup(
                "What is an Engagement Score?",
                "Your Engagement Score tells you how active you are on the " .
-               "Weekly Tracker compared to the average " . PROGRAM_NAME .
+               PRODUCT_TITLE . " compared to the average " . PROGRAM_NAME .
                " participant. We think that how active you are on " .
                PRODUCT_TITLE . " is strongly associated with how engaged " .
                "you are with the " . PROGRAM_NAME . " program; " .

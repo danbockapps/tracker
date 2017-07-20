@@ -21,12 +21,12 @@ foreach($qr as $row) {
     "\n\n" .
 
     "Thanks so much for participating in Eat Smart, Move More, Weigh Less " .
-    "Online. Please be ready to fill out your final report in the Weekly " .
-    "Tracker (" . WEBSITE_URL . ") in time for your last class this " .
+    "Online. Please be ready to fill out your final report in My Dashboard " .
+    "Dashboard (" . WEBSITE_URL . ") in time for your last class this " .
     date("l", strtotime($row['start_dttm'])) . " at " .
     date("g\:i\ A", strtotime($row['start_dttm'])) . ". Please note that " .
     "the Monday after your last class you will no longer be able to access " .
-    "your report in the Weekly Tracker." .
+    "your report in My Dashboard." .
     "\n\n" .
 
     "Like week one, your final report will contain fields to record your " .

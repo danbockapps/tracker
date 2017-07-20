@@ -121,7 +121,7 @@ function getMessage($recipientId, $messageId, $participantId, $recipientEmail) {
    else if($messageId == 5) {
       // This is called from addinstructor() in admin.php
       $message = "You are now registered as an instructor in the Eat " .
-               "Smart, Move More, Weigh Less Weekly Tracker " .
+               "Smart, Move More, Weigh Less My Dashboard " .
                "application. Log in here:\n" . WEBSITE_URL;
    }
    else {
