@@ -36,7 +36,7 @@ function page_content() {
             r.week_id,
             r.weight
          from
-            wrc_reports r
+            reports_with_fitbit r
             inner join classes_aw c
                on r.class_id = c.class_id
                and r.class_source = c.class_source
