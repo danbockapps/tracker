@@ -26,25 +26,15 @@ where
 
 create or replace view classes_aw as
 select
-   w.class_id,
-   0 as class_type,
-   w.start_dttm,
-   w.instructor_id,
-   w.weeks,
-   convert("w" using latin1) as class_source,
-   null as eligibilty_deadline,
-   null as phase1_end
-from wrc_classes w
-union
-select
    c.id as class_id,
    c.class_type,
    c.start_date_time as start_dttm,
-   c.instructor_tracker_id,
-   c.num_wks as weeks,
+   c.instructor_tracker_id as instructor_id,
+   floor(datediff(c.phase2_end, c.start_date_time) / 7) + 1 as weeks,
    convert("w" using latin1) as class_source,
    c.eligibilty_deadline,
-   c.phase1_end
+   c.phase1_end,
+   c.phase2_end
 from
    z_classes c;
 
@@ -54,6 +44,19 @@ from classes_aw
 where eligibilty_deadline = curdate();
 
 source create_or_replace_view.sql;
+
+-- Overriding the default for this view
+create or replace view current_classes as
+select
+   class_id,
+   start_dttm,
+   instructor_id,
+   weeks,
+   class_source
+from classes_aw
+where
+   start_dttm < now()
+   and datediff(now(), phase2_end) < 8;
 
 -- Reports within 2 weeks before eligibilty deadline
 create or replace view reports_near_ed0 as

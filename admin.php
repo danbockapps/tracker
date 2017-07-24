@@ -612,18 +612,30 @@ else {
 <?php
    $ivqr = pdo_seleqt("
       select
-         user_id,
-         fname,
-         lname
-      from wrc_users
-      where instructor = 1
+         u.user_id,
+         u.fname,
+         u.lname,
+         c.count
+      from
+         wrc_users u
+         left join (
+            select
+               instructor_id,
+               count(*) as count
+            from current_classes_for_rosters
+            group by instructor_id
+         ) c
+            on u.user_id = c.instructor_id
+      where u.instructor = 1
       order by
-         lname,
-         fname
+         u.lname,
+         u.fname
    ", array());
 
    foreach($ivqr as $row) {
-      ?><li><?php
+      ?><li<?php
+         if($row['count']) echo ' style = "font-weight: bold;"';
+      ?>><?php
          echo $row['fname'] . ' ' . $row['lname'] . ' ';
       ?><a href="rosters.php?instr=<?php
          echo $row['user_id'];
