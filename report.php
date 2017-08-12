@@ -1020,7 +1020,10 @@ function report_input($post_var, $cvqr, $db_col, $fitbit_value, $textarea=false)
 
 function readonly($cvqr, $db_col, $fitbit_value) {
    ?><b style="vertical-align: middle"><?php
-   if(!is_numeric($cvqr[0][$db_col]) || $cvqr[0][$db_col] > 0) {
+   if(
+      !empty($cvqr) &&
+      (!is_numeric($cvqr[0][$db_col]) || $cvqr[0][$db_col] > 0)
+   ) {
       echo htmlentities($cvqr[0][$db_col]);
    }
    else if($fitbit_value > 0) {
