@@ -94,6 +94,9 @@ function page_content() {
    if(PRODUCT == 'dpp') {
       $numLessons = 24;
    }
+   else if(PRODUCT == 'esmmwl2') {
+      $numLessons = 12;
+   }
    else {
       $numLessons = 15;
    }
