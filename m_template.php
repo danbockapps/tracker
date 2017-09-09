@@ -24,6 +24,7 @@ function generate_page($require_logged_in, $require_logged_out, $shownav=true) {
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
       <title><?php echo PRODUCT_TITLE; ?></title>
       <link rel="stylesheet" href="m_wrc.css" />
+      <link rel="stylesheet" href="universal.css" />
       <?php template_js(); ?>
    </head>
 

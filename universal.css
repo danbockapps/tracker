@@ -1,0 +1,49 @@
+a:link, a:visited, a, .entryPoint.greenCheck {
+   color: #8ec63f;
+}
+
+.confirmation {
+   background-color: #eaffd0;
+   border: thin solid #8ec63f;
+   padding: 0.3em;
+   margin-bottom: 0.3em;
+}
+
+.error {
+   background-color: #fee;
+   color: #f00;
+   padding: 0.3em;
+   margin-bottom: 0.3em;
+}
+
+#fitbit-container img {
+   height: 20px;
+   width: 77px;
+   margin-left: 5px;
+   margin-bottom: 5px;
+   vertical-align: middle;
+}
+
+.fitbit-app-icon {
+   visibility: hidden; /* jQuery reverses this where appropriate */
+   height: 1em;
+   width: 1em;
+   vertical-align: middle;
+}
+
+#fitbit-container p {
+   text-align: center;
+}
+
+#fitbit-button {
+   padding: 9px 9px 5px;
+   margin-left: auto;
+   margin-right: auto;
+   display: block;
+}
+
+.fine-print {
+   margin-top: 2em;
+   color: gray;
+   font-size: small;
+}

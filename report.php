@@ -19,6 +19,7 @@ function page_content() {
       exit(err_text("User is not registered for a class."));
    }
 
+   global $report_date;
    $report_date = $qr['start_dttm'] . " + " . ($_GET['week'] - 1) . " weeks";
 
    if(strtotime($report_date) > strtotime(date(DATE_RSS) . " + 1 week")) {
@@ -268,7 +269,7 @@ function page_content() {
          ?>"
          method="post">
       <fieldset style="margin-bottom: 0.3em">
-         <table>
+         <table id="metric-entry">
          <?php
             $err_count = 0;
             $err_count += report_var(
@@ -281,7 +282,10 @@ function page_content() {
                "Try to weigh in at the same day and time on the same " .
                      "scale every week.",
                "Weight instructions",
-               true
+               true,
+               true,
+               false,
+               getWeightFromDb($_GET['user'], $report_date)
             );
 
             if(
@@ -403,7 +407,10 @@ function page_content() {
                      "engaged in aerobic activities like walking, gardening, " .
                      "or using an elliptical machine over the past week.",
                   "Aerobic activity instructions",
-                  true
+                  true,
+                  true,
+                  false,
+                  getActiveMinutesFromDb($_GET['user'], $report_date)
                );
 
                $err_count += report_var(
@@ -432,7 +439,10 @@ function page_content() {
                   null,
                   null,
                   null,
-                  true
+                  true,
+                  true,
+                  false,
+                  getActiveMinutesFromDb($_GET['user'],  $report_date)
                );
             }
 
@@ -527,8 +537,28 @@ function page_content() {
                   true
                );
             }
+
+            $err_count += report_var(
+               'avgsteps',
+               $qr['class_id'],
+               $qr['class_source'],
+               'avgsteps',
+               'Average steps per day',
+               'instructions',
+               'Enter your average steps per day for ' . stepsDateRange($report_date) . '.',
+               'Average Steps instructions',
+               true, // report true
+               true, // required numeric
+               false, // instructor input
+               getAvgStepsFromDb($_GET['user'], $report_date)
+            );
          ?>
          </table>
+
+         <?php
+            fitbitDiv();
+         ?>
+
       </fieldset>
 
       <?php if(!$ini['hide_strategies']) { ?>
@@ -697,6 +727,13 @@ function page_content() {
       <br />
       <input type="hidden" name="formsubmitted" value="true" />
       <input type="submit" id="reportsubmit" value="Submit changes" />
+
+      <p class="fine-print">
+         Fitbit is a registered trademark and service mark of Fitbit, Inc.
+         <?php echo PRODUCT_TITLE ?> is designed for use with the Fitbit
+         platform. This product is not put out by Fitbit, and Fitbit does not
+         service or warrant the functionality of this product.
+      </p>
    </form>
 
    <div id="bmi">
@@ -765,6 +802,18 @@ function page_content() {
       ?>
    </div>
    <div style="clear:left"></div>
+
+   <script>
+      var fitbitIconArray = <?php
+         global $fitbitIconArray;
+         echo json_encode($fitbitIconArray);
+      ?>;
+
+      fitbitIconArray.forEach(function(element) {
+         $('#' + element).css('visibility', 'visible');
+      });
+   </script>
+
    <?php
    if(
       isset($_POST['formsubmitted']) &&
@@ -804,7 +853,8 @@ function report_var (
    $popup_title,       //  title for the alert
    $rept_enrf,         //  report true, enrollment false
    $req_num=true,      //  required to be numeric
-   $inst_input=false   //  instructor inputs this field.
+   $inst_input=false,  //  instructor inputs this field.
+   $fitbit_value=0     //  value received from Fitbit
 ) {
    global $ini;
 
@@ -822,25 +872,31 @@ function report_var (
          // form is submitted, post_var is set and is numeric if required.
          $dbh = pdo_connect($ini['db_prefix'] . "_update");
          if($rept_enrf) {
-            // update wrc_reports table
-            $sth = $dbh->prepare("
-               update wrc_reports
-               set
-                  " . $db_col . " = ?,
-                  " . ($inst_input ? "fdbk_dttm" : "create_dttm") . " = now()
-               where
-                  user_id = ? and
-                  class_id = ? and
-                  class_source = ? and
-                  week_id = ?
-            ");
-            $db_array = array(
-               blank_null($db_col, $_POST[$post_var]),
-               $_GET['user'],
-               $class_id,
-               $class_source,
-               $_GET['week']
-            );
+            global $report_date;
+            if(!fitbitValue($_GET['user'], $report_date, $post_var, $_POST[$post_var])) {
+               // update wrc_reports table
+               $sth = $dbh->prepare("
+                  update wrc_reports
+                  set
+                     " . $db_col . " = ?,
+                     " . ($inst_input ? "fdbk_dttm" : "create_dttm") . " = now()
+                  where
+                     user_id = ? and
+                     class_id = ? and
+                     class_source = ? and
+                     week_id = ?
+               ");
+               $db_array = array(
+                  blank_null($db_col, $_POST[$post_var]),
+                  $_GET['user'],
+                  $class_id,
+                  $class_source,
+                  $_GET['week']
+               );
+            }
+            else {
+               // Fitbit value - don't insert into wrc_reports
+            }
          }
          else {
             // update wrc_enrollment table
@@ -860,12 +916,14 @@ function report_var (
             );
          }
 
-         if($sth->execute($db_array)) {
-            // success
-         }
-         else {
-            $err_count++;
-            echo err_text("A database error occurred with " . $label . ".");
+         if(isset($sth)) {
+            if($sth->execute($db_array)) {
+               // success
+            }
+            else {
+               $err_count++;
+               echo err_text("A database error occurred with " . $label . ".");
+            }
          }
       }
    }
@@ -876,6 +934,9 @@ function report_var (
    </td><td>
       <?php
          if($rept_enrf) {
+
+            // This could be updated to use reports_with_fitbit.
+
             $cvqr = pdo_seleqt("
                select " . $db_col . "
                from wrc_reports
@@ -899,10 +960,11 @@ function report_var (
          if($_SESSION['user_id'] == $_GET['user']) {
             // participant is looking at his own report
             if($inst_input) {
-               readonly($cvqr, $db_col);
+               readonly($cvqr, $db_col, $fitbit_value);
             }
             else {
-               report_input($post_var, $cvqr, $db_col);
+               report_input($post_var, $cvqr, $db_col, $fitbit_value);
+               fitbit_icon($db_col);
                if($popup_link) {
                   popup($popup_link, $popup_text, $popup_title);
                }
@@ -911,10 +973,11 @@ function report_var (
          else {
             // instructor or admin is looking at participant's report.
             if($inst_input) {
-               report_input($post_var, $cvqr, $db_col, true);
+               report_input($post_var, $cvqr, $db_col, 0, true);
             }
             else {
-               readonly($cvqr, $db_col);
+               readonly($cvqr, $db_col, $fitbit_value);
+               fitbit_icon($db_col);
             }
          }
       ?>
@@ -923,7 +986,7 @@ function report_var (
    return $err_count;
 }
 
-function report_input($post_var, $cvqr, $db_col, $textarea=false) {
+function report_input($post_var, $cvqr, $db_col, $fitbit_value, $textarea=false) {
    if($textarea) {
       ?>
       <textarea rows="6" cols="60" name="<?php echo $post_var; ?>"><?php
@@ -937,8 +1000,16 @@ function report_input($post_var, $cvqr, $db_col, $textarea=false) {
       ?>
       <input type="text" size="3" name="<?php echo $post_var; ?>"
          value="<?php
-            if(isset($cvqr[0][$db_col])) {
-               echo zero_blank($cvqr[0][$db_col]);
+            if($cvqr[0][$db_col] > 0) {
+               echo $cvqr[0][$db_col];
+            }
+            else if($fitbit_value > 0) {
+               global $fitbitIconArray;
+               $fitbitIconArray[] = $db_col;
+               echo $fitbit_value;
+            }
+            else {
+               // echo nothing
             }
          ?>"
          onkeyup="calcBmi();"
@@ -947,12 +1018,34 @@ function report_input($post_var, $cvqr, $db_col, $textarea=false) {
    }
 }
 
-function readonly($cvqr, $db_col) {
-   ?><b><?php
-   if(isset($cvqr[0][$db_col])) {
+function readonly($cvqr, $db_col, $fitbit_value) {
+   ?><b style="vertical-align: middle"><?php
+   if(
+      !empty($cvqr) &&
+      (!is_numeric($cvqr[0][$db_col]) || $cvqr[0][$db_col] > 0)
+   ) {
       echo htmlentities($cvqr[0][$db_col]);
    }
+   else if($fitbit_value > 0) {
+      global $fitbitIconArray;
+      $fitbitIconArray[] = $db_col;
+      echo $fitbit_value;
+   }
+   else {
+      // echo nothing
+   }
    ?></b><?php
+}
+
+function fitbit_icon($db_col) {
+   ?>
+   <img
+      src="Fitbit_app_icon_square.png"
+      id="<?php echo $db_col; ?>"
+      class="fitbit-app-icon"
+      title="Data provided by Fitbit."
+   />
+   <?php
 }
 
 function strat_numdays_dd($form_name, $selected = -1) {
@@ -1017,7 +1110,8 @@ function blank_null($dbCol, $postedValue) {
          'dias_mid',
          'waist_start',
          'waist_end',
-         'waist_mid'
+         'waist_mid',
+         'avgsteps'
       ))
    ) {
       return null;
@@ -1038,4 +1132,48 @@ function isP1End($classId, $week) {
 
    return $iqr['phase1_end'] == $iqr['report_date'];
 }
+
+function stepsDateRange($reportDateString) {
+   $reportDate = date('Y-m-d', strtotime($reportDateString));
+   $rangeStart = strtotime($reportDate . ' - 8 day');
+   $rangeEnd =   strtotime($reportDate . ' - 1 day');
+
+   return
+      date('l, F j, Y', $rangeStart) .
+      ' through ' .
+      date('l, F j, Y', $rangeEnd);
+}
+
+function fitbitDiv() {
+   //TODO restrict this to the participant and not the instructor.
+   ?>
+   <div id="fitbit-container">
+      <?php
+
+         if(!isConnectedToFitbit($_GET['user'])) {
+            if($_SESSION['user_id'] == $_GET['user']) {
+               // Participant is looking at own report
+               ?>
+               <button
+                  type="button"
+                  id="fitbit-button"
+                  onclick="location.href='connect_to_fitbit.php';"
+               >
+                  Connect to <img src="fitbitlogo.png" />
+               </button>
+               <?php
+            }
+         }
+         else {
+            ?>
+            <p>
+               Connected to <img src="fitbitlogo.png" />
+            </p>
+            <?php
+         }
+      ?>
+   </div>
+   <?php
+}
+
 ?>

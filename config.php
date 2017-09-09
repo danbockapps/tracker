@@ -6,6 +6,8 @@ date_default_timezone_set('America/New_York');
 
 $ini = parse_ini_file('auth.ini');
 
+define('DEBUG', true);
+
 define("EMAIL_FROM", $ini['email_from']);
 define("EMAIL_LOGGER", $ini['email_logger']);
 define("EMAIL_PASSWORD", $ini['email_password']);
@@ -17,6 +19,9 @@ define('WEBSITE_URL', $ini['website_url']);
 define('ENR_TBL', $ini['enrollment_table']);
 define('ADMIN_EMAIL', $ini['admin_email']);
 define('FITBIT_SVC', $ini['fitbit_svc']);
+define('FITBIT_CLIENT_ID', $ini['fitbit_client_id']);
+define('FITBIT_CLIENT_SECRET', $ini['fitbit_client_secret']);
+define('DB_PREFIX', $ini['db_prefix']);
 
 validate_product();
 
@@ -274,10 +279,14 @@ function cnf_text($text) {
    return '<div class="confirmation">' . $text . "</div>";
 }
 
-function current_class_and_sg($close_tags="") {
+function current_class_and_sg() {
    if(!isset($_GET['user'])) {
-      exit(err_text("No user specified.") . $close_tags);
+      exit(err_text("No user specified."));
    }
+   return current_class_by_user($_GET['user']);
+}
+
+function current_class_by_user($userId) {
    $qr = pdo_seleqt("
       select
          class_id,
@@ -299,7 +308,7 @@ function current_class_and_sg($close_tags="") {
                natural join current_classes
             where user_id = ?
          )
-   ", array($_GET['user'], $_GET['user']));
+   ", array($userId, $userId));
    if(count($qr) > 1) {
       throw new Exception("Unexpected records returned.");
    }
@@ -1067,6 +1076,12 @@ function logtxt($string) {
   );
 }
 
+function debug($s) {
+   if(DEBUG) {
+      logtxt($s);
+   }
+}
+
 // Is user either the instructor of the class or an admin?
 function can_access_class($class_id, $class_source) {
    if(am_i_admin()) {
@@ -1221,5 +1236,17 @@ function noCurrentClassText() {
 
    return $text;
 }
+
+function uriWithQueryString() {
+   $returnable = $_SERVER['SCRIPT_URI'];
+
+   if(strlen($_SERVER['QUERY_STRING']) > 0) {
+      $returnable .= '?' . $_SERVER['QUERY_STRING'];
+   }
+
+   return $returnable;
+}
+
+require_once('functions.php');
 
 ?>

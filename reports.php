@@ -50,9 +50,10 @@ function page_content() {
             aerobic_minutes,
             strength_minutes,
             physact_minutes,
+            avgsteps,
             notes
          from
-            wrc_reports r
+            reports_with_fitbit r
             inner join classes_aw c 
                on r.class_id = c.class_id
                and r.class_source = c.class_source
@@ -77,9 +78,11 @@ function page_content() {
          $reports['aerobic'][$row['week_id']-1] = $row['aerobic_minutes'];
          $reports['strength'][$row['week_id']-1] = $row['strength_minutes'];
          $reports['physact'][$row['week_id']-1] = $row['physact_minutes'];
+         $reports['avgsteps'][$row['week_id']-1] = $row['avgsteps'];
          $reports['notes'][$row['week_id']-1] = $row['notes'];
       }
       ?>
+
       <script type="text/javascript" src="https://www.google.com/jsapi"></script>
       <script>
          google.load("visualization", "1", {packages:["corechart"]});
@@ -302,6 +305,7 @@ function page_content() {
                }
             ?>
 
+            <th>Avg. <br /> steps</th>
             <th>Instructor <br /> feedback</th>
          </tr>
       <?php
@@ -336,7 +340,7 @@ function page_content() {
          }
          ?><td class="center"><?php
          echo (isset($reports['weight'][$i]) ?
-               zero_blank($reports['weight'][$i]) : "");
+               round(zero_blank($reports['weight'][$i]), 1) : "");
          ?></td><td class="center"><?php
          echo (isset($reports['weight'][$i]) && isset($reports['weight'][0])
                && $reports['weight'][$i] != 0 ?
@@ -370,7 +374,9 @@ function page_content() {
             }
          ?>
 
-
+         <td class="center"><?php
+            echo isset($reports['avgsteps'][$i]) ? round($reports['avgsteps'][$i]) : ''; ?>
+         </td>
          <td class="center"><?php
             if($link) {
                if(isset($reports['notes'][$i]) && $reports['notes'][$i] != "") {
