@@ -22,6 +22,7 @@ define('FITBIT_SVC', $ini['fitbit_svc']);
 define('FITBIT_CLIENT_ID', $ini['fitbit_client_id']);
 define('FITBIT_CLIENT_SECRET', $ini['fitbit_client_secret']);
 define('DB_PREFIX', $ini['db_prefix']);
+define('MYSQL_COMMAND', $ini['mysql_command']);
 
 validate_product();
 

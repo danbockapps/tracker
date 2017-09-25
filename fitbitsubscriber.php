@@ -51,6 +51,11 @@ else {
       getWeightFromFitbitAndInsert($userId);
    }
 
+   refreshStaticFitbitTable();
+}
+
+function refreshStaticFitbitTable() {
+   exec(MYSQL_COMMAND . ' < refreshReportsWithFitbitStatic.sql > /dev/null &');
 }
 
 ?>
