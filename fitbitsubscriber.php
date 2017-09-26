@@ -5,6 +5,8 @@ logtxt('Fitbit Subscriber receiving data...');
 logtxt('$_GET:');
 logtxt(print_r($_GET, true));
 
+logtxt(print_r($argv, true));
+
 if(isset($_GET['verify'])) {
    if($_GET['verify'] == FITBIT_SVC) {
       logtxt('Responding to verify with 204.');
@@ -29,33 +31,13 @@ else {
    logtxt('User id is: ' . $userId);
    logtxt('Category is: ' . $category);
 
-   // Fitbit says don't send your API request until after you've
-   // responded to the subscription notification with the 204.
-   // Stack Overflow Q on how to do that:
-   // https://stackoverflow.com/questions/15273570/continue-processing-php-after-sending-http-response
-   ob_start();
+   $cmd = "php-cli fitbitsubscriber_bg.php $userId $category >/dev/null &";
+   logtxt($cmd);
+
+   exec($cmd);
+
    logtxt('Responding with 204.');
-   header('Content-Encoding: none');
-   header('Content-Lenth: 0');
    header('HTTP/1.0 204 No Content');
-   ob_end_flush();
-   ob_flush();
-   flush();
-
-   if($category == 'activities') {
-      getStepsFromFitbitAndInsert($userId);
-      getMfaFromFitbitAndInsert($userId);
-      getMvaFromFitbitAndInsert($userId);
-   }
-   else if($category == 'body') {
-      getWeightFromFitbitAndInsert($userId);
-   }
-
-   refreshStaticFitbitTable();
-}
-
-function refreshStaticFitbitTable() {
-   exec(MYSQL_COMMAND . ' < refreshReportsWithFitbitStatic.sql > /dev/null &');
 }
 
 ?>
