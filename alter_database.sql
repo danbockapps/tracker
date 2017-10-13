@@ -64,6 +64,7 @@ create index uc on reports_with_fitbit_static (user_id, class_id);
 -- 10/13/2017
 
 drop table reports_with_fitbit_static;
+drop view reports_with_fitbit;
 
 CREATE TABLE `fitbit_by_week_static` (
   `user_id` int(10) unsigned DEFAULT NULL,
