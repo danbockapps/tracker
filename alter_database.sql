@@ -59,3 +59,19 @@ CREATE TABLE `reports_with_fitbit_static` (
 ) ENGINE=innodb;
 
 create index uc on reports_with_fitbit_static (user_id, class_id);
+
+
+-- 10/13/2017
+
+drop table reports_with_fitbit_static;
+
+CREATE TABLE `fitbit_by_week_static` (
+  `user_id` int(10) unsigned DEFAULT NULL,
+  `class_id` int(11) unsigned DEFAULT NULL,
+  `week_id` bigint(10) DEFAULT NULL,
+  `weight` float DEFAULT NULL,
+  `minutes` double DEFAULT NULL,
+  `avgsteps` double DEFAULT NULL
+) ENGINE=innodb;
+
+create index uc on fitbit_by_week_static (user_id, class_id);

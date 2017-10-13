@@ -53,7 +53,7 @@ function page_content() {
             avgsteps,
             notes
          from
-            reports_with_fitbit_static r
+            reports_with_fitbit_hybrid r
             inner join classes_aw c 
                on r.class_id = c.class_id
                and r.class_source = c.class_source

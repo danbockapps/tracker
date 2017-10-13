@@ -594,7 +594,7 @@ from
       and f.class_id = fa.class_id
       and f.week_id = fa.week_id;
 
-create or replace view reports_with_fitbit as
+create or replace view reports_with_fitbit_hybrid as
 select
    r.user_id,
 
@@ -656,7 +656,7 @@ select
 
 from
    wrc_reports r
-   left join fitbit_by_week f
+   left join fitbit_by_week_static f
       on r.user_id = f.user_id
       and r.class_id = f.class_id
       and r.week_id = f.week_id
@@ -692,7 +692,7 @@ select
       else false
    end as avgsteps_f
 from
-   fitbit_by_week f
+   fitbit_by_week_static f
    left join wrc_reports r
       on f.user_id = r.user_id
       and f.class_id = r.class_id

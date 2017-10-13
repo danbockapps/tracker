@@ -20,7 +20,7 @@ else if($category == 'body') {
 }
 
 logtxt('Starting refresh of static table.');
-exec(MYSQL_COMMAND . ' < refreshReportsWithFitbitStatic.sql');
+exec(MYSQL_COMMAND . ' < refreshFitbitByWeekStatic.sql');
 logtxt('Done with refresh of static table.');
 
 ?>
