@@ -75,6 +75,7 @@ function page_content() {
          c.start_dttm,
          u.fname,
          u.lname,
+         e.voucher_code,
          u.last_login,
          lrww.weight - frww.weight as wt_chg,
          (lrww.weight - frww.weight) / frww.weight as wt_chg_pct,
@@ -193,6 +194,10 @@ function page_content() {
                         <?php echo htmlentities($qr[$i]['lname'] . ", " .
                               $qr[$i]['fname']); ?>
                      </a>
+                     <br />
+                     <span style="font-size:80%">
+                        <?php echo htmlentities($qr[$i]['voucher_code']); ?>
+                     </span>
                   </td>
                   <td>
                      <?php echo rstr_date($qr[$i]['start_dttm']); ?>
