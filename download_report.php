@@ -1,8 +1,5 @@
 <?php
 
-// Necessary because results report was throwing a memory error.
-ini_set("memory_limit","128M");
-
 require_once("config.php");
 
 session_start();
@@ -20,7 +17,8 @@ $whitelist = [
    'attendance',
    'attendance2',
    'results',
-   'cdc'
+   'cdc',
+   'legacy_attendance'
 ];
 
 if(!in_array($_GET['report'],  $whitelist)) {
@@ -326,6 +324,41 @@ else if($_GET['report'] == 'cdc') {
             on r.user_id = e.tracker_user_id
             and r.class_id = e.class_id
    ", array());
+}
+else if($_GET['report'] == 'legacy_attendance') {
+   $qr = pdo_seleqt('
+      select
+         r.subscriber_id_shp as "Subscriber ID",
+         case
+            when c.class_type = 4 then "Onsite"
+            else "Online"
+         end as "Class Location",
+         c.start_date_time as "Class Start Date",
+         case
+            when c.num_wks is null then c.start_date_time + interval 14 week + interval 1 hour
+            else c.start_date_time + interval c.num_wks week + interval 1 hour
+         end as "Class End Date",
+         greatest(
+            coalesce(r.numclasses, 0),
+            coalesce(ats.numclasses, 0)
+         ) as "Number of Classes Attended",
+         u.height_inches as "Height"
+      from
+         registrants r
+         inner join z_classes c
+            on r.class_id = c.id
+         left join attendance_sum ats
+            on r.class_id = ats.class_id
+            and r.tracker_user_id = ats.user_id
+         left join wrc_users u
+            on r.tracker_user_id = u.user_id
+      where c.id in (
+         515, 508, 517, 522, 523, 524, 525, 526, 535, 540, 536, 541, 537, 538,
+         530, 529, 531, 542, 543, 544, 545, 546, 562, 553, 554, 555, 572, 556,
+         557, 564, 549, 563, 567, 568, 569, 566, 565, 573, 578, 579, 580, 587,
+         590, 591, 594, 589, 588, 593
+      )
+   ', array());
 }
 
 if(empty($qr)) {
