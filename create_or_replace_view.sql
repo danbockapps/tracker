@@ -99,7 +99,8 @@ select
    user_id,
    class_id,
    class_source,
-   weight
+   weight,
+   aerobic_minutes + strength_minutes as pa_feb2018
 from wrc_reports
 where week_id = 1;
 
@@ -124,7 +125,8 @@ select
    r.user_id,
    r.class_id,
    r.class_source,
-   r.weight
+   r.weight,
+   r.aerobic_minutes + r.strength_minutes as pa_feb2018
 from
    wrc_reports r
    natural join last_reports lr;
