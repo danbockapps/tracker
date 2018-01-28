@@ -84,9 +84,10 @@ function page_content() {
       }
    } // End of the main Submit conditional.
 
+   global $loginphp_mode;
    ?>
 
-   <form action="login.php?<?php echo http_build_query($_GET); ?>" method="post">
+   <form action="<?php echo $loginphp_mode; ?>login.php?<?php echo http_build_query($_GET); ?>" method="post">
       <fieldset>
          <legend>Login</legend>
 
