@@ -393,7 +393,8 @@ function getActiveMinutesFromDb($userId, $reportDateString) {
 function getWeightFromDb($userId, $reportDateString) {
    // Gets the correct weight for the date
    $reportDate = date('Y-m-d', strtotime($reportDateString));
-   $rangeStart = date('Y-m-d', strtotime($reportDate . ' - 6 day'));
+   $rangeStart = date('Y-m-d', strtotime($reportDate . ' - 7 day'));
+   $rangeEnd = date('Y-m-d', strtotime($reportDate . ' - 1 day'));
 
    $qr = pdo_seleqt('
       select value
@@ -404,7 +405,7 @@ function getWeightFromDb($userId, $reportDateString) {
          and date between ? and ?
       order by date desc
       limit 1
-   ', array($userId, 'weight', $rangeStart, $reportDate));
+   ', array($userId, 'weight', $rangeStart, $rangeEnd));
 
    if(count($qr) == 1) {
       return $qr[0]['value'];
