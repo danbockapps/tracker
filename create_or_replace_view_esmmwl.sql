@@ -3,6 +3,7 @@ create or replace view enrollment_view as select
    class_id,
    smart_goal,
    reg_date,
+   date_added as date_joined, /* because wrc_users has date_added */
    syst_start,
    dias_start,
    waist_start,
@@ -11,15 +12,16 @@ create or replace view enrollment_view as select
    waist_end,
    coup_voucher as voucher_code,
    class_source,
-   referrer,
+   referred_by,
+   claim_id,
    subscriber_id,
    member_number,
+   claim_type,
    welcome_sent,
    shirtchoice
 from registrants
 where
-   paid != '0' and
-   status = '1';
+   paid != '0';
 
 create or replace view classes_aw as
 select

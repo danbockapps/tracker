@@ -929,50 +929,6 @@ function get_email_address($user_id) {
    return $qr['email'];
 }
 
-function create_enrollment_record(
-   $npid,
-   $class_id,
-   $class_source,
-   $voucher_code,
-   $referrer,
-   $subscriber_id,
-   $member_number
-) {
-   if(PRODUCT == 'dpp') {
-      throw new Exception('Unsupported action for this product.');
-   }
-
-   global $ini;
-   $dbh = pdo_connect($ini['db_prefix'] . "_insert");
-   $sth = $dbh->prepare("
-      insert into " . ENR_TBL . " (
-         class_id,
-         tracker_user_id,
-         voucher_code,
-         class_source,
-         referrer,
-         subscriber_id,
-         member_number
-      )
-      values (?, ?, ?, ?, ?, ?, ?)
-   ");
-   try {
-      $sth->execute(array(
-         $class_id,
-         $npid,
-         $voucher_code,
-         $class_source,
-         $referrer,
-         $subscriber_id,
-         $member_number
-      ));
-      return true;
-   }
-   catch(PDOException $e) {
-      return false;
-   }
-}
-
 function class_valid($class_id, $class_source) {
    $qr = seleqt_one_record("
       select count(*) as count
