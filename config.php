@@ -451,15 +451,19 @@ function zero_blank($var) {
 
 function my_home_page() {
    if(!isset($_SESSION['user_id'])) {
+      logtxt('my_home_page: Session is not set. Redirecting to login.php');
       return "login.php";
    }
    else if(am_i_admin()) {
+      logtxt('my_home_page is admin.php.');
       return "admin.php";
    }
    else if(am_i_instructor()) {
+      logtxt('my_home_page is rosters.php.');
       return "rosters.php?instr=" . $_SESSION['user_id'];
    }
    else {
+      logtxt('my_home_page is reports.php.');
       return "reports.php?user=" . $_SESSION['user_id'];
    }
 }
