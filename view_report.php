@@ -38,6 +38,12 @@ else if($_GET['report'] == $ini['client1']) {
       where Coupon_Code = ?
    ", array($_GET['voucher_code']));
 }
+else if($_GET['report'] == 'shp') {
+   $qr = pdo_seleqt("
+      select *
+      from shp_report
+   ", null);
+}
 
 if(empty($qr)) {
    exit("No report returned.");
