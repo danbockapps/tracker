@@ -22,7 +22,7 @@ select
    end as BCBS_Subscriber_ID,
    case
       when e.subscriber_id is null then substring_index(e.claim_id, '-', -1)
-      else e.member_number
+      else lpad(e.member_number, 2, '0')
    end as Member_Number,
    coalesce(a.numclasses, al.numclasses) as Attendance,
    bw.weight as Beginning_Weight,
