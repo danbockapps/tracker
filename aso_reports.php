@@ -43,27 +43,7 @@ file_put_contents(
    "/home/" .
    exec('whoami') .
    "/aso/upload/ESMMWL_List_of_active_ASO_codes_" . date("Y-m-d_H-i-s")  . ".csv",
-   array_to_csv(pdo_seleqt("
-      select
-         c.BCBS_CompanyName as 'BCBSNC Company Name',
-         c.grpNo as 'BCBSNC Group Number',
-         v.vcode as Code,
-         c.insuranceType as 'ASO or FI'
-      from
-         dbreg_esmmwl_ctrladmin.vouchers v
-         left join dbreg_esmmwl_ctrladmin.companies c
-            on v.company_id = c.id
-      where
-         v.form_type = ?
-         and v.status = 1
-/* commenting out per email from Kelly 9/22/17
-         and (
-            exp_date is null
-            or exp_date > curdate()
-         )
-*/
-      order by vcode
-   ", array('aso')))
+   array_to_csv(pdo_seleqt("select * from aso_codes", ""))
 );
 
 function generateControlFile($voucherCode, $dataFileName) {

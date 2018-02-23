@@ -39,10 +39,10 @@ else if($_GET['report'] == $ini['client1']) {
    ", array($_GET['voucher_code']));
 }
 else if($_GET['report'] == 'shp') {
-   $qr = pdo_seleqt("
-      select *
-      from shp_report
-   ", null);
+   $qr = pdo_seleqt("select * from shp_report", null);
+}
+else if($_GET['report'] == 'aso_codes') {
+   $qr = pdo_seleqt("select * from aso_codes", null);
 }
 
 if(empty($qr)) {

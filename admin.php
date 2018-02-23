@@ -537,6 +537,11 @@ else {
    " . $ini['client1_voucher_codes'], array());
 ?>
 <ul>
+   <li>
+      <a href="view_report.php?report=aso_codes">
+         List of ASO Codes
+      </a>
+   </li>
    <?php
       foreach($bqr as $row) {
          ?><li><a href="view_report.php?report=<?php
