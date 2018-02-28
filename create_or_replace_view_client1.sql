@@ -16,13 +16,10 @@ select
    c.start_dttm as Class_Start,
    c.start_dttm + interval (weeks - 1) week + interval 1 hour as Class_End,
    e.voucher_code as Coupon_Code,
+   substring_index(e.claim_id, '-', 1) as BCBS_Subscriber_ID,
    case
-      when e.subscriber_id is null then substring_index(e.claim_id, '-', 1)
-      else e.subscriber_id
-   end as BCBS_Subscriber_ID,
-   case
-      when e.subscriber_id is null then substring_index(e.claim_id, '-', -1)
-      else lpad(e.member_number, 2, '0')
+      when claim_id like "%-%" then lpad(substring_index(e.claim_id, '-', -1), 2, '0')
+      else ''
    end as Member_Number,
    coalesce(a.numclasses, al.numclasses) as Attendance,
    bw.weight as Beginning_Weight,
