@@ -1,10 +1,10 @@
 create or replace view bcbs_voucher_codes as
-select distinct voucher_code
+select distinct upper(e.voucher_code) as voucher_code
 from
    enrollment_view e
    natural join classes_aw c
 where
-   e.voucher_code like 'ASO%';
+   upper(e.voucher_code) like 'ASO%';
 
 create or replace view bcbs_report as
 select
@@ -27,8 +27,8 @@ select
    u.height_inches as Height,
    bw.weight * 703 / (u.height_inches * u.height_inches) as Beginning_BMI,
    ew.weight * 703 / (u.height_inches * u.height_inches) as Ending_BMI,
-   e.waist_start as Beginning_Waist_Circumference,
-   e.waist_end as Ending_Waist_Circumference,
+   least(e.waist_start, 99) as Beginning_Waist_Circumference,
+   least(e.waist_end, 99) as Ending_Waist_Circumference,
    pes.pes as Tracker_Activity_Score,
    e.smart_goal as Program_Goals
 from
