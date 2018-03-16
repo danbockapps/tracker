@@ -5,6 +5,8 @@ define("BLOWFISH_SUF", "$");
 date_default_timezone_set('America/New_York');
 
 $ini = parse_ini_file('auth.ini');
+logtxt('config.php session id: ' . session_id());
+logtxt('config.php script_uri: ' . $_SERVER['SCRIPT_URI']);
 
 define('DEBUG', true);
 
@@ -1029,8 +1031,16 @@ function array_to_csv($qr) {
 
 function logtxt($string) {
   global $ini;
+
+  if(strpos($_SERVER['SCRIPT_URL'], 'fitbit') !== false) {
+    $file = $ini['fitbit_logfile'];
+  }
+  else {
+    $file = $ini['logfile'];
+  }
+
   file_put_contents(
-    $ini['logfile'],
+    $file,
     date("Y-m-d G:i:s") . " " . $_SERVER['REMOTE_ADDR'] . " " .
         $_SESSION['user_id'] . " " . $string . "\n",
     FILE_APPEND

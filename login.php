@@ -74,10 +74,12 @@ function page_content() {
                if(isset($_GET['request_uri'])) {
                   loginLog('Redirecting to ' . $_GET['request_uri'] . '.');
                   header("Location: " . $_GET['request_uri']);
+                  exit();
                }
                else {
                   loginLog('Redirecting to my_home_page.');
                   header("Location: " . my_home_page());
+                  exit();
                }
             }
 

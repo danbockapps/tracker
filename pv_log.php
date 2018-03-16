@@ -1,6 +1,6 @@
 <?php
-require_once('config.php');
 session_start();
+require_once('config.php');
 
 $count = seleqt_one_record("
    select count(*) as count
