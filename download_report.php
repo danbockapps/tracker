@@ -329,7 +329,6 @@ else if($_GET['report'] == 'feb2018') {
    $qr = pdo_seleqt('
       select
          r.subscriber_id_shp as "Subscriber ID",
-         r.class_id as "Class ID",
          case
             when c.class_type = 4 then "Onsite"
             else "Online"
@@ -343,24 +342,7 @@ else if($_GET['report'] == 'feb2018') {
             coalesce(r.numclasses, 0),
             coalesce(ats.numclasses, 0)
          ) as "Number of Classes Attended",
-         c.start_date_time as "Pre-Biometric Date",
-         u.height_inches as "Height",
-         bw.weight as "Pre-Weight",
-         r.waist_start as "Pre-Waist",
-         bw.weight / (u.height_inches * u.height_inches) * 703 as "Pre-BMI",
-         r.syst_start as "Pre-Systolic",
-         r.dias_start as "Pre-Diastolic",
-         bw.pa_feb2018 as "Pre-Physical Activity Minutes",
-         case
-            when c.num_wks is null then c.start_date_time + interval 14 week + interval 1 hour
-            else c.start_date_time + interval c.num_wks week + interval 1 hour
-         end as "Post-Biometric Date",
-         ew.weight as "Post-Weight",
-         r.waist_end as "Post-Waist",
-         ew.weight / (u.height_inches *   u.height_inches) * 703 as "Post-BMI",
-         r.syst_end as "Post-Systolic",
-         r.dias_end as "Post-Diastolic",
-         ew.pa_feb2018 as "Post-Physical Activity Minutes"
+         c.start_date_time as "Pre-Biometric Date"
       from
          registrants r
          inner join z_classes c
@@ -368,14 +350,6 @@ else if($_GET['report'] == 'feb2018') {
          left join attendance_sum ats
             on r.class_id = ats.class_id
             and r.tracker_user_id = ats.user_id
-         left join wrc_users u
-            on r.tracker_user_id = u.user_id
-         left join beginning_weights bw
-            on r.tracker_user_id = bw.user_id
-            and r.class_id = bw.class_id
-         left join ending_weights ew
-            on r.tracker_user_id = ew.user_id
-            and r.class_id = ew.class_id
       where c.id in (
          515, 508, 517, 522, 523, 524, 525, 526, 535, 540, 536, 541, 537, 538,
          530, 529, 531, 542, 543, 544, 545, 546, 562, 553, 554, 555, 572, 556,
