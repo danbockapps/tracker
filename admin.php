@@ -606,7 +606,7 @@ else {
          </a>
       </li>
       <li>
-         <a href="view_report.php?report=shp">
+         <a href="download_report.php?report=shp">
             SHP report
          </a>
       </li>
