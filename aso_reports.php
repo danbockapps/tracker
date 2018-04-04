@@ -1,14 +1,4 @@
 <?php
-// This is a hack, but it allows for not touching the dev/test/prod section
-// of config.php.
-//if(strpos($_SERVER['argv'][0], "trunk") === false) {
-  // test or prod
-//  $_SERVER['HTTP_HOST'] = "esmmweighless.com";
-//  $_SERVER['REQUEST_URI'] = $_SERVER['argv'][0];
-//}
-// else dev
-// end hack
-
 require_once("config.php");
 
 $aqr = pdo_seleqt("
@@ -20,7 +10,7 @@ foreach($aqr as $row) {
    $dataFileName = 
       "ESMMWL_" .
       $row['voucher_code'] .
-      "_TEST_" .
+      "_" .
       date("Y-m-d_H-i-s") .
       ".csv";
 
@@ -69,7 +59,7 @@ function generateControlFile($voucherCode, $dataFileName) {
   file_put_contents(
     '/home/esmmwl/aso/upload/ESMMWL_BCBSNC_' .
       $voucherCode .
-      '_TEST_MemberProgress_' .
+      '_MemberProgress_' .
       date('ymd_His') .
       '_CONTROL.xml',
     $xml->asXML()
