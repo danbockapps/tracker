@@ -640,7 +640,6 @@ function template_start($require_logged_in, $require_logged_out) {
    }
    else if($require_logged_out & isset($_SESSION['user_id'])) {
       // You need to be logged out. Consider it done.
-      session_start();
       session_destroy();
    }
 }

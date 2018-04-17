@@ -1,5 +1,4 @@
 <?php
-session_start();
 require_once('config.php');
 
 if(can_access_class($_POST['class_id'], $_POST['class_source'])) {

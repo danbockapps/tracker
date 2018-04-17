@@ -1,6 +1,5 @@
 <?php
 require_once("config.php");
-session_start();
 if(!am_i_admin()) {
    exit("You must be logged in as an administrator to see this page.");
 }

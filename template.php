@@ -1,5 +1,4 @@
 <?php
-session_start();
 require_once("config.php");
 logtxt("template.php user id: " . $_SESSION['user_id']);
 logtxt("template.php session id: " . session_id());

@@ -1,6 +1,4 @@
 <?php
-session_start();
-
 if(isset($_SESSION['user_id']) && !isset($_GET['user'])) {
    $_GET['user'] = $_SESSION['user_id'];
 }

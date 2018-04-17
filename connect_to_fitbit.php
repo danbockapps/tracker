@@ -1,6 +1,4 @@
 <?php
-session_start();
-
 require_once('config.php');
 define(REDIRECT_URI, WEBSITE_URL . '/connect_to_fitbit.php');
 

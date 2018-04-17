@@ -1,6 +1,5 @@
 <?php
 ob_start();
-session_start();
 require_once("config.php");
 
 if(am_i_admin()) {
