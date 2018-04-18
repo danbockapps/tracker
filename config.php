@@ -669,7 +669,7 @@ function template_js() {
             }
             $(this).showhide({
                default_open: false,
-               use_cookie: true,
+               use_cookie: false,
                cookie_name: cookieName
             });
          });
