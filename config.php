@@ -660,6 +660,8 @@ function template_js() {
    </script>
    <script type="text/javascript" src="jquery.showhide.pack.js">
    </script>
+   <script src='https://www.google.com/recaptcha/api.js'>
+   </script>
    <script type="text/javascript">
       $(function() {
          $('.showhide_closed').each(function(i) {

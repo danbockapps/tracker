@@ -12,23 +12,22 @@ function page_content() {
    if (isset($_POST['formsubmitted'])) {
       $error = array(); //Declare An Array to store any error message
 
-      require_once ('recaptchalib.php');
       global $ini;
-      $privatekey = $ini['recaptcha_privatekey'];
-      $resp = recaptcha_check_answer(
-         $privatekey,
-         $_SERVER["REMOTE_ADDR"],
-         $_POST["recaptcha_challenge_field"],
-         $_POST["recaptcha_response_field"]
-      );
-      if (!$resp -> is_valid) {
-         // What happens when the CAPTCHA was entered incorrectly
-         $error[] = "The characters you entered didn't match the word " .
-               "verification. Please try again.";
-      } else {
-         // Your code here to handle a successful verification
-      }
 
+      $data_for_recaptcha = array(
+         "secret"   => $ini['recaptcha_secret'],
+         "response" => $_POST['g-recaptcha-response'],
+         "remoteip" => $_SERVER['REMOTE_ADDR']
+      );
+
+      $recaptcha_response = httpPost(
+         'https://www.google.com/recaptcha/api/siteverify',
+         $data_for_recaptcha
+      );
+
+      if(!$recaptcha_response->success) {
+         $error[] = "Recaptcha error. Please check the Recaptcha box.";
+      }
 
       if (empty($_POST['first_name'])) { //if no name has been supplied
          $error[] = 'Please enter a first name.'; //add to array "error"
@@ -150,11 +149,8 @@ function page_content() {
          <input type="password" name="password2" id="password2" />
       </p>
       <p>
-         <?php
-            require_once("recaptchalib.php");
-            $publickey='6LfucdgSAAAAAE2EcFguENE8ycUAiYAhXXl0wykg';
-            echo recaptcha_get_html($publickey, null, true);
-         ?>
+         <div class="g-recaptcha" data-sitekey="6LcTa1wUAAAAAOV6yJTBHGL-Du7Z_m0ELJyHAntE">
+         </div>
       </p>
       <p>
          <input type="hidden" name="formsubmitted" value="TRUE" />
@@ -163,5 +159,15 @@ function page_content() {
    </form>
    <?php
    }
+}
+
+function httpPost($url, $data) {
+   $curl = curl_init($url);
+   curl_setopt($curl, CURLOPT_POST, true);
+   curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+   curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+   $response = curl_exec($curl);
+   curl_close($curl);
+   return json_decode($response);
 }
 ?>
