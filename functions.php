@@ -445,6 +445,7 @@ function isUserCurrent($userId) {
       from
          enrollment_view e
          inner join current_classes c
+            on e.class_id = c.class_id
       where e.user_id = ?
    ', $userId);
 

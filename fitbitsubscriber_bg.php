@@ -22,7 +22,9 @@ else if($category == 'body') {
 }
 
 logtxt('Starting refresh of static table.');
+$startTime = microtime(true);
 exec(MYSQL_COMMAND . ' < refreshFitbitByWeekStatic.sql');
-logtxt('Done with refresh of static table.');
+$endTime = microtime(true);
+logtxt('Done with refresh of static table. Duration: ' . number_format($endTime - $startTime, 2));
 
 ?>
