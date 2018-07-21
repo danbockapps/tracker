@@ -2,12 +2,12 @@
 require('config.php');
 
 logtxt('Fitbit Subscriber receiving data...');
-logtxt('$_GET:');
-logtxt(print_r($_GET, true));
 
 logtxt(print_r($argv, true));
 
 if(isset($_GET['verify'])) {
+   logtxt('$_GET:');
+   logtxt(print_r($_GET, true));
    if($_GET['verify'] == FITBIT_SVC) {
       logtxt('Responding to verify with 204.');
       header('HTTP/1.0 204 No Content');
@@ -33,7 +33,6 @@ else {
 
    $cmd = "php-cli fitbitsubscriber_bg.php $userId $category >/dev/null &";
    logtxt($cmd);
-
    exec($cmd);
 
    logtxt('Responding with 204.');
