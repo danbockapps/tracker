@@ -22,18 +22,9 @@ function getWeightFromFitbitAndInsert($userId) {
 
 function getDataFromFitbit(
    $userId,
-   $metric,
-   $doNotRefresh = false // avoid infinite loop
+   $metric
 ) {
    $urlMetric = str_replace('-', '/', $metric);
-
-   $qr = seleqt_one_record('
-      select
-         fitbit_access_token,
-         fitbit_refresh_token
-      from wrc_users
-      where user_id = ?
-   ', array($userId));
 
    $url =
       'https://api.fitbit.com/1/user/-/' .
@@ -43,6 +34,18 @@ function getDataFromFitbit(
       '/' .
       date('Y-m-d') .
       '.json';
+
+   return sendRequestToFitbit($url, $userId, false);
+}
+
+function sendRequestToFitbit($url, $userId, $doNotRefresh = false) {
+   $qr = seleqt_one_record('
+      select
+         fitbit_access_token,
+         fitbit_refresh_token
+      from wrc_users
+      where user_id = ?
+   ', array($userId));
 
    debug('Sending data request to Fitbit: ');
    debug($url);
@@ -75,13 +78,16 @@ function getDataFromFitbit(
       json_decode($response)->errors[0]->errorType == 'expired_token' &&
       $doNotRefresh == false
    ) {
+      debug('Trying to refresh token...');
       if(refreshFitbitToken($userId, $qr['fitbit_refresh_token'])) {
-         return getDataFromFitbit($userId, $metric, true);
+         debug('Refreshed token. Sending another request.');
+         return sendRequestToFitbit($url, $userId, true);
       }
    }
 
    else {
       logtxt('ERROR: Error getting data from Fitbit.');
+      debug('doNotRefresh: ' . $doNotRefresh);
       exit('ERROR: Error getting data from Fitbit.');
    }
 }
@@ -431,6 +437,19 @@ function fitbitValue($userId, $reportDateString, $postVar, $value) {
       // It's a metric that doesn't sync with Fitbit.
       return false;
    }
+}
+
+function isUserCurrent($userId) {
+   $qr = seleqt_one_record('
+      select count(*) as count
+      from
+         enrollment_view e
+         inner join current_classes c
+      where e.user_id = ?
+   ', $userId);
+
+   // This is >0 i.e. truthy, if the user is in at least one current class.
+   return $qr['count'];
 }
 
 ?>

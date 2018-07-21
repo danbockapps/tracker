@@ -10,6 +10,8 @@ logtxt('(bg) User id is: ' . $userId);
 $category = $argv[2];
 logtxt('(bg) Category is: ' . $category);
 
+logtxt('(bg) Is user in a current class? ' . isUserCurrent($userId));
+
 if($category == 'activities') {
    getStepsFromFitbitAndInsert($userId);
    getMfaFromFitbitAndInsert($userId);

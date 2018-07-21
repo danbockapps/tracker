@@ -5,8 +5,6 @@ define("BLOWFISH_SUF", "$");
 date_default_timezone_set('America/New_York');
 
 $ini = parse_ini_file('auth.ini');
-logtxt('config.php session id: ' . session_id());
-logtxt('config.php script_uri: ' . $_SERVER['SCRIPT_URI']);
 
 define('DEBUG', true);
 
