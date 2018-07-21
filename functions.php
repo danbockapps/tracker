@@ -266,8 +266,16 @@ function isConnectedToFitbit($userId) {
    return $qr['fitbit_access_token'] == null ? false : true;
 }
 
+function deleteAllSubscriptions($userId) {
+   deleteSubscription($userId, 'body');
+   deleteSubscription($userId, 'activities');
 
-function deleteSubscription($category, $subscriptionId, $userId) {
+   // Delete tokens from database
+   saveTokensToDatabase($userId, null, null);
+}
+
+function deleteSubscription($userId, $category) {
+   $subscriptionId = $userId . '_' . $category;
    $url =
       'https://api.fitbit.com/1/user/-/' .
       $category .
@@ -275,7 +283,7 @@ function deleteSubscription($category, $subscriptionId, $userId) {
       $subscriptionId .
       '.json';
 
-   echo $url . "\n";
+   debug($url);
 
    $deleteCurl = curl_init($url);
 
@@ -287,8 +295,8 @@ function deleteSubscription($category, $subscriptionId, $userId) {
    );
    curl_setopt($deleteCurl, CURLOPT_RETURNTRANSFER, true);
    $deleteResponse = curl_exec($deleteCurl);
-   echo curl_getinfo($deleteCurl, CURLINFO_HTTP_CODE) . "\n";
-   echo $deleteResponse;
+   debug(curl_getinfo($deleteCurl, CURLINFO_HTTP_CODE));
+   debug($deleteResponse);
    curl_close($deleteCurl);
 }
 

@@ -10,15 +10,20 @@ logtxt('(bg) User id is: ' . $userId);
 $category = $argv[2];
 logtxt('(bg) Category is: ' . $category);
 
-logtxt('(bg) Is user in a current class? ' . isUserCurrent($userId));
-
-if($category == 'activities') {
-   getStepsFromFitbitAndInsert($userId);
-   getMfaFromFitbitAndInsert($userId);
-   getMvaFromFitbitAndInsert($userId);
+if(isUserCurrent($userId)) {
+  debug('(bg) User is in a current class.');
+  if($category == 'activities') {
+    getStepsFromFitbitAndInsert($userId);
+    getMfaFromFitbitAndInsert($userId);
+    getMvaFromFitbitAndInsert($userId);
+  }
+  else if($category == 'body') {
+    getWeightFromFitbitAndInsert($userId);
+  }
 }
-else if($category == 'body') {
-   getWeightFromFitbitAndInsert($userId);
+else {
+  debug('(bg) User is not in a current class. Deleting subscriptions.');
+  deleteAllSubscriptions($userId);
 }
 
 logtxt('Starting refresh of static table.');
