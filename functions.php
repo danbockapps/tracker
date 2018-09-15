@@ -463,4 +463,117 @@ function isUserCurrent($userId) {
    return $qr['count'];
 }
 
+function attendanceForClass($classId) {
+   return pdo_seleqt('
+      select
+         a.user_id,
+         a.week,
+         a.present,
+         a.date_attended,
+         a.attendance_type
+      from
+         wrc_attendance a
+         inner join classes_aw c
+            on a.class_id = c.class_id
+            and a.class_source = c.class_source
+      where
+         year(c.start_dttm) in (
+            select year(start_dttm)
+            from classes_aw
+            where
+               class_id = ?
+               and class_source = "w"
+         )
+         and month(c.start_dttm) in (
+            select month(start_dttm)
+            from classes_aw
+            where
+               class_id = ?
+               and class_source = "w"
+         )
+      order by date_entered
+   ', array($classId, $classId));
+}
+
+function participantsForClass($classId) {
+   return pdo_seleqt("
+      select
+         e.user_id,
+         u.fname,
+         u.lname,
+         e.shirtchoice
+      from
+         " . ENR_VIEW . " e
+         natural join wrc_users u
+      where
+         e.class_id = ?
+         and e.class_source = 'w'
+      order by
+         fname,
+         lname
+   ", array($classId));
+}
+
+function indexedAttendanceArray($aqr, $qr) {
+   $iqr = array();
+
+   // Create indexed array
+   // First, create an empty row for each participant
+   foreach($qr as $row) {
+      $iqr[$row['user_id']] = array();
+   }
+
+   // Next, populate the array.
+   // If there are multiple entries for the same user and week, the earlier ones
+   // will be overwritten in this loop by the latest, which is exactly what we want.
+   foreach($aqr as $row) {
+      $iqr[$row['user_id']][$row['week']] = $row['present'];
+   }
+
+   return $iqr;
+}
+
+function classInfo($classId) {
+   return seleqt_one_record("
+      select
+         c.class_id,
+         c.start_dttm,
+         u.fname,
+         u.lname
+      from
+         classes_aw c
+         left join wrc_users u
+            on c.instructor_id = u.user_id
+      where
+         c.class_id = ?
+         and c.class_source = 'w'
+   ", array($classId));
+}
+
+function attendanceEntryHeader($classId) {
+   $cqr = classInfo($classId);
+   ?>
+   <h2>Attendance Entry</h2>
+
+   <table>
+      <tr>
+         <td>
+            <strong>Instructor:</strong>
+         </td>
+         <td>
+            <?php echo htmlentities($cqr['fname'] . ' ' . $cqr['lname']); ?>
+         </td>
+      </tr>
+      <tr>
+         <td>
+            <strong>Class time:</strong>
+         </td>
+         <td>
+            <?php echo class_times($cqr['start_dttm']); ?>
+         </td>
+      </tr>
+   </table>
+   <?php
+}
+
 ?>

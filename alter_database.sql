@@ -76,3 +76,10 @@ CREATE TABLE `fitbit_by_week_static` (
 ) ENGINE=innodb;
 
 create index uc on fitbit_by_week_static (user_id, class_id);
+
+
+-- 9/15/2018
+
+alter table wrc_attendance
+add column date_attended datetime,
+add column attendance_type tinyint unsigned; -- 1 = normal class. 2 = makeup class.

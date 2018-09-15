@@ -123,3 +123,9 @@ create table if not exists wrc_attendance (
    present boolean,
    date_entered timestamp
 ) engine=innodb;
+
+/*
+PLEASE NOTE: The word "week" in wrc_attendance is a misnomer. Attendance is
+tracked by lesson, which may or may not correspond 1:1 to weeks. TODO: change
+varibles and fields named "week" here and in the database to "lesson".
+*/
