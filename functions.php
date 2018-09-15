@@ -267,7 +267,7 @@ function isConnectedToFitbit($userId) {
 }
 
 function deleteAllSubscriptions($userId) {
-   if(isConnectedToFitbit($userId) {
+   if(isConnectedToFitbit($userId)) {
       deleteSubscription($userId, 'body');
       deleteSubscription($userId, 'activities');
 
