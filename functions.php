@@ -267,11 +267,13 @@ function isConnectedToFitbit($userId) {
 }
 
 function deleteAllSubscriptions($userId) {
-   deleteSubscription($userId, 'body');
-   deleteSubscription($userId, 'activities');
+   if(isConnectedToFitbit($userId) {
+      deleteSubscription($userId, 'body');
+      deleteSubscription($userId, 'activities');
 
-   // Delete tokens from database
-   saveTokensToDatabase($userId, null, null);
+      // Delete tokens from database
+      saveTokensToDatabase($userId, null, null);
+   }
 }
 
 function deleteSubscription($userId, $category) {
