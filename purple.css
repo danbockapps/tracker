@@ -58,3 +58,7 @@ table#attendanceEntry .checkboxCell {
    width: 948px;
    text-align: center;
 }
+
+.attendance-date {
+   width: 5em;
+}

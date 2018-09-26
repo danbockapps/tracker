@@ -37,7 +37,7 @@ function generate_page($require_logged_in, $require_logged_out, $shownav=true) {
       />
       <link
          rel="stylesheet"
-         href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.0/themes/base/jquery-ui.css"
+         href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css"
       />
       <link
          rel="stylesheet"
