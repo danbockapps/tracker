@@ -83,3 +83,9 @@ create index uc on fitbit_by_week_static (user_id, class_id);
 alter table wrc_attendance
 add column date_attended datetime,
 add column attendance_type tinyint unsigned; -- 1 = normal class. 2 = makeup class.
+
+-- 10/9/2018
+
+alter table wrc_attendance
+drop column date_attended,
+add column attendance_date date;

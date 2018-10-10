@@ -469,7 +469,7 @@ function attendanceForClass($classId) {
          a.user_id,
          a.week,
          a.present,
-         a.date_attended,
+         a.attendance_date,
          a.attendance_type
       from
          wrc_attendance a

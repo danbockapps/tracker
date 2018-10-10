@@ -97,15 +97,22 @@ function page_content() {
       statusCell.children('i').addClass('hidden');
       statusCell.children('img').removeClass('hidden');
 
-      $.post('attendance_ajax_detailed.php', {
-         lessonId: lessonId,
-         userId: userId,
-         attendanceType: attendanceType,
-         attendanceDate: attendanceDate
+      var formattedAttendanceDate;
+      if(attendanceDate) {
+         formattedAttendanceDate = moment(attendanceDate).format('YYYY-MM-DD');
+      }
+
+      $.post('attendance_ajax.php', {
+         user_id: userId,
+         class_id: <?= htmlentities($_GET['class_id']) ?>,
+         week: lessonId,
+         attendance_type: attendanceType,
+         attendance_date: formattedAttendanceDate
       }, function(data) {
-         console.log(data);
-         statusCell.children('img').addClass('hidden');
-         statusCell.children('i').removeClass('hidden');
+         if(data === 'OK') {
+            statusCell.children('img').addClass('hidden');
+            statusCell.children('i').removeClass('hidden');
+         }
       });
    }
 </script>

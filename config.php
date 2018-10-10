@@ -656,6 +656,8 @@ function template_js() {
    </script>
    <script src="//cdnjs.cloudflare.com/ajax/libs/jQuery-linkify/2.1.4/linkify-jquery.min.js">
    </script>
+   <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js">
+   </script>
    <script type="text/javascript" src="jquery.showhide.pack.js">
    </script>
    <script src='https://www.google.com/recaptcha/api.js'>
