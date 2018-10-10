@@ -20,7 +20,6 @@ function page_content() {
    }
 
    $qr = participantsForClass($_GET['class_id']);
-   $iqr = indexedAttendanceArray(attendanceForClass($_GET['class_id']), $qr);
    attendanceEntryHeader($_GET['class_id']);
 
    for($i=1; $i<=26; $i++) {
@@ -72,9 +71,27 @@ function page_content() {
       <?php
    }
 }
+
+$aqr = attendanceForClass($_GET['class_id']);
 ?>
 
 <script>
+   var aqr = <?= json_encode($aqr, JSON_NUMERIC_CHECK) ?>;
+
+   aqr.forEach(function(item) {
+      // This might be kinda slow
+
+      var row = $('table[lesson-id=' + item.week +
+         '] tr[user-id=' + item.user_id + ']');
+
+      row.find('select.attendance-type').val(item.attendance_type);
+
+      if(item.attendance_date) {
+         row.find('input.attendance-date').val(moment(item.attendance_date)
+               .format('MM/DD/YYYY'));
+      }
+   });
+
    $('select.attendance-type').selectmenu({
       change: function(event, ui) {
          submit(this);
