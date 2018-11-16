@@ -100,15 +100,17 @@ $aqr = attendanceForClass($_GET['class_id']);
 
    $('.attendance-date').datepicker({
       onSelect: function(dateText, inst) {
-         submit(this);
+         $(this).change();
       }
+   }).change(function() {
+      submit(this);
    });
 
    function submit(inputElement) {
       var lessonId = $(inputElement).closest('table').attr('lesson-id');
       var userId = $(inputElement).closest('tr').attr('user-id');
       var statusCell = $(inputElement).parent().next();
-      var attendanceType = $(inputElement).closest('tr').find('.attendance-type').val();
+      var attendanceType = parseInt($(inputElement).closest('tr').find('.attendance-type').val());
       var attendanceDate = $(inputElement).closest('tr').find('.attendance-date').val();
 
       statusCell.children('i').addClass('hidden');
@@ -131,5 +133,18 @@ $aqr = attendanceForClass($_GET['class_id']);
             statusCell.children('i').removeClass('hidden');
          }
       });
+
+      if($(inputElement).hasClass('attendance-date') && attendanceType === 1) {
+         $('table[lesson-id=' + lessonId + ']').find('.attendance-date').each(function() {
+            if(
+               !$(this).val() &&
+               parseInt($(this).closest('tr').find('.attendance-type').val()) === 1
+            ) {
+               $(this).val(attendanceDate).change();
+            }
+         });
+      }
+
    }
+
 </script>

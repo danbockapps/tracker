@@ -2,7 +2,7 @@
 session_start();
 require_once('config.php');
 
-if(can_access_class($_POST['class_id'], $_POST['class_source'])) {
+if(can_access_class($_POST['class_id'], 'w')) {
    $dbh = pdo_connect($ini['db_prefix'] . '_insert');
    $sth = $dbh->prepare('
       insert into wrc_attendance (
