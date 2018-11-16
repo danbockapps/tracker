@@ -94,7 +94,7 @@ $aqr = attendanceForClass($_GET['class_id']);
 
    $('select.attendance-type').selectmenu({
       change: function(event, ui) {
-         submit(this);
+         submit(this, false);
       }
    });
 
@@ -103,10 +103,10 @@ $aqr = attendanceForClass($_GET['class_id']);
          $(this).change();
       }
    }).change(function() {
-      submit(this);
+      submit(this, true);
    });
 
-   function submit(inputElement) {
+   function submit(inputElement, propagate) {
       var lessonId = $(inputElement).closest('table').attr('lesson-id');
       var userId = $(inputElement).closest('tr').attr('user-id');
       var statusCell = $(inputElement).parent().next();
@@ -134,13 +134,18 @@ $aqr = attendanceForClass($_GET['class_id']);
          }
       });
 
-      if($(inputElement).hasClass('attendance-date') && attendanceType === 1) {
+      if(
+         $(inputElement).hasClass('attendance-date') &&
+         attendanceType === 1 &&
+         propagate
+      ) {
          $('table[lesson-id=' + lessonId + ']').find('.attendance-date').each(function() {
             if(
                !$(this).val() &&
                parseInt($(this).closest('tr').find('.attendance-type').val()) === 1
             ) {
-               $(this).val(attendanceDate).change();
+               $(this).val(attendanceDate);
+               submit(this, false);
             }
          });
       }
