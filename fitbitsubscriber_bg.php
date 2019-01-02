@@ -26,10 +26,4 @@ else {
   deleteAllSubscriptions($userId);
 }
 
-logtxt('Starting refresh of static table.');
-$startTime = microtime(true);
-exec(MYSQL_COMMAND . ' < refreshFitbitByWeekStatic.sql');
-$endTime = microtime(true);
-logtxt('Done with refresh of static table. Duration: ' . number_format($endTime - $startTime, 2));
-
 ?>
