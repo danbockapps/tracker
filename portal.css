@@ -1,0 +1,161 @@
+
+/*January 2019 updates*/
+
+body {
+    background-color: #ccc;
+    font-family: 'Lato',Arial,Helvetica,clean,sans-serif;
+}
+#container {
+	width: 1020px;
+	background: #e3e3e3 url("_images/walkerProgress_bkgr.jpg") no-repeat;
+	background-position: center top;
+	background-size: 100% auto;
+	padding: 0;
+}
+
+.headerDiv {
+	background-color: rgba(255,255,255,.82);
+	padding-bottom: 5px;
+	position: relative;
+}
+
+#logo {
+	width: 200px;
+	height: auto;
+	margin: 15px 16px 12px 30px;
+}
+#whoami {
+	margin-top: 55px;
+	width: 705px;
+	padding-bottom: 14px;
+}
+#whoami:after {
+	content: '';
+	display: table;
+	clear: both;
+}
+#blogwidget {
+	width: 0px;
+	display: none;
+}
+#whoami h1 {
+	font-weight: 300;
+	text-transform: uppercase;
+	font-size: 3.3em;
+}
+#whoami p {
+	font-weight: 400;
+}
+#navbar {
+	float: none;
+	clear: both;
+	position: absolute;
+  bottom: -42px;
+  left: 290px;
+	height: auto;
+	width: 640px;
+}
+#navbar ul {
+	background-color: transparent;
+}
+#navbar ul li a {
+	padding: 11px 20px;
+	height: 20px;
+	min-width: 100px;
+	text-align: center;
+	border-right: 0;
+	margin-right: 10px;
+}
+#navend {
+	height: 0;
+	margin-bottom: 0;
+	clear: none;
+}
+
+.contentDiv {
+	min-height: 500px;
+	padding: 62px 20px 15px;
+}
+
+#container form {
+	background-color: #fff;
+	max-width: 400px;
+	padding: 20px 20px 8px;
+}
+fieldset {
+	border: 0;
+}
+fieldset legend {
+	font-weight: 700;
+}
+fieldset div {
+  margin-bottom: 8px;
+}
+.resetParagraph {
+	background: #FFFFFF;
+	padding: 8px 20px 20px;
+	max-width: 400px;
+	margin-top: 0;
+	margin-bottom: 0;
+}
+.resetParagraph a {
+	color: #000000;
+	padding-bottom: 8px;
+}
+.error {
+    padding: .5em;
+    margin-bottom: 0.5em;
+}
+
+/*Portal Page*/
+#loggedinas {
+  font-size: 85%;
+}
+#whoami p#yourclass {
+  font-size: 75%;
+	margin-top: 3px;
+}
+table.wrctable {
+    background: #FFFFFF;
+}
+#tracker h2, .contentDiv h2 {
+	background: rgba(255,255,255,.80);
+	padding: 16px 12px;
+	margin-bottom: 0;
+}
+#chart_div {
+	padding-bottom: 6px;
+}
+#smartgoal {
+	padding-bottom: 6px;
+}
+#pes {
+	padding-bottom: 6px;
+}
+#bmi {
+	width: 24%;
+	background-color: rgba(0,130,201,1.00);
+	color: #FFFFFF;
+	margin: 2%;
+	padding: 1em;
+}
+#bmi a {
+	color: #FFFFFF;
+}
+
+#goalweight {
+	background: rgba(0,130,201,.9);
+	color: #FFFFFF;
+}
+
+#footer {
+	background: rgba(0,130,201,1.00) ;
+	padding: 10px 20px 10px;
+	max-width: 400px;
+	margin-top: 0;
+	text-align: left;
+}
+#footer a {
+	text-decoration: none;
+	font-size: .9em
+}

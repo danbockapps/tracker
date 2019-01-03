@@ -105,7 +105,7 @@ function page_content() {
 
    <form action="<?php echo $loginphp_mode; ?>login.php?<?php echo http_build_query($_GET); ?>" method="post">
       <fieldset>
-         <legend>Login</legend>
+         <legend>Log in</legend>
 
          <p>Enter your email address and password below.</p>
 
@@ -125,11 +125,12 @@ function page_content() {
 
          <div>
             <input type="hidden" name="formsubmitted" value="TRUE" />
-            <input type="submit" value="Login" />
+            <input type="submit" value="Log in" />
          </div>
       </fieldset>
    </form>
-   <p>
+<!--																													adding class for css-->
+																														 <p class="resetParagraph">
       <a href="reset.php">Forgot your password?</a>
    </p>
 <?php

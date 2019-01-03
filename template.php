@@ -35,6 +35,12 @@ function generate_page($require_logged_in, $require_logged_out, $shownav=true) {
          href="https://fonts.googleapis.com/icon?family=Material+Icons"
          rel="stylesheet"
       />
+  
+  
+																										<!--		adding Lato-->
+																										<link href="https://fonts.googleapis.com/css?family=Lato:300,400,400i,700,700i" rel="stylesheet">
+
+  
       <link
          rel="stylesheet"
          href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css"
@@ -47,6 +53,7 @@ function generate_page($require_logged_in, $require_logged_out, $shownav=true) {
          rel="stylesheet"
          href="universal.css"
       />
+		 
 
       <?php if(PRODUCT == 'dpp') { ?>
          <link
@@ -60,11 +67,26 @@ function generate_page($require_logged_in, $require_logged_out, $shownav=true) {
             href="teal.css"
          />
       <?php } ?>
+		 
+		 
+																							 <!-- new css 010119-->
+																								<link
+																									 rel="stylesheet"
+																									 href="portal.css?v=1"
+																								/>
+		 
+
 
       <?php template_js(); ?>
    </head>
    <body>
       <div id="container">
+				
+				
+																									<!-- Adding header div for css control	-->
+																									<div class="headerDiv">
+				
+				
          <?php
          template_logo_gc();
          if($shownav) {
@@ -103,11 +125,11 @@ function generate_page($require_logged_in, $require_logged_out, $shownav=true) {
                      <li><a href="admin.php">Admin</a></li>
                      <?php
                   }
-               }
+               } 
                else {
                   // Not logged in.
                ?>
-                  <li><a href="login.php">Login</a></li>
+<!--      Hiding Login button            <li><a href="login.php">Login</a></li>-->
                <?php
                }
                ?>
@@ -117,24 +139,43 @@ function generate_page($require_logged_in, $require_logged_out, $shownav=true) {
             // end if($shownav)
             }
          ?>
-         <hr id="navend" /><?php
+         <hr id="navend" />
+
+																									</div><!--end headerDiv-->
+
+				
+																									<!-- Adding content div for css control	-->
+																									<div class="contentDiv">
+ 
+         <?php
             page_content();
          ?>
+
+																										
+																										<?php
+																										if(file_exists(mobilize_path($_SERVER['SCRIPT_FILENAME']))) {
+																											 ?>
+																											 <div id="footer">
+																													<a href="<?php
+																														 echo file_and_parameters() .
+																														 (strpos(file_and_parameters(), "?") === false ? "?" : "&") .
+																														 "mode=mobile";
+																													?>">Switch to mobile site</a>
+																											 </div>
+																											 <?php
+																										}
+																										?>
+
+																										
+																										
+																									</div><!--end contentDiv-->
+				
+				
       </div>
-      <?php
-      if(file_exists(mobilize_path($_SERVER['SCRIPT_FILENAME']))) {
-         ?>
-         <div id="footer">
-            <a href="<?php
-               echo file_and_parameters() .
-               (strpos(file_and_parameters(), "?") === false ? "?" : "&") .
-               "mode=mobile";
-            ?>">Switch to mobile site</a>
-         </div>
-         <?php
-      }
-      ?>
-   </body>
+
+<!--	PHP for footer was here-->
+	
+	</body>
 </html>
 <?php
 }
