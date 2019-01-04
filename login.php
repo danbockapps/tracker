@@ -129,8 +129,7 @@ function page_content() {
          </div>
       </fieldset>
    </form>
-<!--																													adding class for css-->
-																														 <p class="resetParagraph">
+   <p class="resetParagraph">
       <a href="reset.php">Forgot your password?</a>
    </p>
 <?php

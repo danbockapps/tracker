@@ -35,12 +35,10 @@ function generate_page($require_logged_in, $require_logged_out, $shownav=true) {
          href="https://fonts.googleapis.com/icon?family=Material+Icons"
          rel="stylesheet"
       />
-  
-  
-																										<!--		adding Lato-->
-																										<link href="https://fonts.googleapis.com/css?family=Lato:300,400,400i,700,700i" rel="stylesheet">
-
-  
+		<link
+         href="https://fonts.googleapis.com/css?family=Lato:300,400,400i,700,700i"
+         rel="stylesheet"
+      />
       <link
          rel="stylesheet"
          href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css"
@@ -53,7 +51,6 @@ function generate_page($require_logged_in, $require_logged_out, $shownav=true) {
          rel="stylesheet"
          href="universal.css"
       />
-		 
 
       <?php if(PRODUCT == 'dpp') { ?>
          <link
@@ -67,114 +64,80 @@ function generate_page($require_logged_in, $require_logged_out, $shownav=true) {
             href="teal.css"
          />
       <?php } ?>
-		 
-		 
-																							 <!-- new css 010119-->
-																								<link
-																									 rel="stylesheet"
-																									 href="portal.css?v=1"
-																								/>
-		 
-
-
+      <link
+         rel="stylesheet"
+         href="portal.css?v=1"
+      />
       <?php template_js(); ?>
    </head>
    <body>
       <div id="container">
-				
-				
-																									<!-- Adding header div for css control	-->
-																									<div class="headerDiv">
-				
-				
-         <?php
-         template_logo_gc();
-         if($shownav) {
-         ?>
-         <div id="navbar">
-            <ul>
-               <?php
-               if(isset($_SESSION['user_id'])) {
-                  global $am_i_instructor;
-                  if($am_i_instructor) {
-                     ?>
-                     <li><a href="rosters.php?instr=<?php
-                        echo $_SESSION['user_id'];
-                     ?>">Rosters</a></li>
-
-                     <li><a href="attendance_class_list.php?instr=<?php
-                        echo $_SESSION['user_id'];
-                     ?>">Attendance</a></li>
-
-                     <?php
-                  }
-                  else {
-                     global $registered;
-                     if($registered) {
+         <div class="headerDiv">
+            <?php
+            template_logo_gc();
+            if($shownav) {
+            ?>
+            <div id="navbar">
+               <ul>
+                  <?php
+                  if(isset($_SESSION['user_id'])) {
+                     global $am_i_instructor;
+                     if($am_i_instructor) {
                         ?>
-                        <li><a href="reports.php?user=<?php
+                        <li><a href="rosters.php?instr=<?php
                            echo $_SESSION['user_id'];
-                        ?>">Weekly reports</a></li>
-                        <li><a href="all_messages.php?user=<?php
+                        ?>">Rosters</a></li>
+
+                        <li><a href="attendance_class_list.php?instr=<?php
                            echo $_SESSION['user_id'];
-                        ?>">Messages</a></li><?php
+                        ?>">Attendance</a></li>
+
+                        <?php
+                     }
+                     else {
+                        global $registered;
+                        if($registered) {
+                           ?>
+                           <li><a href="reports.php?user=<?php
+                              echo $_SESSION['user_id'];
+                           ?>">Weekly reports</a></li>
+                           <li><a href="all_messages.php?user=<?php
+                              echo $_SESSION['user_id'];
+                           ?>">Messages</a></li><?php
+                        }
+                     }
+                     if(am_i_admin()) {
+                        ?>
+                        <li><a href="admin.php">Admin</a></li>
+                        <?php
                      }
                   }
-                  if(am_i_admin()) {
-                     ?>
-                     <li><a href="admin.php">Admin</a></li>
-                     <?php
-                  }
-               } 
-               else {
-                  // Not logged in.
-               ?>
-<!--      Hiding Login button            <li><a href="login.php">Login</a></li>-->
-               <?php
+                  ?>
+               </ul>
+            </div>
+            <?php
+               // end if($shownav)
+               }
+            ?>
+            <hr id="navend" />
+         </div><!--end headerDiv-->
+         <div class="contentDiv">
+            <?php
+               page_content();
+               if(file_exists(mobilize_path($_SERVER['SCRIPT_FILENAME']))) {
+                  ?>
+                  <div id="footer">
+                     <a href="<?php
+                        echo file_and_parameters() .
+                        (strpos(file_and_parameters(), "?") === false ? "?" : "&") .
+                        "mode=mobile";
+                     ?>">Switch to mobile site</a>
+                  </div>
+                  <?php
                }
                ?>
-            </ul>
-         </div>
-         <?php
-            // end if($shownav)
-            }
-         ?>
-         <hr id="navend" />
-
-																									</div><!--end headerDiv-->
-
-				
-																									<!-- Adding content div for css control	-->
-																									<div class="contentDiv">
- 
-         <?php
-            page_content();
-         ?>
-
-																										
-																										<?php
-																										if(file_exists(mobilize_path($_SERVER['SCRIPT_FILENAME']))) {
-																											 ?>
-																											 <div id="footer">
-																													<a href="<?php
-																														 echo file_and_parameters() .
-																														 (strpos(file_and_parameters(), "?") === false ? "?" : "&") .
-																														 "mode=mobile";
-																													?>">Switch to mobile site</a>
-																											 </div>
-																											 <?php
-																										}
-																										?>
-
-																										
-																										
-																									</div><!--end contentDiv-->
-				
-				
-      </div>
-
-<!--	PHP for footer was here-->
-	
+         </div><!--end contentDiv-->
+      </div><!--end container-->
 	</body>
 </html>
 <?php

@@ -711,7 +711,7 @@ function template_js() {
 
    <?php
 }
-																									// src fo logo below was echo $ini['logo_url']; 
+
 function template_logo_gc() {
    global $blogqr;
    global $am_i_instructor;
@@ -721,7 +721,7 @@ function template_logo_gc() {
    <a href="<?php echo my_home_page(); ?>">
       <img
          id="logo"
-																											 src="_images/logo.png"
+         src="<?php echo $ini['logo_url']; ?>"
       />
    </a>
 
