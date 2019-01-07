@@ -26,7 +26,7 @@ function page_content() {
       echo '<hr /><h3>Lesson ' . $i . '</h3>';
       
       ?>
-      <table lesson-id="<?php echo $i; ?>">
+      <table lesson-id="<?php echo $i; ?>" cellspacing="0">
          <thead>
             <tr>
                <th>Participant</th>
@@ -34,6 +34,9 @@ function page_content() {
                <th style="width:2em;"><!-- Spinner/checkmark --></th>
                <th>Date attended</th>
                <th style="width:2em;"><!-- Spinner/checkmark --></th>
+               <th class="graybg">Weight</th>
+               <th class="graybg">Minutes of<br/>Physical Activity</th>
+               <th class="graybg"><!-- Submit button/checkmark -->
             </tr>
          </thead>
          <tbody>
@@ -59,6 +62,16 @@ function page_content() {
                   <td class="status">
                      <img src="spinner.gif" class="hidden" />
                      <i class="material-icons hidden entryPoint greenCheck">&#xE86C;</i>
+                  </td>
+                  <td class="graybg">
+                     <input type="text" name="attendance-weight" class="attendance-weight" />
+                  </td>
+                  <td class="graybg">
+                     <input type="text" name="attendance-pa" class="attendance-pa" />
+                  </td>
+                  <td class="graybg">
+                     <button class="attendance-submit ui-button ui-widget ui-corner-all">Submit</button>
+                     <i class="material-icons entryPoint greenCheck">&#xE86C;</i>
                   </td>
                </tr>
                <?php
@@ -151,5 +164,8 @@ $aqr = attendanceForClass($_GET['class_id']);
       }
 
    }
+
+   $('.attendance-weight, .attendance-pa').spinner();
+
 
 </script>
