@@ -576,4 +576,9 @@ function attendanceEntryHeader($classId) {
    <?php
 }
 
+function removePassword($s) {
+   // TODO if we ever use this with login requests, make it work
+   return $s;
+}
+
 ?>
