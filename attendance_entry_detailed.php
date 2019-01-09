@@ -24,7 +24,7 @@ function page_content() {
 
    for($i=1; $i<=26; $i++) {
       echo '<hr /><h3>Lesson ' . $i . '</h3>';
-      
+
       ?>
       <table lesson-id="<?php echo $i; ?>" cellspacing="0">
          <thead>
@@ -36,7 +36,8 @@ function page_content() {
                <th style="width:2em;"><!-- Spinner/checkmark --></th>
                <th class="graybg">Weight</th>
                <th class="graybg">Minutes of<br/>Physical Activity</th>
-               <th class="graybg"><!-- Submit button/checkmark -->
+               <th class="graybg"><!-- Submit button --></th>
+               <th class="graybg" style="width:2em;"><!-- Spinner/checkmark --></th>
             </tr>
          </thead>
          <tbody>
@@ -71,7 +72,10 @@ function page_content() {
                   </td>
                   <td class="graybg">
                      <button class="attendance-submit ui-button ui-widget ui-corner-all">Submit</button>
-                     <i class="material-icons entryPoint greenCheck">&#xE86C;</i>
+                  </td>
+                  <td class="status graybg">
+                     <img src="spinner.gif" class="hidden" />
+                     <i class="material-icons hidden entryPoint greenCheck">&#xE86C;</i>
                   </td>
                </tr>
                <?php
@@ -193,5 +197,23 @@ $aqr = attendanceForClass($_GET['class_id']);
       });
    });
 
+   $('.attendance-submit').click(function(event) {
+      var statusCell = $(this).parent().next();
+      statusCell.children('i').addClass('hidden');
+      statusCell.children('img').removeClass('hidden');
+
+      $.post('rest/api.php?q=reports', {
+         user_id: $(this).closest('tr').attr('user-id'),
+         class_id: <?= htmlentities($_GET['class_id']) ?>,
+         week_id: $(this).closest('table').attr('lesson-id'),
+         weight: $(this).closest('tr').find('.attendance-weight').val(),
+         physact_minutes: $(this).closest('tr').find('.attendance-pa').val()
+      }, function(data) {
+         if(data.responseString === 'OK') {
+            statusCell.children('img').addClass('hidden');
+            statusCell.children('i').removeClass('hidden');
+         }
+      });
+   });
 
 </script>

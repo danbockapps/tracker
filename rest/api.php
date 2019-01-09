@@ -7,9 +7,6 @@ if($_SERVER['REQUEST_SCHEME'] == 'http') {
 
 require_once('../config.php');
 
-$contents = file_get_contents("php://input");
-$post = json_decode($contents, true);
-
 // Initialize array that will be returned if no error.
 $ok_array = array(
   q => $_GET['q'],

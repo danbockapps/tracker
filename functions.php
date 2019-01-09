@@ -581,4 +581,16 @@ function removePassword($s) {
    return $s;
 }
 
+function reportExists($userId, $classId, $weekId) {
+   $qr = seleqt_one_record('
+      select count(*) as count
+      from wrc_reports
+      where
+         user_id = ? and
+         class_id = ? and
+         week_id = ?
+   ', array($userId, $classId, $weekId));
+   return $qr['count'];
+}
+
 ?>
