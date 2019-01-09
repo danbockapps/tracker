@@ -167,5 +167,31 @@ $aqr = attendanceForClass($_GET['class_id']);
 
    $('.attendance-weight, .attendance-pa').spinner();
 
+   $.get("rest/api.php?q=reports&class_id=<?php echo $_GET['class_id']; ?>", function(data) {
+      data.reports.forEach(function(item) {
+
+         $('.attendance-weight').each(function(index, element) {
+            if(
+               Number(item.week_id) === Number($(element).closest('table').attr('lesson-id'))
+               &&
+               Number(item.user_id) === Number($(element).closest('tr').attr('user-id'))
+            ) {
+               $(element).val(item.weight);
+            }
+         });
+
+         $('.attendance-pa').each(function(index, element) {
+            if(
+               Number(item.week_id) === Number($(element).closest('table').attr('lesson-id'))
+               &&
+               Number(item.user_id) === Number($(element).closest('tr').attr('user-id'))
+            ) {
+               $(element).val(item.physact_minutes);
+            }
+         });
+
+      });
+   });
+
 
 </script>
