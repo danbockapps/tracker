@@ -71,7 +71,7 @@ function generate_page($require_logged_in, $require_logged_out, $shownav=true) {
       <?php template_js(); ?>
    </head>
    <body>
-      <div id="container">
+      <div id="container" <?php containerClasses(); ?>>
          <div class="headerDiv">
             <?php
             template_logo_gc();
@@ -148,4 +148,12 @@ function generate_page($require_logged_in, $require_logged_out, $shownav=true) {
 </html>
 <?php
 }
+
+function containerClasses() {
+   global $containerClasses;
+   if(isset($containerClasses)) {
+      echo 'class = "' . $containerClasses . '"';
+   }
+}
+
 ?>
