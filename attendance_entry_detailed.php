@@ -24,9 +24,9 @@ function page_content() {
 
    for($i=1; $i<=26; $i++) {
       echo '<hr /><h3>Lesson ' . $i . '</h3>';
-      
+
       ?>
-      <table lesson-id="<?php echo $i; ?>">
+      <table lesson-id="<?php echo $i; ?>" cellspacing="0">
          <thead>
             <tr>
                <th>Participant</th>
@@ -34,6 +34,10 @@ function page_content() {
                <th style="width:2em;"><!-- Spinner/checkmark --></th>
                <th>Date attended</th>
                <th style="width:2em;"><!-- Spinner/checkmark --></th>
+               <th class="graybg">Weight</th>
+               <th class="graybg">Minutes of<br/>Physical Activity</th>
+               <th class="graybg"><!-- Submit button --></th>
+               <th class="graybg" style="width:2em;"><!-- Spinner/checkmark --></th>
             </tr>
          </thead>
          <tbody>
@@ -57,6 +61,19 @@ function page_content() {
                      <input type="text" class="attendance-date ui-widget ui-widget-content ui-corner-all" />
                   </td>
                   <td class="status">
+                     <img src="spinner.gif" class="hidden" />
+                     <i class="material-icons hidden entryPoint greenCheck">&#xE86C;</i>
+                  </td>
+                  <td class="graybg">
+                     <input type="text" name="attendance-weight" class="attendance-weight" />
+                  </td>
+                  <td class="graybg">
+                     <input type="text" name="attendance-pa" class="attendance-pa" />
+                  </td>
+                  <td class="graybg">
+                     <button class="attendance-submit ui-button ui-widget ui-corner-all">Submit</button>
+                  </td>
+                  <td class="status graybg">
                      <img src="spinner.gif" class="hidden" />
                      <i class="material-icons hidden entryPoint greenCheck">&#xE86C;</i>
                   </td>
@@ -151,5 +168,52 @@ $aqr = attendanceForClass($_GET['class_id']);
       }
 
    }
+
+   $('.attendance-weight, .attendance-pa').spinner();
+
+   $.get("rest/api.php?q=reports&class_id=<?php echo $_GET['class_id']; ?>", function(data) {
+      data.reports.forEach(function(item) {
+
+         $('.attendance-weight').each(function(index, element) {
+            if(
+               Number(item.week_id) === Number($(element).closest('table').attr('lesson-id'))
+               &&
+               Number(item.user_id) === Number($(element).closest('tr').attr('user-id'))
+            ) {
+               $(element).val(item.weight);
+            }
+         });
+
+         $('.attendance-pa').each(function(index, element) {
+            if(
+               Number(item.week_id) === Number($(element).closest('table').attr('lesson-id'))
+               &&
+               Number(item.user_id) === Number($(element).closest('tr').attr('user-id'))
+            ) {
+               $(element).val(item.physact_minutes);
+            }
+         });
+
+      });
+   });
+
+   $('.attendance-submit').click(function(event) {
+      var statusCell = $(this).parent().next();
+      statusCell.children('i').addClass('hidden');
+      statusCell.children('img').removeClass('hidden');
+
+      $.post('rest/api.php?q=reports', {
+         user_id: $(this).closest('tr').attr('user-id'),
+         class_id: <?= htmlentities($_GET['class_id']) ?>,
+         week_id: $(this).closest('table').attr('lesson-id'),
+         weight: $(this).closest('tr').find('.attendance-weight').val(),
+         physact_minutes: $(this).closest('tr').find('.attendance-pa').val()
+      }, function(data) {
+         if(data.responseString === 'OK') {
+            statusCell.children('img').addClass('hidden');
+            statusCell.children('i').removeClass('hidden');
+         }
+      });
+   });
 
 </script>
