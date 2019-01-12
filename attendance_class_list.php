@@ -4,13 +4,13 @@ generate_page(true, false);
 
 function page_content() {
    if(!am_i_admin() && !am_i_instructor()) {
-      exit("You must be an admin or instructor to view this page.");
+      exit("<p>You must be an admin or instructor to view this page.</p>");
    }
    if(!isset($_GET['instr'])) {
       $_GET['instr'] = $_SESSION['user_id'];
    }
    if(!am_i_instructor($_GET['instr'])) {
-      exit("The specified user is not an instructor.");
+      exit("<p>The specified user is not an instructor.</p>");
    }
    
    ?>

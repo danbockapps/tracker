@@ -20,12 +20,12 @@ function page_content() {
       !is_email_address($_GET['email']) ||
       strlen($_GET['key']) != 32
    ) {
-      echo err_text("There is a problem with the URL. Please follow the link sent
-            to your email address.");
+      echo err_text("<p>There is a problem with the URL. Please follow the link sent
+            to your email address.</p>");
    }
 
    else if(isset($_POST['formsubmitted'])) {
-      $back = " Please click your browser's back button and try again.";
+      $back = " <p>Please click your browser's back button and try again.</p>";
       if (empty($_POST['password'])) {
          echo err_text('Please enter your password.' . $back);
       }
@@ -57,11 +57,11 @@ function page_content() {
             $_GET['email'],
             $_GET['key']
          ))) {
-            echo cnf_text("Your account has been created. You may now
-                  <a href='login.php'>log in</a>");
+            echo cnf_text("<p>Your account has been created. You may now
+                  <a href='login.php'>log in</a></p>");
          }
          else {
-            echo err_text("A database error occurred.");
+            echo err_text("<p>A database error occurred.</p>");
          }
       }
    }
@@ -84,8 +84,8 @@ function page_content() {
          header("Location: " . my_home_page());
       }
       else if($qr['activation'] != $_GET['key']) {
-         echo err_text("There is a problem with your key. Please follow the link sent
-               to your email address.");
+         echo err_text("<p>There is a problem with your key. Please follow the link sent
+               to your email address.</p>");
       }
 
       else {

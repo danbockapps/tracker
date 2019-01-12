@@ -2,12 +2,12 @@
 /*January 2019 updates*/
 
 body {
-    background-color: #ccc;
+    background-color: #fff;
     font-family: 'Lato',Arial,Helvetica,clean,sans-serif;
 }
 #container {
 	width: 1020px;
-	background: #e3e3e3 url("_images/walkerProgress_bkgr.jpg") no-repeat;
+	background: #fff url("_images/walkerProgress_bkgr-faded.jpg") no-repeat;
 	background-position: center top;
 	background-size: 100% auto;
 	padding: 0;
@@ -17,6 +17,7 @@ body {
 	background-color: rgba(255,255,255,.82);
 	padding-bottom: 5px;
 	position: relative;
+	height: 158px;
 }
 
 #logo {
@@ -73,39 +74,63 @@ body {
 }
 
 .contentDiv {
-	min-height: 500px;
+	min-height: 610px;
 	padding: 62px 20px 15px;
+/*	background-color: rgba(255,255,255,0.4);*/
 }
-
+.contentDiv p {
+	background-color: rgba(255,252,252,0.83);
+	padding: 10px;
+}
 #container form {
 	background-color: #fff;
-	max-width: 400px;
+	max-width: 450px;
 	padding: 20px 20px 8px;
+}
+#report_form input[type="text"] {
+	width: 50px;
+}
+#strategy_fieldset {
+	width: 955px;
+/*	background-color: #fff;*/
+}
+#strategy_fieldset table {
+	background-color: #fff;
+}
+#strategy_fieldset td {
+	padding-left: 40px;
+}
+#strategy_fieldset input[name="newstrat_desc"] {
+	width: 120px;
 }
 fieldset {
 	border: 0;
 }
 fieldset legend {
-	font-weight: 700;
+	font-weight: 600;
 }
 fieldset div {
   margin-bottom: 8px;
 }
-.resetParagraph {
+p.resetParagraph {
 	background: #FFFFFF;
 	padding: 8px 20px 20px;
-	max-width: 400px;
+	max-width: 450px;
 	margin-top: 0;
 	margin-bottom: 0;
 }
-.resetParagraph a {
+p.resetParagraph a {
 	color: #000000;
 	padding-bottom: 8px;
 }
 .error {
     padding: .5em;
     margin-bottom: 0.5em;
+	background-color: #fcebff;
+	color: #d4153f;
 }
+
+
 
 /*Portal Page*/
 #loggedinas {
@@ -148,10 +173,43 @@ table.wrctable {
 	color: #FFFFFF;
 }
 
+/*Participant messages*/
+.sgmsg_header {
+	background-color: #97D2F3;
+}
+.msg_header {
+	background-color: #ccc;
+}
+.fdbk_header {
+	background-color: #ff99a8;
+}
+
+
+/*Admin*/
+table#attendanceEntry {
+	background-color: #fff;
+}
+.contentDiv a.showhide_closed {
+	background-color: rgba(255,255,255,.80);
+	padding: .5em .6em .5em 30px;
+	margin-top: 0;
+	background-position: 3px 13px;
+}
+.contentDiv ul.show {
+	background-color: rgba(255,255,255,.80);
+	padding: 1px 8px 8px 30px;
+	list-style-position: inside;
+	margin-top: 0;
+}
+.contentDiv ul.show li {
+	margin-top: 5px;
+}
+
+
 #footer {
 	background: rgba(0,130,201,1.00) ;
 	padding: 10px 20px 10px;
-	max-width: 400px;
+	max-width: 450px;
 	margin-top: 0;
 	text-align: left;
 }

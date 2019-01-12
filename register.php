@@ -26,46 +26,46 @@ function page_content() {
       );
 
       if(!$recaptcha_response->success) {
-         $error[] = "Recaptcha error. Please check the Recaptcha box.";
+         $error[] = "<p>Recaptcha error. Please check the Recaptcha box.</p>";
       }
 
       if (empty($_POST['first_name'])) { //if no name has been supplied
-         $error[] = 'Please enter a first name.'; //add to array "error"
+         $error[] = '<p>Please enter a first name.</p>'; //add to array "error"
       } else {
          $name = $_POST['first_name']; //else assign it a variable
       }
 
       if (empty($_POST['last_name'])) { //if no name has been supplied
-         $error[] = 'Please enter a last name.'; //add to array "error"
+         $error[] = '<p>Please enter a last name.</p>'; //add to array "error"
       } else {
          $name = $_POST['last_name']; //else assign it a variable
       }
 
       if (empty($_POST['email'])) {
-         $error[] = 'Please enter your e-mail address.';
+         $error[] = '<p>Please enter your e-mail address.</p>';
       }
       else if (!is_email_address($_POST['email'])) {
-         $error[] = 'Please enter a valid e-mail address. ';
+         $error[] = '<p>Please enter a valid e-mail address. </p>';
       }
       else if (email_already_in_db($_POST['email'])) {
-         $error[] = 'There is already a registered user with that e-mail'
-            . ' address. <a href="reset.php">Forgot your password?</a>';
+         $error[] = '<p>There is already a registered user with that e-mail'
+            . ' address. <a href="reset.php">Forgot your password?</a></p>';
       }
       else {
          $email = $_POST['email'];
       }
 
       if (empty($_POST['password'])) {
-         $error[] = 'Please enter your password. ';
+         $error[] = '<p>Please enter your password. </p>';
       }
       else if(empty($_POST['password2'])) {
-         $error[] = 'Please enter your password twice. ';
+         $error[] = '<p>Please enter your password twice. </p>';
       }
       else if(strlen($_POST['password']) < MIN_PW_LEN) {
-         $error[] = "Password must be at least " . MIN_PW_LEN . " characters. ";
+         $error[] = "<p>Password must be at least " . MIN_PW_LEN . " characters. </p>";
       }
       else if($_POST['password'] !== $_POST['password2']) {
-         $error[] = "Please enter the same password twice. ";
+         $error[] = "<p>Please enter the same password twice. </p>";
       }
       else {
          $password = $_POST['password'];
@@ -91,16 +91,16 @@ function page_content() {
 
             // Finish the page:
             echo cnf_text('
-               Thank you for registering! A confirmation email has been sent to '
+               <p>Thank you for registering! A confirmation email has been sent to '
                . htmlentities($email) . '. Please follow the instructions in
                the e-mail
                to activate your account. <b>Please check your "spam" or ' .
-               '"junk" folder</b> if you do not see the message in your inbox.
+               '"junk" folder</b> if you do not see the message in your inbox.</p>
             ');
             $success = true;
          }
          else {
-            echo err_text("There was a database error creating your account.");
+            echo err_text("<p>There was a database error creating your account.</p>");
          }
 
       }

@@ -55,7 +55,7 @@ function page_content() {
    }
 
    else {
-      echo err_text("You did not select any participants.");
+      echo err_text("<p>You did not select any participants.</p>");
       ?><a href="rosters.php">Rosters</a><?php
    }
 }

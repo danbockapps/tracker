@@ -16,7 +16,7 @@ generate_page($requireLoggedIn, false);
 
 function page_content() {
    if(!am_i_admin() && !am_i_instructor() && ENVIRONMENT != 'dev') {
-      exit("You must be an admin or instructor to view this page.");
+      exit("<p>You must be an admin or instructor to view this page.</p>");
    }
 
    $qr = participantsForClass($_GET['class_id']);

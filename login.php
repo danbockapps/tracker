@@ -16,28 +16,28 @@ function page_content() {
 
       if (empty($_POST['email'])) {
          loginLog('Email is empty.');
-         $error[] = 'You forgot to enter your email.';
+         $error[] = '<p>You forgot to enter your email.</p>';
       }
       else if (!is_email_address($_POST['email'])) {
          loginLog('Email address is invalid.');
-         $error[] = 'Your email address is invalid.';
+         $error[] = '<p>Your email address is invalid.</p>';
       }
       else {
          loginLog('Email is set.');
-      	$email = $_POST['email'];
+         $email = $_POST['email'];
       }
 
       if (empty($_POST['password'])) {
          loginLog('Password is empty.');
-         $error[] = 'Please enter your password ';
+         $error[] = '<p>Please enter your password </p>';
       } else {
          loginLog('Password is set.');
          $password = $_POST['password'];
       }
 
       if (!email_already_in_db($_POST['email'])) {
-         loginLog('Email is not in database.');
-      	$error[] = noCurrentClassText();
+         loginLog('<p>Email is not in database.</p>');
+         $error[] = noCurrentClassText();
       }
 
       if (empty($error)) { //if the array is empty, it means no error found
@@ -54,9 +54,9 @@ function page_content() {
 
          if($result['activation'] != null) {
             loginLog('Account not activated.');
-            $error[] = "Your account has not been activated. Please " .
+            $error[] = "<p>Your account has not been activated. Please " .
                      "follow the instructions sent to your e-mail address or " .
-                     "<a href=\"reset.php\">click here</a> to reset your account.";
+                     "<a href=\"reset.php\">click here</a> to reset your account.</p>";
          }
 
          else {
@@ -85,18 +85,18 @@ function page_content() {
 
             else {
                loginLog('Password is incorrect.');
-               $msg_error = "Incorrect password. If you have forgotten your " .
-                  "password, <a href=\"reset.php\">click here</a> to reset it.";
+               $msg_error = "<p>Incorrect password. If you have forgotten your " .
+                  "password, <a href=\"reset.php\">click here</a> to reset it.</p>";
             }
          }
       }
 
       foreach ($error as $values) {
-      	echo '<li class="error">'.$values.'</li>';
+         echo '<li class="error">'.$values.'</li>';
       }
 
       if(isset($msg_error)) {
-      	echo '<li class="error">'.$msg_error.' </li>';
+         echo '<li class="error">'.$msg_error.' </li>';
       }
    } // End of the main Submit conditional.
 

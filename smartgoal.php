@@ -35,7 +35,7 @@ function page_content() {
          header("Location: reports.php?user=" . getNumericOnly('user'));
       }
       else {
-         echo err_text("A database error occurred.");
+         echo err_text("<p>A database error occurred.</p>");
       }
    }
 

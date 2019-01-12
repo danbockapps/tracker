@@ -21,7 +21,7 @@ function page_content() {
    participant_nav($qr['class_id'], $qr['class_source']);
 
    if(am_i_instructor($_GET['user'])) {
-      exit(err_text("You cannot view all messages for an instructor."));
+      exit(err_text("<p>You cannot view all messages for an instructor.</p>"));
    }
 
    $iqr = pdo_seleqt("
@@ -53,10 +53,10 @@ function page_content() {
       $recip_id = htmlentities($_GET['user']);
    }
    if($recip_id == null) {
-      echo err_text("You cannot send messages because your class does not " .
+      echo err_text("<p>You cannot send messages because your class does not " .
             "have an instructor assigned. Please " .
             "e-mail us at <a href=\"" . ADMIN_EMAIL . "\">" . ADMIN_EMAIL .
-            "</a>.");
+            "</a>.</p>");
    }
    else {
       ?>

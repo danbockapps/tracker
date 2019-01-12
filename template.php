@@ -35,7 +35,7 @@ function generate_page($require_logged_in, $require_logged_out, $shownav=true) {
          href="https://fonts.googleapis.com/icon?family=Material+Icons"
          rel="stylesheet"
       />
-		<link
+      <link
          href="https://fonts.googleapis.com/css?family=Lato:300,400,400i,700,700i"
          rel="stylesheet"
       />
@@ -66,7 +66,7 @@ function generate_page($require_logged_in, $require_logged_out, $shownav=true) {
       <?php } ?>
       <link
          rel="stylesheet"
-         href="portal.css?v=1"
+         href="portal.css?v=010919-1"
       />
       <?php template_js(); ?>
    </head>
@@ -112,6 +112,12 @@ function generate_page($require_logged_in, $require_logged_out, $shownav=true) {
                         <?php
                      }
                   }
+                  else {
+                     // Not logged in.
+                     ?>
+                        <li><a href="login.php">Log in</a></li>
+                     <?php
+                  }
                   ?>
                </ul>
             </div>
@@ -138,7 +144,7 @@ function generate_page($require_logged_in, $require_logged_out, $shownav=true) {
                ?>
          </div><!--end contentDiv-->
       </div><!--end container-->
-	</body>
+   </body>
 </html>
 <?php
 }
