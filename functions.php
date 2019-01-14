@@ -467,6 +467,8 @@ function attendanceForClass($classId) {
    return pdo_seleqt('
       select
          a.user_id,
+         u.fname,
+         u.lname,
          a.week,
          a.present,
          a.attendance_date,
@@ -476,6 +478,8 @@ function attendanceForClass($classId) {
          inner join classes_aw c
             on a.class_id = c.class_id
             and a.class_source = c.class_source
+         inner join wrc_users u
+            on a.user_id = u.user_id
       where
          year(c.start_dttm) in (
             select year(start_dttm)

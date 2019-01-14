@@ -19,6 +19,8 @@ function page_content() {
       exit("You must be an admin or instructor to view this page.");
    }
 
+   require('static_attendance_grid.php');
+
    $qr = participantsForClass($_GET['class_id']);
    attendanceEntryHeader($_GET['class_id']);
 
