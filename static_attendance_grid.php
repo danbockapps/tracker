@@ -23,7 +23,7 @@ $('#showGridLink a').click(function(){
 function showGrid() {
   $('#showGridLink').hide();
   $('#staticGrid').show();
-  $('#staticGrid').prepend('<table><tr id="header"></tr></table>');
+  $('#staticGrid').prepend('<table id="attendanceEntry"><tr id="header"></tr></table>');
   $('#header').append('<th>Participant name</th>');
   $('#header').append('<th><!-- attendance sum --></th>');
   for(var i=1; i<=24; i++) {
@@ -42,6 +42,8 @@ function showGrid() {
         'td[lesson-id=' + item.week + ']'
       ).html(item.attendance_type);
     });
+
+    $('#attendanceEntry tr:odd').addClass('alt');
   });
 }
 
@@ -59,7 +61,7 @@ function addUserToGrid(userId, fname, lname) {
 
   for(var i=1; i<=24; i++) {
     $('#staticGrid tr[user-id=' + userId + ']').append(
-      '<td lesson-id="' + i + '"></td>'
+      '<td class="checkboxCell" lesson-id="' + i + '"></td>'
     );
   }
 }

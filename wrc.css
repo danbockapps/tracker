@@ -343,7 +343,6 @@ table#attendanceEntry thead tr {
 table#attendanceEntry tbody {
    display: block;
    overflow: auto;
-   height: 500px;
 }
 table#attendanceEntry .participantName {
    min-width: 150px;
