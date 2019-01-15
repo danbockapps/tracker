@@ -13,6 +13,14 @@ body {
 	padding: 0;
 }
 
+#container.loginPage {
+	width: 1020px;
+	background: #fff url("_images/walkerProgress_bkgr.jpg") no-repeat;
+	background-position: center top;
+	background-size: 100% auto;
+	padding: 0;
+}
+
 .headerDiv {
 	background-color: rgba(255,255,255,.82);
 	padding-bottom: 5px;
