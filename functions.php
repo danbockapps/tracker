@@ -470,9 +470,7 @@ function attendanceForClass($classId) {
          u.fname,
          u.lname,
          a.week,
-         a.present,
-         a.attendance_date,
-         a.attendance_type
+         a.present
       from
          wrc_attendance a
          inner join classes_aw c
@@ -496,6 +494,37 @@ function attendanceForClass($classId) {
                and class_source = "w"
          )
       order by date_entered
+   ', array($classId, $classId));
+}
+
+function attendanceSummary2ForClass($classId) {
+   return pdo_seleqt('
+      select
+         a.user_id,
+         u.fname,
+         u.lname,
+         a.week,
+         a.attendance_type,
+         a.attendance_date
+      from
+         attendance_summary2 a
+         inner join wrc_users u
+            on a.user_id = u.user_id
+      where
+         a.year in (
+            select year(start_dttm)
+            from classes_aw
+            where
+               class_id = ?
+               and class_source = "w"
+         )
+         and a.month in (
+            select month(start_dttm)
+            from classes_aw
+            where
+               class_id = ?
+               and class_source = "w"
+         )
    ', array($classId, $classId));
 }
 
@@ -595,6 +624,15 @@ function reportExists($userId, $classId, $weekId) {
          week_id = ?
    ', array($userId, $classId, $weekId));
    return $qr['count'];
+}
+
+function nullIfBlank($x) {
+   if($x == '') {
+      return null;
+   }
+   else {
+      return $x;
+   }
 }
 
 ?>

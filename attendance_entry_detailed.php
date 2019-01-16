@@ -8,14 +8,10 @@ here and in the database to "lesson".
 
 require_once("template.php");
 
-$requireLoggedIn = true;
-if(ENVIRONMENT == 'dev') {
-   $requireLoggedIn = false;
-}
-generate_page($requireLoggedIn, false);
+generate_page(true, false);
 
 function page_content() {
-   if(!am_i_admin() && !am_i_instructor() && ENVIRONMENT != 'dev') {
+   if(!am_i_admin() && !am_i_instructor()) {
       exit("<p>You must be an admin or instructor to view this page.</p>");
    }
 
@@ -23,6 +19,16 @@ function page_content() {
 
    $qr = participantsForClass($_GET['class_id']);
    attendanceEntryHeader($_GET['class_id']);
+
+   ?>
+   <p>
+      Tip: For each lesson, fill out the entire <i>Class attended</i> column
+      first, then <i>Date attended</i> second. When you set the date for a
+      <i>Regular class</i> for one participant, the date will automatically be
+      filled for all other participants who attended a regular class for that
+      lesson.
+   </p>
+   <?php
 
    for($i=1; $i<=26; $i++) {
       echo '<hr /><h3>Lesson ' . $i . '</h3>';
@@ -91,7 +97,7 @@ function page_content() {
    }
 }
 
-$aqr = attendanceForClass($_GET['class_id']);
+$aqr = attendanceSummary2ForClass($_GET['class_id']);
 ?>
 
 <script>
@@ -130,12 +136,27 @@ $aqr = attendanceForClass($_GET['class_id']);
       var userId = $(inputElement).closest('tr').attr('user-id');
       var statusCell = $(inputElement).parent().next();
       var attendanceType = parseInt($(inputElement).closest('tr').find('.attendance-type').val());
-      var attendanceDate = $(inputElement).closest('tr').find('.attendance-date').val();
+      var attendanceField = $(inputElement).closest('tr').find('.attendance-date');
 
       statusCell.children('i').addClass('hidden');
       statusCell.children('img').removeClass('hidden');
 
       var formattedAttendanceDate;
+
+      // Clear out date if user is changing type to 0 (no class attended)
+      if($(inputElement).hasClass('attendance-type')) {
+         if(attendanceType === 0) {
+            attendanceField.val('');
+            attendanceField.prop("disabled", true);
+            formattedAttendanceDate = null;
+         }
+         else {
+            attendanceField.prop("disabled", false);
+         }
+      }
+
+      var attendanceDate = attendanceField.val();
+
       if(attendanceDate) {
          formattedAttendanceDate = moment(attendanceDate).format('YYYY-MM-DD');
       }
