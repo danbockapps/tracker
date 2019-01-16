@@ -117,6 +117,10 @@ $aqr = attendanceSummary2ForClass($_GET['class_id']);
       }
    });
 
+   $('select.attendance-type[value=0]').each(function() {
+      $(this).closest('tr').find('.attendance-date').prop('disabled', true);
+   });
+
    $('select.attendance-type').selectmenu({
       change: function(event, ui) {
          submit(this, false);
