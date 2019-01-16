@@ -125,22 +125,33 @@ $aqr = attendanceSummary2ForClass($_GET['class_id']);
       submit(this, true);
    });
 
-   function submit(inputElement, propagate, forceIncludeBlankDate) {
+   function submit(inputElement, propagate) {
       var lessonId = $(inputElement).closest('table').attr('lesson-id');
       var userId = $(inputElement).closest('tr').attr('user-id');
       var statusCell = $(inputElement).parent().next();
       var attendanceType = parseInt($(inputElement).closest('tr').find('.attendance-type').val());
       var attendanceField = $(inputElement).closest('tr').find('.attendance-date');
-      var attendanceDate = attendanceField.val();
 
       statusCell.children('i').addClass('hidden');
       statusCell.children('img').removeClass('hidden');
 
       var formattedAttendanceDate;
-      if(forceIncludeBlankDate) {
-         formattedAttendanceDate = null;
+
+      // Clear out date if user is changing type to 0 (no class attended)
+      if($(inputElement).hasClass('attendance-type')) {
+         if(attendanceType === 0) {
+            attendanceField.val('');
+            attendanceField.prop("disabled", true);
+            formattedAttendanceDate = null;
+         }
+         else {
+            attendanceField.prop("disabled", false);
+         }
       }
-      else if(attendanceDate) {
+
+      var attendanceDate = attendanceField.val();
+
+      if(attendanceDate) {
          formattedAttendanceDate = moment(attendanceDate).format('YYYY-MM-DD');
       }
 
@@ -171,18 +182,6 @@ $aqr = attendanceSummary2ForClass($_GET['class_id']);
                submit(this, false);
             }
          });
-      }
-
-      // Clear out date if user is changing type to 0 (no class attended)
-      if($(inputElement).hasClass('attendance-type')) {
-         if(attendanceType === 0) {
-            attendanceField.val('');
-            submit(attendanceField, false, true);
-            attendanceField.prop("disabled", true);
-         }
-         else {
-            attendanceField.prop("disabled", false);
-         }
       }
 
    }
