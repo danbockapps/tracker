@@ -249,6 +249,8 @@ select
    year(c.start_dttm) as year,
    a.week,
    a.present,
+   a.attendance_type,
+   a.attendance_date,
    case
       when week <= 16 then a.present
       else 0

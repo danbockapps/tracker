@@ -22,7 +22,7 @@ if(can_access_class($_POST['class_id'], 'w')) {
       $_POST['week'],
       $_POST['present'],
       $_POST['attendance_type'],
-      $_POST['attendance_date']
+      nullIfBlank($_POST['attendance_date'])
    ))) {
       echo('OK');
    }
