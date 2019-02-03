@@ -89,3 +89,7 @@ add column attendance_type tinyint unsigned; -- 1 = normal class. 2 = makeup cla
 alter table wrc_attendance
 drop column date_attended,
 add column attendance_date date;
+
+-- 2/2/2019
+
+drop view shp_report;

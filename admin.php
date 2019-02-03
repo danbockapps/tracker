@@ -605,11 +605,6 @@ else {
             CDC report
          </a>
       </li>
-      <li>
-         <a href="download_report.php?report=shp">
-            SHP report
-         </a>
-      </li>
    <?php } ?>
 </ul>
 

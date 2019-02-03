@@ -18,8 +18,7 @@ $whitelist = [
    'attendance2',
    'results',
    'cdc',
-   'feb2018',
-   'shp'
+   'feb2018'
 ];
 
 if(!in_array($_GET['report'],  $whitelist)) {
@@ -359,9 +358,6 @@ else if($_GET['report'] == 'feb2018') {
       )
       order by c.start_date_time
    ', array());
-}
-else if($_GET['report'] == 'shp') {
-   $qr = pdo_seleqt('select * from shp_report', null);
 }
 
 if(empty($qr)) {
