@@ -1,141 +1,143 @@
-
-/*January 2019 updates*/
-
 body {
-    background-color: #fff;
-    font-family: 'Lato',Arial,Helvetica,clean,sans-serif;
+  background-color: #fff;
+  font-family: 'Lato',Arial,Helvetica,clean,sans-serif;
 }
 #container {
-	width: 1020px;
-	background: #fff url("_images/walkerProgress_bkgr-faded.jpg") no-repeat;
-	background-position: center top;
-	background-size: 100% auto;
-	padding: 0;
+  width: 1020px;
+  background: #fff url("_images/walkerProgress_bkgr-faded.jpg") no-repeat;
+  background-position: center top;
+  background-size: 100% auto;
+  padding: 0;
 }
 
 #container.loginPage {
-	width: 1020px;
-	background: #fff url("_images/walkerProgress_bkgr.jpg") no-repeat;
-	background-position: center top;
-	background-size: 100% auto;
-	padding: 0;
+  width: 1020px;
+  background: #fff url("_images/walkerProgress_bkgr.jpg") no-repeat;
+  background-position: center top;
+  background-size: 100% auto;
+  padding: 0;
 }
 
 .headerDiv {
-	background-color: rgba(255,255,255,.82);
-	padding-bottom: 5px;
-	position: relative;
-	height: 158px;
+  background-color: rgba(255,255,255,.82);
+  padding-bottom: 5px;
+  position: relative;
+  height: 158px;
 }
 
 #logo {
-	width: 200px;
-	height: auto;
-	margin: 15px 16px 12px 30px;
+  width: 200px;
+  height: auto;
+  margin: 15px 16px 12px 30px;
 }
 #whoami {
-	margin-top: 55px;
-	width: 705px;
-	padding-bottom: 14px;
+  margin-top: 55px;
+  width: 705px;
+  padding-bottom: 14px;
 }
 #whoami:after {
-	content: '';
-	display: table;
-	clear: both;
+  content: '';
+  display: table;
+  clear: both;
 }
 #blogwidget {
-	width: 0px;
-	display: none;
+  width: 0px;
+  display: none;
 }
 #whoami h1 {
-	font-weight: 300;
-	text-transform: uppercase;
-	font-size: 3.3em;
+  font-weight: 300;
+  text-transform: uppercase;
+  font-size: 3.3em;
 }
 #whoami p {
-	font-weight: 400;
+  font-weight: 400;
 }
 #navbar {
-	float: none;
-	clear: both;
-	position: absolute;
+  float: none;
+  clear: both;
+  position: absolute;
   bottom: -42px;
   left: 290px;
-	height: auto;
-	width: 640px;
+  height: auto;
+  width: 640px;
 }
 #navbar ul {
-	background-color: transparent;
+  background-color: transparent;
 }
 #navbar ul li a {
-	padding: 11px 20px;
-	height: 20px;
-	min-width: 100px;
-	text-align: center;
-	border-right: 0;
-	margin-right: 10px;
+  padding: 11px 20px;
+  height: 20px;
+  min-width: 100px;
+  text-align: center;
+  border-right: 0;
+  margin-right: 10px;
 }
 #navend {
-	height: 0;
-	margin-bottom: 0;
-	clear: none;
+  height: 0;
+  margin-bottom: 0;
+  clear: none;
 }
 
 .contentDiv {
-	min-height: 610px;
-	padding: 62px 20px 15px;
-/*	background-color: rgba(255,255,255,0.4);*/
+  min-height: 610px;
+  padding: 62px 20px 15px;
 }
 .contentDiv p {
-	background-color: rgba(255,252,252,0.83);
-	padding: 10px;
+  background-color: rgba(255,252,252,0.83);
+  padding: 10px;
 }
 #container form {
-	background-color: #fff;
-	max-width: 450px;
-	padding: 20px 20px 8px;
+  background-color: #fff;
+  max-width: 450px;
+  padding: 20px 20px 8px;
+}
+#container form.attendance-reports-section {
+  max-width: 650px;
+	padding-top: 0px;
+}
+#container form.attendance-reports-section input {
+  margin-top: 10px;
 }
 #report_form input[type="text"] {
-	width: 50px;
+  width: 50px;
 }
 #strategy_fieldset {
-	width: 955px;
-/*	background-color: #fff;*/
+  width: 955px;
 }
 #strategy_fieldset table {
-	background-color: #fff;
+  background-color: #fff;
 }
 #strategy_fieldset td {
-	padding-left: 40px;
+  padding-left: 40px;
 }
 #strategy_fieldset input[name="newstrat_desc"] {
-	width: 120px;
+  width: 120px;
 }
 fieldset {
-	border: 0;
+  border: 0;
 }
 fieldset legend {
-	font-weight: 600;
+  font-weight: 600;
 }
 fieldset div {
   margin-bottom: 8px;
 }
 p.resetParagraph {
-	background: #FFFFFF;
-	padding: 8px 20px 20px;
-	max-width: 450px;
-	margin-top: 0;
-	margin-bottom: 0;
+  background: #FFFFFF;
+  padding: 8px 20px 20px;
+  max-width: 450px;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 p.resetParagraph a {
-	color: #000000;
-	padding-bottom: 8px;
+  color: #000000;
+  padding-bottom: 8px;
 }
 .error {
-    padding: .5em;
-    margin-bottom: 0.5em;
-	background-color: #fcebff;
-	color: #d4153f;
+  padding: .5em;
+  margin-bottom: 0.5em;
+  background-color: #fcebff;
+  color: #d4153f;
 }
 
 
@@ -146,82 +148,82 @@ p.resetParagraph a {
 }
 #whoami p#yourclass {
   font-size: 75%;
-	margin-top: 3px;
+  margin-top: 3px;
 }
 table.wrctable {
     background: #FFFFFF;
 }
 #tracker h2, .contentDiv h2 {
-	background: rgba(255,255,255,.80);
-	padding: 16px 12px;
-	margin-bottom: 0;
+  background: rgba(255,255,255,.80);
+  padding: 16px 12px;
+  margin-bottom: 0;
 }
 #chart_div {
-	padding-bottom: 6px;
+  padding-bottom: 6px;
 }
 #smartgoal {
-	padding-bottom: 6px;
+  padding-bottom: 6px;
 }
 #pes {
-	padding-bottom: 6px;
+  padding-bottom: 6px;
 }
 #bmi {
-	width: 24%;
-	background-color: rgba(0,130,201,1.00);
-	color: #FFFFFF;
-	margin: 2%;
-	padding: 1em;
+  width: 24%;
+  background-color: rgba(0,130,201,1.00);
+  color: #FFFFFF;
+  margin: 2%;
+  padding: 1em;
 }
 #bmi a {
-	color: #FFFFFF;
+  color: #FFFFFF;
 }
 
 #goalweight {
-	background: rgba(0,130,201,.9);
-	color: #FFFFFF;
+  background: rgba(0,130,201,.9);
+  color: #FFFFFF;
 }
 
 /*Participant messages*/
 .sgmsg_header {
-	background-color: #97D2F3;
+  background-color: #97D2F3;
 }
 .msg_header {
-	background-color: #ccc;
+  background-color: #ccc;
 }
 .fdbk_header {
-	background-color: #ff99a8;
+  background-color: #ff99a8;
 }
 
 
 /*Admin*/
 table#attendanceEntry {
-	background-color: #fff;
+  background-color: #fff;
 }
 .contentDiv a.showhide_closed {
-	background-color: rgba(255,255,255,.80);
-	padding: .5em .6em .5em 30px;
-	margin-top: 0;
-	background-position: 3px 13px;
+  background-color: rgba(255,255,255,.80);
+  padding: .5em .6em .5em 30px;
+  margin-top: 0;
+  background-position: 3px 13px;
 }
 .contentDiv ul.show {
-	background-color: rgba(255,255,255,.80);
-	padding: 1px 8px 8px 30px;
-	list-style-position: inside;
-	margin-top: 0;
+  background-color: rgba(255,255,255,.80);
+  padding: 1px 8px 8px 30px;
+  list-style-position: inside;
+  margin-top: 0;
 }
 .contentDiv ul.show li {
-	margin-top: 5px;
+  margin-top: 5px;
 }
 
 
 #footer {
-	background: rgba(0,130,201,1.00) ;
-	padding: 10px 20px 10px;
-	max-width: 450px;
-	margin-top: 0;
-	text-align: left;
+  background: rgba(0,130,201,1.00) ;
+  padding: 10px 20px 10px;
+  max-width: 450px;
+  margin-top: 0;
+  text-align: left;
 }
 #footer a {
-	text-decoration: none;
-	font-size: .9em
+  text-decoration: none;
+  font-size: .9em
 }
