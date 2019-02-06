@@ -614,6 +614,7 @@ function page_content() {
                where
                   !s.custom or
                   su.user_id = ?
+               order by s.display_order
             ", array(
                $_GET['user'],
                $qr['class_id'],
@@ -625,7 +626,7 @@ function page_content() {
          <table>
             <?php
             foreach ($sqr as $strat) {
-               ?><tr><td><?php
+               ?><tr><td class="strategy<?=$strat['strategy_id']?>"><?php
                   echo htmlentities($strat['strategy_description']);
                   if($strat['custom'] && $_GET['user'] == $_SESSION['user_id']) {
                      // delete link

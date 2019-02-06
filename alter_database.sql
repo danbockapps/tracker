@@ -89,3 +89,27 @@ add column attendance_type tinyint unsigned; -- 1 = normal class. 2 = makeup cla
 alter table wrc_attendance
 drop column date_attended,
 add column attendance_date date;
+
+-- 2/5/2019
+-- Add display order. Strategies will be ordered in ascending order on this field.
+
+alter table wrc_strategies
+add column display_order smallint unsigned default 65535;
+
+-- Original strategies
+update wrc_strategies set display_order=100 where !custom and strategy_description="Eat breakfast";
+update wrc_strategies set display_order=200 where !custom and strategy_description="Eat at least 1.5 cups of fruit"; -- MD only
+update wrc_strategies set display_order=300 where !custom and strategy_description="Eat at least 2 cups of vegetables";
+update wrc_strategies set display_order=400 where !custom and strategy_description="Control portion sizes";
+update wrc_strategies set display_order=500 where !custom and strategy_description="Prepare and eat meals at home";
+update wrc_strategies set display_order=600 where !custom and strategy_description="Watch 2 or fewer hours of TV";
+update wrc_strategies set display_order=700 where !custom and strategy_description="Drink 1 or fewer sugar-sweetened beverages";
+update wrc_strategies set display_order=800 where !custom and strategy_description="Participate in at least 30 minutes of physical activity";
+update wrc_strategies set display_order=900 where !custom and strategy_description="Participate in strength training";
+
+-- Add to MPP 2/5/2019
+update wrc_strategies set display_order=350 where !custom and strategy_description="Eat at least 1 cup of fruit";
+update wrc_strategies set display_order=650 where !custom and strategy_description="Limit the amount of screen time I had";
+update wrc_strategies set display_order=250 where !custom and strategy_description="Choose healthy fats";
+update wrc_strategies set display_order=950 where !custom and strategy_description="Get at least 7-9 hours of sleep";
+update wrc_strategies set display_order=1050 where !custom and strategy_description="Manage stress";
