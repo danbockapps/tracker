@@ -118,6 +118,6 @@ update wrc_strategies set display_order=900 where !custom and strategy_descripti
 -- Add to MPP 2/5/2019
 update wrc_strategies set display_order=350 where !custom and strategy_description="Eat at least 1 cup of fruit";
 update wrc_strategies set display_order=650 where !custom and strategy_description="Limit the amount of screen time I had";
-update wrc_strategies set display_order=250 where !custom and strategy_description="Choose healthy fats";
+update wrc_strategies set display_order=375 where !custom and strategy_description="Choose healthy fats";
 update wrc_strategies set display_order=950 where !custom and strategy_description="Get at least 7-9 hours of sleep";
 update wrc_strategies set display_order=1050 where !custom and strategy_description="Manage stress";
