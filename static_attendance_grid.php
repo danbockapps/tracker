@@ -54,12 +54,12 @@ function userIsInGrid(userId) {
 function addUserToGrid(userId, fname, lname) {
   $('#staticGrid table').append(
     '<tr user-id="' + userId + '">' +
-    '<td>' + fname + ' ' + lname + '</td>' +
+    '<td>' + fname + '&nbsp;' + lname + '</td>' +
     '<td class="checkboxCell"></td>' +
     '</tr>'
   );
 
-  for(var i=1; i<=24; i++) {
+  for(var i=1; i<=26; i++) {
     $('#staticGrid tr[user-id=' + userId + ']').append(
       '<td class="checkboxCell" lesson-id="' + i + '"></td>'
     );

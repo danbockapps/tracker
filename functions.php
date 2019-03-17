@@ -497,7 +497,7 @@ function attendanceForClass($classId) {
    ', array($classId, $classId));
 }
 
-function attendanceSummary2ForClass($classId) {
+function attendanceSummary3ForClass($classId) {
    return pdo_seleqt('
       select
          a.user_id,
@@ -507,25 +507,14 @@ function attendanceSummary2ForClass($classId) {
          a.attendance_type,
          a.attendance_date
       from
-         attendance_summary2 a
+         attendance_summary3 a
          inner join wrc_users u
             on a.user_id = u.user_id
-      where
-         a.year in (
-            select year(start_dttm)
-            from classes_aw
-            where
-               class_id = ?
-               and class_source = "w"
-         )
-         and a.month in (
-            select month(start_dttm)
-            from classes_aw
-            where
-               class_id = ?
-               and class_source = "w"
-         )
-   ', array($classId, $classId));
+      where a.class_id = ?
+      order by
+         lname,
+         fname
+   ', $classId);
 }
 
 function participantsForClass($classId) {

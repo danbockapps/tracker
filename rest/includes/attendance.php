@@ -16,7 +16,7 @@ function getAttendance() {
   }
 
   global $ok_array;
-  $ok_array['attendance'] = attendanceSummary2ForClass($_GET['class_id']);
+  $ok_array['attendance'] = attendanceSummary3ForClass($_GET['class_id']);
 }
 
 ?>
