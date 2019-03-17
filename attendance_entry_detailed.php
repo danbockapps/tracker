@@ -97,7 +97,7 @@ function page_content() {
    }
 }
 
-$aqr = attendanceSummary2ForClass($_GET['class_id']);
+$aqr = attendanceSummary3ForClass($_GET['class_id']);
 ?>
 
 <script>

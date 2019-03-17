@@ -45,8 +45,8 @@ div.card {
 
 /* This is not about the color purple, but about spacing */
 table#attendanceEntry .checkboxCell {
-   min-width: 22px;
-   max-width: 22px;
+   min-width: 18px;
+   max-width: 18px;
 }
 
 /* This is an MPP-only feature. */
