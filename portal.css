@@ -195,6 +195,38 @@ table.wrctable {
 }
 
 
+/* td icons ---- targets first item in each category*/
+
+#strategy_fieldset td {
+  padding-left: 50px;
+}
+#strategy_fieldset td + td {
+  padding-left: 12px;
+}
+#strategy_fieldset td.strategy1, #strategy_fieldset td.strategy5, #strategy_fieldset td.strategy1, #strategy_fieldset td.strategy7, #strategy_fieldset td.strategy459, #strategy_fieldset td.strategy460  {
+  background: url("_images/portal-icon-eat.png");
+  background-repeat: no-repeat;
+  padding-top: 33px;
+  background-position-y: 14px;
+  background-size: 40px;
+}
+#strategy_fieldset td.strategy1 + td, #strategy_fieldset td.strategy5 + td, #strategy_fieldset td.strategy1 + td, #strategy_fieldset td.strategy7 + td, #strategy_fieldset td.strategy459 + td {
+  vertical-align: bottom;
+}
+#strategy_fieldset td.strategy5 {
+  background-image: url("_images/portal-icon-screentime.png");
+}
+#strategy_fieldset td.strategy7 {
+  background-image: url("_images/portal-icon-physical.png");
+}
+#strategy_fieldset td.strategy469 {
+  background-image: url("_images/portal-icon-sleep.png");
+}
+#strategy_fieldset td.strategy460 {
+  background-image: url("_images/portal-icon-stress.png");
+  padding-bottom: 34px;
+}
+
 /*Admin*/
 table#attendanceEntry {
   background-color: #fff;
