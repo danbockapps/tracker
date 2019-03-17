@@ -16,6 +16,7 @@ $whitelist = [
    'date_test',
    'attendance',
    'attendance2',
+   'attendance3',
    'results',
    'cdc',
    'feb2018',
@@ -64,6 +65,31 @@ else if($_GET['report'] == "attendance2") {
          zip,
          shirtchoice
       from attendance2
+      where class_id in (" . join(",", array_keys($_GET['class'])) . ")
+   ", array());
+}
+else if($_GET['report'] == "attendance3") {
+   require_get_vars("class");
+   $qr = pdo_seleqt("
+      select
+         instructor_name,
+         class_name,
+         voucher_code,
+         fname,
+         lname,
+         numclasses,
+         numclasses_phase1,
+         numclasses_phase2,
+         beginning_and_ending_weight,
+         height,
+         incentive_type,
+         address1,
+         address2,
+         city,
+         state,
+         zip,
+         shirtchoice
+      from attendance3
       where class_id in (" . join(",", array_keys($_GET['class'])) . ")
    ", array());
 }
