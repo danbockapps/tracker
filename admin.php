@@ -518,8 +518,15 @@ else {
          }
 
       }
+
+      if(PRODUCT == 'dpp') {
+         ?><input type="hidden" name="report" value="attendance3" /><?php
+      }
+      else {
+         ?><input type="hidden" name="report" value="attendance2" /><?php
+      }
    ?>
-   <input type="hidden" name="report" value="attendance2" />
+
    <input type="submit" value="Download report" />
 </form>
 

@@ -267,6 +267,38 @@ from
       on a.class_id = c.class_id
       and a.class_source = c.class_source;
 
+/*
+3 series added in March 2019 for MPP attendance by type and date
+*/
+
+create or replace view attendance_summary3 as
+select
+   a.user_id,
+   month(c.start_dttm) as month,
+   year(c.start_dttm) as year,
+   a.week,
+   a.attendance_type,
+   a.attendance_date,
+   case
+      when a.attendance_type > 0 then 1
+      else 0
+   end as present,
+   case
+      when week <= 16 and a.attendance_type > 0 then 1
+      else 0
+   end as present_phase1,
+   case
+      when week >= 17 and a.attendance_type > 0 then 1
+      else 0
+   end as present_phase2
+from
+   wrc_attendance a
+   inner join attendance_limiter2 l
+      on a.attendance_id = l.attendance_id
+   inner join classes_aw c
+      on a.class_id = c.class_id
+      and a.class_source = c.class_source;
+
 create or replace view attendance_sum2 as
 select
    user_id,
@@ -276,6 +308,20 @@ select
    sum(present_phase1) as numclasses_phase1,
    sum(present_phase2) as numclasses_phase2
 from attendance_summary2
+group by
+   user_id,
+   month,
+   year;
+
+create or replace view attendance_sum3 as
+select
+   user_id,
+   month,
+   year,
+   sum(present) as numclasses,
+   sum(present_phase1) as numclasses_phase1,
+   sum(present_phase2) as numclasses_phase2
+from attendance_summary3
 group by
    user_id,
    month,

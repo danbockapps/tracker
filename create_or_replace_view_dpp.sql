@@ -87,7 +87,7 @@ group by
    class_id,
    class_source;
 
-create or replace view attendance2 as
+create or replace view attendance3 as
 select
    e.tracker_user_id,
    e.class_id,
@@ -138,7 +138,7 @@ from
       on e.class_id = zc.id
    left join wrc_users instrs
       on c.instructor_id = instrs.user_id
-   left join attendance_sum2 am on
+   left join attendance_sum3 am on
       e.tracker_user_id = am.user_id and
       month(c.start_dttm) = am.month and
       year(c.start_dttm) = am.year
