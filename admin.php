@@ -502,7 +502,9 @@ else {
          ?></strong><?php
             echo class_times($row['start_dttm']) . " (" . $row['fname'] . " " .
                   $row['lname'] . ") ";
-         ?><a href="view_report.php?report=attendance2&class=<?php
+         ?><a href="view_report.php?report=<?php
+            echo (PRODUCT == 'dpp' ? 'attendance3' : 'attendance2');
+         ?>&class=<?php
             echo $row['class_id'];
          ?>"> web view</a><br /><?php
 
