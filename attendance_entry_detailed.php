@@ -1,11 +1,4 @@
 <?php
-/*
-PLEASE NOTE: Throughout this file and the attendance table in the database, the
-word "week" is a misnomer. Attendance is tracked by lesson, which may or may
-not correspond 1:1 to weeks. TODO: change varibles and fields named "week"
-here and in the database to "lesson".
-*/
-
 require_once("template.php");
 
 generate_page(true, false);
@@ -168,7 +161,7 @@ $aqr = attendanceSummary3ForClass($_GET['class_id']);
       $.post('attendance_ajax.php', {
          user_id: userId,
          class_id: <?= htmlentities($_GET['class_id']) ?>,
-         week: lessonId,
+         lesson_id: lessonId,
          attendance_type: attendanceType,
          attendance_date: formattedAttendanceDate
       }, function(data) {
@@ -198,12 +191,12 @@ $aqr = attendanceSummary3ForClass($_GET['class_id']);
 
    $('.attendance-weight, .attendance-pa').spinner();
 
-   $.get("rest/api.php?q=reports&class_id=<?php echo $_GET['class_id']; ?>", function(data) {
+   $.get("rest/api.php?q=ireports&class_id=<?php echo $_GET['class_id']; ?>", function(data) {
       data.reports.forEach(function(item) {
 
          $('.attendance-weight').each(function(index, element) {
             if(
-               Number(item.week_id) === Number($(element).closest('table').attr('lesson-id'))
+               Number(item.lesson_id) === Number($(element).closest('table').attr('lesson-id'))
                &&
                Number(item.user_id) === Number($(element).closest('tr').attr('user-id'))
             ) {
@@ -213,7 +206,7 @@ $aqr = attendanceSummary3ForClass($_GET['class_id']);
 
          $('.attendance-pa').each(function(index, element) {
             if(
-               Number(item.week_id) === Number($(element).closest('table').attr('lesson-id'))
+               Number(item.lesson_id) === Number($(element).closest('table').attr('lesson-id'))
                &&
                Number(item.user_id) === Number($(element).closest('tr').attr('user-id'))
             ) {
@@ -229,10 +222,10 @@ $aqr = attendanceSummary3ForClass($_GET['class_id']);
       statusCell.children('i').addClass('hidden');
       statusCell.children('img').removeClass('hidden');
 
-      $.post('rest/api.php?q=reports', {
+      $.post('rest/api.php?q=ireports', {
          user_id: $(this).closest('tr').attr('user-id'),
          class_id: <?= htmlentities($_GET['class_id']) ?>,
-         week_id: $(this).closest('table').attr('lesson-id'),
+         lesson_id: $(this).closest('table').attr('lesson-id'),
          weight: $(this).closest('tr').find('.attendance-weight').val(),
          physact_minutes: $(this).closest('tr').find('.attendance-pa').val()
       }, function(data) {
