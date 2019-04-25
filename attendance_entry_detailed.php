@@ -161,7 +161,7 @@ $aqr = attendanceSummary3ForClass($_GET['class_id']);
       $.post('attendance_ajax.php', {
          user_id: userId,
          class_id: <?= htmlentities($_GET['class_id']) ?>,
-         lesson_id: lessonId,
+         week: lessonId,
          attendance_type: attendanceType,
          attendance_date: formattedAttendanceDate
       }, function(data) {
