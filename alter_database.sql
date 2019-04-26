@@ -121,3 +121,15 @@ update wrc_strategies set display_order=650 where !custom and strategy_descripti
 update wrc_strategies set display_order=375 where !custom and strategy_description="Choose healthy fats";
 update wrc_strategies set display_order=950 where !custom and strategy_description="Get at least 7-9 hours of sleep";
 update wrc_strategies set display_order=1050 where !custom and strategy_description="Manage stress";
+
+-- 4/2/2019
+create table wrc_ireports (
+   user_id int unsigned,
+   class_id int unsigned,
+   lesson_id int unsigned,
+   weight decimal(4,1),
+   physact_minutes smallint default null,
+   create_dttm datetime,
+   constraint primary key (user_id, class_id, lesson_id),
+   constraint foreign key (user_id) references wrc_users (user_id)
+) engine=innodb;

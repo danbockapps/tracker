@@ -603,24 +603,25 @@ function removePassword($s) {
    return $s;
 }
 
-function reportExists($userId, $classId, $weekId) {
+function ireportExists($userId, $classId, $lessonId) {
    $qr = seleqt_one_record('
       select count(*) as count
-      from wrc_reports
+      from wrc_ireports
       where
          user_id = ? and
          class_id = ? and
-         week_id = ?
-   ', array($userId, $classId, $weekId));
+         lesson_id = ?
+   ', array($userId, $classId, $lessonId));
    return $qr['count'];
 }
 
 function nullIfBlank($x) {
-   if($x == '') {
+   $trimmed = trim($x);
+   if($trimmed == '') {
       return null;
    }
    else {
-      return $x;
+      return $trimmed;
    }
 }
 
