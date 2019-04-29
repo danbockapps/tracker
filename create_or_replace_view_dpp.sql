@@ -190,3 +190,171 @@ from
       on password(to_base64(b.subscriber_id)) = u.SubscriberId
       and b.birthdate = u.BirthDate
 where u.CoverageEffectiveDate < now();
+
+create or replace view cdc_reports_by_date as
+select
+   r.user_id,
+   r.class_id,
+   case
+      when r.week_id > 0 then c.start_dttm + interval r.week_id-1 week
+      else null
+   end as report_date,
+   r.weight,
+   r.physact_minutes
+from
+   reports_with_fitbit_hybrid r
+   inner join classes_aw c on r.class_id = c.class_id;
+
+create or replace view cdc_transposed_reports as
+select
+   a.attendance_id,
+   a.attendance_date,
+   a.user_id,
+   a.class_id,
+   r0.weight as w0,
+   r0.physact_minutes as pa0,
+   r1.weight as w1,
+   r1.physact_minutes as pa1,
+   r2.weight as w2,
+   r2.physact_minutes as pa2,
+   r3.weight as w3,
+   r3.physact_minutes as pa3,
+   r4.weight as w4,
+   r4.physact_minutes as pa4,
+   r5.weight as w5,
+   r5.physact_minutes as pa5,
+   r6.weight as w6,
+   r6.physact_minutes as pa6,
+   r7.weight as w7,
+   r7.physact_minutes as pa7,
+   rn1.weight as wn1,
+   rn1.physact_minutes as pan1,
+   rn2.weight as wn2,
+   rn2.physact_minutes as pan2,
+   rn3.weight as wn3,
+   rn3.physact_minutes as pan3,
+   rn4.weight as wn4,
+   rn4.physact_minutes as pan4,
+   rn5.weight as wn5,
+   rn5.physact_minutes as pan5,
+   rn6.weight as wn6,
+   rn6.physact_minutes as pan6,
+   rn7.weight as wn7,
+   rn7.physact_minutes as pan7
+from
+   attendance_summary3 a
+   left join cdc_reports_by_date r0
+      on a.user_id = r0.user_id
+      and date(a.attendance_date) = date(r0.report_date)
+   left join cdc_reports_by_date r1
+      on a.user_id = r1.user_id
+      and date(a.attendance_date + interval 1 day) = date(r1.report_date)
+   left join cdc_reports_by_date r2
+      on a.user_id = r2.user_id
+      and date(a.attendance_date + interval 2 day) = date(r2.report_date)
+   left join cdc_reports_by_date r3
+      on a.user_id = r3.user_id
+      and date(a.attendance_date + interval 3 day) = date(r3.report_date)
+   left join cdc_reports_by_date r4
+      on a.user_id = r4.user_id
+      and date(a.attendance_date + interval 4 day) = date(r4.report_date)
+   left join cdc_reports_by_date r5
+      on a.user_id = r5.user_id
+      and date(a.attendance_date + interval 5 day) = date(r5.report_date)
+   left join cdc_reports_by_date r6
+      on a.user_id = r6.user_id
+      and date(a.attendance_date + interval 6 day) = date(r6.report_date)
+   left join cdc_reports_by_date r7
+      on a.user_id = r7.user_id
+      and date(a.attendance_date + interval 7 day) = date(r7.report_date)
+   left join cdc_reports_by_date rn1
+      on a.user_id = rn1.user_id
+      and date(a.attendance_date - interval 1 day) = date(rn1.report_date)
+   left join cdc_reports_by_date rn2
+      on a.user_id = rn2.user_id
+      and date(a.attendance_date - interval 2 day) = date(rn2.report_date)
+   left join cdc_reports_by_date rn3
+      on a.user_id = rn3.user_id
+      and date(a.attendance_date - interval 3 day) = date(rn3.report_date)
+   left join cdc_reports_by_date rn4
+      on a.user_id = rn4.user_id
+      and date(a.attendance_date - interval 4 day) = date(rn4.report_date)
+   left join cdc_reports_by_date rn5
+      on a.user_id = rn5.user_id
+      and date(a.attendance_date - interval 5 day) = date(rn5.report_date)
+   left join cdc_reports_by_date rn6
+      on a.user_id = rn6.user_id
+      and date(a.attendance_date - interval 6 day) = date(rn6.report_date)
+   left join cdc_reports_by_date rn7
+      on a.user_id = rn7.user_id
+      and date(a.attendance_date - interval 7 day) = date(rn7.report_date)
+where a.attendance_date is not null;
+
+create or replace view cdc_report as
+select
+   case c.class_type
+      when 2 then '2173125'
+      when 5 then '8471188'
+      else null
+   end as ORGCODE,
+   r.user_id as PARTICIP,
+   '' as ENROLL,
+   '' as PAYER,
+   r.state as STATE,
+   '' as GLUCTEST,
+   '' as GDM,
+   '' as RISKTEST,
+   r.age as AGE,
+   case r.ethnicity
+      when 'Hispanic' then 1
+      when 'Not Hispanic' then 2
+      else 9
+   end as ETHNIC,
+   '' as AIAN,
+   '' as ASIAN,
+   '' as BLACK,
+   '' as NHOPI,
+   '' as WHITE,
+   case r.sex
+      when 'M' then 1
+      when 'F' then 2
+      else null
+   end as SEX,
+   u.height_inches as HEIGHT,
+   '' as EDU,
+   case
+      when as3.attendance_type = 2 then 2 -- makeup class
+      when c.class_type = 2 then 3        -- online
+      when c.class_type = 5 then 1        -- onsite
+      else null
+   end as DMODE,
+   case
+      when as3.week <= 18 then as3.week
+      else 99
+   end as SESSID,
+   case
+      when as3.attendance_type = 2 then 'MU'
+      when as3.present_phase1 = 1 and as3.attendance_type = 1 then 'C'
+      when as3.present_phase2 = 1 and as3.attendance_type = 1 then 'CM'
+   end as SESSTYPE,
+   t.attendance_date as DATE,
+   coalesce(t.w0, t.w1, t.wn1, t.w2, t.wn2, t.w3, t.wn3, t.w4, t.wn4) as WEIGHT,
+   coalesce(t.pa0, t.pa1, t.pan1, t.pa2, t.pan2, t.pa3, t.pan3, t.pa4, t.pan4) as PA
+from
+   cdc_transposed_reports t
+   inner join wrc_attendance a
+      on t.attendance_id = a.attendance_id
+   inner join attendance_summary3 as3
+      on t.attendance_id = as3.attendance_id
+   inner join wrc_users u
+      on t.user_id = u.user_id
+   inner join registrants r
+      on t.user_id = r.tracker_user_id
+   inner join classes_aw c
+      on t.class_id = c.class_id;
+
+create or replace view cdc_report_online as
+select * from cdc_report where orgcode = '2173125';
+
+create or replace view cdc_report_onsite as
+select * from cdc_report where orgcode = '8471188';

@@ -273,6 +273,7 @@ from
 
 create or replace view attendance_summary3 as
 select
+   a.attendance_id,
    a.user_id,
    a.class_id,
    month(c.start_dttm) as month,

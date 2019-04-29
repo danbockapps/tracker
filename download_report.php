@@ -17,8 +17,8 @@ $whitelist = [
    'attendance',
    'attendance2',
    'attendance3',
-   'results',
-   'cdc',
+   'cdc_report_online',
+   'cdc_report_onsite',
    'feb2018',
    'shp'
 ];
@@ -328,28 +328,14 @@ else if($_GET['report'] == "results") {
          e.tracker_user_id;
    ", array());
 }
-else if($_GET['report'] == 'cdc') {
+else if($_GET['report'] == 'cdc_report_online') {
    $qr = pdo_seleqt("
-      select
-         r.class_id as Class_ID,
-         e.user_id as Participant_ID,
-         cast(c.start_dttm + interval (r.week - 1) week as date) as Report_Date,
-         /* Commenting out - sending email to Sarah 11/12 */
-         /* coalesce(r.present, 0) as Present, */
-         r.weight as Weight,
-         u.height_inches as Height_Inches,
-         r.physact_minutes as Physical_Activity_Minutes,
-         r.weight * 703 / (u.height_inches * u.height_inches) as BMI,
-         r.a1c as A1C
-      from
-         reports_with_attendance r
-         inner join wrc_users u
-            on r.user_id = u.user_id
-         left join classes_aw c
-            on r.class_id = c.class_id
-         left join registrants e
-            on r.user_id = e.tracker_user_id
-            and r.class_id = e.class_id
+      select * from cdc_report_online
+   ", array());
+}
+else if($_GET['report'] == 'cdc_report_onsite') {
+   $qr = pdo_seleqt("
+      select * from cdc_report_onsite
    ", array());
 }
 else if($_GET['report'] == 'feb2018') {
