@@ -603,15 +603,15 @@ else {
 
 <a href="#" class="showhide_closed">Other reports</a>
 <ul>
-   <li>
-      <a href="download_report.php?report=results">
-         Deidentified participant results report
-      </a>
-   </li>
    <?php if(PRODUCT == 'dpp') { ?>
       <li>
-         <a href="download_report.php?report=cdc">
-            CDC report
+         <a href="download_report.php?report=cdc_report_online">
+            CDC report - online
+         </a>
+      </li>
+      <li>
+         <a href="download_report.php?report=cdc_report_onsite">
+            CDC report - onsite
          </a>
       </li>
    <?php } ?>
