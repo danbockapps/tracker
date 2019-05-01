@@ -209,6 +209,10 @@ create or replace view cdc_transposed_reports as
 select
    a.attendance_id,
    a.attendance_date,
+   a.attendance_type,
+   a.week,
+   a.present_phase1,
+   a.present_phase2,
    a.user_id,
    a.class_id,
    r0.weight as w0,
@@ -323,19 +327,19 @@ select
    u.height_inches as HEIGHT,
    '' as EDU,
    case
-      when as3.attendance_type = 2 then 2 -- makeup class
+      when t.attendance_type = 2 then 2 -- makeup class
       when c.class_type = 2 then 3        -- online
       when c.class_type = 5 then 1        -- onsite
       else null
    end as DMODE,
    case
-      when as3.week <= 18 then as3.week
+      when t.week <= 18 then t.week
       else 99
    end as SESSID,
    case
-      when as3.attendance_type = 2 then 'MU'
-      when as3.present_phase1 = 1 and as3.attendance_type = 1 then 'C'
-      when as3.present_phase2 = 1 and as3.attendance_type = 1 then 'CM'
+      when t.attendance_type = 2 then 'MU'
+      when t.present_phase1 = 1 and t.attendance_type = 1 then 'C'
+      when t.present_phase2 = 1 and t.attendance_type = 1 then 'CM'
    end as SESSTYPE,
    t.attendance_date as DATE,
    coalesce(t.w0, t.w1, t.wn1, t.w2, t.wn2, t.w3, t.wn3, t.w4, t.wn4) as WEIGHT,
@@ -344,8 +348,6 @@ from
    cdc_transposed_reports t
    inner join wrc_attendance a
       on t.attendance_id = a.attendance_id
-   inner join attendance_summary3 as3
-      on t.attendance_id = as3.attendance_id
    inner join wrc_users u
       on t.user_id = u.user_id
    inner join registrants r
