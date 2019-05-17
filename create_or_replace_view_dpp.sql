@@ -150,46 +150,9 @@ order by
    lname,
    fname;
 
-create or replace view reports_with_attendance as
-select
-   r.user_id,
-   r.class_id,
-   r.week_id as week,
-   r.weight,
-   r.physact_minutes,
-   r.a1c,
-   a.present
-from
-   wrc_reports r
-   left join wrc_attendance a
-      on r.user_id = a.user_id
-      and r.class_id = a.class_id
-      and r.week_id = a.week
-union
-select
-   a.user_id,
-   a.class_id,
-   a.week,
-   r.weight,
-   r.physact_minutes,
-   r.a1c,
-   a.present
-from
-   wrc_reports r
-   right join wrc_attendance a
-      on r.user_id = a.user_id
-      and r.class_id = a.class_id
-      and r.week_id = a.week;
-
-create or replace view shp_members_current as
-select
-   b.registrant_id as user_id
-from
-   shp_members_base b
-   inner join shp_members_updated u
-      on password(to_base64(b.subscriber_id)) = u.SubscriberId
-      and b.birthdate = u.BirthDate
-where u.CoverageEffectiveDate < now();
+/*
+May 2019: New CDC reports
+*/
 
 create or replace view cdc_reports_by_date as
 select
@@ -215,6 +178,8 @@ select
    a.present_phase2,
    a.user_id,
    a.class_id,
+   i.weight as wi,
+   i.physact_minutes as pai,
    r0.weight as w0,
    r0.physact_minutes as pa0,
    r1.weight as w1,
@@ -225,12 +190,6 @@ select
    r3.physact_minutes as pa3,
    r4.weight as w4,
    r4.physact_minutes as pa4,
-   r5.weight as w5,
-   r5.physact_minutes as pa5,
-   r6.weight as w6,
-   r6.physact_minutes as pa6,
-   r7.weight as w7,
-   r7.physact_minutes as pa7,
    rn1.weight as wn1,
    rn1.physact_minutes as pan1,
    rn2.weight as wn2,
@@ -238,15 +197,13 @@ select
    rn3.weight as wn3,
    rn3.physact_minutes as pan3,
    rn4.weight as wn4,
-   rn4.physact_minutes as pan4,
-   rn5.weight as wn5,
-   rn5.physact_minutes as pan5,
-   rn6.weight as wn6,
-   rn6.physact_minutes as pan6,
-   rn7.weight as wn7,
-   rn7.physact_minutes as pan7
+   rn4.physact_minutes as pan4
 from
    attendance_summary3 a
+   left join wrc_ireports i
+      on a.week = i.lesson_id
+      and a.user_id = i.user_id
+      and a.class_id = i.class_id
    left join cdc_reports_by_date r0
       on a.user_id = r0.user_id
       and date(a.attendance_date) = date(r0.report_date)
@@ -262,15 +219,6 @@ from
    left join cdc_reports_by_date r4
       on a.user_id = r4.user_id
       and date(a.attendance_date + interval 4 day) = date(r4.report_date)
-   left join cdc_reports_by_date r5
-      on a.user_id = r5.user_id
-      and date(a.attendance_date + interval 5 day) = date(r5.report_date)
-   left join cdc_reports_by_date r6
-      on a.user_id = r6.user_id
-      and date(a.attendance_date + interval 6 day) = date(r6.report_date)
-   left join cdc_reports_by_date r7
-      on a.user_id = r7.user_id
-      and date(a.attendance_date + interval 7 day) = date(r7.report_date)
    left join cdc_reports_by_date rn1
       on a.user_id = rn1.user_id
       and date(a.attendance_date - interval 1 day) = date(rn1.report_date)
@@ -283,15 +231,6 @@ from
    left join cdc_reports_by_date rn4
       on a.user_id = rn4.user_id
       and date(a.attendance_date - interval 4 day) = date(rn4.report_date)
-   left join cdc_reports_by_date rn5
-      on a.user_id = rn5.user_id
-      and date(a.attendance_date - interval 5 day) = date(rn5.report_date)
-   left join cdc_reports_by_date rn6
-      on a.user_id = rn6.user_id
-      and date(a.attendance_date - interval 6 day) = date(rn6.report_date)
-   left join cdc_reports_by_date rn7
-      on a.user_id = rn7.user_id
-      and date(a.attendance_date - interval 7 day) = date(rn7.report_date)
 where a.attendance_date is not null;
 
 create or replace view cdc_report as
@@ -328,8 +267,8 @@ select
    '' as EDU,
    case
       when t.attendance_type = 2 then 2 -- makeup class
-      when c.class_type = 2 then 3        -- online
-      when c.class_type = 5 then 1        -- onsite
+      when c.class_type = 2 then 3      -- online
+      when c.class_type = 5 then 1      -- onsite
       else null
    end as DMODE,
    case
@@ -342,8 +281,14 @@ select
       when t.present_phase2 = 1 and t.attendance_type = 1 then 'CM'
    end as SESSTYPE,
    t.attendance_date as DATE,
-   coalesce(t.w0, t.w1, t.wn1, t.w2, t.wn2, t.w3, t.wn3, t.w4, t.wn4) as WEIGHT,
-   coalesce(t.pa0, t.pa1, t.pan1, t.pa2, t.pan2, t.pa3, t.pan3, t.pa4, t.pan4) as PA
+   case c.class_type
+      when 2 then coalesce(t.w0, t.w1, t.wn1, t.w2, t.wn2, t.w3, t.wn3, t.w4, t.wn4)
+      when 5 then t.wi
+   end as WEIGHT,
+   case c.class_type
+      when 2 then coalesce(t.pa0, t.pa1, t.pan1, t.pa2, t.pan2, t.pa3, t.pan3, t.pa4, t.pan4)
+      when 5 then t.pai
+   end as PA
 from
    cdc_transposed_reports t
    inner join wrc_attendance a
@@ -356,7 +301,7 @@ from
       on t.class_id = c.class_id;
 
 create or replace view cdc_report_online as
-select * from cdc_report where orgcode = '2173125';
+select * from cdc_report where orgcode = '2173125' order by particip, date;
 
 create or replace view cdc_report_onsite as
-select * from cdc_report where orgcode = '8471188';
+select * from cdc_report where orgcode = '8471188' order by particip, date;
