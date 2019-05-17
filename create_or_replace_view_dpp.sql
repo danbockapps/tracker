@@ -281,8 +281,14 @@ select
       when t.present_phase2 = 1 and t.attendance_type = 1 then 'CM'
    end as SESSTYPE,
    t.attendance_date as DATE,
-   coalesce(t.wi, t.w0, t.w1, t.wn1, t.w2, t.wn2, t.w3, t.wn3, t.w4, t.wn4) as WEIGHT,
-   coalesce(t.pai, t.pa0, t.pa1, t.pan1, t.pa2, t.pan2, t.pa3, t.pan3, t.pa4, t.pan4) as PA
+   case c.class_type
+      when 2 then coalesce(t.w0, t.w1, t.wn1, t.w2, t.wn2, t.w3, t.wn3, t.w4, t.wn4)
+      when 5 then t.wi
+   end as WEIGHT,
+   case c.class_type
+      when 2 then coalesce(t.pa0, t.pa1, t.pan1, t.pa2, t.pan2, t.pa3, t.pan3, t.pa4, t.pan4)
+      when 5 then t.pai
+   end as PA
 from
    cdc_transposed_reports t
    inner join wrc_attendance a
@@ -295,7 +301,7 @@ from
       on t.class_id = c.class_id;
 
 create or replace view cdc_report_online as
-select * from cdc_report where orgcode = '2173125';
+select * from cdc_report where orgcode = '2173125' order by particip, date;
 
 create or replace view cdc_report_onsite as
-select * from cdc_report where orgcode = '8471188';
+select * from cdc_report where orgcode = '8471188' order by particip, date;
