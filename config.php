@@ -1264,7 +1264,20 @@ function shirtCard($userId, $classId) {
 }
 
 function userQualifiesForShirt($userId, $classId) {
-  return true;
+  $qr = seleqt_one_record('
+    select a.numclasses_phase1
+    from
+      attendance_sum3 a
+      inner join classes_aw c
+        on a.month = month(c.start_dttm)
+        and a.year = year(c.start_dttm)
+    where
+      a.user_id = ?
+      and c.class_id = ?
+  ', array($userId, $classId));
+
+  if($qr[numclasses_phase1] >= 9) return true;
+  else return false;
 }
 
 function noCurrentClass() {
