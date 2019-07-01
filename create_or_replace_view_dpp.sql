@@ -116,7 +116,7 @@ select
       else "No"
    end as height,
    '' as incentive_type,
-   e.shirtchoice,
+   s.shirt_desc,
    '' as dob
 from
    registrants e
@@ -143,6 +143,8 @@ from
       e.tracker_user_id = am.user_id and
       month(c.start_dttm) = am.month and
       year(c.start_dttm) = am.year
+   left join shirts s
+      on e.shirt_id = s.shirt_id
 where
    instrs.instructor = 1
    -- datediff on c.start_dttm was here. Not sure why.
