@@ -91,7 +91,7 @@ td.green {
 }
 
 /* This is an MPP-only feature. */
-#goalweight {
+.purple-box {
    clear: both;
    margin-bottom: 15px;
    background-color: #f099ff;

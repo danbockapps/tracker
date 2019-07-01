@@ -92,6 +92,7 @@ create table if not exists registrants (
   `welcome_sent` datetime DEFAULT NULL,
   `numclasses` tinyint(3) unsigned DEFAULT NULL,
   `shirtchoice` varchar(20) DEFAULT NULL,
+  `shirt_id` int unsigned,
   `tracker_user_id` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`user_id`)
 ) engine=innodb;

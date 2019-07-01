@@ -125,3 +125,17 @@ create table wrc_ireports (
    constraint primary key (user_id, class_id, lesson_id),
    constraint foreign key (user_id) references wrc_users (user_id)
 ) engine=innodb;
+
+
+-- 6/30/2019
+create table shirts (
+  shirt_id int unsigned auto_increment primary key,
+  shirt_desc varchar(50),
+  shirt_instock boolean default false
+) engine=innodb;
+
+insert into shirts (shirt_desc, shirt_instock) values
+('Test shirt', true);
+
+alter table dbreg_diab_ctrladminOnline.registrants
+add shirt_id int unsigned;

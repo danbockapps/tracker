@@ -273,6 +273,7 @@ function page_content() {
 
       <?php
          goalWeightCard($_GET['user'], $qr['class_id'], $qr['class_source']);
+         shirtCard($_GET['user'], $qr['class_id'])
       ?>
 
 

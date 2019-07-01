@@ -18,7 +18,8 @@ create or replace view enrollment_view as select
    subscriber_id,
    member_number,
    welcome_sent,
-   shirtchoice
+   shirtchoice,
+   shirt_id
 from registrants
 where
    paid != '0' and
