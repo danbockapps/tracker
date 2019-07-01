@@ -133,3 +133,41 @@ create table wrc_ireports (
    constraint primary key (user_id, class_id, lesson_id),
    constraint foreign key (user_id) references wrc_users (user_id)
 ) engine=innodb;
+
+
+-- 6/30/2019
+create table shirts (
+  shirt_id int unsigned auto_increment primary key,
+  shirt_desc varchar(50),
+  shirt_instock boolean default false
+) engine=innodb;
+
+insert into shirts (shirt_desc, shirt_instock) values
+('Black S', false),
+('Black M', false),
+('Black L', false),
+('Black XL', false),
+('Brown S', false),
+('Brown M', false),
+('Brown L', false),
+('Brown XL', false),
+('Navy S', false),
+('Navy M', false),
+('Navy L', false),
+('Navy XL', false),
+('Pink S', false),
+('Pink M', false),
+('Pink L', false),
+('Pink XL', false),
+('Purple S', false),
+('Purple M', false),
+('Purple L', false),
+('Purple XL', false),
+('Orange S', false),
+('Orange M', false),
+('Orange L', false),
+('Orange XL', false);
+
+
+alter table dbreg_diab_ctrladminOnline.registrants
+add shirt_id int unsigned;

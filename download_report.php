@@ -87,7 +87,7 @@ else if($_GET['report'] == "attendance3") {
          city,
          state,
          zip,
-         shirtchoice
+         shirt_desc
       from attendance3
       where class_id in (" . join(",", array_keys($_GET['class'])) . ")
    ", array());

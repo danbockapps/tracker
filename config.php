@@ -1167,7 +1167,7 @@ function goalWeightCard($userId, $classId, $classSource) {
       if($goalWeight) {
          ?>
 
-         <div id="goalweight">
+         <div class="purple-box">
             <div style="font-size: 1.17em">
                Your goal weight at the end of
                <?php echo currentPhaseForClass($classId, $classSource); ?>
@@ -1185,6 +1185,99 @@ function goalWeightCard($userId, $classId, $classSource) {
          <?php
       } // end if goalWeight
    } // end if product == mpp
+}
+
+function shirtCard($userId, $classId) {
+  if(PRODUCT == 'dpp' && !am_i_instructor() && userQualifiesForShirt($userId, $classId)) {
+
+    $currentShirt = seleqt_one_record('
+      select shirt_id
+      from enrollment_view
+      where
+        user_id = ?
+        and class_id = ?
+    ', array($userId, $classId));
+
+    $shirtChoices = pdo_seleqt('
+      select *
+      from shirts where shirt_instock
+    ', array());
+
+    if($currentShirt['shirt_id'] == null && count($shirtChoices) > 0) {
+
+      ?>
+      <script>
+        // jquery UI doc has this function syntax.
+        $(function() {
+          $('#select-shirt').selectmenu()
+          $('#submit-shirt').button().click(function() {
+            $('#select-shirt').hide()
+            $('#submit-shirt').hide()
+            $('#spinner-shirt').show()
+            $.post('rest/api.php?q=shirt', {
+              user_id: <?= $userId ?>,
+              class_id: <?= $classId ?>,
+              shirt_id: $('#select-shirt').val()
+            }, function(data) {
+              if(data.responseString === 'OK') {
+                $('#div-shirt').hide()
+                $('#confirm-shirt').show()
+              }
+              else {
+                $('#error-shirt').show()
+              }
+            })
+          })
+        })
+      </script>
+
+      <div class="purple-box">
+        <div style="font-size: 1.17em; margin-bottom: 0.5em">
+          You have qualified to receive a T-shirt.
+        </div>
+
+        <div id="div-shirt">
+          Please make a selection:
+          <select id="select-shirt">
+            <?php
+              foreach($shirtChoices as $sc) {
+                ?>
+                  <option value="<?= $sc['shirt_id'] ?>"><?= $sc['shirt_desc'] ?></option>
+                <?php
+              }
+            ?>
+          </select>
+          <button id="submit-shirt">Place Order</button>
+          <img src="spinner.gif" id="spinner-shirt" style="display: none" />
+        </div>
+
+        <div id="confirm-shirt" style="display: none">
+          Thank you for your order!
+        </div>
+        <div id="error-shirt" style="display: none">
+          There was an error processing your order.
+        </div>
+      </div>
+      <?php
+    }
+  }
+}
+
+function userQualifiesForShirt($userId, $classId) {
+  $qr = seleqt_one_record('
+    select a.numclasses_phase1
+    from
+      attendance_sum3 a
+      inner join classes_aw c
+        on a.month = month(c.start_dttm)
+        and a.year = year(c.start_dttm)
+    where
+      a.user_id = ?
+      and c.class_id = ?
+  ', array($userId, $classId));
+
+  if($qr[numclasses_phase1] >= 9) return true;
+  else return false;
 }
 
 function noCurrentClass() {

@@ -660,6 +660,70 @@ else {
 ?>
 </ul>
 
+<!-- --------------------------------------------------------------------------
+                                                                         SHIRTS
+--------------------------------------------------------------------------- -->
+<?php if(PRODUCT == 'dpp') { ?>
+
+<a href="#" class="showhide_closed">T-shirt inventory</a>
+<ul>
+<script>
+$(function() {
+   $('.blackBox, .greenCheck').click(function() {
+      $(this).hide()
+      $(this).siblings('img').show()
+      var $this = $(this)
+
+      var shirtId = $(this).closest('div').attr('shirt-id');
+      var instock = Number($(this).hasClass('blackBox'))
+
+      $.post('rest/api.php?q=shirtstock', {
+         shirt_id: shirtId,
+         instock: instock
+      }, function(data) {
+         if(data.responseString === 'OK') {
+            $this.siblings('img').hide()
+            $this.siblings(instock ? '.greenCheck' : '.blackBox').show()
+         }
+      })
+   })
+})
+</script>
+
+<?php
+
+$shirtqr = pdo_seleqt('select * from shirts order by shirt_id', array());
+foreach($shirtqr as $shirt) {
+
+   if($shirt['shirt_instock']) {
+      $blackBoxStyle = "display: none";
+      $greenCheckStyle = "";
+   }
+   else {
+      $blackBoxStyle = "";
+      $greenCheckStyle = "display: none";
+   }
+
+   ?>
+   <div class="shirt-stock-div" shirt-id="<?= $shirt['shirt_id'] ?>">
+
+      <i class="material-icons blackBox"
+         style="<?= $blackBoxStyle ?>">&#xE3C1;</i>
+
+      <img src="spinner.gif" style="display: none" />
+
+      <i class="material-icons greenCheck"
+         style="<?= $greenCheckStyle ?>">&#xE86C;</i>
+
+      <span><?= $shirt['shirt_desc'] ?></span>
+   </div>
+   <?php
+}
+
+?>
+</ul>
+
+<?php } ?> <!-- end product=dpp conditional for shirts -->
 
    <?php
    }
