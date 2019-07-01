@@ -387,3 +387,16 @@ ul#classList li {
    vertical-align: middle;
    width: 320px;
 }
+
+.shirt-stock-div {
+   margin: 0.4em;
+   display: flex;
+   align-items: center;
+}
+
+.shirt-stock-div .blackBox, .shirt-stock-div .greenCheck, .shirt-stock-div img {
+   height: 24px;
+   width: 24px;
+   margin-right: 6px;
+   cursor: pointer;
+}
