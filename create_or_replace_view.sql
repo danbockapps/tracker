@@ -286,11 +286,11 @@ select
       else 0
    end as present,
    case
-      when week <= 16 and a.attendance_type > 0 then 1
+      when week <= 18 and a.attendance_type > 0 then 1
       else 0
    end as present_phase1,
    case
-      when week >= 17 and a.attendance_type > 0 then 1
+      when week >= 19 and a.attendance_type > 0 then 1
       else 0
    end as present_phase2
 from
