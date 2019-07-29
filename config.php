@@ -190,7 +190,7 @@ function change_email($old_email, $new_email) {
 
 function sendmail($to, $subject, $body) {
    // All mail sent by the app should go through this function or the next.
-   exec("php-cli message.php '$to' '$subject' '$body' > /dev/null &");
+   exec("php5-cli message.php '$to' '$subject' '$body' > /dev/null &");
 }
 
 function sendById($recipientId, $messageId, $participantId=-1) {
@@ -204,7 +204,7 @@ function sendById($recipientId, $messageId, $participantId=-1) {
       exit("Error: participant ID is not numeric.");
    }
 
-   $executable = "php-cli messageById.php $recipientId $messageId $participantId > /dev/null &";
+   $executable = "php5-cli messageById.php $recipientId $messageId $participantId > /dev/null &";
    exec($executable);
 }
 
