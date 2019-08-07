@@ -31,7 +31,7 @@ else {
    logtxt('User id is: ' . $userId);
    logtxt('Category is: ' . $category);
 
-   $cmd = "php5-cli fitbitsubscriber_bg.php $userId $category >/dev/null &";
+   $cmd = "/usr/local/bin/ea-php71 fitbitsubscriber_bg.php $userId $category >/dev/null &";
    logtxt($cmd);
    exec($cmd);
 

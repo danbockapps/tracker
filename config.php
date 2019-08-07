@@ -189,8 +189,7 @@ function change_email($old_email, $new_email) {
 }
 
 function sendmail($to, $subject, $body) {
-   // All mail sent by the app should go through this function or the next.
-   exec("php5-cli message.php '$to' '$subject' '$body' > /dev/null &");
+   exec("/usr/local/bin/ea-php71 message.php '$to' '$subject' '$body' > /dev/null &");
 }
 
 function sendById($recipientId, $messageId, $participantId=-1) {
@@ -204,8 +203,21 @@ function sendById($recipientId, $messageId, $participantId=-1) {
       exit("Error: participant ID is not numeric.");
    }
 
-   $executable = "php5-cli messageById.php $recipientId $messageId $participantId > /dev/null &";
+   $executable = "/usr/local/bin/ea-php71 messageById.php $recipientId $messageId $participantId > /dev/null &";
    exec($executable);
+}
+
+// Synchronous mail-sending function. Call only in batch or background.
+function syncMail($recipient, $subject, $message) {
+   $headers = "MIME-Version: 1.0" . "\r\n";
+   $headers .= "Content-type:text/plain;charset=UTF-8" . "\r\n";
+   $headers .= 'From: '. EMAIL_FROM . "\r\n";
+
+   if(EMAIL_LOGGER !== null) {
+      $headers .= "Bcc: " . EMAIL_LOGGER . "\r\n";
+   }
+
+   mail($recipient, $subject, $message, $headers);
 }
 
 function full_name($user_id) {
