@@ -7,7 +7,7 @@ require_once('config.php');
 
 $recipient = getRecipient();
 $subject = getSubject();
-$msg = getMessage($argv[1], $argv[2], $argv[3], $nonHiddenRecipient);
+$msg = getMessage($argv[1], $argv[2], $argv[3], $recipient);
 
 syncMail($recipient, $subject, $msg);
 
