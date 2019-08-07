@@ -4,36 +4,14 @@ if(!isset($argv[1]) || !isset($argv[2])) {
 }
 
 require_once('config.php');
-require_once('Mail.php');
 
-$nonHiddenRecipient = getNonHiddenRecipient();
-$recipients = getRecipients();
-$headers = getHeaders();
+$recipient = getRecipient();
+$subject = getSubject();
 $msg = getMessage($argv[1], $argv[2], $argv[3], $nonHiddenRecipient);
 
-/* Suppress mail error messages */
-$origErrReportingLevel = error_reporting();
-error_reporting(E_ALL & ~E_STRICT);
+syncMail($recipient, $subject, $msg);
 
-/* Create the mail object using the Mail::factory method */
-if(isset($ini['sendmail_path'])) {
-   // Works on new server
-   $params['sendmail_path'] = $ini['sendmail_path'];
-   $mail_object =& Mail::factory('sendmail', $params);
-}
-else {
-   // Works on old server
-   $smtpinfo = getSmtpinfo();
-   $mail_object =& Mail::factory("smtp", $smtpinfo);
-}
-
-/* Ok send mail */
-$mail_object->send($recipients, $headers, $msg);
-
-/* Reset error reporting level */
-error_reporting($origErrReportingLevel);
-
-function getNonHiddenRecipient() {
+function getRecipient() {
    global $argv;
    $qr = seleqt_one_record('
       select email
@@ -41,23 +19,6 @@ function getNonHiddenRecipient() {
       where user_id = ?
    ', $argv[1]);
    return $qr['email'];
-}
-
-function getRecipients() {
-   global $nonHiddenRecipient;
-   $recipients = $nonHiddenRecipient;
-   if(EMAIL_LOGGER != '') {
-      $recipients .= "," . EMAIL_LOGGER;
-   }
-   return $recipients;
-}
-
-function getHeaders() {
-   global $nonHiddenRecipient;
-   $headers["From"] = EMAIL_FROM;
-   $headers["To"] = $nonHiddenRecipient;
-   $headers["Subject"] = getSubject();
-   return $headers;
 }
 
 function getSubject() {
@@ -131,13 +92,4 @@ function getMessage($recipientId, $messageId, $participantId, $recipientEmail) {
    return $message;
 }
 
-function getSmtpinfo() {
-   global $ini;
-   $smtpinfo["host"] = $ini['smtphost'];
-   $smtpinfo["port"] = $ini['smtpport'];
-   $smtpinfo["auth"] = true;
-   $smtpinfo["username"] = $ini['smtpusername'];
-   $smtpinfo["password"] = EMAIL_PASSWORD;
-   return $smtpinfo;
-}
 ?>

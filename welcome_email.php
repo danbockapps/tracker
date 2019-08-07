@@ -1,6 +1,5 @@
 <?php
 require_once("config.php");
-require_once("Mail.php");
 
 $qr = pdo_seleqt("
    select
@@ -58,27 +57,7 @@ foreach($qr as $row) {
       $msg .= "*" . $w3 . $w3b . $w4;
    }
 
-
-   $recipients = $row['email'];
-   $recipients .= ',danbock@gmail.com';
-   $headers["From"] = EMAIL_FROM;
-   $headers["To"] = $row['email'];
-   $headers["Subject"] = "Eat Smart, Move More, Weigh Less My Dashboard";
-
-   /* Suppress mail error messages */
-   $origErrReportingLevel = error_reporting();
-   error_reporting(E_ALL & ~E_STRICT);
-
-   $params['sendmail_path'] = $ini['sendmail_path'];
-   $mail_object =& Mail::factory('sendmail', $params);
-
-   /* Ok send mail */
-   $mail_object->send($recipients, $headers, $msg);
-
-   /* Reset error reporting level */
-   error_reporting($origErrReportingLevel);
-
-
+   syncMail($row['email'], "Eat Smart, Move More, Weigh Less My Dashboard", $msg);
 
    $dbh = pdo_connect($ini['db_prefix'] . "_update");
    $sth = $dbh->prepare("
