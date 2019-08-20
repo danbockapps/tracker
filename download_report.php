@@ -74,6 +74,7 @@ else if($_GET['report'] == "attendance3") {
          instructor_name,
          class_name,
          voucher_code,
+         admin_db_user_id,
          fname,
          lname,
          numclasses,

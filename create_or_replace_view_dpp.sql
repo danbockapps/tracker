@@ -91,6 +91,7 @@ group by
 create or replace view attendance3 as
 select
    e.tracker_user_id,
+   e.user_id as admin_db_user_id,
    e.class_id,
    zc.class_name,
    e.voucher_code,
