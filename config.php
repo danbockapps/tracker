@@ -1276,7 +1276,7 @@ function shirtCard($userId, $classId) {
 }
 
 function userQualifiesForShirt($userId, $classId) {
-  $qr = seleqt_one_record('
+  $qr = pdo_seleqt('
     select a.numclasses_phase1
     from
       attendance_sum3 a
@@ -1288,8 +1288,8 @@ function userQualifiesForShirt($userId, $classId) {
       and c.class_id = ?
   ', array($userId, $classId));
 
-  if($qr[numclasses_phase1] >= 9) return true;
-  else return false;
+  if(sizeof($qr) == 0 || $qr[0][numclasses_phase1] < 9) return false;
+  else return true;
 }
 
 function noCurrentClass() {
