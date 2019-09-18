@@ -39,6 +39,9 @@ function getSubject() {
       case 5:
          return PRODUCT_TITLE . ' - You are now an instructor';
          break;
+      case 6:
+         return PRODUCT_TITLE . ' - Congratulations - You have earned your t-shirt!';
+         break;
       default:
          exit('Invalid message ID.');
    }
@@ -84,6 +87,13 @@ function getMessage($recipientId, $messageId, $participantId, $recipientEmail) {
       $message = "You are now registered as an instructor in the Eat " .
                "Smart, Move More, Weigh Less My Dashboard " .
                "application. Log in here:\n" . WEBSITE_URL;
+   }
+   else if($messageId == 6) {
+      // Just attended 9th class
+      $message = "Congratulations on attending 9 Classes in the Eat Smart, " .
+               "Move More, Prevent Diabetes program! Please login to My " .
+               "Progress Portal and choose your t-shirt color and size:\n" .
+                WEBSITE_URL;
    }
    else {
       exit('Invalid message ID.');

@@ -3,6 +3,8 @@ session_start();
 require_once('config.php');
 
 if(can_access_class($_POST['class_id'], 'w')) {
+   $phase1before = phase1attendance($_POST['user_id'], $_POST['class_id']);
+
    $dbh = pdo_connect($ini['db_prefix'] . '_insert');
    $sth = $dbh->prepare('
       insert into wrc_attendance (
@@ -25,6 +27,11 @@ if(can_access_class($_POST['class_id'], 'w')) {
       nullIfBlank($_POST['attendance_date'])
    ))) {
       echo('OK');
+
+      if($phase1before == 8 && $_POST['attendance_type']) {
+        // 9 classes in phase 1 - participant has earned t-shirt.
+        sendById($_POST['user_id'], 6);
+      }
    }
    else {
       logtxt('ERROR: unknown database error.');
