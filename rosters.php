@@ -82,7 +82,8 @@ function page_content() {
          u.last_message_from,
          u.last_message_to,
          e.class_id,
-         u.email
+         u.email,
+         e.phone
       from
          " . ENR_VIEW . " e
          inner join current_classes_for_rosters c
@@ -197,6 +198,7 @@ function page_content() {
                      <br />
                      <span style="font-size:80%">
                         <?php echo htmlentities($qr[$i]['voucher_code']); ?>
+                        <?php echo htmlentities($qr[$i]['phone']); ?>
                      </span>
                   </td>
                   <td>

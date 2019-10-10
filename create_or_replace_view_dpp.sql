@@ -19,7 +19,8 @@ create or replace view enrollment_view as select
    member_number,
    welcome_sent,
    shirtchoice,
-   shirt_id
+   shirt_id,
+   phone
 from registrants
 where
    paid != '0' and
