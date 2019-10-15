@@ -28,7 +28,9 @@ if(can_access_class($_POST['class_id'], 'w')) {
    ))) {
       echo('OK');
 
-      if($phase1before == 8 && $_POST['attendance_type']) {
+      $phase1after = phase1attendance($_POST['user_id'], $_POST['class_id']);
+
+      if($phase1before == 8 && $phase1after == 9) {
         // 9 classes in phase 1 - participant has earned t-shirt.
         sendById($_POST['user_id'], 6);
       }
