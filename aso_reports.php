@@ -4,6 +4,10 @@ require_once("config.php");
 $aqr = pdo_seleqt("
    select voucher_code
    from bcbs_voucher_codes
+   where upper(voucher_code) in (
+      select upper(code)
+      from aso_codes
+   )
 ", array());
 
 foreach($aqr as $row) {
