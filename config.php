@@ -4,10 +4,13 @@ define("BLOWFISH_PRE", "$2y$05$");
 define("BLOWFISH_SUF", "$");
 date_default_timezone_set('America/New_York');
 
+require_once('Mail.php');
+
 $ini = parse_ini_file('auth.ini');
 
 define('DEBUG', true);
 
+define("EMAIL_HOST", $ini['email_host']);
 define("EMAIL_FROM", $ini['email_from']);
 define("EMAIL_LOGGER", $ini['email_logger']);
 define("EMAIL_PASSWORD", $ini['email_password']);
@@ -218,6 +221,34 @@ function syncMail($recipient, $subject, $message) {
    }
 
    mail($recipient, $subject, $message, $headers);
+}
+
+// Synchronous mail-sending function. Call only in batch or background.
+function syncMailHtml($recipient, $subject, $body) {
+   $headers['From'] = EMAIL_FROM;
+   $headers['To'] = $recipient;
+   $headers['Subject'] = $subject;
+   $headers['Content-type'] = 'text/html;charset=iso-8859-1';
+
+   if(EMAIL_LOGGER !== null) {
+      $headers['Bcc'] = EMAIL_LOGGER;
+   }
+
+   $smtp_params['host'] = EMAIL_HOST;
+   $smtp_params['auth'] = true;
+   $smtp_params['username'] = EMAIL_FROM;
+   $smtp_params['password'] = EMAIL_PASSWORD;
+
+   logtxt(print_r($headers, true));
+   logtxt(print_r($smtp_params, true));
+   
+   $message = Mail::factory('smtp', $smtp_params);
+   $message->send($recipient, $headers, $body);
+
+   if(PEAR::isError($message)) {
+      logtxt('E-mail error:');
+      logtxt($message->getMessage());
+   }
 }
 
 function full_name($user_id) {
