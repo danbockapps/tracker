@@ -4,12 +4,18 @@ if(!isset($argv[1]) || !isset($argv[2])) {
 }
 
 require_once('config.php');
+require_once('emailTemplates.php');
 
 $recipient = getRecipient();
 $subject = getSubject();
 $msg = getMessage($argv[1], $argv[2], $argv[3], $recipient);
 
-syncMail($recipient, $subject, $msg);
+if($argv[2] == 6) {
+   syncMailHtml($recipient, $subject, $msg);
+}
+else {
+   syncMail($recipient, $subject, $msg);
+}
 
 function getRecipient() {
    global $argv;
@@ -90,10 +96,7 @@ function getMessage($recipientId, $messageId, $participantId, $recipientEmail) {
    }
    else if($messageId == 6) {
       // Just attended 9th class
-      $message = "Congratulations on attending 9 Classes in the Eat Smart, " .
-               "Move More, Prevent Diabetes program! Please login to My " .
-               "Progress Portal and choose your t-shirt color and size:\n" .
-                WEBSITE_URL;
+      $message = earnedShirt();
    }
    else {
       exit('Invalid message ID.');
