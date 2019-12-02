@@ -94,6 +94,11 @@ create table if not exists registrants (
   `shirtchoice` varchar(20) DEFAULT NULL,
   `shirt_id` int unsigned,
   `tracker_user_id` int(10) unsigned DEFAULT NULL,
+  `refund_method` enum('check', 'paypal'),
+  `refund_email_address` varchar(1024),
+  `refund_postal_address` varchar(1024),
+  `ifNC` enum('1', '0'),
+  `amount` float,
   PRIMARY KEY (`user_id`)
 ) engine=innodb;
 

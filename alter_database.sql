@@ -154,3 +154,8 @@ insert into shirts (shirt_desc, shirt_instock) values
 
 alter table dbreg_diab_ctrladminOnline.registrants
 add shirt_id int unsigned;
+
+alter table dbreg_diab_ctrladminOnline.registrants
+add refund_method enum('check', 'paypal'),
+add refund_email_address varchar(1024),
+add refund_postal_address varchar(1024);
