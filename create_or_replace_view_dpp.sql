@@ -20,7 +20,12 @@ create or replace view enrollment_view as select
    welcome_sent,
    shirtchoice,
    shirt_id,
-   phone
+   phone,
+   refund_method,
+   refund_email_address,
+   refund_postal_address,
+   ifnc,
+   amount
 from registrants
 where
    paid != '0' and

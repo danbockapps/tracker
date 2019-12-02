@@ -637,4 +637,132 @@ function phase1attendance($userId, $classId) {
   return $qr['numclasses_phase1'];
 }
 
+function phase2attendance($userId, $classId) {
+  if(PRODUCT != 'dpp') return 0;
+  
+  $qr = seleqt_one_record('
+    select numclasses_phase2
+    from attendance3
+    where tracker_user_id = ? and class_id = ?
+  ', array($userId, $classId));
+
+  return $qr['numclasses_phase2'];
+}
+
+function refundCard($userId, $classId) {
+  if(
+    PRODUCT == 'dpp' &&
+    phase1attendance($userId, $classId) >= 9 &&
+    phase2attendance($userId, $classId) >= 5
+  ) {
+
+    $qr = seleqt_one_record('
+      select refund_method, refund_email_address, refund_postal_address, ifnc, amount
+      from ' . ENR_VIEW . '
+      where user_id = ? and class_id = ?
+    ', array($userId, $classId));
+
+    if($qr['ifnc'] == '1' && $qr['amount'] == 30) {
+      ?>
+
+      <div class="refund-box">
+        <p>
+          Your $30.00 refund cannot be put back on your credit card or directly
+          in your bank account. You can receive your refund via:
+        </p>
+
+        <p>
+          <input
+            id="refund-method-paypal-button"
+            type="radio"
+            name="refundMethod"
+            value="paypal"
+            onclick="showHideRefundElements()"
+          />
+          <label for="refund-method-paypal-button">
+            <span style="font-weight: bold">PayPal</span>
+            <span style="font-style: italic">
+              (select if you already have a PayPal account or are willing to
+              create a PayPal account)
+            <span>
+          </label>
+        </p>
+
+        <p id="paypal-address">
+          Please provide email address linked to your PayPal account:<br />
+          <input id="paypal-address-input" />
+        </p>
+
+        <p>
+          <input
+            id="refund-method-check-button"
+            type="radio"
+            name="refundMethod"
+            value="check"
+            onclick="showHideRefundElements()"
+          />
+          <label for="refund-method-check-button">
+            <span style="font-weight: bold">Check</span>
+            <span style="font-style: italic">
+              (select if you do not have a PayPal account and do not want to create
+              a new account)
+            </span>
+          </label>
+        </p>
+
+        <p id="check-address">
+          Please provide the full mailing address (including zip code) where you
+          would like the check to be sent:<br />
+          <input id="check-address-input" />
+        <p>
+
+        <button id="refund-button" onclick="submitRefund()">Save</button>
+      </div>
+
+      <script>
+        var initialRefundValues = <?php echo json_encode($qr); ?>;
+        if(initialRefundValues['refund_method'] === 'paypal')
+          $('input[name=refundMethod][value=paypal]').prop('checked', true);
+        else if(initialRefundValues['refund_method'] === 'check')
+          $('input[name=refundMethod][value=check]').prop('checked', true);
+        
+        $('#paypal-address-input').val(initialRefundValues['refund_email_address']);
+        $('#check-address-input').val(initialRefundValues['refund_postal_address']);
+
+        showHideRefundElements();
+
+        function showHideRefundElements() {
+          var rt = $('input[name=refundMethod]:checked').val();
+          if(rt === undefined) {
+            $('#paypal-address').hide();
+            $('#check-address').hide();
+          }
+          if(rt === 'paypal') {
+            $('#paypal-address').show();
+            $('#check-address').hide();
+          }
+          if(rt === 'check') {
+            $('#paypal-address').hide();
+            $('#check-address').show();
+          }
+        }
+
+        function submitRefund() {
+          $.post('rest/api.php?q=refund', {
+            refundMethod: $('input[name=refundMethod]:checked').val(),
+            refundEmailAddress: $('#paypal-address-input').val(),
+            refundPostalAddress: $('#check-address-input').val(),
+            classId: <?php echo $classId; ?>
+          }, function(data) {
+            if(data.responseString === 'OK') {
+              alert('Your response has been saved.');
+            }
+          })
+        }
+      </script>
+    <?php
+    }
+  }
+}
+
 ?>
