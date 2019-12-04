@@ -66,6 +66,14 @@ table#attendanceEntry .checkboxCell {
    width: 948px;
 }
 
+.refund-box div {
+   display: block;
+   margin-block-start: 1em;
+   margin-block-end: 1em;
+   margin-inline-start: 0px;
+   margin-inline-end: 0px;
+}
+
 #paypal-address-input, #check-address-input {
    width: 100%;
    height: 1.7em;

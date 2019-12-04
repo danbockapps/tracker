@@ -666,12 +666,12 @@ function refundCard($userId, $classId) {
       ?>
 
       <div class="refund-box">
-        <p>
+        <div>
           Your $30.00 refund cannot be put back on your credit card or directly
           in your bank account. You can receive your refund via:
-        </p>
+        </div>
 
-        <p>
+        <div>
           <input
             id="refund-method-paypal-button"
             type="radio"
@@ -686,14 +686,14 @@ function refundCard($userId, $classId) {
               create a PayPal account)
             <span>
           </label>
-        </p>
+        </div>
 
-        <p id="paypal-address">
+        <div id="paypal-address">
           Please provide email address linked to your PayPal account:<br />
           <input id="paypal-address-input" />
-        </p>
+        </div>
 
-        <p>
+        <div>
           <input
             id="refund-method-check-button"
             type="radio"
@@ -708,13 +708,13 @@ function refundCard($userId, $classId) {
               a new account)
             </span>
           </label>
-        </p>
+        </div>
 
-        <p id="check-address">
+        <div id="check-address">
           Please provide the full mailing address (including zip code) where you
           would like the check to be sent:<br />
           <input id="check-address-input" />
-        <p>
+        </div>
 
         <button id="refund-button" onclick="submitRefund()">Save</button>
       </div>
