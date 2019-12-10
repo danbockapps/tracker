@@ -47,7 +47,10 @@ if($_GET['report'] == "attendance3") {
          state,
          zip,
          dob,
-         shirt_desc
+         shirt_desc,
+         refund_method,
+         refund_email_address,
+         refund_postal_address
       from attendance3
       where class_id = ?
    ", array($_GET['class']));
