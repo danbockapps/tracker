@@ -99,3 +99,9 @@ td.green {
    padding: 1em;
    text-align: center;
 }
+
+.refund-box {
+   clear: both;
+   background-color: #f099ff;
+   padding: 1em;
+}
