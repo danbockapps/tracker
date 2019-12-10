@@ -124,7 +124,10 @@ select
    end as height,
    '' as incentive_type,
    s.shirt_desc,
-   '' as dob
+   '' as dob,
+   e.refund_method,
+   e.refund_email_address,
+   e.refund_postal_address
 from
    registrants e
    inner join wrc_users u on
