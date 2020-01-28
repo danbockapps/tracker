@@ -10,8 +10,8 @@ function page_content() {
 
    if(isset($_POST['formsubmitted'])) {
       message_participant(
-         htmlentities($_POST['recip_id']),
-         htmlentities($_POST['message_text']),
+         $_POST['recip_id'],
+         $_POST['message_text'],
          $_GET['user']
       );
    }

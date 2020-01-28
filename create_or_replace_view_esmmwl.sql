@@ -112,20 +112,16 @@ from registrants;
 create or replace view aso_codes as
 select
    c.BCBS_CompanyName as 'BCBSNC Company Name',
-   c.grpNo as 'BCBSNC Group Number',
+   g.grpNo as 'BCBSNC Group Number',
    v.vcode as Code,
    c.insuranceType as 'ASO or FI'
 from
    dbreg_esmmwl_ctrladmin.vouchers v
+   left join dbreg_esmmwl_ctrladmin.companies_BCBS_groups g
+      on v.company_id = g.company_id
    left join dbreg_esmmwl_ctrladmin.companies c
-      on v.company_id = c.id
+      on g.company_id = c.id
 where
    v.form_type = 'aso'
    and v.status = 1
-/* commenting out per email from Kelly 9/22/17
-   and (
-      exp_date is null
-      or exp_date > curdate()
-   )
-*/
 order by vcode;
