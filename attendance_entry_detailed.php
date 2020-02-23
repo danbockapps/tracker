@@ -11,6 +11,11 @@ function page_content() {
    require('static_attendance_grid.php');
 
    $qr = participantsForClass($_GET['class_id']);
+   global $ctqr;
+   $ctqr = seleqt_one_record(
+      'select class_type from classes_aw where class_id = ?',
+      $_GET['class_id']
+   );
    attendanceEntryHeader($_GET['class_id']);
 
    ?>
@@ -66,13 +71,41 @@ function page_content() {
                      <i class="material-icons hidden entryPoint greenCheck">&#xE86C;</i>
                   </td>
                   <td class="graybg">
-                     <input type="text" name="attendance-weight" class="attendance-weight" />
+                     <?php
+                        if($ctqr['class_type'] == 5) {
+                           ?>
+                           <input type="text" name="attendance-weight" class="attendance-weight" />
+                           <?php
+                        }
+                        else {
+                           ?>
+                           <span class="weight-span"></span>
+                           <?php
+                        }
+                     ?>
                   </td>
                   <td class="graybg">
-                     <input type="text" name="attendance-pa" class="attendance-pa" />
+                     <?php
+                        if($ctqr['class_type'] == 5) {
+                           ?>
+                           <input type="text" name="attendance-pa" class="attendance-pa" />
+                           <?php
+                        }
+                        else {
+                           ?>
+                           <span class="pa-span"></span>
+                           <?php
+                        }
+                     ?>
                   </td>
                   <td class="graybg">
-                     <button class="attendance-submit ui-button ui-widget ui-corner-all">Submit</button>
+                     <?php
+                        if($ctqr['class_type'] == 5) {
+                           ?>
+                           <button class="attendance-submit ui-button ui-widget ui-corner-all">Submit</button>
+                           <?php
+                        }
+                     ?>
                   </td>
                   <td class="status graybg">
                      <img src="spinner.gif" class="hidden" />
@@ -191,31 +224,62 @@ $aqr = attendanceSummary3ForClass($_GET['class_id']);
 
    $('.attendance-weight, .attendance-pa').spinner();
 
-   $.get("rest/api.php?q=ireports&class_id=<?php echo $_GET['class_id']; ?>", function(data) {
-      data.reports.forEach(function(item) {
+   var classType = <?php echo $ctqr['class_type']; ?>;
 
-         $('.attendance-weight').each(function(index, element) {
-            if(
-               Number(item.lesson_id) === Number($(element).closest('table').attr('lesson-id'))
-               &&
-               Number(item.user_id) === Number($(element).closest('tr').attr('user-id'))
-            ) {
-               $(element).val(item.weight);
-            }
+   if(classType === 5)
+      populateIReports();
+   else
+      populateWeightPa();
+
+   function populateIReports() {
+      $.get("rest/api.php?q=ireports&class_id=<?php echo $_GET['class_id']; ?>", function(data) {
+         data.reports.forEach(function(item) {
+
+            $('.attendance-weight').each(function(index, element) {
+               if(
+                  Number(item.lesson_id) === Number($(element).closest('table').attr('lesson-id'))
+                  &&
+                  Number(item.user_id) === Number($(element).closest('tr').attr('user-id'))
+               ) {
+                  $(element).val(item.weight);
+               }
+            });
+
+            $('.attendance-pa').each(function(index, element) {
+               if(
+                  Number(item.lesson_id) === Number($(element).closest('table').attr('lesson-id'))
+                  &&
+                  Number(item.user_id) === Number($(element).closest('tr').attr('user-id'))
+               ) {
+                  $(element).val(item.physact_minutes);
+               }
+            });
+
          });
-
-         $('.attendance-pa').each(function(index, element) {
-            if(
-               Number(item.lesson_id) === Number($(element).closest('table').attr('lesson-id'))
-               &&
-               Number(item.user_id) === Number($(element).closest('tr').attr('user-id'))
-            ) {
-               $(element).val(item.physact_minutes);
-            }
-         });
-
       });
-   });
+   }
+
+   function populateWeightPa() {
+      // Get the weight and PA data and populate the column wherever they're within 3.5 days
+      $.get("rest/api.php?q=weightpa&class_id=<?php echo $_GET['class_id']; ?>", function(data) {
+         $('.attendance-date').each(function(index, element) {
+            if(element.value) {
+               var attendanceDate = new Date(element.value)
+               data.reports.forEach(function(report) {
+                  var reportDate = new Date(report.date);
+                  if(
+                     (report.weight || report.physact_minutes) &&
+                     report.user_id === Number($(element).closest('tr').attr('user-id')) &&
+                     Math.abs(attendanceDate - reportDate) < 1000 * 60 * 60 * 24 * 3.5
+                  ) {
+                     $(element).closest('tr').find('.weight-span').html(report.weight);
+                     $(element).closest('tr').find('.pa-span').html(report.physact_minutes);
+                  }
+               })
+            }
+         });
+      });
+   }
 
    $('.attendance-submit').click(function(event) {
       var statusCell = $(this).parent().next();

@@ -89,3 +89,9 @@ table#attendanceEntry .checkboxCell {
 .graybg {
    background: #cccccc;
 }
+
+.pa-span, .weight-span {
+  display: block;
+  width: 110px;
+  text-align: center;
+}
