@@ -199,7 +199,7 @@ function page_content() {
       function submitAttendance(userId, week, present, cell) {
          cell.children('img').removeClass('hidden');
          cell.children('.entryPoint').addClass('hidden');
-         $.post('attendance_ajax.php', {
+         $.post('rest/api.php?q=attendance', {
             user_id: userId,
             class_id: <?php echo htmlentities($_GET['class_id']); ?>,
             class_source: '<?php echo htmlentities($_GET['class_source']); ?>',
@@ -208,7 +208,7 @@ function page_content() {
          }, function(data) {
             cell.children('img').addClass('hidden');
 
-            if(data === 'OK') {
+            if(data.responseString === 'OK') {
                var classToShow = present ? '.greenCheck' : '.blackBox';
                cell.children(classToShow).removeClass('hidden');
 

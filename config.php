@@ -195,7 +195,7 @@ function sendmail($to, $subject, $body) {
    exec("/usr/local/bin/ea-php71 message.php '$to' '$subject' '$body' > /dev/null &");
 }
 
-function sendById($recipientId, $messageId, $participantId=-1) {
+function sendById($recipientId, $messageId, $participantId=-1, $restFolder=false) {
    if(!is_numeric($recipientId)) {
       exit("Error: recipient ID is not numeric.");
    }
@@ -206,7 +206,16 @@ function sendById($recipientId, $messageId, $participantId=-1) {
       exit("Error: participant ID is not numeric.");
    }
 
-   $executable = "/usr/local/bin/ea-php71 messageById.php $recipientId $messageId $participantId > /dev/null &";
+   if($restFolder) {
+      // This function is being called from the rest/ folder
+      $scriptPath = '../messageById.php';
+   }
+   else {
+      $scriptPath = 'messageById.php';
+   }
+
+   $executable = "/usr/local/bin/ea-php71 " . $scriptPath .
+         " $recipientId $messageId $participantId > /dev/null &";
    exec($executable);
 }
 
