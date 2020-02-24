@@ -191,14 +191,14 @@ $aqr = attendanceSummary3ForClass($_GET['class_id']);
          formattedAttendanceDate = moment(attendanceDate).format('YYYY-MM-DD');
       }
 
-      $.post('attendance_ajax.php', {
+      $.post('rest/api.php?q=attendance', {
          user_id: userId,
          class_id: <?= htmlentities($_GET['class_id']) ?>,
          week: lessonId,
          attendance_type: attendanceType,
          attendance_date: formattedAttendanceDate
       }, function(data) {
-         if(data === 'OK') {
+         if(data.responseString === 'OK') {
             statusCell.children('img').addClass('hidden');
             statusCell.children('i').removeClass('hidden');
          }
