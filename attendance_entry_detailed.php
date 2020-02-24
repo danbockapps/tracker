@@ -207,8 +207,8 @@ $aqr = attendanceSummary3ForClass($_GET['class_id']);
             statusCell.children('img').addClass('hidden');
             statusCell.children('i').removeClass('hidden');
 
-            if(data.weight) weightSpan.html(data.weight);
-            if(data.physact_minutes) paSpan.html(data.physact_minutes);
+            if(data.weight) weightSpan.html(Math.round(data.weight));
+            if(data.physact_minutes) paSpan.html(Math.round(data.physact_minutes));
          }
       });
 
@@ -280,8 +280,8 @@ $aqr = attendanceSummary3ForClass($_GET['class_id']);
                      report.user_id === Number($(element).closest('tr').attr('user-id')) &&
                      Math.abs(attendanceDate - reportDate) < 1000 * 60 * 60 * 24 * 3.5
                   ) {
-                     $(element).closest('tr').find('.weight-span').html(report.weight);
-                     $(element).closest('tr').find('.pa-span').html(report.physact_minutes);
+                     $(element).closest('tr').find('.weight-span').html(Math.round(report.weight));
+                     $(element).closest('tr').find('.pa-span').html(Math.round(report.physact_minutes));
                   }
                })
             }
