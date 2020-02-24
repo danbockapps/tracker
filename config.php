@@ -239,10 +239,6 @@ function syncMailHtml($recipient, $subject, $body) {
    $headers['Subject'] = $subject;
    $headers['Content-type'] = 'text/html;charset=iso-8859-1';
 
-   if(EMAIL_LOGGER !== null) {
-      $headers['Bcc'] = EMAIL_LOGGER;
-   }
-
    $smtp_params['host'] = EMAIL_HOST;
    $smtp_params['auth'] = true;
    $smtp_params['username'] = EMAIL_FROM;
@@ -250,9 +246,16 @@ function syncMailHtml($recipient, $subject, $body) {
 
    logtxt(print_r($headers, true));
    logtxt(print_r($smtp_params, true));
+
+   if(EMAIL_LOGGER !== null) {
+      $recipients = [$recipient, EMAIL_LOGGER];
+   }
+   else {
+      $recipients = $recipient;
+   }
    
    $message = Mail::factory('smtp', $smtp_params);
-   $message->send($recipient, $headers, $body);
+   $message->send($recipients, $headers, $body);
 
    if(PEAR::isError($message)) {
       logtxt('E-mail error:');
