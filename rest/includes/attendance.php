@@ -48,8 +48,7 @@ function postAttendance() {
       $_POST['attendance_type'],
       nullIfBlank($_POST['attendance_date'])
     ))) {
-      global $ok_array;
-      $ok_array['weight'] = 0;
+      addMetricsToOkArray();
 
       $phase1after = phase1attendance($_POST['user_id'], $_POST['class_id']);
 
@@ -72,6 +71,36 @@ function postAttendance() {
       $_POST['class_id'] . '.'
     );
     exit('ERROR: access error.');
+  }
+}
+
+function addMetricsToOkArray() {
+  // Add the weight and physact_minutes for a report (if any) that's within
+  // 4 days of the attendance date.
+  // This facilitates the front end populating those metrics right after
+  // attendance is entered. To populate them on page load, a call to
+  // weightpa is used.
+
+  if(isset($_POST['attendance_date'])) {
+    $qr = pdo_seleqt('
+      select
+        weight,
+        physact_minutes
+      from
+        reports_with_fitbit_hybrid r
+        inner join classes_aw c
+          on r.class_id = c.class_id
+      where
+        r.user_id = ?
+        and r.class_id = ?
+        and abs(datediff(c.start_dttm + interval cast(week_id as signed) - 1 week, ?)) <= 4
+    ', array($_POST['user_id'], $_POST['class_id'], $_POST['attendance_date']));
+
+    if(count($qr) > 0) {
+      global $ok_array;
+      $ok_array['weight'] = $qr[0]['weight'];
+      $ok_array['physact_minutes'] = $qr[0]['physact_minutes'];
+    }
   }
 }
 

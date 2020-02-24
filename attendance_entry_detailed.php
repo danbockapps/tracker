@@ -167,9 +167,14 @@ $aqr = attendanceSummary3ForClass($_GET['class_id']);
       var statusCell = $(inputElement).parent().next();
       var attendanceType = parseInt($(inputElement).closest('tr').find('.attendance-type').val());
       var attendanceField = $(inputElement).closest('tr').find('.attendance-date');
+      var weightSpan = $(inputElement).closest('tr').find('.weight-span');
+      var paSpan = $(inputElement).closest('tr').find('.pa-span');
 
       statusCell.children('i').addClass('hidden');
       statusCell.children('img').removeClass('hidden');
+
+      weightSpan.empty();
+      paSpan.empty();
 
       var formattedAttendanceDate;
 
@@ -201,6 +206,9 @@ $aqr = attendanceSummary3ForClass($_GET['class_id']);
          if(data.responseString === 'OK') {
             statusCell.children('img').addClass('hidden');
             statusCell.children('i').removeClass('hidden');
+
+            if(data.weight) weightSpan.html(data.weight);
+            if(data.physact_minutes) paSpan.html(data.physact_minutes);
          }
       });
 
