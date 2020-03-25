@@ -273,7 +273,8 @@ function page_content() {
 
       <?php
          goalWeightCard($_GET['user'], $qr['class_id'], $qr['class_source']);
-         shirtCard($_GET['user'], $qr['class_id'])
+         shirtCard($_GET['user'], $qr['class_id']);
+         refundCard($_GET['user'], $qr['class_id']);
       ?>
 
 
@@ -397,10 +398,6 @@ function page_content() {
          your new class, and may differ from your previous class.
       </p>
       <?php
-
-      if(!$am_i_instructor)
-         refundCard($_GET['user'], $qr['class_id']);
-
    }
 }
 ?>

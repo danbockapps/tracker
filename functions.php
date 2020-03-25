@@ -652,6 +652,7 @@ function phase2attendance($userId, $classId) {
 function refundCard($userId, $classId) {
   if(
     PRODUCT == 'dpp' &&
+    !am_i_instructor() &&
     phase1attendance($userId, $classId) >= 9 &&
     phase2attendance($userId, $classId) >= 5
   ) {
