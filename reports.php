@@ -398,6 +398,8 @@ function page_content() {
          your new class, and may differ from your previous class.
       </p>
       <?php
+
+      addressChangeCard();
    }
 }
 ?>

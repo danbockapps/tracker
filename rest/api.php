@@ -1,4 +1,5 @@
 <?php
+// TODO return proper HTTP statuses instead of 200 for everything
 session_start();
 header('Content-Type: application/json');
 
@@ -7,6 +8,9 @@ if($_SERVER['REQUEST_SCHEME'] == 'http') {
 }
 
 require_once('../config.php');
+
+// Parameters sent by js fetch. These don't show up in $_POST.
+$fetchPost = json_decode(file_get_contents('php://input'), true);
 
 // Initialize array that will be returned if no error.
 $ok_array = array(

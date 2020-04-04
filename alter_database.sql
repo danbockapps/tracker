@@ -159,3 +159,27 @@ alter table dbreg_diab_ctrladminOnline.registrants
 add refund_method enum('check', 'paypal'),
 add refund_email_address varchar(1024),
 add refund_postal_address varchar(1024);
+
+
+-- 3/25/2020
+
+-- Data types are the same as in registrants
+create table wrc_addresschanges (
+  addresschange_id int unsigned auto_increment primary key,
+  user_id int unsigned,
+  class_id int unsigned,
+  create_dttm timestamp,
+  old_address1 varchar(255),
+  old_address2 varchar(255),
+  old_city varchar(50),
+  old_state varchar(2),
+  old_zip varchar(10),
+  old_phone varchar(20),
+  new_address1 varchar(255),
+  new_address2 varchar(255),
+  new_city varchar(50),
+  new_state varchar(2),
+  new_zip varchar(10),
+  new_phone varchar(20),
+  constraint foreign key (user_id) references wrc_users (user_id)
+);

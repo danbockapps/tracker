@@ -766,4 +766,20 @@ function refundCard($userId, $classId) {
   }
 }
 
+function addressChangeCard() {
+   if(PRODUCT == 'dpp' && !am_i_instructor()) {
+      ?>
+      <div class="purple-box">
+         <h3>Change Your Address</h3>
+         <div id="address-change"></div>
+
+         <!-- Supposedly this (text/babel combined with loading babel.min.js)
+         is not suitable for production; we should be using a preprocessor
+         instead. But I'm skeptical there's any noticeable difference. -->
+         <script type="text/babel" src="react/addresschange.js"></script>
+      </div>
+      <?php
+   }
+}
+
 ?>

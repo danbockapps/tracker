@@ -66,6 +66,12 @@ else if($_GET['report'] == $ini['client1']) {
 else if($_GET['report'] == 'aso_codes') {
    $qr = pdo_seleqt("select * from aso_codes", null);
 }
+else if($_GET['report'] == 'addresschanges') {
+   $qr = pdo_seleqt(
+      "select * from wrc_addresschanges order by create_dttm desc",
+      null
+   );
+}
 
 if(empty($qr)) {
    exit("No report returned.");
