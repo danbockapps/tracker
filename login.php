@@ -37,7 +37,7 @@ function page_content() {
 
       if (!email_already_in_db($_POST['email'])) {
          loginLog('Email is not in database.');
-      	$error[] = noCurrentClassText();
+         $error[] = noCurrentClassText();
       }
 
       if (empty($error)) { //if the array is empty, it means no error found
@@ -92,11 +92,11 @@ function page_content() {
       }
 
       foreach ($error as $values) {
-      	echo '<li class="error">'.$values.'</li>';
+         echo '<li class="error">'.$values.'</li>';
       }
 
       if(isset($msg_error)) {
-      	echo '<li class="error">'.$msg_error.' </li>';
+         echo '<li class="error">'.$msg_error.' </li>';
       }
    } // End of the main Submit conditional.
 
@@ -105,7 +105,7 @@ function page_content() {
 
    <form action="<?php echo $loginphp_mode; ?>login.php?<?php echo http_build_query($_GET); ?>" method="post">
       <fieldset>
-         <legend>Login</legend>
+         <legend>Log in</legend>
 
          <p>Enter your email address and password below.</p>
 
@@ -125,11 +125,11 @@ function page_content() {
 
          <div>
             <input type="hidden" name="formsubmitted" value="TRUE" />
-            <input type="submit" value="Login" />
+            <input type="submit" value="Log in" />
          </div>
       </fieldset>
    </form>
-   <p>
+   <p class="resetParagraph">
       <a href="reset.php">Forgot your password?</a>
    </p>
 <?php

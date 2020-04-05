@@ -115,6 +115,9 @@ function page_content() {
          your new class, and may differ from your previous class.
       </p>
       <?php
+
+      if(!$am_i_instructor)
+         refundCard($_GET['user'], $qr['class_id']);
       
       addressChangeCard();
    }

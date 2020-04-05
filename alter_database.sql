@@ -84,17 +84,25 @@ alter table wrc_attendance
 add column date_attended datetime,
 add column attendance_type tinyint unsigned; -- 1 = normal class. 2 = makeup class.
 
+
 -- 10/9/2018
 
 alter table wrc_attendance
 drop column date_attended,
 add column attendance_date date;
 
+
+-- 2/2/2019
+
+drop view shp_report;
+
+
 -- 2/5/2019
 -- Add display order. Strategies will be ordered in ascending order on this field.
 
 alter table wrc_strategies
 add column display_order smallint unsigned default 65535;
+
 
 -- Original strategies
 update wrc_strategies set display_order=100 where !custom and strategy_description="Eat breakfast";

@@ -26,7 +26,7 @@ function showGrid() {
   $('#staticGrid').prepend('<table id="attendanceEntry"><tr id="header"></tr></table>');
   $('#header').append('<th>Participant name</th>');
   $('#header').append('<th><!-- attendance sum --></th>');
-  for(var i=1; i<=24; i++) {
+  for(var i=1; i<=26; i++) {
     $('#header').append('<th class="checkboxCell">' + i + '</th>');
   }
 

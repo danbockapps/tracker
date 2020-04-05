@@ -615,11 +615,6 @@ else {
          </a>
       </li>
       <li>
-         <a href="download_report.php?report=shp">
-            SHP report
-         </a>
-      </li>
-      <li>
          <a href="view_report.php?report=addresschanges">
             Address changes
          </a>

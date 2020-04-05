@@ -161,7 +161,7 @@ function pdo_insert_user(
          now()
       )
    ");
-	return $sth->execute($data);
+   return $sth->execute($data);
 }
 
 function pdo_nullify_activation($email) {
