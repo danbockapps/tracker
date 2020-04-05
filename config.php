@@ -342,6 +342,11 @@ function current_class_and_sg() {
    return current_class_by_user($_GET['user']);
 }
 
+function current_class_id_for_user($userId) {
+   $qr = current_class_by_user($userId);
+   return $qr['class_id'];
+}
+
 function current_class_by_user($userId) {
    $qr = pdo_seleqt("
       select
@@ -716,6 +721,12 @@ function template_js() {
    <script type="text/javascript" src="jquery.showhide.pack.js">
    </script>
    <script src='https://www.google.com/recaptcha/api.js'>
+   </script>
+   <script src="https://unpkg.com/react@16/umd/react.production.min.js" crossorigin>
+   </script>
+   <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js" crossorigin>
+   </script>
+   <script src="https://unpkg.com/babel-standalone@6/babel.min.js">
    </script>
    <script type="text/javascript">
       $(function() {

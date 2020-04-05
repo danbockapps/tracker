@@ -37,7 +37,7 @@ file_put_contents(
    "/home/" .
    exec('whoami') .
    "/aso/upload/ESMMWL_List_of_active_ASO_codes_" . date("Y-m-d_H-i-s")  . ".csv",
-   array_to_csv(pdo_seleqt("select * from aso_codes", ""))
+   array_to_csv(pdo_seleqt("select * from aso_codes where code != 'ASONCMSMailing'", ""))
 );
 
 function generateControlFile($voucherCode, $dataFileName) {

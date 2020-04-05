@@ -119,6 +119,7 @@ function page_content() {
       if(!$am_i_instructor)
          refundCard($_GET['user'], $qr['class_id']);
 
+      addressChangeCard();
    }
 }
 ?>

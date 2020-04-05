@@ -67,3 +67,26 @@ a:link, a:visited, a, .entryPoint.greenCheck {
    display: block;
    margin: auto;
 }
+
+#address-change label {
+   display: block;
+   margin-top: 1em;
+   text-align: left;
+ }
+ 
+#address-change input[type="text"] {
+   display: block;
+   margin-top: 0.5em;
+   box-sizing: border-box; /* https://stackoverflow.com/a/16907625/400765 */
+   width: 100%;
+   padding: 0.6em;
+}
+ 
+#address-change-button-spinner {
+   height: 3em;
+   margin: 1em auto;
+}
+ 
+#address-change button {
+   font-size: 20px;
+}

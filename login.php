@@ -21,13 +21,13 @@ function page_content() {
          loginLog('Email is empty.');
          $error[] = '<p>You forgot to enter your email.</p>';
       }
-      else if (!is_email_address($_POST['email'])) {
+      else if (!is_email_address(trim($_POST['email']))) {
          loginLog('Email address is invalid.');
          $error[] = '<p>Your email address is invalid.</p>';
       }
       else {
          loginLog('Email is set.');
-         $email = $_POST['email'];
+         $email = trim($_POST['email']);
       }
 
       if (empty($_POST['password'])) {

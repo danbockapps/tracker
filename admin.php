@@ -614,6 +614,11 @@ else {
             CDC report - onsite
          </a>
       </li>
+      <li>
+         <a href="view_report.php?report=addresschanges">
+            Address changes
+         </a>
+      </li>
    <?php } ?>
 </ul>
 
