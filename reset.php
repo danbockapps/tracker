@@ -32,7 +32,7 @@ function offer_to_reset() {
       If you have forgotten your password, enter your e-mail address below and
       instructions to reset it will be e-mailed to you.
    </p>
-   <form action="reset.php" method="post">
+   <form action="reset.php" method="post" class="white-form">
    <p>
       <label for="email">E-mail address: </label>
       <input type="text" name="email" id="email" />
@@ -81,7 +81,7 @@ function enter_new_password() {
       );
    }
    ?>
-   <form action="reset.php" method="post">
+   <form action="reset.php" method="post" class="white-form">
       <p>
          <label for="password">Choose a password: </label>
          <input type="password" name="password" id="password" />

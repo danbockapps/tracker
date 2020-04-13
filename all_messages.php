@@ -64,7 +64,8 @@ function page_content() {
       <form action="all_messages.php?user=<?php
                echo htmlentities($_GET['user']);
             ?>"
-            method="post">
+            method="post"
+            class="white-form">
          <fieldset>
             <legend>Compose new message</legend>
             To: <b><?php echo htmlentities($recip_name); ?></b><br />

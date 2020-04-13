@@ -72,7 +72,7 @@ function page_content() {
 if(true) {
    ?>
    <a href="#" class="showhide_closed">Add new instructor</a>
-   <form class="admin" action="admin.php" method="post"
+   <form class="admin white-form" action="admin.php" method="post"
       onsubmit="return confirm('Are you sure you want to add this instructor?');">
       <fieldset>
          <!-- Populated by jQuery -->
@@ -95,7 +95,7 @@ else {
                                                      REMOVE INSTRUCTOR
 ---------------------------------------------------------------------- -->
 <a href="#" class="showhide_closed">Remove instructor</a>
-<form class="admin" action="admin.php" method="post"
+<form class="admin white-form" action="admin.php" method="post"
       onsubmit="return confirm('Are you sure you want to remove this instructor?');">
    <fieldset>
       <?php
@@ -114,7 +114,7 @@ else {
 ---------------------------------------------------------------------- -->
 
 <a href="#" class="showhide_closed">Add new admin</a>
-<form class="admin" action="admin.php" method="post"
+<form class="admin white-form" action="admin.php" method="post"
       onsubmit="return confirm('Are you sure you want to add this admin?');">
    <fieldset>
       <!-- Populated by jQuery -->
@@ -131,7 +131,7 @@ else {
 ---------------------------------------------------------------------- -->
 
 <a href="#" class="showhide_closed">Remove admin</a>
-<form class="admin" action="admin.php" method="post"
+<form class="admin white-form" action="admin.php" method="post"
       onsubmit="return confirm('Are you sure you want to remove this admin?');">
    <fieldset>
       <select name="admin_to_rm">
@@ -162,7 +162,7 @@ else {
 <a href="#" class="showhide_closed">Participant lookup</a>
 <div>
    <!-- Div is for the purposes of the showhide function -->
-   <form class="admin" action="admin.php" method="get">
+   <form class="admin white-form" action="admin.php" method="get">
       <!-- Method=get because this does not change anything in the db -->
       <fieldset>
          <!-- Populated by jQuery -->
@@ -378,7 +378,7 @@ else {
    ", array());
 ?>
 
-<form action="download_report.php" method="get" class="attendance-reports-section">
+<form action="download_report.php" method="get" class="attendance-reports-section white-form">
    <?php
       for($i=0; $i<count($aqr); $i++) {
          $row = $aqr[$i];

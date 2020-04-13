@@ -92,7 +92,7 @@ function page_content() {
          ?>
          <form action="setpw.php?<?php
             echo http_build_query($_GET);
-         ?>" method="post">
+         ?>" method="post" class="white-form">
             <h2>Choose your password</h2>
             <table>
                <tr>

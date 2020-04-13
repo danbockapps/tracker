@@ -87,9 +87,13 @@ body {
   padding: 10px;
 }
 #container form {
-  background-color: #fff;
-  max-width: 450px;
   padding: 20px 20px 8px;
+}
+#container form.white-form {
+  background-color: #fff;
+}
+#container form.small-form {
+  max-width: 450px;
 }
 #container form.attendance-reports-section {
   max-width: 650px;

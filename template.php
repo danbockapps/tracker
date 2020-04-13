@@ -66,7 +66,7 @@ function generate_page($require_logged_in, $require_logged_out, $shownav=true) {
       <?php } ?>
       <link
          rel="stylesheet"
-         href="portal.css?v=010919-1"
+         href="portal.css"
       />
       <?php template_js(); ?>
    </head>

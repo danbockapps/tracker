@@ -106,7 +106,11 @@ function page_content() {
    global $loginphp_mode;
    ?>
 
-   <form action="<?php echo $loginphp_mode; ?>login.php?<?php echo http_build_query($_GET); ?>" method="post">
+   <form
+      class="white-form small-form"
+      action="<?php echo $loginphp_mode; ?>login.php?<?php echo http_build_query($_GET); ?>"
+      method="post"
+   >
       <fieldset>
          <legend>Log in</legend>
 

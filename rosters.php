@@ -120,7 +120,7 @@ function page_content() {
    }
    else {
    ?>
-      <form action="multi_message.php" method="get" id="multi_message">
+      <form action="multi_message.php" method="get" id="multi_message" class="white-form">
       <table class="wrctable rosters">
          <tr>
             <th><!-- Header for checkboxes --></th>

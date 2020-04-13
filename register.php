@@ -115,7 +115,7 @@ function page_content() {
 
    ?>
    <h2>Create new account</h2>
-   <form method="post" action="register.php" autocomplete="off">
+   <form method="post" action="register.php" autocomplete="off" class="white-form">
       <p>
          <label for="first_name">First name: </label>
          <input type="text" name="first_name" id="first_name" <?php

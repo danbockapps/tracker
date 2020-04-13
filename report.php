@@ -267,7 +267,8 @@ function page_content() {
          ?>&user=<?php
             echo htmlentities($_GET['user']);
          ?>"
-         method="post">
+         method="post"
+         class="white-form">
       <fieldset style="margin-bottom: 0.3em">
          <table id="metric-entry">
          <?php
