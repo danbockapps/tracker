@@ -352,55 +352,6 @@ else {
 </div>
 
 <!-- --------------------------------------------------------------------------
-                                                             ATTENDANCE REPORTS
---------------------------------------------------------------------------- -->
-
-
-<!-- Commenting out old attendance reports for now. Will someday be deleted.
-
-<a href="#" class="showhide_closed">Attendance reports</a>
-<?php
-   /* Classes will show up here on the Monday after they end */
-   $aqr = pdo_seleqt("
-      select
-         c.class_id,
-         c.start_dttm,
-         u.fname,
-         u.lname
-      from
-         classes_aw c
-         left join wrc_users u
-            on c.instructor_id = u.user_id
-      where
-         c.start_dttm > '2014-01-01 00:00:00'
-         and datediff(
-            now(),
-            c.start_dttm - interval dayofweek(c.start_dttm) day
-         ) - 2 >= c.weeks * 7
-      order by c.start_dttm desc
-   ", array());
-?>
-
-<form action="download_report.php" method="get">
-   <?php
-      foreach($aqr as $row) {
-         ?><input type="checkbox" name="class[<?php
-            echo $row['class_id'];
-         ?>]"><?php
-            echo class_times($row['start_dttm']) . " (" . $row['fname'] . " " .
-                  $row['lname'] . ") ";
-         ?><a href="view_report.php?report=attendance&class=<?php
-            echo $row['class_id'];
-         ?>"> web view</a><br /><?php
-      }
-   ?>
-   <input type="hidden" name="report" value="attendance" />
-   <input type="submit" value="Download report" />
-</form>
-
--->
-
-<!-- --------------------------------------------------------------------------
                                                          NEW ATTENDANCE REPORTS
 --------------------------------------------------------------------------- -->
 
