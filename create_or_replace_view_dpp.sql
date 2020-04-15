@@ -254,8 +254,8 @@ where a.attendance_date is not null;
 create or replace view cdc_report as
 select
    case c.class_type
-      when 2 then '2173125'
-      when 5 then '8471188'
+      when 1 or 2 then '2173125'
+      when 4 or 5 then '8471188'
       else null
    end as ORGCODE,
    r.user_id as PARTICIP,
@@ -285,8 +285,8 @@ select
    '' as EDU,
    case
       when t.attendance_type = 2 then 2 -- makeup class
-      when c.class_type = 2 then 3      -- online
-      when c.class_type = 5 then 1      -- onsite
+      when c.class_type in (1, 2) then 3      -- online
+      when c.class_type in (4, 5) then 1      -- onsite
       else null
    end as DMODE,
    case
@@ -300,12 +300,12 @@ select
    end as SESSTYPE,
    t.attendance_date as DATE,
    case c.class_type
-      when 2 then coalesce(t.w0, t.w1, t.wn1, t.w2, t.wn2, t.w3, t.wn3, t.w4, t.wn4)
-      when 5 then t.wi
+      when 1 or 2 then coalesce(t.w0, t.w1, t.wn1, t.w2, t.wn2, t.w3, t.wn3, t.w4, t.wn4)
+      when 4 or 5 then t.wi
    end as WEIGHT,
    case c.class_type
-      when 2 then coalesce(t.pa0, t.pa1, t.pan1, t.pa2, t.pan2, t.pa3, t.pan3, t.pa4, t.pan4)
-      when 5 then t.pai
+      when 1 or 2 then coalesce(t.pa0, t.pa1, t.pan1, t.pa2, t.pan2, t.pa3, t.pan3, t.pa4, t.pan4)
+      when 4 or 5 then t.pai
    end as PA
 from
    cdc_transposed_reports t
