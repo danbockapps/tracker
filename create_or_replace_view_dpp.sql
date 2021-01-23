@@ -251,11 +251,11 @@ from
       and date(a.attendance_date - interval 4 day) = date(rn4.report_date)
 where a.attendance_date is not null;
 
-create or replace view cdc_report as
+create or replace view cdc_report0 as
 select
-   case c.class_type
-      when 1 or 2 then '2173125'
-      when 4 or 5 then '8471188'
+   case
+      when c.class_type in (1, 2) then '2173125'
+      when c.class_type in (4, 5) then '8471188'
       else null
    end as ORGCODE,
    r.user_id as PARTICIP,
@@ -299,13 +299,13 @@ select
       when t.present_phase2 = 1 and t.attendance_type = 1 then 'CM'
    end as SESSTYPE,
    t.attendance_date as DATE,
-   case c.class_type
-      when 1 or 2 then coalesce(t.w0, t.w1, t.wn1, t.w2, t.wn2, t.w3, t.wn3, t.w4, t.wn4)
-      when 4 or 5 then t.wi
+   case
+      when c.class_type in (1, 2) then coalesce(t.w0, t.w1, t.wn1, t.w2, t.wn2, t.w3, t.wn3, t.w4, t.wn4)
+      when c.class_type in (4, 5) then t.wi
    end as WEIGHT,
-   case c.class_type
-      when 1 or 2 then coalesce(t.pa0, t.pa1, t.pan1, t.pa2, t.pan2, t.pa3, t.pan3, t.pa4, t.pan4)
-      when 4 or 5 then t.pai
+   case
+      when c.class_type in (1, 2) then coalesce(t.pa0, t.pa1, t.pan1, t.pa2, t.pan2, t.pa3, t.pan3, t.pa4, t.pan4)
+      when c.class_type in (4, 5) then t.pai
    end as PA
 from
    cdc_transposed_reports t
@@ -317,6 +317,15 @@ from
       on t.user_id = r.tracker_user_id
    inner join classes_aw c
       on t.class_id = c.class_id;
+
+create or replace view cdc_report as
+select
+   c.*,
+   case
+      when c.DATE and c.WEIGHT and c.PA then 1
+      else 0
+   end as FULL_PARTICIPATION
+from cdc_report0 c;
 
 create or replace view cdc_report_online as
 select * from cdc_report where orgcode = '2173125' order by particip, date;
