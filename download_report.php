@@ -332,14 +332,22 @@ else if($_GET['report'] == "results") {
    ", array());
 }
 else if($_GET['report'] == 'cdc_report_online') {
+   createCdcTable();
+
    $qr = pdo_seleqt("
       select * from cdc_report_online
    ", array());
+
+   deleteCdcTable();
 }
 else if($_GET['report'] == 'cdc_report_onsite') {
+   createCdcTable();
+
    $qr = pdo_seleqt("
       select * from cdc_report_onsite
    ", array());
+
+   deleteCdcTable();
 }
 else if($_GET['report'] == 'feb2018') {
    $qr = pdo_seleqt('
