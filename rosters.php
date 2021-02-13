@@ -231,7 +231,7 @@ function page_content() {
                         if($qr[$i]['wt_chg'] >= 0 && $qr[$i]['wt_chg'] != null) {
                            echo "+";
                         }
-                        echo $qr[$i]['wt_chg'] ? round($qr[$i]['wt_chg'], 1) : '';
+                        echo $qr[$i]['wt_chg'] != null ? round($qr[$i]['wt_chg'], 1) : '';
                      ?>
                   </td>
                   <td class="center<?php
