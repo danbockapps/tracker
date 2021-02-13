@@ -82,8 +82,8 @@ function page_content() {
          u.last_message_from,
          u.last_message_to,
          e.class_id,
-         u.email,
-         e.phone
+         u.email
+         " . (PRODUCT == 'dpp' ? ', e.phone' : '') . "
       from
          " . ENR_VIEW . " e
          inner join current_classes_for_rosters c
