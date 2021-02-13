@@ -2,7 +2,6 @@ create or replace view enrollment_view as select
    tracker_user_id as user_id,
    class_id,
    smart_goal,
-   reg_date,
    date_added as date_joined, /* because wrc_users has date_added */
    syst_start,
    dias_start,
@@ -21,7 +20,8 @@ create or replace view enrollment_view as select
    shirtchoice
 from registrants
 where
-   paid != '0';
+   paid != '0' and
+   status = '1';
 
 create or replace view classes_aw as
 select
