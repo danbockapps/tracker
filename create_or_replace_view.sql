@@ -700,7 +700,9 @@ from
       on f.user_id = r.user_id
       and f.class_id = r.class_id
       and f.week_id = r.week_id
-where r.user_id is null;
+where
+   r.user_id is null
+   and f.week_id >= 0;
 
 create or replace view first_reports_with_weights_weeks as
 select
