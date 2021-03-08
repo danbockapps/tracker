@@ -193,6 +193,48 @@ from
    inner join classes_aw c on r.class_id = c.class_id;
 
 create
+or replace view cdc_transposed_reports as
+select
+   a.attendance_id,
+   a.attendance_date,
+   a.attendance_type,
+   a.week,
+   a.present_phase1,
+   a.present_phase2,
+   a.user_id,
+   a.class_id,
+   i.weight as wi,
+   i.physact_minutes as pai,
+   r.weight as w0,
+   r.physact_minutes as pa0,
+   abs(
+      datediff(
+         a.attendance_date,
+         r.report_date
+      )
+   ) as diff
+from
+   attendance_summary3 a
+   left join wrc_ireports i on a.week = i.lesson_id
+   and a.user_id = i.user_id
+   and a.class_id = i.class_id
+   inner join classes_aw c on a.class_id = c.class_id
+   left join cdc_reports_by_date r on a.user_id = r.user_id
+   and a.class_id = r.class_id
+where
+   a.attendance_date is not null
+   and abs(
+      datediff(
+         a.attendance_date,
+         r.report_date
+      )
+   ) <= 4
+group by
+   user_id,
+   class_id,
+   week;
+
+create
 or replace view cdc_report0 as
 select
    case
@@ -246,31 +288,11 @@ select
    end as SESSTYPE,
    t.attendance_date as DATE,
    case
-      when c.class_type in (1, 2) then coalesce(
-         t.w0,
-         t.w1,
-         t.wn1,
-         t.w2,
-         t.wn2,
-         t.w3,
-         t.wn3,
-         t.w4,
-         t.wn4
-      )
+      when c.class_type in (1, 2) then t.w0
       when c.class_type in (4, 5) then t.wi
    end as WEIGHT,
    case
-      when c.class_type in (1, 2) then coalesce(
-         t.pa0,
-         t.pa1,
-         t.pan1,
-         t.pa2,
-         t.pan2,
-         t.pa3,
-         t.pan3,
-         t.pa4,
-         t.pan4
-      )
+      when c.class_type in (1, 2) then t.pa0
       when c.class_type in (4, 5) then t.pai
    end as PA
 from
