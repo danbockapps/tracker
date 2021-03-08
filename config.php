@@ -1380,6 +1380,5 @@ function uriWithQueryString() {
 }
 
 require_once('functions.php');
-require_once('create_cdc_table.php');
 
 ?>
