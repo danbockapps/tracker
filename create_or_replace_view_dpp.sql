@@ -257,7 +257,7 @@ create or replace view cdc_report as
 select
    c.*,
    case
-      when c.DATE and c.WEIGHT and c.PA then 1
+      when c.DATE is not null and c.WEIGHT is not null and c.PA is not null then 1
       else 0
    end as FULL_PARTICIPATION
 from cdc_report0 c;
