@@ -207,10 +207,12 @@ select
    i.physact_minutes as pai,
    r.weight as w0,
    r.physact_minutes as pa0,
-   abs(
-      datediff(
-         a.attendance_date,
-         r.report_date
+   min(
+      abs(
+         datediff(
+            a.attendance_date,
+            r.report_date
+         )
       )
    ) as diff
 from
@@ -223,12 +225,6 @@ from
    and a.class_id = r.class_id
 where
    a.attendance_date is not null
-   and abs(
-      datediff(
-         a.attendance_date,
-         r.report_date
-      )
-   ) <= 4
 group by
    user_id,
    class_id,
@@ -288,12 +284,16 @@ select
    end as SESSTYPE,
    t.attendance_date as DATE,
    case
-      when c.class_type in (1, 2) then t.w0
-      when c.class_type in (4, 5) then t.wi
+      when c.class_type in (1, 2)
+      and t.diff <= 4 then t.w0
+      when c.class_type in (4, 5)
+      and t.diff <= 4 then t.wi
    end as WEIGHT,
    case
-      when c.class_type in (1, 2) then t.pa0
-      when c.class_type in (4, 5) then t.pai
+      when c.class_type in (1, 2)
+      and t.diff <= 4 then t.pa0
+      when c.class_type in (4, 5)
+      and t.diff <= 4 then t.pai
    end as PA
 from
    cdc_transposed_reports t
