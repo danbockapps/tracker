@@ -182,6 +182,7 @@ or replace view cdc_reports_by_date as
 select
    r.user_id,
    r.class_id,
+   r.week_id,
    case
       when r.week_id > 0 then c.start_dttm + interval r.week_id -1 week
       else null
@@ -191,6 +192,54 @@ select
 from
    reports_with_fitbit_hybrid r
    inner join classes_aw c on r.class_id = c.class_id;
+
+/* Leaving out class ID bc participants can change classes. Match on dates; catch that. */
+create
+or replace view reports_with_lessons as
+select
+   r.user_id,
+   r.class_id,
+   r.week_id,
+   coalesce(
+      a0.week,
+      a1.week,
+      an1.week,
+      a2.week,
+      an2.week,
+      a3.week,
+      an3.week,
+      a4.week,
+      an4.week
+   ) as lesson
+from
+   cdc_reports_by_date r
+   left join attendance_summary3 a0 on r.user_id = a0.user_id
+   and r.class_id = a0.class_id
+   and date(r.report_date) = a0.attendance_date
+   left join attendance_summary3 a1 on r.user_id = a1.user_id
+   and r.class_id = a1.class_id
+   and date(r.report_date) = a1.attendance_date + interval 1 day
+   left join attendance_summary3 a2 on r.user_id = a2.user_id
+   and r.class_id = a2.class_id
+   and date(r.report_date) = a2.attendance_date + interval 2 day
+   left join attendance_summary3 a3 on r.user_id = a3.user_id
+   and r.class_id = a3.class_id
+   and date(r.report_date) = a3.attendance_date + interval 3 day
+   left join attendance_summary3 a4 on r.user_id = a4.user_id
+   and r.class_id = a4.class_id
+   and date(r.report_date) = a4.attendance_date + interval 4 day
+   left join attendance_summary3 an1 on r.user_id = an1.user_id
+   and r.class_id = an1.class_id
+   and date(r.report_date) = an1.attendance_date - interval 1 day
+   left join attendance_summary3 an2 on r.user_id = an2.user_id
+   and r.class_id = an2.class_id
+   and date(r.report_date) = an2.attendance_date - interval 2 day
+   left join attendance_summary3 an3 on r.user_id = an3.user_id
+   and r.class_id = an3.class_id
+   and date(r.report_date) = an3.attendance_date - interval 3 day
+   left join attendance_summary3 an4 on r.user_id = an4.user_id
+   and r.class_id = an4.class_id
+   and date(r.report_date) = an4.attendance_date - interval 4 day;
 
 create
 or replace view cdc_transposed_reports as
