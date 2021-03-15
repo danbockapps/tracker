@@ -5,12 +5,12 @@ $qr = pdo_seleqt("
   select class_id
   from classes_aw
   order by class_id;
-");
+", []);
 
 $dbh = pdo_connect($ini['db_prefix'] . "_update");
 
 foreach($qr as $row) {
-  echo date("Y-m-d G:i:s") . " Starting class " . $row['class_id'];
+  echo date("Y-m-d G:i:s") . " Starting class " . $row['class_id'] . "\n";
 
   $sth = $dbh->prepare("
     update
@@ -25,7 +25,7 @@ foreach($qr as $row) {
   ");
   $sth->execute($row['class_id']);
 
-  echo date("Y-m-d G:i:s") . " Done with class " . $row['class_id'];
+  echo date("Y-m-d G:i:s") . " Done with class " . $row['class_id'] . "\n";
 }
 
 ?>
