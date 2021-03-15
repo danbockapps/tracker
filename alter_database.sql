@@ -191,3 +191,10 @@ create table wrc_addresschanges (
   new_phone varchar(20),
   constraint foreign key (user_id) references wrc_users (user_id)
 );
+
+
+-- 3/15/2021
+
+alter table wrc_reports
+add column lesson smallint unsigned;
+
