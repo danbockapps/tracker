@@ -23,7 +23,7 @@ foreach($qr as $row) {
       and rl.lesson is not null
       and class_id = ?
   ");
-  $sth->execute($row['class_id']);
+  $sth->execute(array($row['class_id']));
 
   echo date("Y-m-d G:i:s") . " Done with class " . $row['class_id'] . "\n";
 }
