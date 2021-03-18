@@ -9,6 +9,8 @@ $qr = pdo_seleqt("
 
 $dbh = pdo_connect($ini['db_prefix'] . "_update");
 
+echo "Starting...\n";
+
 foreach($qr as $row) {
   echo date("Y-m-d G:i:s") . " Starting class " . $row['class_id'] . "\n";
 
@@ -21,9 +23,9 @@ foreach($qr as $row) {
     where
       r.lesson is null
       and rl.lesson is not null
-      and class_id = ?
-  ");
-  $sth->execute(array($row['class_id']));
+      and class_id = " . $row['class_id']
+  );
+  $sth->execute();
 
   echo date("Y-m-d G:i:s") . " Done with class " . $row['class_id'] . "\n";
 }
