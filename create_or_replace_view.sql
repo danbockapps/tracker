@@ -295,6 +295,20 @@ group by
    year;
 
 create
+or replace view reports_full_particip as
+select
+   user_id,
+   class_id,
+   week_id,
+   case
+      when weight is not null
+      and physact_minutes is not null then 1
+      else 0
+   end as full_participation
+from
+   reports_with_fitbit_hybrid;
+
+create
 or replace view attendance_sum3 as
 select
    user_id,
@@ -302,9 +316,11 @@ select
    year,
    sum(present) as numclasses,
    sum(present_phase1) as numclasses_phase1,
-   sum(present_phase2) as numclasses_phase2
+   sum(present_phase2) as numclasses_phase2,
+   sum(full_participation) as full_participation
 from
    attendance_summary3
+   left join reports_full_particip r using(user_id, class_id, week_id)
 group by
    user_id,
    month,

@@ -147,7 +147,8 @@ select
    '' as dob,
    e.refund_method,
    e.refund_email_address,
-   e.refund_postal_address
+   e.refund_postal_address,
+   am.full_participation
 from
    registrants e
    inner join wrc_users u on e.tracker_user_id = u.user_id natural
