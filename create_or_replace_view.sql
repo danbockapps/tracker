@@ -252,7 +252,10 @@ select
    a.class_id,
    month(c.start_dttm) as month,
    year(c.start_dttm) as year,
-   a.week,
+   a.week as lesson_id,
+   ceil(
+      (datediff(a.attendance_date, c.start_dttm) + 4) / 7
+   ) as week_id,
    a.attendance_type,
    a.attendance_date,
    case

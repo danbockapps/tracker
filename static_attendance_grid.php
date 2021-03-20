@@ -39,7 +39,7 @@ function showGrid() {
       $(
         '#staticGrid ' +
         'tr[user-id=' + item.user_id + '] ' +
-        'td[lesson-id=' + item.week + ']'
+        'td[lesson-id=' + item.lesson_id + ']'
       ).html(item.attendance_type);
     });
 

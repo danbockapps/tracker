@@ -198,3 +198,7 @@ create table wrc_addresschanges (
 alter table wrc_reports
 add column lesson smallint unsigned;
 
+-- 3/20/2021
+
+alter table wrc_reports
+drop column lesson;

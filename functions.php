@@ -503,7 +503,7 @@ function attendanceSummary3ForClass($classId) {
          a.user_id,
          u.fname,
          u.lname,
-         a.week,
+         a.lesson_id,
          a.attendance_type,
          a.attendance_date
       from
