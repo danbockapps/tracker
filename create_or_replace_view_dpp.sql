@@ -178,23 +178,6 @@ order by
  May 2019: New CDC reports
  */
 create
-or replace view cdc_reports_by_date as
-select
-   r.user_id,
-   r.class_id,
-   r.week_id,
-   case
-      when r.week_id > 0 then c.start_dttm + interval r.week_id -1 week
-      else null
-   end as report_date,
-   r.weight,
-   r.physact_minutes
-from
-   reports_with_fitbit_hybrid r
-   inner join classes_aw c on r.class_id = c.class_id;
-
-/* Leaving out class ID bc participants can change classes. Match on dates; catch that. */
-create
 or replace view cdc_transposed_reports as
 select
    a.attendance_id,
@@ -208,29 +191,18 @@ select
    i.weight as wi,
    i.physact_minutes as pai,
    r.weight as w0,
-   r.physact_minutes as pa0,
-   min(
-      abs(
-         datediff(
-            a.attendance_date,
-            r.report_date
-         )
-      )
-   ) as diff
+   r.physact_minutes as pa0
 from
    attendance_summary3 a
    left join wrc_ireports i on a.lesson_id = i.lesson_id
    and a.user_id = i.user_id
    and a.class_id = i.class_id
    inner join classes_aw c on a.class_id = c.class_id
-   left join cdc_reports_by_date r on a.user_id = r.user_id
+   left join reports_with_fitbit_hybrid r on a.user_id = r.user_id
    and a.class_id = r.class_id
+   and a.week_id = r.week_id
 where
-   a.attendance_date is not null
-group by
-   user_id,
-   class_id,
-   lesson_id;
+   a.attendance_date is not null;
 
 create
 or replace view cdc_report0 as
@@ -286,20 +258,15 @@ select
    end as SESSTYPE,
    t.attendance_date as DATE,
    case
-      when c.class_type in (1, 2)
-      and t.diff <= 4 then t.w0
-      when c.class_type in (4, 5)
-      and t.diff <= 4 then t.wi
+      when c.class_type in (1, 2) then t.w0
+      when c.class_type in (4, 5) then t.wi
    end as WEIGHT,
    case
-      when c.class_type in (1, 2)
-      and t.diff <= 4 then t.pa0
-      when c.class_type in (4, 5)
-      and t.diff <= 4 then t.pai
+      when c.class_type in (1, 2) then t.pa0
+      when c.class_type in (4, 5) then t.pai
    end as PA
 from
    cdc_transposed_reports t
-   inner join wrc_attendance a on t.attendance_id = a.attendance_id
    inner join wrc_users u on t.user_id = u.user_id
    inner join registrants r on t.user_id = r.tracker_user_id
    inner join classes_aw c on t.class_id = c.class_id;
