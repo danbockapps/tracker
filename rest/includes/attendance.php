@@ -43,7 +43,7 @@ function postAttendance() {
       $_POST['user_id'],
       $_POST['class_id'],
       'w',
-      $_POST['week'],
+      $_POST['lesson_id'],
       $_POST['present'],
       $_POST['attendance_type'],
       nullIfBlank($_POST['attendance_date'])

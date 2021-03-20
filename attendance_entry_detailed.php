@@ -132,7 +132,7 @@ $aqr = attendanceSummary3ForClass($_GET['class_id']);
    aqr.forEach(function(item) {
       // This might be kinda slow
 
-      var row = $('table[lesson-id=' + item.week +
+      var row = $('table[lesson-id=' + item.lesson_id +
          '] tr[user-id=' + item.user_id + ']');
 
       row.find('select.attendance-type').val(item.attendance_type);
@@ -199,7 +199,7 @@ $aqr = attendanceSummary3ForClass($_GET['class_id']);
       $.post('rest/api.php?q=attendance', {
          user_id: userId,
          class_id: <?= htmlentities($_GET['class_id']) ?>,
-         week: lessonId,
+         lesson_id: lessonId,
          attendance_type: attendanceType,
          attendance_date: formattedAttendanceDate
       }, function(data) {

@@ -1,11 +1,4 @@
 <?php
-/*
-PLEASE NOTE: Throughout this file and the attendance table in the database, the
-word "week" is a misnomer. Attendance is tracked by lesson, which may or may
-not correspond 1:1 to weeks. TODO: change varibles and fields named "week"
-here and in the database to "lesson".
-*/
-
 require_once("template.php");
 generate_page(true, false);
 
@@ -196,14 +189,14 @@ function page_content() {
          <?php } ?>
       }
 
-      function submitAttendance(userId, week, present, cell) {
+      function submitAttendance(userId, lessonId, present, cell) {
          cell.children('img').removeClass('hidden');
          cell.children('.entryPoint').addClass('hidden');
          $.post('rest/api.php?q=attendance', {
             user_id: userId,
             class_id: <?php echo htmlentities($_GET['class_id']); ?>,
             class_source: '<?php echo htmlentities($_GET['class_source']); ?>',
-            week: week,
+            lesson_id: lessonId,
             present: present
          }, function(data) {
             cell.children('img').addClass('hidden');
@@ -219,7 +212,7 @@ function page_content() {
                   $(this).html(parseInt(sumCell.html(), 10) + delta).fadeIn('slow');
 
                   // Update client-side array
-                  iqr[userId][week] = present ? 1 : 0;
+                  iqr[userId][lessonId] = present ? 1 : 0;
 
                   // Show or hide shirt dropdown
                   if(shirtRequirementsMet(userId)) {
