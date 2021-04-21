@@ -60,6 +60,7 @@ select
    e.coup_voucher as voucher_code,
    u.fname,
    u.lname,
+   u.email,
    coalesce(am.numclasses, 0) as numclasses,
    '' as numclasses_phase1,
    '' as numclasses_phase2,
