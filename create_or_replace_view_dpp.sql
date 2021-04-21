@@ -122,6 +122,7 @@ select
    e.voucher_code,
    u.fname,
    u.lname,
+   u.email,
    coalesce(am.numclasses, 0) as numclasses,
    coalesce(am.numclasses_phase1, 0) as numclasses_phase1,
    coalesce(am.numclasses_phase2, 0) as numclasses_phase2,
