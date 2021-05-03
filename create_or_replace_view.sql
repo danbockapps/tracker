@@ -920,7 +920,7 @@ select
    floor(datediff(f.date, c.start_dttm) / 7) + 2 as week_id,
    f.*
 from
-   fitbit f
+   fitbit_static f
    inner join enrollment_view e on f.user_id = e.user_id
    inner join current_classes c on e.class_id = c.class_id;
 
