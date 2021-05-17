@@ -10,7 +10,7 @@ $recipient = getRecipient();
 $subject = getSubject();
 $msg = getMessage($argv[1], $argv[2], $argv[3], $recipient);
 
-if($argv[2] == 6) {
+if($argv[2] == 6 || $argv[2] == 2) {
    syncMailHtml($recipient, $subject, $msg);
 }
 else {
@@ -66,9 +66,7 @@ function getMessage($recipientId, $messageId, $participantId, $recipientEmail) {
    }
    else if($messageId == 2) {
       // This is called from the message_participant function in config.php
-      $message = "You have received a new message.\n";
-      $message .= "Click here to see it: " . WEBSITE_URL;
-      $message .= "/all_messages.php?user=$participantId";
+      $message = newMessage();
    }
    else if($messageId == 3) {
       // This is called from report.php
