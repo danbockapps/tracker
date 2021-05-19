@@ -1,7 +1,10 @@
 <?php
+require_once('config.php');
+
+$backgroundColor = PRODUCT == 'dpp' ? '#80298f' : '#0094dd';
 
 // https://stackoverflow.com/a/36525712/400765
-$head= <<< EOD
+$head = <<<EOD
 <head>
 <style>
 
@@ -24,7 +27,7 @@ p {
   margin-left: 30%;
   margin-right: 30%;
   border-radius: 5px;
-  background-color: #80298f;
+  background-color: $backgroundColor;
   color: #ffffff;
   padding: 14px 25px;
   text-align: center;
@@ -37,21 +40,27 @@ p {
 </head>
 EOD;
 
-$img = '<img src="https://esmmpreventdiabetes.com/mpp/_images/logo.png" />';
+$img = PRODUCT == 'dpp' ?
+  '<img src="https://esmmpreventdiabetes.com/mpp/_images/logo.png" />' :
+  '<img src="https://esmmweighless.com/tracker/esmmwl_logo.png" />';
+
+$websiteUrl = WEBSITE_URL;
+$programName = PROGRAM_NAME;
+$productTitle = PRODUCT_TITLE;
+$dontForget = PRODUCT == 'dpp' ? 
+  "Don't forget to enter your weight and physical activity each week to receive attendance credit." :
+  '';
 
 $buttonAndFooter = <<<EOD
-<a class="btn" style="color: #ffffff" href="https://esmmpreventdiabetes.com/mpp">
-    My Progress Portal
+  <a class="btn" style="color: #ffffff" href="$websiteUrl">
+    $productTitle
   </a>
 
   <p style="font-style: italic; font-size: 10px">
     Visit
-    <a style="color: #80298f;" href="https://esmmpreventdiabetes.com/mpp">
-      esmmpreventdiabetes.com/mpp
-    </a>
+    <a style="color: $backgroundColor;" href="$websiteUrl">$websiteUrl</a>
     at any time to track your progress and communicate with your instructor.
-    Don't forget to enter your weight and physical activity each week to
-    receive attendance credit.
+    $dontForget
   </p>
 EOD;
 
@@ -82,7 +91,7 @@ EOD;
 }
 
 function newMessage() {
-  global $head, $img, $buttonAndFooter;
+  global $head, $img, $programName, $buttonAndFooter;
 
   $str = <<<EOD
 <!DOCTYPE html>
@@ -92,8 +101,7 @@ $head
   $img
 
   <p style="font-size: 12px">
-    You have received a new message from your Eat Smart, Move More, Prevent
-    Diabetes instructor:
+    You have received a new message from your $programName instructor:
   </p>
 
   <p style="font-size: 12px">
