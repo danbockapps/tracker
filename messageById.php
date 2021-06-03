@@ -66,7 +66,7 @@ function getMessage($recipientId, $messageId, $participantId, $recipientEmail) {
    }
    else if($messageId == 2) {
       // This is called from the message_participant function in config.php
-      $message = newMessage();
+      $message = newMessage($participantId);
    }
    else if($messageId == 3) {
       // This is called from report.php

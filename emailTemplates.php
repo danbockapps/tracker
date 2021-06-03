@@ -51,8 +51,13 @@ $dontForget = PRODUCT == 'dpp' ?
   "Don't forget to enter your weight and physical activity each week to receive attendance credit." :
   '';
 
-$buttonAndFooter = <<<EOD
-  <a class="btn" style="color: #ffffff" href="$websiteUrl">
+function buttonAndFooter($participantId=0) {
+  global $websiteUrl, $programName, $productTitle, $backgroundColor, $dontForget;
+
+  $queryString = $participantId > 0 ? "/all_messages.php?user=$participantId" : '';
+
+  return <<<EOD
+  <a class="btn" style="color: #ffffff" href="$websiteUrl$queryString">
     $productTitle
   </a>
 
@@ -63,9 +68,12 @@ $buttonAndFooter = <<<EOD
     $dontForget
   </p>
 EOD;
+}
 
 function earnedShirt() {
-  global $head, $img, $buttonAndFooter;
+  global $head, $img;
+
+  $buttonAndFooter = buttonAndFooter();
 
   $str = <<<EOD
 <!DOCTYPE html>
@@ -90,8 +98,10 @@ EOD;
   return $str;
 }
 
-function newMessage() {
-  global $head, $img, $programName, $buttonAndFooter;
+function newMessage($participantId) {
+  global $head, $img, $programName;
+
+  $buttonAndFooter = buttonAndFooter($participantId);
 
   $str = <<<EOD
 <!DOCTYPE html>
