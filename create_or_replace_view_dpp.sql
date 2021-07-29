@@ -193,7 +193,8 @@ select
    i.weight as wi,
    i.physact_minutes as pai,
    r.weight as w0,
-   r.physact_minutes as pa0
+   r.physact_minutes as pa0,
+   r.a1c
 from
    attendance_summary3 a
    left join wrc_ireports i on a.lesson_id = i.lesson_id
@@ -266,7 +267,8 @@ select
    case
       when c.class_type in (1, 2) then t.pa0
       when c.class_type in (4, 5) then t.pai
-   end as PA
+   end as PA,
+   t.a1c
 from
    cdc_transposed_reports t
    inner join wrc_users u on t.user_id = u.user_id
