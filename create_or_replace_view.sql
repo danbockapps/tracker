@@ -1,3 +1,4 @@
+-- Formatted using VS Code entension "SQL Formatter" (adpyke.vscode-sql-formatter)
 create
 or replace view u as
 select
