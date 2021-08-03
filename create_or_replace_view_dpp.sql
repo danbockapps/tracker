@@ -1,3 +1,4 @@
+-- Formatted using VS Code entension "SQL Formatter" (adpyke.vscode-sql-formatter)
 create
 or replace view enrollment_view as
 select
@@ -32,7 +33,13 @@ select
    refund_email_address,
    refund_postal_address,
    ifnc,
-   amount
+   amount,
+   birthdate,
+   race,
+   ethnicity,
+   age,
+   education,
+   sex
 from
    registrants
 where
@@ -311,3 +318,35 @@ where
 order by
    particip,
    date;
+
+create
+or replace view enrollment_file as
+select
+   *
+from
+   enrollment_view;
+
+create
+or replace view performance_file as
+select
+   u.fname as First_Name,
+   u.lname as Last_Name,
+   u.email as Email,
+   e.zip as Zipcode,
+   e.sex as Gender,
+   e.race as Race,
+   e.ethnicity as Ethnicity,
+   e.age as Age,
+   e.education as Education_Level,
+   e.state as Member_State,
+   concat(e.subscriber_id, e.member_number) as BCBS_Subscriber_ID
+from
+   enrollment_view e
+   left join wrc_users u using(user_id);
+
+create
+or replace view interaction_file as
+select
+   *
+from
+   enrollment_view;
