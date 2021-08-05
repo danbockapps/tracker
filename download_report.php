@@ -21,7 +21,10 @@ $whitelist = [
    'attendance3',
    'cdc_report_online',
    'cdc_report_onsite',
-   'feb2018'
+   'feb2018',
+   'enrollment_file',
+   'interaction_file',
+   'performance_file'
 ];
 
 if(!in_array($_GET['report'],  $whitelist)) {
@@ -379,6 +382,9 @@ else if($_GET['report'] == 'feb2018') {
       )
       order by c.start_date_time
    ', array());
+}
+else if ($_GET['report'] == 'enrollment_file') {
+   $qr = pdo_seleqt('select * from enrollment_file', array());
 }
 
 if(empty($qr)) {
