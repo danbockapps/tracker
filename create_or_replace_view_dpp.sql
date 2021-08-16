@@ -39,7 +39,8 @@ select
    ethnicity,
    age,
    education,
-   sex
+   sex,
+   claim_id
 from
    registrants
 where
