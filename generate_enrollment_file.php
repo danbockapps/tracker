@@ -19,7 +19,7 @@ foreach($qr as $row) {
    fwrite($file, "2|$claim_id|$reg_date|\n");
 }
 
-fwrite($file, '3|' . count($qr) . "|\n");
+fwrite($file, '3|' . (count($qr) + 2) . "|\n");
 fclose($file);
 
 ?>
