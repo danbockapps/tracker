@@ -40,7 +40,10 @@ select
    age,
    education,
    sex,
-   claim_id
+   claim_id,
+   referred_by,
+   providerName,
+   providerState
 from
    registrants
 where
@@ -321,11 +324,93 @@ order by
    date;
 
 create
-or replace view enrollment_file as
+or replace view first_reports_with_a1cs_weeks as
 select
-   *
+   user_id,
+   class_id,
+   class_source,
+   min(week_id) as week_id
 from
-   enrollment_view;
+   reports_with_fitbit_hybrid
+where
+   a1c is not null
+group by
+   user_id,
+   class_id,
+   class_source;
+
+create
+or replace view first_reports_with_a1cs as
+select
+   r.user_id,
+   r.class_id,
+   r.class_source,
+   r.week_id,
+   r.a1c
+from
+   reports_with_fitbit_hybrid r natural
+   join first_reports_with_a1cs_weeks f;
+
+create
+or replace view last_reports_with_a1cs_weeks as
+select
+   user_id,
+   class_id,
+   class_source,
+   max(week_id) as week_id
+from
+   reports_with_fitbit_hybrid
+where
+   a1c is not null
+group by
+   user_id,
+   class_id,
+   class_source;
+
+create
+or replace view last_reports_with_a1cs as
+select
+   r.user_id,
+   r.class_id,
+   r.class_source,
+   r.week_id,
+   r.a1c
+from
+   reports_with_fitbit_hybrid r natural
+   join last_reports_with_a1cs_weeks f;
+
+-- TODO rework these two
+create
+or replace view average_pa as
+select
+   r.user_id,
+   r.class_id,
+   month(c.start_dttm) as month,
+   year(c.start_dttm) as year,
+   avg(r.physact_minutes) as pa
+from
+   reports_with_fitbit_hybrid r
+   inner join classes_aw c using (class_id)
+group by
+   r.user_id,
+   month(c.start_dttm),
+   year(c.start_dttm);
+
+create
+or replace view average_steps as
+select
+   r.user_id,
+   r.class_id,
+   month(c.start_dttm) as month,
+   year(c.start_dttm) as year,
+   avg(r.avgsteps) as avgsteps
+from
+   reports_with_fitbit_hybrid r
+   inner join classes_aw c using (class_id)
+group by
+   r.user_id,
+   month(c.start_dttm),
+   year(c.start_dttm);
 
 create
 or replace view performance_file as
@@ -340,10 +425,48 @@ select
    e.age as Age,
    e.education as Education_Level,
    e.state as Member_State,
-   concat(e.subscriber_id, e.member_number) as BCBS_Subscriber_ID
+   e.claim_id as BCBS_Subscriber_ID,
+   e.referred_by as Referred_By,
+   e.providerName as Provider_Name,
+   e.providerState as Provider_State,
+   c.start_dttm as Date_Joined,
+   c.start_dttm as Class_Start,
+   c.phase2_end as Class_End,
+   '' as Attendance_CurrentMonth,
+   '' as Termination,
+   '' as CDC_Risk_Score,
+   u.height_inches as Height,
+   frww.weight as Beginning_Weight,
+   lrww.weight as Current_Weight,
+   lrww.weight as Ending_Weight,
+   frww.weight * 703 / (u.height_inches * u.height_inches) as Beginning_BMI,
+   lrww.weight * 703 / (u.height_inches * u.height_inches) as Current_BMI,
+   lrww.weight * 703 / (u.height_inches * u.height_inches) as Ending_BMI,
+   e.waist_start as Beginning_Waist_Circumference,
+   e.waist_end as Ending_Waist_Circumference,
+   e.smart_goal as Program_Goal,
+   frwa.a1c as Beginning_HbA1c,
+   lrwa.a1c as Ending_HbA1c,
+   '' as Beginning_Fasting_Glucose,
+   '' as Ending_Fasting_Glucose,
+   e.syst_start as Syst_Start,
+   e.syst_end as Syst_End,
+   e.dias_end as Dias_End,
+   apa.pa as Physical_Activity_Minutes_Avg,
+   ast.avgsteps as Steps_Per_Week_Avg,
+   '' as NPS_Score
 from
    enrollment_view e
-   left join wrc_users u using(user_id);
+   left join wrc_users u using(user_id)
+   left join classes_aw c using (class_id)
+   left join first_reports_with_weights frww using (user_id, class_id)
+   left join last_reports_with_weights lrww using(user_id, class_id)
+   left join first_reports_with_a1cs frwa using (user_id, class_id)
+   left join last_reports_with_a1cs lrwa using (user_id, class_id)
+   left join average_pa apa using(user_id, class_id)
+   left join average_steps ast using (user_id, class_id)
+where
+   e.voucher_code = 'FIBCBSNC';
 
 create
 or replace view interaction_file as

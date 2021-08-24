@@ -73,6 +73,9 @@ else if($_GET['report'] == 'addresschanges') {
       null
    );
 }
+else if($_GET['report'] == 'performance_file') {
+   $qr = pdo_seleqt('select * from performance_file', null);
+}
 
 if(empty($qr)) {
    exit("No report returned.");

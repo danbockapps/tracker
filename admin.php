@@ -570,6 +570,11 @@ else {
             Address changes
          </a>
       </li>
+      <li>
+         <a href="view_report.php?report=performance_file">
+            Performance file
+         </a>
+      </li>
    <?php } ?>
 </ul>
 
