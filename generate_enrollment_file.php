@@ -10,7 +10,8 @@ $qr = pdo_seleqt('
    where voucher_code = "FIBCBSNC"
 ', array());
 
-$file = fopen('Value_Based_Benefits_Enrollment_NCSU_' . date('mdY_His') . '.txt', 'w');
+$path = 'Value_Based_Benefits_Enrollment_NCSU_' . date('mdY_His') . '.txt';
+$file = fopen($path, 'w');
 fwrite($file, '1|NCSU|ESMM|' . date('m/d/Y') . "|\n");
 
 foreach($qr as $row) {
@@ -21,5 +22,12 @@ foreach($qr as $row) {
 
 fwrite($file, '3|' . (count($qr) + 2) . "|\n");
 fclose($file);
+
+generateAlisFile(
+   'NCSU_BCBSNC_ENRL_VNDR_UAT_'.date('Ymd_hms').'_CONTROL.xml',
+   '18367',
+   $path,
+   count($qr) + 2
+);
 
 ?>

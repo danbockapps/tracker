@@ -782,4 +782,20 @@ function addressChangeCard() {
    }
 }
 
+function generateAlisFile($path, $processCd, $sessionId, $transactionCount) {
+   $xml = new SimpleXMLElement('<ALIS version="2.0"/>');
+   $t = $xml->addChild('Transaction');
+   $t->addAttribute('processCd', $processCd);
+   $t->addAttribute('txnType', 'Balance');
+   $t->addChild('SessionId', $sessionId);
+
+   $processTime = $t->addChild('ProcessTime');
+   $processTime->addAttribute('startDtTime', date("Y-m-d H:i:s.000"));
+   $processTime->addAttribute('endDtTime', date("Y-m-d H:i:s.000"));
+
+   $t->addChild('TransactionCount', $transactionCount);
+
+   file_put_contents($path, $xml->asXML());
+}
+
 ?>
