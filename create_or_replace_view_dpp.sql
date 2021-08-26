@@ -43,7 +43,9 @@ select
    claim_id,
    referred_by,
    providerName,
-   providerState
+   providerState,
+   cdc,
+   glucoseScore
 from
    registrants
 where
@@ -432,9 +434,10 @@ select
    c.start_dttm as Date_Joined,
    c.start_dttm as Class_Start,
    c.phase2_end as Class_End,
-   '' as Attendance_CurrentMonth,
+   -- TODO
+   a.numclasses as Attendance_CurrentMonth,
    '' as Termination,
-   '' as CDC_Risk_Score,
+   e.cdc as CDC_Risk_Score,
    u.height_inches as Height,
    frww.weight as Beginning_Weight,
    lrww.weight as Current_Weight,
@@ -447,7 +450,7 @@ select
    e.smart_goal as Program_Goal,
    frwa.a1c as Beginning_HbA1c,
    lrwa.a1c as Ending_HbA1c,
-   '' as Beginning_Fasting_Glucose,
+   e.glucoseScore as Beginning_Fasting_Glucose,
    '' as Ending_Fasting_Glucose,
    e.syst_start as Syst_Start,
    e.syst_end as Syst_End,
@@ -465,6 +468,9 @@ from
    left join last_reports_with_a1cs lrwa using (user_id, class_id)
    left join average_pa apa using(user_id, class_id)
    left join average_steps ast using (user_id, class_id)
+   left join attendance_sum3 a on a.month = month(c.start_dttm)
+   and a.year = year(c.start_dttm)
+   and a.user_id = e.user_id
 where
    e.voucher_code = 'FIBCBSNC';
 
