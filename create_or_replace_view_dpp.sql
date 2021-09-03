@@ -471,7 +471,9 @@ from
    and a.year = year(c.start_dttm)
    and a.user_id = e.user_id
 where
-   e.voucher_code = 'FIBCBSNC';
+   e.voucher_code = 'FIBCBSNC'
+   and c.start_dttm < now()
+   and c.phase2_end > now();
 
 create
 or replace view interaction_file as
