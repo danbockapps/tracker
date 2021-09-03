@@ -24,7 +24,7 @@ fwrite($file, '3|' . (count($qr) + 2) . "|\n");
 fclose($file);
 
 generateAlisFile(
-   'NCSU_BCBSNC_ENRL_VNDR_UAT_'.date('Ymd_hms').'_CONTROL.xml',
+   'NCSU_BCBSNC_ENRL_VNDR_UAT_'.date('Ymd_His').'_CONTROL.xml',
    '18367',
    $path,
    count($qr) + 2
