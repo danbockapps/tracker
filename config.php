@@ -176,6 +176,10 @@ function pdo_nullify_activation($email) {
 }
 
 function change_email($old_email, $new_email) {
+   logtxt('CHANGE_EMAIL: ' . $old_email . ' ' . $new_email);
+   logtxt('is_email_address: ' . is_email_address($new_email));
+   logtxt('email_already_in_db: ' . email_already_in_db($new_email));
+
    if(!is_email_address($new_email) || email_already_in_db($new_email))
       return false;
 
@@ -187,7 +191,9 @@ function change_email($old_email, $new_email) {
       where email = ?
       limit 1
    ");
-   $sth->execute(array($new_email, $old_email));
+   $result = $sth->execute(array($new_email, $old_email));
+   
+   logtxt('Result: ' . $result);
    return true;
 }
 
