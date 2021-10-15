@@ -441,7 +441,7 @@ select
    a.numclasses as Attendance_CurrentMonth,
    '' as Termination,
    e.cdc as CDC_Risk_Score,
-   u.height_inches as Height,
+   round(u.height_inches, 0) as Height,
    frww.weight as Beginning_Weight,
    lrww.weight as Current_Weight,
    lrww.weight as Ending_Weight,
