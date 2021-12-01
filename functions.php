@@ -798,4 +798,44 @@ function generateAlisFile($path, $processCd, $sessionId, $transactionCount) {
    file_put_contents($path, $xml->asXML());
 }
 
+function getNumWeeks($classId, $classSource) {
+   $weekqr = seleqt_one_record("
+      select weeks
+      from classes_aw
+      where
+         class_id = ?
+         and class_source = ?
+   ", array($classId, $classSource));
+
+   return $weekqr['weeks'];
+}
+
+function getReports($userId, $startDttm) {
+   return pdo_seleqt("
+      select
+         week_id,
+         weight,
+         aerobic_minutes,
+         strength_minutes,
+         physact_minutes,
+         avgsteps,
+         notes
+      from
+         reports_with_fitbit_hybrid r
+         inner join classes_aw c
+            on r.class_id = c.class_id
+            and r.class_source = c.class_source
+      where
+         r.user_id = ?
+         and year(c.start_dttm) = ?
+         and month(c.start_dttm) = ?
+      order by r.create_dttm /* reports created earlier will be overwritten
+                              in the next step by reports created later. */
+   ", array(
+         $userId,
+         date('Y', strtotime($startDttm)),
+         date('n', strtotime($startDttm))
+   ));
+}
+
 ?>

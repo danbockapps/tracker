@@ -25,14 +25,8 @@ function page_content() {
       </div>
 
       <?php
-      $weekqr = seleqt_one_record("
-         select weeks
-         from classes_aw
-         where
-            class_id = ?
-            and class_source = ?
-      ", array($qr['class_id'], $qr['class_source']));
-      $num_weeks = $weekqr['weeks'];
+
+      $num_weeks = getNumWeeks($qr['class_id'], $qr['class_source']);
 
       /*
       8/24/2016: This query now pulls reports for any class that started in
@@ -43,31 +37,7 @@ function page_content() {
       from their view, as intended.)
       */
 
-      $qr2 = pdo_seleqt("
-         select
-            week_id,
-            weight,
-            aerobic_minutes,
-            strength_minutes,
-            physact_minutes,
-            avgsteps,
-            notes
-         from
-            reports_with_fitbit_hybrid r
-            inner join classes_aw c 
-               on r.class_id = c.class_id
-               and r.class_source = c.class_source
-         where
-            r.user_id = ?
-            and year(c.start_dttm) = ?
-            and month(c.start_dttm) = ?
-         order by r.create_dttm /* reports created earlier will be overwritten
-                                   in the next step by reports created later. */
-      ", array(
-            $_GET['user'],
-            date('Y', strtotime($qr['start_dttm'])),
-            date('n', strtotime($qr['start_dttm']))
-      ));
+      $qr2 = getReports($_GET['user'], $qr['start_dttm']);
 
       $reports_empty = true;
       foreach($qr2 as $row) {
