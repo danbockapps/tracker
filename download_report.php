@@ -4,6 +4,8 @@ require_once("config.php");
 
 set_time_limit(300);
 
+ini_set('memory_limit', '256M');
+
 session_start();
 if(!am_i_admin()) {
    exit("You must be an administrator to view this page");
