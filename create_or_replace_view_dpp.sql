@@ -442,9 +442,9 @@ select
    '' as Termination,
    e.cdc as CDC_Risk_Score,
    round(u.height_inches, 0) as Height,
-   frww.weight as Beginning_Weight,
-   lrww.weight as Current_Weight,
-   lrww.weight as Ending_Weight,
+   round(frww.weight, 1) as Beginning_Weight,
+   round(lrww.weight, 1) as Current_Weight,
+   round(lrww.weight, 1) as Ending_Weight,
    round(frww.weight * 703 / (u.height_inches * u.height_inches), 2) as Beginning_BMI,
    round(lrww.weight * 703 / (u.height_inches * u.height_inches), 2) as Current_BMI,
    round(lrww.weight * 703 / (u.height_inches * u.height_inches), 2) as Ending_BMI,
@@ -459,8 +459,8 @@ select
    e.syst_end as Syst_End,
    e.dias_start as Dias_Start,
    e.dias_end as Dias_End,
-   apa.pa as Physical_Activity_Minutes_Avg,
-   ast.avgsteps as Steps_Per_Week_Avg,
+   round(apa.pa, 0) as Physical_Activity_Minutes_Avg,
+   round(ast.avgsteps, 0) as Steps_Per_Week_Avg,
    '' as NPS_Score
 from
    enrollment_view e
