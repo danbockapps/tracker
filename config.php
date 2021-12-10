@@ -55,11 +55,7 @@ if (get_magic_quotes_gpc() === 1) {
 }
 
 function is_email_address($email) {
-   return preg_match(
-      "/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@" .
-      "([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/",
-      $email
-   );
+   return filter_var($email, FILTER_VALIDATE_EMAIL);
 }
 
 function pdo_connect($db_user) {
