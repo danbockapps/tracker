@@ -55,11 +55,7 @@ if (get_magic_quotes_gpc() === 1) {
 }
 
 function is_email_address($email) {
-   return preg_match(
-      "/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@" .
-      "([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/",
-      $email
-   );
+   return filter_var($email, FILTER_VALIDATE_EMAIL);
 }
 
 function pdo_connect($db_user) {
@@ -1093,11 +1089,19 @@ function array_to_csv($qr) {
 
    /* Data rows */
    foreach($qr as $row) {
+      $colNum = 1;
+
       foreach($row as $value) {
-         $csv .= "\"" . str_replace("\"", "", $value) . "\",";
+         $csv .= "\"" . str_replace("\"", "", $value) . "\"";
+
+         if($colNum < count($row)) {
+            $csv .= ",";
+            $colNum++;
+         }
+         else {
+            $csv .= "\n";
+         }
       }
-      /* Remove last comma and add newline */
-      $csv = substr($csv, 0, -1) . "\n";
    }
 
    return $csv;
