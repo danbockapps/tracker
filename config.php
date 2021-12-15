@@ -1089,11 +1089,19 @@ function array_to_csv($qr) {
 
    /* Data rows */
    foreach($qr as $row) {
+      $colNum = 1;
+
       foreach($row as $value) {
-         $csv .= "\"" . str_replace("\"", "", $value) . "\",";
+         $csv .= "\"" . str_replace("\"", "", $value) . "\"";
+
+         if($colNum < count($row)) {
+            $csv .= ",";
+            $colNum++;
+         }
+         else {
+            $csv .= "\n";
+         }
       }
-      /* Remove last comma and add newline */
-      $csv = substr($csv, 0, -1) . "\n";
    }
 
    return $csv;
