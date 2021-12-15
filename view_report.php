@@ -41,7 +41,7 @@ if($_GET['report'] == "attendance3") {
          numclasses,
          numclasses_phase1,
          numclasses_phase2,
-         full_participation,
+         -- full_participation, // This isn't in attendance3?!
          address1,
          address2,
          city,
