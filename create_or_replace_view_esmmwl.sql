@@ -56,6 +56,7 @@ create
 or replace view attendance2 as
 select
    e.tracker_user_id,
+   e.user_id as admin_db_user_id,
    e.class_id,
    zc.class_name,
    e.coup_voucher as voucher_code,
