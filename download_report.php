@@ -79,6 +79,8 @@ else if($_GET['report'] == "attendance3") {
    require_get_vars("class");
    $qr = pdo_seleqt("
       select
+         tracker_user_id,
+         admin_db_user_id,
          instructor_name,
          class_name,
          voucher_code,
