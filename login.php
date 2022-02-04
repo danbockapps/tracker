@@ -73,6 +73,7 @@ function page_content() {
                // Login successful
                $_SESSION['user_id'] = $result['user_id'];
                $_SESSION['envt'] = ENVIRONMENT;
+               $_SESSION['product'] = PRODUCT;
 
                if(isset($_GET['request_uri'])) {
                   loginLog('Redirecting to ' . $_GET['request_uri'] . '.');

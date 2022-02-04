@@ -689,8 +689,11 @@ function relative_time($time = false, $limit = 31536000, $format = 'Y-m-d') {
 }
 
 function template_start($require_logged_in, $require_logged_out) {
-   if(isset($_SESSION['user_id']) && $_SESSION['envt'] != ENVIRONMENT) {
-      // You logged into test but now you're in prod, or vice versa.
+   if(isset($_SESSION['user_id']) && (
+      $_SESSION['envt'] != ENVIRONMENT ||
+      $_SESSION['product'] != PRODUCT
+   )) {
+      // You logged in, but to a different environment or product.
       header("Location: logout.php");
    }
    if($require_logged_in && !isset($_SESSION['user_id'])) {
