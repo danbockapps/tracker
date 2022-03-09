@@ -9,7 +9,7 @@ fwrite($file, array_to_csv($qr));
 fclose($file);
 
 generateAlisFile(
-  'NCSU_BCBSNC_PERFORMANCE_VNDR_UAT_'.DATE('Ymd_His').'_CONTROL.xml',
+  'NCSU_BCBSNC_PERFORMANCE_VNDR_'.DATE('Ymd_His').'_CONTROL.xml',
   '10333',
   $path,
   count($qr)
