@@ -202,3 +202,43 @@ add column lesson smallint unsigned;
 
 alter table wrc_reports
 drop column lesson;
+
+-- 3/22/2022
+-- Shirts for ESMMWL and ESMMWL2
+
+insert into shirts (shirt_desc, shirt_instock) values
+('Black S', false),
+('Black M', false),
+('Black L', false),
+('Black XL', false),
+('Black XXL', false),
+('Brown S', false),
+('Brown M', false),
+('Brown L', false),
+('Brown XL', false),
+('Brown XXL', false),
+('Navy S', false),
+('Navy M', false),
+('Navy L', false),
+('Navy XL', false),
+('Navy XXL', false),
+('Orange S', false),
+('Orange M', false),
+('Orange L', false),
+('Orange XL', false),
+('Orange XXL', false),
+('Pink S', false),
+('Pink M', false),
+('Pink L', false),
+('Pink XL', false),
+('Pink XXL', false),
+('Purple S', false),
+('Purple M', false),
+('Purple L', false),
+('Purple XL', false),
+('Purple XXL', false),
+('Tropical S', false),
+('Tropical M', false),
+('Tropical L', false),
+('Tropical XL', false),
+('Tropical XXL', false);

@@ -624,8 +624,6 @@ else {
 <!-- --------------------------------------------------------------------------
                                                                          SHIRTS
 --------------------------------------------------------------------------- -->
-<?php if(PRODUCT == 'dpp') { ?>
-
 <a href="#" class="showhide_closed">T-shirt inventory</a>
 <ul>
 <script>
@@ -683,8 +681,6 @@ foreach($shirtqr as $shirt) {
 
 ?>
 </ul>
-
-<?php } ?> <!-- end product=dpp conditional for shirts -->
 
    <?php
    }
