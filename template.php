@@ -106,9 +106,6 @@ function generate_page($require_logged_in, $require_logged_out, $shownav=true) {
                }
                else {
                   // Not logged in.
-               ?>
-                  <li><a href="login.php">Login</a></li>
-               <?php
                }
                ?>
             </ul>
