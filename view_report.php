@@ -13,9 +13,9 @@ if($_GET['report'] == "attendance2") {
    require_get_vars("class");
    $qr = pdo_seleqt("
       select
+         admin_db_user_id,
          class_name,
          voucher_code,
-         admin_db_user_id,
          tracker_user_id,
          fname,
          lname,
@@ -36,10 +36,10 @@ if($_GET['report'] == "attendance3") {
    require_get_vars("class");
    $qr = pdo_seleqt("
       select
+         admin_db_user_id,
          class_name,
          voucher_code,
          tracker_user_id,
-         admin_db_user_id,
          fname,
          lname,
          numclasses,
