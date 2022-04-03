@@ -1014,6 +1014,9 @@ function report_input($post_var, $cvqr, $db_col, $fitbit_value, $textarea=false)
             }
          ?>"
          onkeyup="calcBmi();"
+         <?php if(str_contains($post_var, "waist")) {
+            echo 'maxlength="2"';
+         } ?>
       />
       <?php
    }
