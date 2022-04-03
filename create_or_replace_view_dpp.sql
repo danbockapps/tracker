@@ -414,6 +414,29 @@ group by
    month(c.start_dttm),
    year(c.start_dttm);
 
+create or replace view attendance_months_years0 as select
+   user_id,
+   month,
+   year,
+   month(attendance_date) as attendance_month,
+   year(attendance_date) as attendance_year
+from attendance_summary3;
+
+create or replace view attendance_months_years as select
+   user_id,
+   month,
+   year,
+   attendance_month,
+   attendance_year,
+   count(*) as Attendance_CurrentMonth
+from attendance_months_years0
+group by
+   user_id,
+   month,
+   year,
+   attendance_month,
+   attendance_year;
+
 create
 or replace view performance_file as
 select
@@ -437,8 +460,9 @@ select
    c.start_dttm as Date_Joined,
    c.start_dttm as Class_Start,
    c.phase2_end as Class_End,
-   -- TODO
-   a.numclasses as Attendance_CurrentMonth,
+   a.Attendance_CurrentMonth,
+   a.attendance_month,
+   a.attendance_year,
    '' as Termination,
    e.cdc as CDC_Risk_Score,
    round(u.height_inches, 0) as Height,
@@ -472,9 +496,10 @@ from
    left join last_reports_with_a1cs lrwa using (user_id, class_id)
    left join average_pa apa using(user_id, class_id)
    left join average_steps ast using (user_id, class_id)
-   left join attendance_sum3 a on a.month = month(c.start_dttm)
-   and a.year = year(c.start_dttm)
-   and a.user_id = e.user_id
+   left join attendance_months_years a on
+      a.month = month(c.start_dttm) and
+      a.year = year(c.start_dttm) and
+      a.user_id = e.user_id
 where
    e.voucher_code = 'FIBCBSNC'
    and c.start_dttm < now()
