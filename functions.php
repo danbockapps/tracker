@@ -769,7 +769,7 @@ function refundCard($userId, $classId) {
 function addressChangeCard() {
    if(PRODUCT == 'dpp' && !am_i_instructor()) {
       ?>
-      <div class="purple-box">
+      <div class="wide-box">
          <h3>Change Your Address</h3>
          <div id="address-change"></div>
 

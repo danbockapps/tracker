@@ -1246,7 +1246,7 @@ function goalWeightCard($userId, $classId, $classSource) {
       if($goalWeight) {
          ?>
 
-         <div class="purple-box">
+         <div class="wide-box">
             <div style="font-size: 1.17em">
                Your goal weight at the end of
                <?php echo currentPhaseForClass($classId, $classSource); ?>
@@ -1267,7 +1267,7 @@ function goalWeightCard($userId, $classId, $classSource) {
 }
 
 function shirtCard($userId, $classId) {
-  if(PRODUCT == 'dpp' && !am_i_instructor() && userQualifiesForShirt($userId, $classId)) {
+  if(!am_i_instructor() && userQualifiesForShirt($userId, $classId)) {
 
     $currentShirt = seleqt_one_record('
       select shirt_id
@@ -1310,7 +1310,7 @@ function shirtCard($userId, $classId) {
         })
       </script>
 
-      <div class="purple-box">
+      <div class="wide-box">
         <div style="font-size: 1.17em; margin-bottom: 0.5em">
           You have qualified to receive a T-shirt.
         </div>
@@ -1343,6 +1343,8 @@ function shirtCard($userId, $classId) {
 }
 
 function userQualifiesForShirt($userId, $classId) {
+  if(PRODUCT !== 'dpp') return isShirtTime($classId);
+
   $qr = pdo_seleqt('
     select a.numclasses_phase1
     from
@@ -1357,6 +1359,22 @@ function userQualifiesForShirt($userId, $classId) {
 
   if(sizeof($qr) == 0 || $qr[0][numclasses_phase1] < 9) return false;
   else return true;
+}
+
+function isShirtTime($classId) {
+   $qr = seleqt_one_record('
+      select datediff(now(), start_dttm) as diff
+      from classes_aw
+      where class_id = ?
+   ', array($classId));
+
+   if(PRODUCT == 'esmmwl') {
+      return $qr['diff'] > 14 * 7;
+   }
+
+   if(PRODUCT == 'esmmwl2') {
+      return $qr['diff'] > 12 * 7;
+   }
 }
 
 function noCurrentClass() {
