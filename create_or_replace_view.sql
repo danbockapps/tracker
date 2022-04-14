@@ -119,7 +119,7 @@ select
    weight,
    aerobic_minutes + strength_minutes as pa_feb2018
 from
-   wrc_reports
+   reports_with_fitbit_hybrid
 where
    week_id = 1;
 
@@ -131,7 +131,7 @@ select
    r.class_source,
    max(r.week_id) as week_id
 from
-   wrc_reports r natural
+   reports_with_fitbit_hybrid r natural
    join classes_aw c
 where
    r.week_id >= c.weeks - 1
@@ -149,7 +149,7 @@ select
    r.weight,
    r.aerobic_minutes + r.strength_minutes as pa_feb2018
 from
-   wrc_reports r natural
+   reports_with_fitbit_hybrid r natural
    join last_reports lr;
 
 /*
