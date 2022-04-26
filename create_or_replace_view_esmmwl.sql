@@ -21,7 +21,8 @@ select
    member_number,
    claim_type,
    welcome_sent,
-   shirtchoice
+   shirtchoice,
+   shirt_id
 from
    registrants
 where
