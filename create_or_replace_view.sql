@@ -248,7 +248,7 @@ SELECT
    user_id,
    month,
    year,
-   count(*) as count,
+   sum(present) as count,
    max(week) as max
 from
    attendance_summary2 a

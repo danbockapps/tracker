@@ -28,28 +28,6 @@ function getAttendance() {
   $ok_array['attendance'] = attendanceSummary3ForClass($_GET['class_id']);
 }
 
-function getPerfectCount($userId, $classId) {
-  // Returns number of weeks for which participant has perfect attendance.
-  // 0 if not perfect attendance.
-
-  $qr1 = seleqt_one_record('
-    select
-      month(start_dttm) as month,
-      year(start_dttm) as year
-    from classes_aw
-    where class_id = ?
-  ', [$classId]);
-
-  $qr2 = pdo_seleqt('
-    select count, max
-    from attendance_counts2
-    where user_id = ? and month = ? and year = ?
-  ', [$userId, $qr1['month'], $qr1['year']]);
-
-  if(count($qr2) == 1 && $qr2[0]['count'] == $qr2[0]['max']) return $qr2[0]['count'];
-  else return 0;
-}
-
 function postAttendance() {
   // Copied from attendance_ajax.php on 2/23/2020
   if(can_access_class($_POST['class_id'], 'w')) {
