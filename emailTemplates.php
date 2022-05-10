@@ -70,7 +70,7 @@ function buttonAndFooter($participantId=0) {
 EOD;
 }
 
-function earnedShirt() {
+function earnedShirtPd() {
   global $head, $img;
 
   $buttonAndFooter = buttonAndFooter();
@@ -89,6 +89,68 @@ $head
 
   <p style="font-size: 12px">
     Please login to My Progress Portal and choose your t-shirt color and size.
+  </p>
+
+  $buttonAndFooter
+</body>
+</html>
+EOD;
+  return $str;
+}
+
+function earnedShirtWl() {
+  global $head, $img;
+
+  $buttonAndFooter = buttonAndFooter();
+
+  $str = <<<EOD
+<!DOCTYPE html>
+<html>
+$head
+<body>
+  $img
+
+  <p style="font-size: 12px">
+    Congratulations on attending 14 Classes in the Eat Smart, Move More, Weigh Less program!
+  </p>
+
+  <p style="font-size: 12px">
+    If you attend your final class, you will earn your t-shirt.
+  </p>
+
+  <p style="font-size: 12px">
+    Please login to My Dashboard and choose your t-shirt color and size.
+  </p>
+
+  $buttonAndFooter
+</body>
+</html>
+EOD;
+  return $str;
+}
+
+function earnedShirtWl2() {
+  global $head, $img;
+
+  $buttonAndFooter = buttonAndFooter();
+
+  $str = <<<EOD
+<!DOCTYPE html>
+<html>
+$head
+<body>
+  $img
+
+  <p style="font-size: 12px">
+    Congratulations on attending 11 Classes in the Eat Smart, Move More, Weigh Less 2 program!
+  </p>
+
+  <p style="font-size: 12px">
+    If you attend your final class, you will earn your t-shirt.
+  </p>
+
+  <p style="font-size: 12px">
+    Please login to My Dashboard 2 and choose your t-shirt color and size.
   </p>
 
   $buttonAndFooter

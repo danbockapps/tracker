@@ -46,8 +46,17 @@ function getSubject() {
          return PRODUCT_TITLE . ' - You are now an instructor';
          break;
       case 6:
-         return PRODUCT_TITLE . ' - Congratulations - You have earned your t-shirt!';
-         break;
+         switch(PRODUCT) {
+            case 'dpp':
+               return PRODUCT_TITLE . ' - Congratulations - You have earned your t-shirt!';
+               break;
+            case 'esmmwl':
+               return PRODUCT_TITLE . ' - Attend your final class to earn a t-shirt';
+               break;
+            case 'esmmwl2':
+               return PRODUCT_TITLE . ' - Attend your final class to earn a t-shirt';
+               break;
+         }
       default:
          exit('Invalid message ID.');
    }
@@ -93,8 +102,17 @@ function getMessage($recipientId, $messageId, $participantId, $recipientEmail) {
                "application. Log in here:\n" . WEBSITE_URL;
    }
    else if($messageId == 6) {
-      // Just attended 9th class
-      $message = earnedShirt();
+      switch(PRODUCT) {
+         case 'dpp':
+            $message = earnedShirtPd();
+            break;
+         case 'esmmwl':
+            $message = earnedShirtWl();
+            break;
+         case 'esmmwl2':
+            $message = earnedShirtWl2();
+            break;
+      }
    }
    else {
       exit('Invalid message ID.');
