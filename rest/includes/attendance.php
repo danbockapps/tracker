@@ -1,4 +1,10 @@
 <?php
+
+/**
+ * Called from attendance_entry.php (for ESMMWL and ESMMWL2) and
+ * attendance_entry_detailed.php (for MPP)
+ */
+
 if($_SERVER['REQUEST_METHOD'] == 'GET') {
   getAttendance();
 }
@@ -22,10 +28,33 @@ function getAttendance() {
   $ok_array['attendance'] = attendanceSummary3ForClass($_GET['class_id']);
 }
 
+function getPerfectCount($userId, $classId) {
+  // Returns number of weeks for which participant has perfect attendance.
+  // 0 if not perfect attendance.
+
+  $qr1 = seleqt_one_record('
+    select
+      month(start_dttm) as month,
+      year(start_dttm) as year
+    from classes_aw
+    where class_id = ?
+  ', [$classId]);
+
+  $qr2 = pdo_seleqt('
+    select count, max
+    from attendance_counts2
+    where user_id = ? and month = ? and year = ?
+  ', [$userId, $qr1['month'], $qr1['year']]);
+
+  if(count($qr2) == 1 && $qr2[0]['count'] == $qr2[0]['max']) return $qr2[0]['count'];
+  else return 0;
+}
+
 function postAttendance() {
   // Copied from attendance_ajax.php on 2/23/2020
   if(can_access_class($_POST['class_id'], 'w')) {
     $phase1before = phase1attendance($_POST['user_id'], $_POST['class_id']);
+    $perfectCountBefore = getPerfectCount($_POST['user_id'], $_POST['class_id']);
  
     $dbh = pdo_connect(DB_PREFIX . '_insert');
     $sth = $dbh->prepare('
@@ -52,10 +81,18 @@ function postAttendance() {
 
       $phase1after = phase1attendance($_POST['user_id'], $_POST['class_id']);
 
-      if($phase1before == 8 && $phase1after == 9) {
-        // 9 classes in phase 1 - participant has earned t-shirt.
-        logtxt('sending...');
-        sendById($_POST['user_id'], 6, -1, true);
+
+      if (
+        (PRODUCT == 'dpp' && $phase1before == 8 && $phase1after == 9) ||
+        (PRODUCT == 'esmmwl' &&
+            $perfectCountBefore == 13 &&
+            getPerfectCount($_POST['user_id'], $_POST['class_id']) == 14) ||
+        (PRODUCT == 'esmmwl2' &&
+            $perfectCountBefore == 10 &&
+            getPerfectCount($_POST['user_id'], $_POST['class_id']) == 11)
+      ) {
+          logtxt('sending...');
+          sendById($_POST['user_id'], 6, -1, true);
       }
     }
     else {

@@ -1,4 +1,9 @@
 <?php
+
+/**
+ * Attendance entry for ESMMWL and ESMMWL2
+ */
+
 require_once("template.php");
 generate_page(true, false);
 
@@ -11,10 +16,7 @@ function page_content() {
    $iqr = indexedAttendanceArray(attendanceForClass($_GET['class_id']), $qr);
    attendanceEntryHeader($_GET['class_id']);
 
-   if(PRODUCT == 'dpp') {
-      $numLessons = 24;
-   }
-   else if(PRODUCT == 'esmmwl2') {
+   if(PRODUCT == 'esmmwl2') {
       $numLessons = 12;
    }
    else {
