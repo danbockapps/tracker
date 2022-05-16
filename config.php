@@ -1343,7 +1343,12 @@ function shirtCard($userId, $classId) {
 }
 
 function userQualifiesForShirt($userId, $classId) {
-  if(PRODUCT !== 'dpp') return isShirtTime($classId);
+  if(PRODUCT !== 'dpp') {
+     $perfectCount = getPerfectCount($userId, $classId);
+     if(PRODUCT == 'esmmwl' && $perfectCount >= 14) return true;
+     if(PRODUCT == 'esmmwl2' && $perfectCount >= 11) return true;
+     return false;
+  }
 
   $qr = pdo_seleqt('
     select a.numclasses_phase1
@@ -1361,21 +1366,27 @@ function userQualifiesForShirt($userId, $classId) {
   else return true;
 }
 
-function isShirtTime($classId) {
-   $qr = seleqt_one_record('
-      select datediff(now(), start_dttm) as diff
-      from classes_aw
-      where class_id = ?
-   ', array($classId));
-
-   if(PRODUCT == 'esmmwl') {
-      return $qr['diff'] > 14 * 7;
-   }
-
-   if(PRODUCT == 'esmmwl2') {
-      return $qr['diff'] > 12 * 7;
-   }
-}
+function getPerfectCount($userId, $classId) {
+   // Returns number of weeks for which participant has perfect attendance.
+   // 0 if not perfect attendance.
+ 
+   $qr1 = seleqt_one_record('
+     select
+       month(start_dttm) as month,
+       year(start_dttm) as year
+     from classes_aw
+     where class_id = ?
+   ', [$classId]);
+ 
+   $qr2 = pdo_seleqt('
+     select count, max
+     from attendance_counts2
+     where user_id = ? and month = ? and year = ?
+   ', [$userId, $qr1['month'], $qr1['year']]);
+ 
+   if(count($qr2) == 1 && $qr2[0]['count'] == $qr2[0]['max']) return $qr2[0]['count'];
+   else return 0;
+ }
 
 function noCurrentClass() {
    echo '<p>' . noCurrentClassText() . '</p>';

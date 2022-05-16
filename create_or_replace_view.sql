@@ -242,6 +242,21 @@ from
    inner join classes_aw c on a.class_id = c.class_id
    and a.class_source = c.class_source;
 
+create
+or replace view attendance_counts2 as
+SELECT
+   user_id,
+   month,
+   year,
+   sum(present) as count,
+   max(week) as max
+from
+   attendance_summary2 a
+group by
+   user_id,
+   month,
+   year;
+
 /*
  3 series added in March 2019 for MPP attendance by type and date
  */

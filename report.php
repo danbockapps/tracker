@@ -1017,6 +1017,9 @@ function report_input($post_var, $cvqr, $db_col, $fitbit_value, $textarea=false)
          onkeyup="calcBmi();"
          <?php if(strpos($post_var, "waist") !== false) {
             echo 'maxlength="2"';
+         }
+         if($post_var == 'a1c') {
+            echo 'maxlength="2"';
          } ?>
       />
       <?php
