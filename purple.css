@@ -1,4 +1,6 @@
-a:link, a:visited, .entryPoint.greenCheck {
+a:link,
+a:visited,
+.entryPoint.greenCheck {
   color: #80298f;
 }
 
@@ -45,40 +47,36 @@ div.card {
 
 /* This is not about the color purple, but about spacing */
 table#attendanceEntry .checkboxCell {
-   min-width: 18px;
-   max-width: 18px;
+  min-width: 18px;
+  max-width: 18px;
 }
 
-/* This is an MPP-only feature. */
-.purple-box {
-   clear: both;
-   margin-bottom: 15px;
-   background-color: #f099ff;
-   padding: 1em;
-   width: 948px;
-   text-align: center;
+.wide-box {
+  background-color: #f099ff;
 }
 
 .refund-box {
-   clear: both;
-   background-color: #f099ff;
-   padding: 1em;
-   width: 948px;
+  clear: both;
+  background-color: #f099ff;
+  padding: 1em;
+  width: 948px;
 }
 
 .attendance-date {
-   width: 5em;
+  width: 5em;
 }
 
-.attendance-weight, .attendance-pa {
-   width: 4em;
+.attendance-weight,
+.attendance-pa {
+  width: 4em;
 }
 
 .graybg {
-   background: #cccccc;
+  background: #cccccc;
 }
 
-.pa-span, .weight-span {
+.pa-span,
+.weight-span {
   display: block;
   width: 110px;
   text-align: center;
