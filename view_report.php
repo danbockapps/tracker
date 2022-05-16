@@ -39,6 +39,8 @@ if($_GET['report'] == "attendance3") {
          admin_db_user_id,
          class_name,
          voucher_code,
+         amount,
+         incentive_type,
          tracker_user_id,
          fname,
          lname,
