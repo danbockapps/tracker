@@ -158,7 +158,6 @@ select
       when u.height_inches > 0 then "Yes"
       else "No"
    end as height,
-   '' as incentive_type,
    s.shirt_desc,
    '' as dob,
    e.refund_method,
