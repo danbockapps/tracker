@@ -51,27 +51,7 @@ function page_content() {
             echo htmlentities($row['user_id']);
          ?>"><?php
             echo htmlentities($row['fname'] . ' ' . $row['lname']);
-         ?></a><div class="shirtChoice hidden">Shirt choice: <select>
-               <option value=""></option>
-               <?php
-                  global $ini;
-                  foreach($ini['shirtColors'] as $shirtColor) {
-                     foreach($ini['shirtSizes'] as $shirtSize) {
-                        $shirtChoice = $shirtColor . ' ' . $shirtSize;
-                        ?><option <?php
-                           if($shirtChoice == $row['shirtchoice']) echo 'selected ';
-                        ?>value="<?php
-                           echo $shirtChoice;
-                        ?>"><?php
-                           echo $shirtChoice;
-                        ?></option><?php
-                     }
-                  }
-               ?>
-            </select>
-            <img src="spinner.gif" style="height:13px" class="spinner hidden" />
-            <i class="material-icons checkmark" style="font-size:small">&#xE86C;</i>
-            </div>
+         ?></a>
          </td>
          <td class="attendanceSum"><?php
             echo numclasses($row['user_id'], $iqr);
@@ -121,18 +101,6 @@ function page_content() {
          }
       });
 
-      $('.shirtChoice').each(function() {
-         var userIdThisRow = $(this).closest('tr').attr('user-id');
-
-         if(shirtRequirementsMet(userIdThisRow)) {
-            $(this).removeClass('hidden');
-         }
-         else {
-            $(this).addClass('hidden');
-         }
-
-      });
-
       $('.entryPoint').click(function() {
          var userId = $(this).closest('tr').attr('user-id');
          var lessonId = $(this).closest('td').attr('lesson-id');
@@ -140,56 +108,6 @@ function page_content() {
          var cell = $(this).closest('td');
          submitAttendance(userId, lessonId, present, cell);
       });
-
-      $('.shirtChoice select').each(function() {
-         if($(this).val() === '') {
-            // hide checkmark
-            $(this).siblings('.checkmark').addClass('hidden');
-         }
-      });
-
-      $('.shirtChoice select').change(function() {
-         var thisSelect = $(this);
-         thisSelect.siblings('.spinner').removeClass('hidden');
-         thisSelect.siblings('.checkmark').addClass('hidden');
-         $.post('shirt.php', {
-            user_id: thisSelect.closest('tr').attr("user-id"),
-            class_id: <?php echo $_GET['class_id']; ?>,
-            shirt_choice: thisSelect.val()
-         }, function(data) {
-            thisSelect.siblings('.spinner').addClass('hidden');
-            if(data === 'OK') {
-               thisSelect.siblings('.checkmark').removeClass('hidden');
-            }
-            else {
-               alert('A database error occurred while selecting a t-shirt.');
-            }
-         });
-      });
-
-      function shirtRequirementsMet(userId) {
-         <?php if(PRODUCT == 'dpp') { ?>
-            // Return true if participant attended 9 of the first 16
-            var outOf16 = 0;
-            for(var i=1; i<=16; i++) {
-               outOf16 += iqr[userId][i] ? 1 : 0;
-            }
-
-            return outOf16 >= 9;
-
-
-         <?php } else if(PRODUCT == 'esmmwl') { ?>
-            // Return true if participant attended all of the first 15
-            var outOf15 = 0;
-            for(var i=1; i<=15; i++) {
-               outOf15 += iqr[userId][i] ? 1 : 0;
-            }
-
-            return outOf15 >= 15;
-
-
-         <?php } ?>
-      }
 
       function submitAttendance(userId, lessonId, present, cell) {
          cell.children('img').removeClass('hidden');
@@ -215,14 +133,6 @@ function page_content() {
 
                   // Update client-side array
                   iqr[userId][lessonId] = present ? 1 : 0;
-
-                  // Show or hide shirt dropdown
-                  if(shirtRequirementsMet(userId)) {
-                     $(this).siblings('.participantName').children('.shirtChoice').removeClass('hidden');
-                  }
-                  else {
-                     $(this).siblings('.participantName').children('.shirtChoice').addClass('hidden');
-                  }
                });
             }
             else {
