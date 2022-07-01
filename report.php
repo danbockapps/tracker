@@ -1018,7 +1018,7 @@ function report_input($post_var, $cvqr, $db_col, $fitbit_value, $textarea=false)
             echo 'maxlength="2"';
          }
          if($post_var == 'a1c') {
-            echo 'maxlength="2"';
+            echo 'pattern="^1?\d(\.\d\d?)?$"';
          } ?>
       />
       <?php
@@ -1186,3 +1186,16 @@ function fitbitDiv() {
 }
 
 ?>
+
+<script>
+$(document).on('blur', 'input[pattern]', function(e){
+   if(!new RegExp($(this).attr('pattern'), 'g').test($(this).val())){
+      $(this).get(0).setCustomValidity('A1c must be under 20.00, with up to 2 decimal places.');
+      $(this).get(0).reportValidity();
+      $("#reportsubmit").prop('disabled', true)
+   }
+   else {
+      $("#reportsubmit").prop('disabled', false)
+   }
+});
+</script>

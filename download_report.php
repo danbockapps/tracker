@@ -26,7 +26,8 @@ $whitelist = [
    'feb2018',
    'enrollment_file',
    'interaction_file',
-   'performance_file'
+   'performance_file',
+   'all_aso_participants'
 ];
 
 if(!in_array($_GET['report'],  $whitelist)) {
@@ -390,6 +391,10 @@ else if($_GET['report'] == 'feb2018') {
 }
 else if ($_GET['report'] == 'enrollment_file') {
    $qr = pdo_seleqt('select * from enrollment_file', array());
+}
+
+else if ($_GET['report'] == 'all_aso_participants') {
+   $qr = pdo_seleqt('select * from all_aso_participants', array());
 }
 
 if(empty($qr)) {
