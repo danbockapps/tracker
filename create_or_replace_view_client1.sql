@@ -57,3 +57,27 @@ order by
    c.start_dttm desc,
    u.lname,
    u.fname;
+
+create
+or replace view all_aso_participants as
+select
+   r.user_id as Admin_ID,
+   b.First_Name,
+   b.Last_Name,
+   b.Coupon_Code,
+   b.Class_Start,
+   b.Class_End,
+   b.Attendance,
+   b.Beginning_Weight,
+   b.Ending_Weight,
+   b.Height,
+   b.Beginning_BMI,
+   b.Ending_BMI,
+   b.Beginning_Waist_Circumference,
+   b.Ending_Waist_Circumference
+from
+   bcbs_report b
+   left join wrc_users u on b.Email = u.email
+   left join registrants r on u.user_id = r.tracker_user_id
+where
+   b.Coupon_Code like "ASO%";
