@@ -771,7 +771,7 @@ function addressChangeCard() {
       ?>
       <div class="wide-box">
          <h3>Change Your Address</h3>
-         <div id="address-change"></div>
+         <div id="address-change" class="spacious-form"></div>
 
          <!-- Supposedly this (text/babel combined with loading babel.min.js)
          is not suitable for production; we should be using a preprocessor

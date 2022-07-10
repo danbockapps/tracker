@@ -68,7 +68,7 @@ const AddressChange = () => {
         changeHandler={handleInputChange}
       />
 
-      <div id='address-change-button-spinner'>
+      <div id='spacious-form-button-spinner'>
         {loading ? <img src='spinner.gif' /> : <button type='submit'>Save</button>}
       </div>
     </form>
