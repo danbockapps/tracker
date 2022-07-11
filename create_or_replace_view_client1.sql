@@ -1,12 +1,15 @@
-create or replace view bcbs_voucher_codes as
-select distinct upper(e.voucher_code) as voucher_code
+create
+or replace view bcbs_voucher_codes as
+select
+   distinct upper(e.voucher_code) as voucher_code
 from
-   enrollment_view e
-   natural join classes_aw c
+   enrollment_view e natural
+   join classes_aw c
 where
    upper(e.voucher_code) like 'ASO%';
 
-create or replace view bcbs_report as
+create
+or replace view bcbs_report as
 select
    u.fname as First_Name,
    u.lname as Last_Name,
@@ -32,37 +35,49 @@ select
    pes.pes as Tracker_Activity_Score,
    e.smart_goal as Program_Goals
 from
-   wrc_users u
-   natural join enrollment_view e
-   natural join classes_aw c
-   left join beginning_weights bw on
-      e.user_id = bw.user_id and
-      e.class_id = bw.class_id and
-      e.class_source = bw.class_source
-   left join ending_weights ew on
-      e.user_id = ew.user_id and
-      e.class_id = ew.class_id and
-      e.class_source = ew.class_source
-   left join pes on
-      e.user_id = pes.user_id and
-      e.class_id = pes.class_id and
-      e.class_source = pes.class_source
-   left join attendance_sum a on
-      e.user_id = a.user_id and
-      e.class_id = a.class_id and
-      e.class_source = a.class_source
-   left join attendance_sum_legacy al on
-      e.user_id = al.user_id and
-      e.class_id = al.class_id and
-      e.class_source = al.class_source
-/* 9/2/17: BCBSNC wants all records now
-where
-   datediff(
-      now(),
-      c.start_dttm - interval dayofweek(c.start_dttm) day
-   ) - 2 >= c.weeks * 7
-*/
+   wrc_users u natural
+   join enrollment_view e natural
+   join classes_aw c
+   left join beginning_weights bw on e.user_id = bw.user_id
+   and e.class_id = bw.class_id
+   and e.class_source = bw.class_source
+   left join ending_weights ew on e.user_id = ew.user_id
+   and e.class_id = ew.class_id
+   and e.class_source = ew.class_source
+   left join pes on e.user_id = pes.user_id
+   and e.class_id = pes.class_id
+   and e.class_source = pes.class_source
+   left join attendance_sum a on e.user_id = a.user_id
+   and e.class_id = a.class_id
+   and e.class_source = a.class_source
+   left join attendance_sum_legacy al on e.user_id = al.user_id
+   and e.class_id = al.class_id
+   and e.class_source = al.class_source
 order by
    c.start_dttm desc,
    u.lname,
    u.fname;
+
+create
+or replace view all_aso_participants as
+select
+   r.user_id as Admin_ID,
+   b.First_Name,
+   b.Last_Name,
+   b.Coupon_Code,
+   b.Class_Start,
+   b.Class_End,
+   b.Attendance,
+   b.Beginning_Weight,
+   b.Ending_Weight,
+   b.Height,
+   b.Beginning_BMI,
+   b.Ending_BMI,
+   b.Beginning_Waist_Circumference,
+   b.Ending_Waist_Circumference
+from
+   bcbs_report b
+   left join wrc_users u on b.Email = u.email
+   left join registrants r on u.user_id = r.tracker_user_id
+where
+   b.Coupon_Code like "ASO%";

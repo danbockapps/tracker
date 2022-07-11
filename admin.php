@@ -352,6 +352,14 @@ else {
 </div>
 
 <!-- --------------------------------------------------------------------------
+                                                                   CHANGE EMAIL
+--------------------------------------------------------------------------- -->
+
+<a href="#" class="showhide_closed">Change user email address</a>
+<div id="change-email" class="spacious-form"></div>
+<script type="text/babel" src="react/ChangeEmail.js"></script>
+
+<!-- --------------------------------------------------------------------------
                                                          NEW ATTENDANCE REPORTS
 --------------------------------------------------------------------------- -->
 
@@ -500,6 +508,11 @@ else {
    <li>
       <a href="view_report.php?report=aso_codes">
          List of ASO Codes
+      </a>
+   </li>
+   <li style='margin-bottom: 1em;'>
+      <a href="download_report.php?report=all_aso_participants">
+         All ASO participants (download)
       </a>
    </li>
    <?php

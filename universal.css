@@ -1,92 +1,101 @@
-a:link, a:visited, a, .entryPoint.greenCheck {
-   color: #8ec63f;
+a:link,
+a:visited,
+a,
+.entryPoint.greenCheck {
+  color: #8ec63f;
 }
 
 .confirmation {
-   background-color: #eaffd0;
-   border: thin solid #8ec63f;
-   padding: 0.3em;
-   margin-bottom: 0.3em;
+  background-color: #eaffd0;
+  border: thin solid #8ec63f;
+  padding: 0.3em;
+  margin-bottom: 0.3em;
 }
 
 .error {
-   background-color: #fee;
-   color: #f00;
-   padding: 0.3em;
-   margin-bottom: 0.3em;
+  background-color: #fee;
+  color: #f00;
+  padding: 0.3em;
+  margin-bottom: 0.3em;
 }
 
 #fitbit-container img {
-   height: 20px;
-   width: 77px;
-   margin-left: 5px;
-   margin-bottom: 5px;
-   vertical-align: middle;
+  height: 20px;
+  width: 77px;
+  margin-left: 5px;
+  margin-bottom: 5px;
+  vertical-align: middle;
 }
 
 .fitbit-app-icon {
-   visibility: hidden; /* jQuery reverses this where appropriate */
-   height: 1em;
-   width: 1em;
-   vertical-align: middle;
+  visibility: hidden; /* jQuery reverses this where appropriate */
+  height: 1em;
+  width: 1em;
+  vertical-align: middle;
 }
 
 #fitbit-container p {
-   text-align: center;
+  text-align: center;
 }
 
 #fitbit-button {
-   padding: 9px 9px 5px;
-   margin-left: auto;
-   margin-right: auto;
-   display: block;
+  padding: 9px 9px 5px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
 }
 
 .fine-print {
-   margin-top: 2em;
-   color: gray;
-   font-size: small;
+  margin-top: 2em;
+  color: gray;
+  font-size: small;
 }
 
 .refund-box div {
-   display: block;
-   margin-block-start: 1em;
-   margin-block-end: 1em;
-   margin-inline-start: 0px;
-   margin-inline-end: 0px;
+  display: block;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
 }
 
-#paypal-address-input, #check-address-input {
-   width: 100%;
-   height: 1.7em;
-   margin: 10px 0px;
+#paypal-address-input,
+#check-address-input {
+  width: 100%;
+  height: 1.7em;
+  margin: 10px 0px;
 }
 
 #refund-button {
-   font-size: 20px;
-   display: block;
-   margin: auto;
+  font-size: 20px;
+  display: block;
+  margin: auto;
 }
 
-#address-change label {
-   display: block;
-   margin-top: 1em;
-   text-align: left;
- }
- 
-#address-change input[type="text"] {
-   display: block;
-   margin-top: 0.5em;
-   box-sizing: border-box; /* https://stackoverflow.com/a/16907625/400765 */
-   width: 100%;
-   padding: 0.6em;
+.spacious-form label {
+  display: block;
+  margin-top: 1em;
+  text-align: left;
 }
- 
-#address-change-button-spinner {
-   height: 3em;
-   margin: 1em auto;
+
+.spacious-form input[type='text'] {
+  display: block;
+  margin-top: 0.5em;
+  box-sizing: border-box; /* https://stackoverflow.com/a/16907625/400765 */
+  width: 100%;
+  padding: 0.6em;
 }
- 
-#address-change button {
-   font-size: 20px;
+
+#spacious-form-button-spinner {
+  height: 3em;
+  margin: 1em auto;
+}
+
+.spacious-form button {
+  font-size: 20px;
+}
+
+#change-email {
+  width: 50%;
+  margin: 2em;
 }
