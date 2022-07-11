@@ -733,6 +733,8 @@ function template_js() {
    </script>
    <script src="https://unpkg.com/babel-standalone@6/babel.min.js">
    </script>
+   <script type="text/babel" src="react/components.js">
+   </script>
    <script type="text/javascript">
       $(function() {
          $('.showhide_closed').each(function(i) {

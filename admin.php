@@ -352,6 +352,14 @@ else {
 </div>
 
 <!-- --------------------------------------------------------------------------
+                                                                   CHANGE EMAIL
+--------------------------------------------------------------------------- -->
+
+<a href="#" class="showhide_closed">Change user email address</a>
+<div id="change-email" class="spacious-form"></div>
+<script type="text/babel" src="react/ChangeEmail.js"></script>
+
+<!-- --------------------------------------------------------------------------
                                                          NEW ATTENDANCE REPORTS
 --------------------------------------------------------------------------- -->
 

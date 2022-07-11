@@ -1,24 +1,12 @@
-const AddressInput = ({ label, name, value, changeHandler }) => {
-  return (
-    <label>
-      {label}
-      <input name={name} type='text' value={value} onChange={changeHandler} />
-    </label>
-  )
-}
-
 const AddressChange = () => {
-  const [address, setAddress] = React.useReducer(
-    (state, newState) => ({ ...state, ...newState }),
-    {
-      address1: '',
-      address2: '',
-      city: '',
-      state: '',
-      zip: '',
-      phone: '',
-    }
-  )
+  const [address, setAddress] = React.useReducer((state, newState) => ({ ...state, ...newState }), {
+    address1: '',
+    address2: '',
+    city: '',
+    state: '',
+    zip: '',
+    phone: '',
+  })
 
   const [loading, setLoading] = React.useState(false)
 
@@ -39,8 +27,7 @@ const AddressChange = () => {
       .then(response => response.json())
       .then(data => {
         setLoading(false)
-        if (data.responseString === 'OK')
-          alert('Your address has been updated.')
+        if (data.responseString === 'OK') alert('Your address has been updated.')
         else alert('An error occurred while updating your address.')
       })
       .catch(e => alert('An error occurred during address update.'))
@@ -54,49 +41,35 @@ const AddressChange = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <AddressInput
+      <TextField
         label='Address Line 1'
         name='address1'
         value={address.address1}
         changeHandler={handleInputChange}
       />
-      <AddressInput
+      <TextField
         label='Address Line 2'
         name='address2'
         value={address.address2}
         changeHandler={handleInputChange}
       />
-      <AddressInput
-        label='City'
-        name='city'
-        value={address.city}
-        changeHandler={handleInputChange}
-      />
-      <AddressInput
+      <TextField label='City' name='city' value={address.city} changeHandler={handleInputChange} />
+      <TextField
         label='State'
         name='state'
         value={address.state}
         changeHandler={handleInputChange}
       />
-      <AddressInput
-        label='Zip'
-        name='zip'
-        value={address.zip}
-        changeHandler={handleInputChange}
-      />
-      <AddressInput
+      <TextField label='Zip' name='zip' value={address.zip} changeHandler={handleInputChange} />
+      <TextField
         label='Phone'
         name='phone'
         value={address.phone}
         changeHandler={handleInputChange}
       />
 
-      <div id='address-change-button-spinner'>
-        {loading ? (
-          <img src='spinner.gif' />
-        ) : (
-          <button type='submit'>Save</button>
-        )}
+      <div id='spacious-form-button-spinner'>
+        {loading ? <img src='spinner.gif' /> : <button type='submit'>Save</button>}
       </div>
     </form>
   )
