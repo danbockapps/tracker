@@ -811,7 +811,7 @@ function page_content() {
          echo json_encode($fitbitIconArray);
       ?>;
 
-      fitbitIconArray.forEach(function(element) {
+      fitbitIconArray?.forEach(function(element) {
          $('#' + element).css('visibility', 'visible');
       });
    </script>
@@ -1192,11 +1192,19 @@ function fitbitDiv() {
 $(document).on('blur', 'input[pattern]', function(e){
    if(!new RegExp($(this).attr('pattern'), 'g').test($(this).val())){
       $(this).get(0).setCustomValidity('A1c must be under 20.00, with up to 2 decimal places.');
+
+      // "Additionally you must call the reportValidity method on the same
+      // element or nothing will happen."
+      // https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement/setCustomValidity
       $(this).get(0).reportValidity();
+
       $("#reportsubmit").prop('disabled', true)
    }
    else {
+      $(this).get(0).setCustomValidity('');
+      $(this).get(0).reportValidity();
       $("#reportsubmit").prop('disabled', false)
    }
 });
 </script>
+
