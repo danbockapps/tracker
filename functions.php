@@ -510,11 +510,23 @@ function attendanceSummary3ForClass($classId) {
          attendance_summary3 a
          inner join wrc_users u
             on a.user_id = u.user_id
-      where a.class_id = ?
+         inner join (
+            select class_id
+            from
+               classes_aw c
+               inner join (
+                  select
+                     month(start_dttm) as month,
+                     year(start_dttm) as year
+                  from classes_aw
+                  where class_id = ?
+               ) i on month(c.start_dttm) = i.month and year(c.start_dttm) = i.year
+         ) c on a.class_id = c.class_id
+      where a.user_id in (select user_id from enrollment_view where class_id = ?)
       order by
          lname,
          fname
-   ', $classId);
+   ', array($classId, $classId));
 }
 
 function participantsForClass($classId) {
