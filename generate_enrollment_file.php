@@ -1,3 +1,4 @@
+
 <?php
 require_once('config.php');
 
@@ -10,8 +11,8 @@ $qr = pdo_seleqt('
    where voucher_code = "FIBCBSNC"
 ', array());
 
-$path = 'Value_Based_Benefits_Enrollment_NCSU_' . date('mdY_His') . '.txt';
-$file = fopen($path, 'w');
+$dataFileName = 'Value_Based_Benefits_Enrollment_NCSU_' . date('mdY_His') . '.txt';
+$file = fopen($dataFileName, 'w');
 fwrite($file, '1|NCSU|ESMM|' . date('m/d/Y') . "|\n");
 
 foreach($qr as $row) {
@@ -23,11 +24,18 @@ foreach($qr as $row) {
 fwrite($file, '3|' . (count($qr) + 2) . "|\n");
 fclose($file);
 
+$xmlFileName = 'NCSU_BCBSNC_ENRL_VNDR_UAT_'.date('Ymd_His').'_CONTROL.xml';
+
 generateAlisFile(
-   'NCSU_BCBSNC_ENRL_VNDR_UAT_'.date('Ymd_His').'_CONTROL.xml',
+   $xmlFileName,
    '18367',
-   $path,
+   $dataFileName,
    count($qr) + 2
 );
+
+execLog('gpg -r mftpsvc --encrypt --trust-model always ' . $dataFileName);
+execLog('gpg -r mftpsvc --encrypt --trust-model always ' . $xmlFileName);
+execLog("scp $dataFileName $xmlFileName NCSU_PSFTP@mftp.bcbsnc.com:/");
+
 
 ?>
