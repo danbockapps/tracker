@@ -850,4 +850,14 @@ function getReports($userId, $startDttm) {
    ));
 }
 
+function execLog($command) {
+   echo "Running command: " . $command . "\n";
+   $output = null;
+   $retval = null;
+   exec($command, $output, $retval);
+
+   echo "Returned with status $retval and output:\n";
+   print_r($output);
+}
+
 ?>
