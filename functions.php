@@ -522,8 +522,7 @@ function participantsForClass($classId) {
       select
          e.user_id,
          u.fname,
-         u.lname,
-         e.shirtchoice
+         u.lname
       from
          " . ENR_VIEW . " e
          natural join wrc_users u
