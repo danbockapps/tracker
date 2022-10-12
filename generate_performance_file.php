@@ -1,6 +1,18 @@
 <?php
 require_once('config.php');
 
+if(isset($argv[1]) && isset($argv[2])) {
+   $month = $argv[1];
+   $year = $argv[2];
+}
+else {
+   $monthAgo = strtotime('-1 month');
+   $month = date('n', $monthAgo);
+   $year = date('Y', $monthAgo);
+}
+
+echo "Executing query for month $month and year $year.\n\n";
+
 $qr = pdo_seleqt('select
    First_Name,
    Last_Name,
@@ -43,18 +55,24 @@ $qr = pdo_seleqt('select
    Physical_Activity_Minutes_Avg,
    Steps_Per_Week_Avg,
    NPS_Score
-from performance_file where attendance_month = ? and attendance_year = ?', array($argv[1], $argv[2]));
+from performance_file where attendance_month = ? and attendance_year = ?', array($month, $year));
 
-$path = 'Value_Based_Benefits_Performance_NCSU_'.date('mdY_His').'.csv';
-$file = fopen($path, 'w');
+$dataFileName = 'Value_Based_Benefits_Performance_NCSU_'.date('mdY_His').'.csv';
+$file = fopen($dataFileName, 'w');
 fwrite($file, array_to_csv($qr));
 fclose($file);
 
+$xmlFileName = 'NCSU_BCBSNC_PERFORMANCE_VNDR_'.DATE('Ymd_His').'_CONTROL.xml';
+
 generateAlisFile(
-  'NCSU_BCBSNC_PERFORMANCE_VNDR_'.DATE('Ymd_His').'_CONTROL.xml',
+  $xmlFileName,
   '10333',
-  $path,
+  $dataFileName,
   count($qr)
 );
+
+execLog('gpg -r mftpsvc --encrypt --trust-model always ' . $dataFileName);
+execLog('gpg -r mftpsvc --encrypt --trust-model always ' . $xmlFileName);
+execLog("scp $dataFileName.gpg $xmlFileName.gpg NCSU_PSFTP@mftp.bcbsnc.com:/");
 
 ?>
