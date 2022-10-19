@@ -27,7 +27,8 @@ $whitelist = [
    'enrollment_file',
    'interaction_file',
    'performance_file',
-   'all_aso_participants'
+   'all_aso_participants',
+   'asoncms'
 ];
 
 if(!in_array($_GET['report'],  $whitelist)) {
@@ -395,6 +396,10 @@ else if ($_GET['report'] == 'enrollment_file') {
 
 else if ($_GET['report'] == 'all_aso_participants') {
    $qr = pdo_seleqt('select * from all_aso_participants', array());
+}
+
+else if ($_GET['report'] == 'asoncms') {
+   $qr = pdo_seleqt('select * from bcbs_report where Coupon_Code like "ASONCMS%"', array());
 }
 
 if(empty($qr)) {
