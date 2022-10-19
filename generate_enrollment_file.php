@@ -35,7 +35,7 @@ generateAlisFile(
 
 execLog('gpg -r mftpsvc --encrypt --trust-model always ' . $dataFileName);
 execLog('gpg -r mftpsvc --encrypt --trust-model always ' . $xmlFileName);
-execLog("scp $dataFileName $xmlFileName NCSU_PSFTP@mftp.bcbsnc.com:/");
+execLog("scp $dataFileName.gpg $xmlFileName.gpg NCSU_PSFTP@mftp.bcbsnc.com:/");
 
 
 ?>
