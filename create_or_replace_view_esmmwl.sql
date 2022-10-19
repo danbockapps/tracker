@@ -82,7 +82,8 @@ select
    '' as height,
    e.incentive as incentive_type,
    s.shirt_desc,
-   e.birthdate as dob
+   e.birthdate as dob,
+   e.date_added
 from
    registrants e
    inner join wrc_users u on e.tracker_user_id = u.user_id natural
