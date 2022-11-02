@@ -30,6 +30,18 @@ foreach($aqr as $row) {
    generateControlFile($row['voucher_code'], $dataFileName);
 }
 
+// *** Special file for ASONCMS* codes ***
+
+$dataFileName = "ESMMWL_ASONCMS_" . date("Y-m-d_H-i-s") . ".csv";
+
+file_put_contents("/home/esmmwl/aso/upload/" . $dataFileName, array_to_csv(pdo_seleqt("
+   select * from bcbs_report where Coupon_Code like 'ASONCMS%'
+", array())));
+
+generateControlFile('ASONCMS', $dataFileName);
+
+// *** End special file for ASONCMS* codes ***
+
 
 // List of active ASO codes
 
