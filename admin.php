@@ -510,9 +510,14 @@ else {
          List of ASO Codes
       </a>
    </li>
-   <li style='margin-bottom: 1em;'>
+   <li>
       <a href="download_report.php?report=all_aso_participants">
          All ASO participants (download)
+      </a>
+   </li>
+   <li style='margin-bottom: 1em;'>
+      <a href="download_report.php?report=asoncms">
+         All ASONCMS participants (download)
       </a>
    </li>
    <?php
