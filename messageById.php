@@ -10,7 +10,7 @@ $recipient = getRecipient();
 $subject = getSubject();
 $msg = getMessage($argv[1], $argv[2], $argv[3], $recipient);
 
-if($argv[2] == 6 || $argv[2] == 2) {
+if($argv[2] == 6 || $argv[2] == 2 || $argv[2] == 3) {
    syncMailHtml($recipient, $subject, $msg);
 }
 else {
@@ -79,8 +79,7 @@ function getMessage($recipientId, $messageId, $participantId, $recipientEmail) {
    }
    else if($messageId == 3) {
       // This is called from report.php
-      $message = "You have received instructor feedback.\n";
-      $message .= "Click here to see it: " . WEBSITE_URL;
+      $message = instructorFeedback();
    }
    else if($messageId == 4) {
       // This is called from register.php

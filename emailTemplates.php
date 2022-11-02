@@ -186,4 +186,27 @@ $head
 EOD;
   return $str;
 }
+
+function instructorFeedback() {
+  global $head, $img;
+
+  $buttonAndFooter = buttonAndFooter();
+
+  $str = <<<EOD
+<!DOCTYPE html>
+<html>
+$head
+<body>
+  $img
+
+  <p style="font-size: 12px">
+    You have received instructor feedback. Please login to $programName to see it.
+  </p>
+
+  $buttonAndFooter
+</body>
+</html>
+EOD;
+  return $str;
+}
 ?>
