@@ -27,7 +27,8 @@ if($_GET['report'] == "attendance2") {
          city,
          state,
          zip,
-         dob
+         dob,
+         date_added
       from attendance2
       where class_id = ?
    ", array($_GET['class']));

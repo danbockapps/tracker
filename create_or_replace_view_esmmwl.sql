@@ -21,7 +21,7 @@ select
    member_number,
    claim_type,
    welcome_sent,
-   shirtchoice
+   shirt_id
 from
    registrants
 where
@@ -81,8 +81,9 @@ select
    end as beginning_and_ending_weight,
    '' as height,
    e.incentive as incentive_type,
-   e.shirtchoice,
-   e.birthdate as dob
+   s.shirt_desc,
+   e.birthdate as dob,
+   e.date_added
 from
    registrants e
    inner join wrc_users u on e.tracker_user_id = u.user_id natural
@@ -98,6 +99,7 @@ from
    left join attendance_sum2 am on e.tracker_user_id = am.user_id
    and month(zc.start_date_time) = am.month
    and year(zc.start_date_time) = am.year
+   left join shirts s on e.shirt_id = s.shirt_id
 where
    instrs.instructor = 1 -- datediff on c.start_dttm was here. Not sure why.
 order by
