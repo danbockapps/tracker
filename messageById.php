@@ -10,7 +10,7 @@ $recipient = getRecipient();
 $subject = getSubject();
 $msg = getMessage($argv[1], $argv[2], $argv[3], $recipient);
 
-if($argv[2] == 6 || $argv[2] == 2 || $argv[2] == 3) {
+if(in_array($argv[2], array(1, 2, 3, 6))) {
    syncMailHtml($recipient, $subject, $msg);
 }
 else {
@@ -65,13 +65,7 @@ function getSubject() {
 function getMessage($recipientId, $messageId, $participantId, $recipientEmail) {
    if($messageId == 1) {
       // This is called from reset.php
-      $email_reset_key = generate_email_reset($recipientEmail);
-
-      $message = "To reset your password, please click on this link:\n"
-         . WEBSITE_URL . "/reset.php?email=" . urlencode($recipientEmail)
-         . "&key=$email_reset_key\n\n"
-         . "If you did not make this request, please disregard this message."
-         . " Your password has not been changed.";
+      $message = resetPassword($recipientEmail, generate_email_reset($recipientEmail));
    }
    else if($messageId == 2) {
       // This is called from the message_participant function in config.php
