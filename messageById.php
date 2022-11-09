@@ -10,7 +10,7 @@ $recipient = getRecipient();
 $subject = getSubject();
 $msg = getMessage($argv[1], $argv[2], $argv[3], $recipient);
 
-if($argv[2] == 6 || $argv[2] == 2 || $argv[2] == 3) {
+if(in_array($argv[2], array(1, 2, 3, 6))) {
    syncMailHtml($recipient, $subject, $msg);
 }
 else {

@@ -211,7 +211,7 @@ EOD;
 }
 
 function resetPassword($recipientEmail, $emailResetKey) {
-  global $head, $img, $websiteUrl, $productTitle;
+  global $head, $img, $websiteUrl;
 
   $queryString =
     "/reset.php?email=" .
@@ -231,7 +231,7 @@ $head
   </p>
 
   <a class="btn" style="color: #ffffff" href="$websiteUrl$queryString">
-    $productTitle
+    Reset Password
   </a>
 
 </body>
