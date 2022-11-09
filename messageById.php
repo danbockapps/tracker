@@ -65,13 +65,7 @@ function getSubject() {
 function getMessage($recipientId, $messageId, $participantId, $recipientEmail) {
    if($messageId == 1) {
       // This is called from reset.php
-      $email_reset_key = generate_email_reset($recipientEmail);
-
-      $message = "To reset your password, please click on this link:\n"
-         . WEBSITE_URL . "/reset.php?email=" . urlencode($recipientEmail)
-         . "&key=$email_reset_key\n\n"
-         . "If you did not make this request, please disregard this message."
-         . " Your password has not been changed.";
+      $message = resetPassword($recipientEmail, generate_email_reset($recipientEmail));
    }
    else if($messageId == 2) {
       // This is called from the message_participant function in config.php

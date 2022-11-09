@@ -209,4 +209,37 @@ $head
 EOD;
   return $str;
 }
+
+function resetPassword($recipientEmail, $emailResetKey) {
+  global $head, $img, $websiteUrl, $productTitle;
+
+  $queryString =
+    "/reset.php?email=" .
+    urlencode($recipientEmail) .
+    "&key=$emailResetKey";
+
+  $str = <<<EOD
+<!DOCTYPE html>
+<html>
+$head
+<body>
+  $img
+
+  <p style="font-size: 12px">
+    To reset your password, please click this button. If you did not make this
+    request, please disregard this message. Your password has not been changed.
+  </p>
+
+  <a class="btn" style="color: #ffffff" href="$websiteUrl$queryString">
+    $productTitle
+  </a>
+
+</body>
+</html>
+EOD;
+  return $str;
+}
+
+
+
 ?>
