@@ -552,13 +552,17 @@ else {
 <ul>
    <?php
       foreach($nasoqr as $row) {
-         ?><li><a href="view_report.php?report=<?php
+         ?><li><?php
+            echo $row['voucher_code'];
+         ?> <a href="view_report.php?report=<?php
             echo $ini['client1'];
          ?>&voucher_code=<?php
             echo $row['voucher_code'];
-         ?>"><?php
+         ?>">web view</a> <a href="download_report.php?report=<?php
+            echo $ini['client1'];
+         ?>&voucher_code=<?php
             echo $row['voucher_code'];
-         ?></a></li><?php
+         ?>">download</a></li><?php
       }
    ?>
 </ul>

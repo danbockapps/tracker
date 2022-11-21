@@ -6,6 +6,8 @@ set_time_limit(300);
 
 ini_set('memory_limit', '256M');
 
+global $ini;
+
 session_start();
 if(!am_i_admin()) {
    exit("You must be an administrator to view this page");
@@ -28,7 +30,8 @@ $whitelist = [
    'interaction_file',
    'performance_file',
    'all_aso_participants',
-   'asoncms'
+   'asoncms',
+   $ini['client1']
 ];
 
 if(!in_array($_GET['report'],  $whitelist)) {
@@ -405,6 +408,15 @@ else if ($_GET['report'] == 'all_aso_participants') {
 else if ($_GET['report'] == 'asoncms') {
    $qr = pdo_seleqt('select * from bcbs_report where Coupon_Code like "ASONCMS%"', array());
 }
+else if($_GET['report'] == $ini['client1']) {
+   require_get_vars("voucher_code");
+   $qr = pdo_seleqt("
+      select *
+      from " . $ini['client1_reports'] . "
+      where Coupon_Code = ?
+   ", array($_GET['voucher_code']));
+}
+
 
 if(empty($qr)) {
    exit("No report returned.");
