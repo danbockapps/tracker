@@ -1056,6 +1056,8 @@ from
    and f.class_id = fa.class_id
    and f.week_id = fa.week_id;
 
+/* TODO rename this */
+
 create
 or replace view reports_with_fitbit_hybrid as
 select
@@ -1063,95 +1065,21 @@ select
    r.class_id,
    r.class_source,
    r.week_id,
-   case
-      when r.weight > 0
-      or f.weight = 0
-      or f.weight is null then r.weight
-      else f.weight
-   end as weight,
-   case
-      when nullif(r.weight, 0) is null then true
-      else false
-   end as weight_f,
-   case
-      when r.aerobic_minutes > 0
-      or f.minutes = 0
-      or f.minutes is null then r.aerobic_minutes
-      else f.minutes
-   end as aerobic_minutes,
-   case
-      when nullif(r.aerobic_minutes, 0) is null then true
-      else false
-   end as aerobic_minutes_f,
+   r.weight,
+   false as weight_f,
+   r.aerobic_minutes,
+   false as aerobic_minutes_f,
    r.strength_minutes,
    r.a1c,
-   case
-      when r.physact_minutes > 0
-      or f.minutes = 0
-      or f.minutes is null then r.physact_minutes
-      else f.minutes
-   end as physact_minutes,
-   case
-      when nullif(r.physact_minutes, 0) is null then true
-      else false
-   end as physact_minutes_f,
+   r.physact_minutes,
+   false as physact_minutes_f,
    r.notes,
    r.create_dttm,
    r.fdbk_dttm,
-   case
-      when r.avgsteps > 0
-      or f.avgsteps = 0
-      or f.avgsteps is null then r.avgsteps
-      else f.avgsteps
-   end as avgsteps,
-   case
-      when nullif(r.avgsteps, 0) is null then true
-      else false
-   end as avgsteps_f
+   r.avgsteps,
+   false as avgsteps_f
 from
-   wrc_reports r
-   left join fitbit_by_week_static f on r.user_id = f.user_id
-   and r.class_id = f.class_id
-   and r.week_id = f.week_id
-union
-select
-   f.user_id,
-   f.class_id,
-   'w' as class_source,
-   f.week_id,
-   nullif(f.weight, 0) as weight,
-   case
-      when nullif(r.weight, 0) is null then true
-      else false
-   end as weight_f,
-   nullif(f.minutes, 0) as aerobic_minutes,
-   case
-      when nullif(r.aerobic_minutes, 0) is null then true
-      else false
-   end as aerobic_minutes_f,
-   null as strength_minutes,
-   null as a1c,
-   nullif(f.minutes, 0) as physact_minutes,
-   case
-      when nullif(r.physact_minutes, 0) is null then true
-      else false
-   end as physact_minutes_f,
-   null as notes,
-   null as create_dttm,
-   null as fdbk_dttm,
-   nullif(f.avgsteps, 0) as avgsteps,
-   case
-      when nullif(r.avgsteps, 0) is null then true
-      else false
-   end as avgsteps_f
-from
-   fitbit_by_week_static f
-   left join wrc_reports r on f.user_id = r.user_id
-   and f.class_id = r.class_id
-   and f.week_id = r.week_id
-where
-   r.user_id is null
-   and f.week_id >= 0;
+   wrc_reports r;
 
 create
 or replace view first_reports_with_weights_weeks as
@@ -1208,3 +1136,4 @@ select
 from
    reports_with_fitbit_hybrid r natural
    join last_reports_with_weights_weeks f;
+v
