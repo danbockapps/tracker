@@ -55,6 +55,7 @@ function page_content() {
 
 
    if(isset($_POST['formsubmitted'])) {
+      logtxt('formsubmitted 1');
       foreach($_POST as $key => $post_item) {
          if(!is_array($_POST[$key])) {
             $_POST[$key] = trim($_POST[$key]);
@@ -62,6 +63,7 @@ function page_content() {
       }
 
       if(isset($_POST['notes'])) {
+         logtxt('formsubmitted sendById 1');
          sendById($_GET['user'], 3);
       }
 
@@ -75,6 +77,9 @@ function page_content() {
             and class_source = ?
             and week_id = ?
       ", array($_GET['user'], $qr['class_id'], $qr['class_source'], $_GET['week']));
+
+      logtxt('formsubmitted seleqt_one_record');
+
       if($uqr['count'] == 0) {
          $dbh = pdo_connect($ini['db_prefix'] . "_insert");
          $sth = $dbh->prepare("
@@ -94,6 +99,8 @@ function page_content() {
             exit(err_text("<p>A database error occurred creating the report.</p>"));
          }
       }
+
+      logtxt('formsubmitted insert');
 
       if(isset($_POST['strategy'])) {
          // Insert rows into strategy table where needed
@@ -210,6 +217,8 @@ function page_content() {
                echo err_text("<p>A database error occurred with the strategy (3).</p>");
             }
          }
+
+         logtxt('formsubmitted strategies done');
       }
    }
 
@@ -862,6 +871,7 @@ function report_var (
 
    $err_count = 0;
    if(isset($_POST['formsubmitted']) && isset($_POST[$post_var])) {
+      logtxt('formsubmitted ' . $post_var . ' start report_var');
       if(
          $req_num &&
          $_POST[$post_var] != "" &&
@@ -928,6 +938,9 @@ function report_var (
             }
          }
       }
+
+      logtxt('formsubmitted end report_var');
+
    }
    // show output
    ?>
