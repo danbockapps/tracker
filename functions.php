@@ -638,25 +638,21 @@ function nullIfBlank($x) {
 
 function phase1attendance($userId, $classId) {
   if(PRODUCT != 'dpp') return 0;
-
   $qr = seleqt_one_record('
     select numclasses_phase1
     from attendance3
     where tracker_user_id = ? and class_id = ?
   ', array($userId, $classId));
-
   return $qr['numclasses_phase1'];
 }
 
 function phase2attendance($userId, $classId) {
   if(PRODUCT != 'dpp') return 0;
-  
   $qr = seleqt_one_record('
     select numclasses_phase2
     from attendance3
     where tracker_user_id = ? and class_id = ?
   ', array($userId, $classId));
-
   return $qr['numclasses_phase2'];
 }
 
@@ -701,7 +697,7 @@ function refundCard($userId, $classId) {
         </div>
 
         <div id="paypal-address">
-          Please provide email address linked to your PayPal account:<br />
+          Please provide email address linked to your personal PayPal account (no business accounts):<br />
           <input id="paypal-address-input" />
         </div>
 
