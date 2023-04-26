@@ -1,6 +1,6 @@
 <?php
 if($_SERVER['REQUEST_METHOD'] == 'GET') {
-  getReports();
+  getIReports();
 }
 else if($_SERVER['REQUEST_METHOD'] == 'POST') {
   postReports();
@@ -9,7 +9,7 @@ else {
   exit('ERROR: Unsupported request method.');
 }
 
-function getReports() {
+function getIReports() {
   if(!isset($_GET['class_id'])) {
     exit('Error: no class ID');
   }
