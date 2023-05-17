@@ -555,10 +555,6 @@ function page_content() {
          ?>
          </table>
 
-         <?php
-            fitbitDiv();
-         ?>
-
       </fieldset>
 
       <?php if(!$ini['hide_strategies']) { ?>
@@ -728,13 +724,6 @@ function page_content() {
       <br />
       <input type="hidden" name="formsubmitted" value="true" />
       <input type="submit" id="reportsubmit" value="Submit changes" />
-
-      <p class="fine-print">
-         Fitbit is a registered trademark and service mark of Fitbit, Inc.
-         <?php echo PRODUCT_TITLE ?> is designed for use with the Fitbit
-         platform. This product is not put out by Fitbit, and Fitbit does not
-         service or warrant the functionality of this product.
-      </p>
    </form>
 
    <div id="bmi">
@@ -1151,38 +1140,6 @@ function stepsDateRange($reportDateString) {
       date('l, F j, Y', $rangeStart) .
       ' through ' .
       date('l, F j, Y', $rangeEnd);
-}
-
-function fitbitDiv() {
-   //TODO restrict this to the participant and not the instructor.
-   ?>
-   <div id="fitbit-container">
-      <?php
-
-         if(!isConnectedToFitbit($_GET['user'])) {
-            if($_SESSION['user_id'] == $_GET['user']) {
-               // Participant is looking at own report
-               ?>
-               <button
-                  type="button"
-                  id="fitbit-button"
-                  onclick="location.href='connect_to_fitbit.php';"
-               >
-                  Connect to <img src="fitbitlogo.png" />
-               </button>
-               <?php
-            }
-         }
-         else {
-            ?>
-            <p>
-               Connected to <img src="fitbitlogo.png" />
-            </p>
-            <?php
-         }
-      ?>
-   </div>
-   <?php
 }
 
 ?>
