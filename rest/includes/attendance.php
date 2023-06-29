@@ -31,7 +31,7 @@ function getAttendance() {
 function postAttendance() {
   // Copied from attendance_ajax.php on 2/23/2020
   if(can_access_class($_POST['class_id'], 'w')) {
-    $phase1before = phase1attendance($_POST['user_id'], $_POST['class_id']);
+    $phase1before = attendancePhases($_POST['user_id'], $_POST['class_id'])['phase1'];
     $perfectCountBefore = getPerfectCount($_POST['user_id'], $_POST['class_id']);
  
     $dbh = pdo_connect(DB_PREFIX . '_insert');
@@ -57,8 +57,7 @@ function postAttendance() {
     ))) {
       addMetricsToOkArray();
 
-      $phase1after = phase1attendance($_POST['user_id'], $_POST['class_id']);
-
+      $phase1after = attendancePhases($_POST['user_id'], $_POST['class_id'])['phase1'];
 
       if (
         (PRODUCT == 'dpp' && $phase1before == 8 && $phase1after == 9) ||
