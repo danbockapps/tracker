@@ -463,14 +463,16 @@ function isUserCurrent($userId) {
    return $qr['count'];
 }
 
-function attendanceForClass($classId) {
+function attendanceForClass($classId, $userId = null) {
    return pdo_seleqt('
       select
          a.user_id,
          u.fname,
          u.lname,
          a.week,
-         a.present
+         a.present ' .
+         ($userId ? ', a.attendance_type' : '')
+         . '
       from
          wrc_attendance a
          inner join classes_aw c
@@ -493,8 +495,9 @@ function attendanceForClass($classId) {
                class_id = ?
                and class_source = "w"
          )
+         ' . ($userId ? 'and a.user_id = ?' : '') . '
       order by date_entered
-   ', array($classId, $classId));
+   ', array($classId, $classId, $userId));
 }
 
 function attendanceSummary3ForClass($classId) {
@@ -636,32 +639,31 @@ function nullIfBlank($x) {
    }
 }
 
-function phase1attendance($userId, $classId) {
-  if(PRODUCT != 'dpp') return 0;
-  $qr = seleqt_one_record('
-    select numclasses_phase1
-    from attendance3
-    where tracker_user_id = ? and class_id = ?
-  ', array($userId, $classId));
-  return $qr['numclasses_phase1'];
-}
+function attendancePhases($userId, $classId) {
+   $afc = attendanceForClass($classId, $userId);
+   $iqr = array();
 
-function phase2attendance($userId, $classId) {
-  if(PRODUCT != 'dpp') return 0;
-  $qr = seleqt_one_record('
-    select numclasses_phase2
-    from attendance3
-    where tracker_user_id = ? and class_id = ?
-  ', array($userId, $classId));
-  return $qr['numclasses_phase2'];
+   foreach($afc as $row) {
+      $iqr[$row['week']] = $row['attendance_type'];
+   }
+
+   $returnable = array();
+
+   foreach($iqr as $week => $present) {
+      $returnable[$week <= 18 ? 'phase1' : 'phase2'] += min(1, $present);
+   }
+
+   return $returnable;
 }
 
 function refundCard($userId, $classId) {
+   $attendancePhases = attendancePhases($userId, $classId);
+   
   if(
     PRODUCT == 'dpp' &&
     !am_i_instructor() &&
-    phase1attendance($userId, $classId) >= 9 &&
-    phase2attendance($userId, $classId) >= 5
+    $attendancePhases['phase1'] >= 9 &&
+    $attendancePhases['phase2'] >= 5
   ) {
 
     $qr = seleqt_one_record('

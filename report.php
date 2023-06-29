@@ -803,17 +803,6 @@ function page_content() {
    </div>
    <div style="clear:left"></div>
 
-   <script>
-      var fitbitIconArray = <?php
-         global $fitbitIconArray;
-         echo json_encode($fitbitIconArray);
-      ?>;
-
-      fitbitIconArray?.forEach(function(element) {
-         $('#' + element).css('visibility', 'visible');
-      });
-   </script>
-
    <?php
    if(
       isset($_POST['formsubmitted']) &&
@@ -968,7 +957,6 @@ function report_var (
             }
             else {
                report_input($post_var, $cvqr, $db_col, $fitbit_value);
-               fitbit_icon($db_col);
                if($popup_link) {
                   popup($popup_link, $popup_text, $popup_title);
                }
@@ -981,7 +969,6 @@ function report_var (
             }
             else {
                readonly($cvqr, $db_col, $fitbit_value);
-               fitbit_icon($db_col);
             }
          }
       ?>
@@ -1006,11 +993,6 @@ function report_input($post_var, $cvqr, $db_col, $fitbit_value, $textarea=false)
          value="<?php
             if($cvqr[0][$db_col] > 0) {
                echo $cvqr[0][$db_col];
-            }
-            else if($fitbit_value > 0) {
-               global $fitbitIconArray;
-               $fitbitIconArray[] = $db_col;
-               echo $fitbit_value;
             }
             else {
                // echo nothing
@@ -1038,26 +1020,10 @@ function readonly($cvqr, $db_col, $fitbit_value) {
    ) {
       echo htmlentities($cvqr[0][$db_col]);
    }
-   else if($fitbit_value > 0) {
-      global $fitbitIconArray;
-      $fitbitIconArray[] = $db_col;
-      echo $fitbit_value;
-   }
    else {
       // echo nothing
    }
    ?></b><?php
-}
-
-function fitbit_icon($db_col) {
-   ?>
-   <img
-      src="Fitbit_app_icon_square.png"
-      id="<?php echo $db_col; ?>"
-      class="fitbit-app-icon"
-      title="Data provided by Fitbit."
-   />
-   <?php
 }
 
 function strat_numdays_dd($form_name, $selected = -1) {

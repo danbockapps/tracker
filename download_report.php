@@ -411,9 +411,13 @@ else if ($_GET['report'] == 'asoncms') {
 else if($_GET['report'] == $ini['client1']) {
    require_get_vars("voucher_code");
    $qr = pdo_seleqt("
-      select *
-      from " . $ini['client1_reports'] . "
-      where Coupon_Code = ?
+      select r.user_id as Admin_User_Id, c.*
+      from " . $ini['client1_reports'] . " c
+      inner join registrants r
+      on c.Email = r.email
+         and c.Coupon_Code = r.coup_voucher
+         and c.BCBS_Subscriber_ID = substring_index(r.claim_id, '-', 1)
+      where c.Coupon_Code = ? and r.paid != '0'
    ", array($_GET['voucher_code']));
 }
 
