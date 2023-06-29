@@ -1352,19 +1352,8 @@ function userQualifiesForShirt($userId, $classId) {
      return false;
   }
 
-  $qr = pdo_seleqt('
-    select a.numclasses_phase1
-    from
-      attendance_sum3 a
-      inner join classes_aw c
-        on a.month = month(c.start_dttm)
-        and a.year = year(c.start_dttm)
-    where
-      a.user_id = ?
-      and c.class_id = ?
-  ', array($userId, $classId));
 
-  if(sizeof($qr) == 0 || $qr[0][numclasses_phase1] < 9) return false;
+  if(attendancePhases($userId, $classId)['phase1'] < 9) return false;
   else return true;
 }
 
