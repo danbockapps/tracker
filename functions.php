@@ -464,6 +464,9 @@ function isUserCurrent($userId) {
 }
 
 function attendanceForClass($classId, $userId = null) {
+   $queryArray = [$classId, $classId];
+   if($userId) $queryArray[] = $userId;
+
    return pdo_seleqt('
       select
          a.user_id,
@@ -497,7 +500,7 @@ function attendanceForClass($classId, $userId = null) {
          )
          ' . ($userId ? 'and a.user_id = ?' : '') . '
       order by date_entered
-   ', array($classId, $classId, $userId));
+   ', $queryArray);
 }
 
 function attendanceSummary3ForClass($classId) {
