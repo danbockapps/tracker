@@ -1282,6 +1282,7 @@ function shirtCard($userId, $classId) {
     $shirtChoices = pdo_seleqt('
       select *
       from shirts where shirt_instock
+      order by shirt_desc
     ', array());
 
     if($currentShirt['shirt_id'] == null && count($shirtChoices) > 0) {

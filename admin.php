@@ -673,7 +673,7 @@ $(function() {
 
 <?php
 
-$shirtqr = pdo_seleqt('select * from shirts order by shirt_id', array());
+$shirtqr = pdo_seleqt('select * from shirts order by shirt_desc', array());
 foreach($shirtqr as $shirt) {
 
    if($shirt['shirt_instock']) {
