@@ -131,6 +131,22 @@ function page_content() {
             <input type="password" id="password" name="password" size="25" />
          </div>
 
+         <script>
+            function showHidePassword() {
+               if($('#check').is(':checked')) $('#password').prop('type', 'text');
+               else $('#password').prop('type', 'password');
+            }
+         </script>
+
+         <input
+            type='checkbox'
+            id='check'
+            style='margin: 1em 0.2em 1.5em'
+            onclick='return showHidePassword();'
+         />
+
+         Show password
+
          <div>
             <input type="hidden" name="formsubmitted" value="TRUE" />
             <input type="submit" value="Log in" />
