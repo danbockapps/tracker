@@ -293,11 +293,47 @@ from
 create
 or replace view cdc_report as
 select
-   c.*,
+   c.ORGCODE,
+   c.PARTICIP,
+   c.ENROLL,
+   c.PAYER,
+   c.STATE,
+   c.GLUCTEST,
+   c.GDM,
+   c.RISKTEST,
+   c.AGE,
+   c.ETHNIC,
+   c.AIAN,
+   c.ASIAN,
+   c.BLACK,
+   c.NHOPI,
+   c.WHITE,
+   c.SEX,
+   c.HEIGHT,
+   c.EDU,
+   c.DMODE,
+   c.SESSID,
+   c.SESSTYPE,
+   c.DATE,
+   case
+      when c.DATE is not null
+      and c.WEIGHT is null
+      then 999
+      else c.WEIGHT
+   end as WEIGHT,
    case
       when c.DATE is not null
       and c.WEIGHT is not null
-      and c.PA is not null then 1
+      and c.PA is null
+      then 0
+      else c.PA
+   end as PA,
+   c.a1c,
+   case
+      when c.DATE is not null
+      and c.WEIGHT is not null
+      and c.PA is not null
+      then 1
       else 0
    end as FULL_PARTICIPATION
 from
