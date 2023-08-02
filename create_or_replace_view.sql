@@ -1136,4 +1136,4 @@ select
 from
    reports_with_fitbit_hybrid r natural
    join last_reports_with_weights_weeks f;
-v
+
