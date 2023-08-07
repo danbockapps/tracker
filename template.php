@@ -57,6 +57,10 @@ function generate_page($require_logged_in, $require_logged_out, $shownav=true) {
             rel="stylesheet"
             href="purple.css"
          />
+         <link
+            rel="stylesheet"
+            href="portal.css"
+         />
       <?php } ?>
       <?php if(PRODUCT == 'esmmwl2') { ?>
          <link
@@ -64,10 +68,6 @@ function generate_page($require_logged_in, $require_logged_out, $shownav=true) {
             href="teal.css"
          />
       <?php } ?>
-      <link
-         rel="stylesheet"
-         href="portal.css"
-      />
       <?php template_js(); ?>
    </head>
    <body>

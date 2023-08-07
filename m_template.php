@@ -25,6 +25,11 @@ function generate_page($require_logged_in, $require_logged_out, $shownav=true) {
       <title><?php echo PRODUCT_TITLE; ?></title>
       <link rel="stylesheet" href="m_wrc.css" />
       <link rel="stylesheet" href="universal.css" />
+
+      <?php if(PRODUCT == 'dpp') { ?>
+         <link rel="stylesheet" href="m_portal.css" />
+      <?php } ?>
+
       <link
          rel="stylesheet"
          href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css"
