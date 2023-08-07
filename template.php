@@ -129,20 +129,24 @@ function generate_page($require_logged_in, $require_logged_out, $shownav=true) {
          <div class="contentDiv">
             <?php
                page_content();
-               if(file_exists(mobilize_path($_SERVER['SCRIPT_FILENAME']))) {
-                  ?>
-                  <div id="footer">
-                     <a href="<?php
-                        echo file_and_parameters() .
-                        (strpos(file_and_parameters(), "?") === false ? "?" : "&") .
-                        "mode=mobile";
-                     ?>">Switch to mobile site</a>
-                  </div>
-                  <?php
-               }
-               ?>
+            ?>
          </div><!--end contentDiv-->
       </div><!--end container-->
+
+      <?php
+         if(file_exists(mobilize_path($_SERVER['SCRIPT_FILENAME']))) {
+            ?>
+            <div id="footer">
+               <a href="<?php
+                  echo file_and_parameters() .
+                  (strpos(file_and_parameters(), "?") === false ? "?" : "&") .
+                  "mode=mobile";
+               ?>">Switch to mobile site</a>
+            </div>
+            <?php
+         }
+      ?>
+
    </body>
 </html>
 <?php
