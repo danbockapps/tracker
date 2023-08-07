@@ -396,35 +396,23 @@ else {
 
          $firstOfMonth = false;
          $firstOfYear = false;
-         $firstOfType = false;
          $lastOfMonth = false;
          $lastOfYear = false;
-         $lastOfType = false;
 
          if($i == 0 || !yearSame($row['start_dttm'], $aqr[$i-1]['start_dttm'])) {
             $firstOfYear = true;
             $firstOfMonth = true;
-            $firstOfType = true;
          }
          else if(!monthSame($row['start_dttm'], $aqr[$i-1]['start_dttm'])) {
             $firstOfMonth = true;
-            $firstOfType = true;
-         }
-         else if(!typeSame($row['class_type'], $aqr[$i-1]['class_type'])) {
-            $firstOfType = true;
          }
 
          if($i == count($aqr) || !yearSame($row['start_dttm'], $aqr[$i+1]['start_dttm'])) {
             $lastOfYear = true;
             $lastOfMonth = true;
-            $lastOfType = true;
          }
          else if(!monthSame($row['start_dttm'], $aqr[$i+1]['start_dttm'])) {
             $lastOfMonth = true;
-            $lastOfType = true;
-         }
-         else if(!typeSame($row['class_type'], $aqr[$i+1]['class_type'])) {
-            $lastOfType = true;
          }
 
          // // // DONE SETTING FIRSTS AND LASTS // // //
@@ -445,15 +433,6 @@ else {
             ?></a><div class="attendance-reports-section"><?php
          }
 
-         if($firstOfType) {
-            ?><a href="#" class="showhide_closed" cookie-name="<?php
-               echo date('YF', strtotime($row['start_dttm'])) .
-                     classType($row['class_type']);
-            ?>"><?php
-               echo classType($row['class_type']);
-            ?></a><div class="attendance-reports-section"><?php
-         }
-
          ?><input type="checkbox" name="class[<?php
             echo $row['class_id'];
          ?>]"><strong><?php
@@ -468,9 +447,6 @@ else {
          ?>"> web view</a><br /><?php
 
          
-         if($lastOfType) {
-            echo '</div> <!-- close attendance-reports-section for type -->';
-         }         
          if($lastOfMonth) {
             echo '</div> <!-- close attendance-reports-section for month -->';
          }
@@ -835,19 +811,6 @@ function yearSame($dateString1, $dateString2) {
 function monthSame($dateString1, $dateString2) {
    // returns true if month AND year are the same
    return date('Y F', strtotime($dateString1)) == date('Y F', strtotime($dateString2));
-}
-
-function typeSame($typeInt1, $typeInt2) {
-   return classType($typeInt1) == classType($typeInt2);
-}
-
-function classType($classTypeInt) {
-   if($classTypeInt == 1) {
-      return 'Public';
-   }
-   else if($classTypeInt >= 2 && $classTypeInt <= 4) {
-      return 'SHP';
-   }
 }
 
 ?>
