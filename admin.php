@@ -386,10 +386,6 @@ else {
    ", array());
 ?>
 
-<script>
-
-</script>
-
 <form action="download_report.php" method="get" class="attendance-reports-section white-form">
    <?php
       for($i=0; $i<count($aqr); $i++) {
@@ -421,16 +417,29 @@ else {
 
          // // // DONE SETTING FIRSTS AND LASTS // // //
 
-         if($firstOfYear) {
-            ?><div class="attendance-reports-header"><?php
-               echo date('Y', strtotime($row['start_dttm']));
-            ?></div><div class="attendance-reports-section"><?php
+         $year = date('Y', strtotime($row['start_dttm']));
+         $month = date('F', strtotime($row['start_dttm']));
+
+         if($firstOfYear) { ?>
+            <div class="attendance-reports-header">
+               <?php echo $year; ?>
+               <a href="#" class="selectYearLink" data-year="<?php echo $year; ?>">
+                  Select all
+               </a>
+            </div>
+
+            <div class="attendance-reports-section"><?php
          }
 
-         if($firstOfMonth) {
-            ?><div class="attendance-reports-header"><?php
-               echo date('F', strtotime($row['start_dttm']));
-            ?></div><div class="attendance-reports-section"><?php
+         if($firstOfMonth) { ?>
+            <div class="attendance-reports-header">
+               <?php echo $month; ?>
+               <a href="#" class="selectMonthLink" data-year="<?php echo $year; ?>" data-month="<?php echo $month; ?>">
+                  Select all
+               </a>
+            </div>
+
+            <div class="attendance-reports-section"><?php
          }
 
          ?><input
@@ -469,6 +478,32 @@ else {
 
    <input type="submit" value="Download report" />
 </form>
+
+<script>
+function checkCheckboxesByMonthYear(month, year) {
+   // Select all checkboxes with the specified data-month and data-year attributes
+   $(`input[type="checkbox"][data-month="${month}"][data-year="${year}"]`).prop('checked', true);
+}
+
+function checkCheckboxesByYear(year) {
+   $(`input[type="checkbox"][data-year="${year}"]`).prop('checked', true);
+}
+
+$('.selectMonthLink').on('click', function(event) {
+   event.preventDefault(); // Prevent the default link behavior
+   const month = $(this).data('month'); // Get the month from data-month attribute
+   const year = $(this).data('year');   // Get the year from data-year attribute
+   checkCheckboxesByMonthYear(month, year); // Call the function with the selected month and year
+});
+
+$('.selectYearLink').on('click', function(event) {
+   event.preventDefault();
+   const year = $(this).data('year');
+   checkCheckboxesByYear(year);
+});
+</script>
+
+
 
 <!-- --------------------------------------------------------------------------
                                                                 CLIENT1 REPORTS
