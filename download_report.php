@@ -4,7 +4,7 @@ require_once("config.php");
 
 set_time_limit(300);
 
-ini_set('memory_limit', '256M');
+ini_set('memory_limit', '512M');
 
 global $ini;
 
@@ -91,6 +91,8 @@ else if($_GET['report'] == "attendance3") {
          instructor_name,
          class_name,
          voucher_code,
+         amount,
+         incentive_type,
          tracker_user_id,
          fname,
          lname,
@@ -99,7 +101,8 @@ else if($_GET['report'] == "attendance3") {
          numclasses_phase1,
          numclasses_phase2,
          beginning_and_ending_weight,
-         full_participation,
+         full_participation_phase1,
+         full_participation_phase2,
          height,
          incentive_type,
          address1,

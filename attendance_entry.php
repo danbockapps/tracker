@@ -9,7 +9,7 @@ generate_page(true, false);
 
 function page_content() {
    if(!am_i_admin() && !am_i_instructor()) {
-      exit("You must be an admin or instructor to view this page.");
+      exit("<p>You must be an admin or instructor to view this page.</p>");
    }
 
    $qr = participantsForClass($_GET['class_id']);

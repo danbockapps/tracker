@@ -336,7 +336,7 @@ function refundCard($userId, $classId) {
         </div>
 
         <div id="paypal-address">
-          Please provide email address linked to your PayPal account:<br />
+          Please provide email address linked to your personal PayPal account (no business accounts):<br />
           <input id="paypal-address-input" />
         </div>
 

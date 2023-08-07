@@ -1375,19 +1375,19 @@ function noCurrentClass() {
 }
 
 function noCurrentClassText() {
-   $text = 'Access to the ' . PRODUCT_TITLE . ' will begin on the first ' .
+   $text = '<p>Access to the ' . PRODUCT_TITLE . ' will begin on the first ' .
       'day of the class for which you are registered. If you are not yet ' .
       'registered for a class, please go to ';
 
    if(PRODUCT == 'dpp') {
       $text .= '<a href="https://esmmpreventdiabetes.com">' .
          'https://esmmpreventdiabetes.com' .
-         '</a>.';
+         '</a>.</p>';
    }
    else if(PRODUCT == 'esmmwl' || PRODUCT == 'esmmwl2') {
       $text .= '<a href="https://esmmweighless.com">' .
          'https://esmmweighless.com' .
-         '</a>.';
+         '</a>.</p>';
    }
 
    return $text;

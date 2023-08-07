@@ -32,7 +32,7 @@ function offer_to_reset() {
       If you have forgotten your password, enter your e-mail address below and
       instructions to reset it will be e-mailed to you.
    </p>
-   <form action="reset.php" method="post">
+   <form action="reset.php" method="post" class="white-form">
    <p>
       <label for="email">E-mail address: </label>
       <input type="text" name="email" id="email" />
@@ -54,9 +54,9 @@ function send_reset_email() {
 
    sendById(get_user_id($_POST['email']), 1);
 
-   echo cnf_text("Password-changing instructions have been sent to your " .
+   echo cnf_text("<p>Password-changing instructions have been sent to your " .
          "email address. <b>Please check your \"spam\" or \"junk\" folder" .
-         "</b> if you do not see the message in your inbox.");
+         "</b> if you do not see the message in your inbox.</p>");
 }
 
 function enter_new_password() {
@@ -75,13 +75,13 @@ function enter_new_password() {
    ", array($_GET['email']));
    if($qr['email_reset'] !== $_GET['key']) {
       exit(
-         "Your key is invalid or out of date. Please follow the link in the " .
+         "<p>Your key is invalid or out of date. Please follow the link in the " .
          "most recent password reset email you received. To have a new " .
-         "password reset email sent, <a href=\"reset.php\">click here</a>."
+         "password reset email sent, <a href=\"reset.php\">click here</a>.</p>"
       );
    }
    ?>
-   <form action="reset.php" method="post">
+   <form action="reset.php" method="post" class="white-form">
       <p>
          <label for="password">Choose a password: </label>
          <input type="password" name="password" id="password" />
@@ -107,13 +107,13 @@ function enter_new_password() {
 function change_password() {
    global $ini;
    if($_POST['password'] !== $_POST['password2']) {
-      exit("Your password entries did not match.");
+      exit("<p>Your password entries did not match.</p>");
    }
    if(strlen($_POST['password']) < MIN_PW_LEN) {
-      exit("Password must be at least " . MIN_PW_LEN . " characters. ");
+      exit("<p>Password must be at least " . MIN_PW_LEN . " characters. </p>");
    }
    if(!email_already_in_db($_POST['email'])) {
-      exit("E-mail address not found.");
+      exit("<p>E-mail address was not found.</p>");
    }
    $qr = seleqt_one_record("
       select email_reset
@@ -121,7 +121,7 @@ function change_password() {
       where email = ?
    ", array($_POST['email']));
    if($qr['email_reset'] !== $_POST['key']) {
-      exit("Your key is invalid or out of date. Please try again.");
+      exit("<p>Your key is invalid or out of date. Please try again.</p>");
    }
 
    // If we haven't exited yet, then change password.
@@ -136,8 +136,8 @@ function change_password() {
    ");
    $sth->execute(array(pwhash($_POST['password']), $_POST['email']));
 
-   echo "Your password has been reset. You may now " .
-      "<a href=\"login.php\">log in</a>";
+   echo "<p>Your password has been reset. You may now " .
+      "<a href=\"login.php\">log in</a></p>";
 }
 
 ?>

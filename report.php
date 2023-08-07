@@ -12,11 +12,11 @@ function page_content() {
    participant_nav($qr['class_id'], $qr['class_source']);
 
    if(!isset($_GET['week'])) {
-      exit(err_text("No week specified."));
+      exit(err_text("<p>No week specified.</p>"));
    }
 
    if(empty($qr)) {
-      exit(err_text("User is not registered for a class."));
+      exit(err_text("<p>User is not registered for a class.</p>"));
    }
 
    global $report_date;
@@ -30,8 +30,8 @@ function page_content() {
    ?>
    <script>
       function delStratConfirm() {
-         return confirm('Are you sure you want to delete this strategy ' +
-               'from your list? This will delete it from all weeks.');
+         return confirm('<p>Are you sure you want to delete this strategy ' +
+               'from your list? This will delete it from all weeks.</p>');
       }
    </script>
    <?
@@ -49,7 +49,7 @@ function page_content() {
          echo cnf_text("Strategy deleted.");
       }
       else {
-         exit(err_text("A database error occurred deleting the strategy."));
+         exit(err_text("<p>A database error occurred deleting the strategy.</p>"));
       }
    }
 
@@ -75,6 +75,7 @@ function page_content() {
             and class_source = ?
             and week_id = ?
       ", array($_GET['user'], $qr['class_id'], $qr['class_source'], $_GET['week']));
+
       if($uqr['count'] == 0) {
          $dbh = pdo_connect($ini['db_prefix'] . "_insert");
          $sth = $dbh->prepare("
@@ -91,7 +92,7 @@ function page_content() {
             $qr['class_source'],
             $_GET['week']
          ))) {
-            exit(err_text("A database error occurred creating the report."));
+            exit(err_text("<p>A database error occurred creating the report.</p>"));
          }
       }
 
@@ -178,7 +179,7 @@ function page_content() {
                (strategy_description) values (?)
             ");
             if(!$sth->execute(array($_POST['newstrat_desc']))) {
-               echo err_text("A database error occurred with the strategy (1).");
+               echo err_text("<p>A database error occurred with the strategy (1).</p>");
             }
             $last_insert_id = $dbh->lastInsertId("wrc_strategies");
 
@@ -187,7 +188,7 @@ function page_content() {
                (user_id, strategy_id) values (?, ?)
             ");
             if(!$sth->execute(array($_GET['user'], $last_insert_id))) {
-               echo err_text("A database error occurred with the strategy (2).");
+               echo err_text("<p>A database error occurred with the strategy (2).</p>");
             }
 
             $sth = $dbh->prepare("
@@ -207,7 +208,7 @@ function page_content() {
                      null
                   )
             ))) {
-               echo err_text("A database error occurred with the strategy (3).");
+               echo err_text("<p>A database error occurred with the strategy (3).</p>");
             }
          }
       }
@@ -267,7 +268,8 @@ function page_content() {
          ?>&user=<?php
             echo htmlentities($_GET['user']);
          ?>"
-         method="post">
+         method="post"
+         class="white-form">
       <fieldset style="margin-bottom: 0.3em">
          <table id="metric-entry">
          <?php

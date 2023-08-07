@@ -24,7 +24,7 @@ function page_content() {
 
       ?>
       <script type="text/javascript" src="functions.js"></script>
-      <form action="multi_message.php" method="post">
+      <form action="multi_message.php" method="post" class="white-form">
          <fieldset>
             <legend>Message to multiple participants</legend>
             <?php
@@ -55,7 +55,7 @@ function page_content() {
    }
 
    else {
-      echo err_text("You did not select any participants.");
+      echo err_text("<p>You did not select any participants.</p>");
       ?><a href="rosters.php">Rosters</a><?php
    }
 }
