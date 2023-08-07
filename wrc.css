@@ -392,13 +392,6 @@ ul#classList li {
   float: left;
 }
 
-#fitbit-container {
-  height: 136px; /* 100% doesn't fill the parent fieldset. */
-  display: table-cell;
-  vertical-align: middle;
-  width: 320px;
-}
-
 .shirt-stock-div {
   margin: 0.4em;
   display: flex;

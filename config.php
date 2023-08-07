@@ -21,9 +21,6 @@ define('DATABASE_NAME', $ini['database_name']);
 define('WEBSITE_URL', $ini['website_url']);
 define('ENR_TBL', $ini['enrollment_table']);
 define('ADMIN_EMAIL', $ini['admin_email']);
-define('FITBIT_SVC', $ini['fitbit_svc']);
-define('FITBIT_CLIENT_ID', $ini['fitbit_client_id']);
-define('FITBIT_CLIENT_SECRET', $ini['fitbit_client_secret']);
 define('DB_PREFIX', $ini['db_prefix']);
 define('MYSQL_COMMAND', $ini['mysql_command']);
 
@@ -1115,15 +1112,8 @@ function array_to_csv($qr) {
 function logtxt($string) {
   global $ini;
 
-  if(strpos($_SERVER['SCRIPT_URL'], 'fitbit') !== false) {
-    $file = $ini['fitbit_logfile'];
-  }
-  else {
-    $file = $ini['logfile'];
-  }
-
   file_put_contents(
-    $file,
+   $ini['logfile'],
     date("Y-m-d G:i:s") . " " . $_SERVER['REMOTE_ADDR'] . " " .
         $_SESSION['user_id'] . " " . $string . "\n",
     FILE_APPEND
