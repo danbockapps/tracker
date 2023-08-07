@@ -132,7 +132,9 @@ select
    e.user_id as admin_db_user_id,
    e.class_id,
    zc.class_name,
-   e.voucher_code,
+   e.coup_voucher as voucher_code,
+   e.amount,
+   e.incentive_type,
    u.fname,
    u.lname,
    u.email,
@@ -156,12 +158,13 @@ select
       when u.height_inches > 0 then "Yes"
       else "No"
    end as height,
-   '' as incentive_type,
    s.shirt_desc,
    '' as dob,
    e.refund_method,
    e.refund_email_address,
-   e.refund_postal_address
+   e.refund_postal_address,
+   am.full_participation_phase1,
+   am.full_participation_phase2
 from
    registrants e
    inner join wrc_users u on e.tracker_user_id = u.user_id natural
@@ -480,7 +483,10 @@ select
    u.email as Email,
    e.zip as Zipcode,
    e.sex as Gender,
-   e.race as Race,
+   case
+      when e.race like "%,%" then 'M'
+      else e.race
+   end as Race,
    e.ethnicity as Ethnicity,
    e.age as Age,
    e.education as Education_Level,
@@ -497,7 +503,7 @@ select
    a.attendance_year,
    '' as Termination,
    e.cdc as CDC_Risk_Score,
-   u.height_inches as Height,
+   round(u.height_inches, 0) as Height,
    round(frww.weight, 1) as Beginning_Weight,
    round(lrww.weight, 1) as Current_Weight,
    round(lrww.weight, 1) as Ending_Weight,
@@ -513,6 +519,7 @@ select
    '' as Ending_Fasting_Glucose,
    e.syst_start as Syst_Start,
    e.syst_end as Syst_End,
+   e.dias_start as Dias_Start,
    e.dias_end as Dias_End,
    round(apa.pa, 0) as Physical_Activity_Minutes_Avg,
    round(ast.avgsteps, 0) as Steps_Per_Week_Avg,
