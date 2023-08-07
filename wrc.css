@@ -319,12 +319,9 @@ table.pl td {
 }
 
 #footer {
+  margin: 1em 0;
   width: 100%;
   text-align: center;
-}
-#footer a:link,
-#footer a:visited {
-  color: #fff;
 }
 
 .hidden {

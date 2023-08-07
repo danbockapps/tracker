@@ -48,6 +48,13 @@ function generate_page($require_logged_in, $require_logged_out, $shownav=true) {
          href="universal.css"
       />
 
+      <?php if(PRODUCT == 'esmmwl') { ?>
+         <link
+            rel="stylesheet"
+            href="dashboard.css"
+         />
+      <?php } ?>
+
       <?php if(PRODUCT == 'dpp') { ?>
          <link
             rel="stylesheet"
