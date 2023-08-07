@@ -36,10 +36,6 @@ function generate_page($require_logged_in, $require_logged_out, $shownav=true) {
          rel="stylesheet"
       />
       <link
-         href="https://fonts.googleapis.com/css?family=Lato:300,400,400i,700,700i"
-         rel="stylesheet"
-      />
-      <link
          rel="stylesheet"
          href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css"
       />
@@ -61,13 +57,19 @@ function generate_page($require_logged_in, $require_logged_out, $shownav=true) {
             rel="stylesheet"
             href="portal.css"
          />
+         <link
+            href="https://fonts.googleapis.com/css?family=Lato:300,400,400i,700,700i"
+            rel="stylesheet"
+         />
       <?php } ?>
+
       <?php if(PRODUCT == 'esmmwl2') { ?>
          <link
             rel="stylesheet"
             href="teal.css"
          />
       <?php } ?>
+      
       <?php template_js(); ?>
    </head>
    <body>
