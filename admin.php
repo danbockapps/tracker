@@ -386,6 +386,10 @@ else {
    ", array());
 ?>
 
+<script>
+
+</script>
+
 <form action="download_report.php" method="get" class="attendance-reports-section white-form">
    <?php
       for($i=0; $i<count($aqr); $i++) {
@@ -418,24 +422,23 @@ else {
          // // // DONE SETTING FIRSTS AND LASTS // // //
 
          if($firstOfYear) {
-            ?><a href="#" class="showhide_closed" cookie-name="<?php
+            ?><div class="attendance-reports-header"><?php
                echo date('Y', strtotime($row['start_dttm']));
-            ?>"><?php
-               echo date('Y', strtotime($row['start_dttm']));
-            ?></a><div class="attendance-reports-section"><?php
+            ?></div><div class="attendance-reports-section"><?php
          }
 
          if($firstOfMonth) {
-            ?><a href="#" class="showhide_closed" cookie-name="<?php
-               echo date('YF', strtotime($row['start_dttm']));
-            ?>"><?php
+            ?><div class="attendance-reports-header"><?php
                echo date('F', strtotime($row['start_dttm']));
-            ?></a><div class="attendance-reports-section"><?php
+            ?></div><div class="attendance-reports-section"><?php
          }
 
-         ?><input type="checkbox" name="class[<?php
-            echo $row['class_id'];
-         ?>]"><strong><?php
+         ?><input
+            type="checkbox"
+            name="class[<?php echo $row['class_id']; ?>]"
+            data-year="<?php echo date('Y', strtotime($row['start_dttm'])); ?>"
+            data-month="<?php echo date('F', strtotime($row['start_dttm'])); ?>"
+         ><strong><?php
             echo $row['class_id'] . ". ";
          ?></strong><?php
             echo class_times($row['start_dttm']) . " (" . $row['fname'] . " " .

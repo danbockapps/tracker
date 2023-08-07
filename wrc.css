@@ -376,13 +376,13 @@ ul#classList li {
   cursor: pointer;
 }
 
+.attendance-reports-header {
+  padding-top: 1.8em;
+  padding-bottom: 0.2em;
+}
+
 .attendance-reports-section {
   padding-left: 1em;
-}
-.attendance-reports-section .showhide_closed {
-  color: black;
-  font-size: medium;
-  text-decoration: none;
 }
 
 #metric-entry {
