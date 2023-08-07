@@ -147,9 +147,8 @@ function generate_page($require_logged_in, $require_logged_out, $shownav=true) {
 }
 
 function containerClasses() {
-   global $containerClasses;
-   if(isset($containerClasses)) {
-      echo 'class = "' . $containerClasses . '"';
+   if(PRODUCT == 'dpp' && strpos($_SERVER['REQUEST_URI'], 'login.php') != false) {
+      echo 'class = "loginPage"';
    }
 }
 

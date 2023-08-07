@@ -3,8 +3,6 @@ if(!isset($loginphp_mode)) {
    $loginphp_mode = "";
 }
 
-$containerClasses = "loginPage";
-
 require_once($loginphp_mode . "template.php");
 generate_page(false, true);
 
