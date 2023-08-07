@@ -94,11 +94,11 @@ function page_content() {
       }
 
       foreach ($error as $values) {
-         echo '<li class="error">'.$values.'</li>';
+         echo '<div class="error">'.$values.'</div>';
       }
 
       if(isset($msg_error)) {
-         echo '<li class="error">'.$msg_error.' </li>';
+         echo '<div class="error">'.$msg_error.' </div>';
       }
    } // End of the main Submit conditional.
 

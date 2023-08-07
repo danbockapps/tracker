@@ -15,7 +15,7 @@ a,
 .error {
   background-color: #fee;
   color: #f00;
-  padding: 0.3em;
+  padding: 0.3em 1em;
   margin-bottom: 0.3em;
 }
 
