@@ -32,7 +32,9 @@ function postAttendance() {
   // Copied from attendance_ajax.php on 2/23/2020
   if(can_access_class($_POST['class_id'], 'w')) {
     $phase1before = attendancePhases($_POST['user_id'], $_POST['class_id'])['phase1'];
-    $perfectCountBefore = getPerfectCount($_POST['user_id'], $_POST['class_id']);
+    
+    // Disabling this for now for WL and WL2 8/9/2023 
+    // $perfectCountBefore = getPerfectCount($_POST['user_id'], $_POST['class_id']);
  
     $dbh = pdo_connect(DB_PREFIX . '_insert');
     $sth = $dbh->prepare('
@@ -60,13 +62,16 @@ function postAttendance() {
       $phase1after = attendancePhases($_POST['user_id'], $_POST['class_id'])['phase1'];
 
       if (
-        (PRODUCT == 'dpp' && $phase1before == 8 && $phase1after == 9) ||
+        (PRODUCT == 'dpp' && $phase1before == 8 && $phase1after == 9) 
+        /* Disabling this for now for WL and WL2 8/9/2023 
+        ||
         (PRODUCT == 'esmmwl' &&
             $perfectCountBefore == 13 &&
             getPerfectCount($_POST['user_id'], $_POST['class_id']) == 14) ||
         (PRODUCT == 'esmmwl2' &&
             $perfectCountBefore == 10 &&
             getPerfectCount($_POST['user_id'], $_POST['class_id']) == 11)
+            */
       ) {
           logtxt('sending...');
           sendById($_POST['user_id'], 6, -1, true);
