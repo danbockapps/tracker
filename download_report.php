@@ -31,6 +31,7 @@ $whitelist = [
    'performance_file',
    'all_aso_participants',
    'asoncms',
+   'physact_minutes',
    $ini['client1']
 ];
 
@@ -420,7 +421,17 @@ else if($_GET['report'] == $ini['client1']) {
       where c.Coupon_Code = ? and r.paid != '0'
    ", array($_GET['voucher_code']));
 }
-
+else if($_GET['report'] == 'physact_minutes') {
+   $qr = pdo_seleqt('
+      select
+         user_id,
+         class_id,
+         sum(physact_minutes)
+      from reports_with_fitbit_hybrid
+      group by user_id, class_id
+      order by class_id, user_id
+   ', array());
+}
 
 if(empty($qr)) {
    exit("No report returned.");
