@@ -376,15 +376,15 @@ ul#classList li {
   cursor: pointer;
 }
 
+.inline-link {
+  margin-left: 0.5em;
+  font-size: 75%;
+}
+
 .attendance-reports-header {
   font-size: 120%;
   padding-top: 1.8em;
   padding-bottom: 0.2em;
-}
-
-.attendance-reports-header > .selectYearLink,
-.attendance-reports-header > .selectMonthLink {
-  font-size: 75%;
 }
 
 .attendance-reports-section {

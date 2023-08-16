@@ -423,8 +423,13 @@ else {
          if($firstOfYear) { ?>
             <div class="attendance-reports-header">
                <?php echo $year; ?>
-               <a href="#" class="selectYearLink" data-year="<?php echo $year; ?>">
+
+               <a href="#" class="selectYearLink inline-link" data-year="<?php echo $year; ?>">
                   Select all
+               </a>
+
+               <a href="#" class="selectYearLink inline-link" data-year="<?php echo $year; ?>" data-deselect="true">
+                  Deselect all
                </a>
             </div>
 
@@ -434,8 +439,13 @@ else {
          if($firstOfMonth) { ?>
             <div class="attendance-reports-header">
                <?php echo $month; ?>
-               <a href="#" class="selectMonthLink" data-year="<?php echo $year; ?>" data-month="<?php echo $month; ?>">
+
+               <a href="#" class="selectMonthLink inline-link" data-year="<?php echo $year; ?>" data-month="<?php echo $month; ?>">
                   Select all
+               </a>
+
+               <a href="#" class="selectMonthLink inline-link" data-year="<?php echo $year; ?>" data-month="<?php echo $month; ?>" data-deselect="true">
+                  Deselect all
                </a>
             </div>
 
@@ -456,7 +466,7 @@ else {
             echo (PRODUCT == 'dpp' ? 'attendance3' : 'attendance2');
          ?>&class=<?php
             echo $row['class_id'];
-         ?>"> web view</a><br /><?php
+         ?>" class="inline-link">Web view</a><br /><?php
 
          
          if($lastOfMonth) {
@@ -480,26 +490,28 @@ else {
 </form>
 
 <script>
-function checkCheckboxesByMonthYear(month, year) {
+function checkCheckboxesByMonthYear(month, year, deselect) {
    // Select all checkboxes with the specified data-month and data-year attributes
-   $(`input[type="checkbox"][data-month="${month}"][data-year="${year}"]`).prop('checked', true);
+   $(`input[type="checkbox"][data-month="${month}"][data-year="${year}"]`).prop('checked', !deselect);
 }
 
-function checkCheckboxesByYear(year) {
-   $(`input[type="checkbox"][data-year="${year}"]`).prop('checked', true);
+function checkCheckboxesByYear(year, deselect) {
+   $(`input[type="checkbox"][data-year="${year}"]`).prop('checked', !deselect);
 }
 
 $('.selectMonthLink').on('click', function(event) {
    event.preventDefault(); // Prevent the default link behavior
    const month = $(this).data('month'); // Get the month from data-month attribute
    const year = $(this).data('year');   // Get the year from data-year attribute
-   checkCheckboxesByMonthYear(month, year); // Call the function with the selected month and year
+   const deselect = $(this).data('deselect'); // Get the deselect value from data-deselect attribute
+   checkCheckboxesByMonthYear(month, year, deselect ?? false); // Call the function with the selected month and year
 });
 
 $('.selectYearLink').on('click', function(event) {
    event.preventDefault();
    const year = $(this).data('year');
-   checkCheckboxesByYear(year);
+   const deselect = $(this).data('deselect');
+   checkCheckboxesByYear(year, deselect ?? false);
 });
 </script>
 

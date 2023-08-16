@@ -42,15 +42,6 @@ else if(PRODUCT == 'esmmwl2') {
    define('PRODUCT_TITLE', 'My Dashboard 2');
 }
 
-if (get_magic_quotes_gpc() === 1) {
-   // Strip slashes on ESMMWL server
-   foreach($_POST as $key => $post_item) {
-      if(!is_array($_POST[$key])) {
-         $_POST[$key] = stripslashes($_POST[$key]);
-      }
-   }
-}
-
 function is_email_address($email) {
    return filter_var($email, FILTER_VALIDATE_EMAIL);
 }
