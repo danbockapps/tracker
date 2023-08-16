@@ -126,6 +126,18 @@ group by
    class_source;
 
 create
+or replace view total_physact_minutes as
+select
+   user_id,
+   class_id,
+   sum(pa0) as physact_minutes
+from
+   cdc_transposed_reports
+group by
+   user_id,
+   class_id;
+
+create
 or replace view attendance3 as
 select
    e.tracker_user_id,
@@ -164,7 +176,8 @@ select
    e.refund_email_address,
    e.refund_postal_address,
    am.full_participation_phase1,
-   am.full_participation_phase2
+   am.full_participation_phase2,
+   tpm.physact_minutes
 from
    registrants e
    inner join wrc_users u on e.tracker_user_id = u.user_id natural
@@ -184,6 +197,8 @@ from
    and month(c.start_dttm) = am.month
    and year(c.start_dttm) = am.year
    left join shirts s on e.shirt_id = s.shirt_id
+   left join total_physact_minutes tpm on e.tracker_user_id = tpm.user_id
+   and e.class_id = tpm.class_id
 where
    instrs.instructor = 1 -- datediff on c.start_dttm was here. Not sure why.
 order by
@@ -317,23 +332,20 @@ select
    c.DATE,
    case
       when c.DATE is not null
-      and c.WEIGHT is null
-      then 999
+      and c.WEIGHT is null then 999
       else c.WEIGHT
    end as WEIGHT,
    case
       when c.DATE is not null
       and c.WEIGHT is not null
-      and c.PA is null
-      then 0
+      and c.PA is null then 0
       else c.PA
    end as PA,
    c.a1c,
    case
       when c.DATE is not null
       and c.WEIGHT is not null
-      and c.PA is not null
-      then 1
+      and c.PA is not null then 1
       else 0
    end as FULL_PARTICIPATION
 from
@@ -452,22 +464,28 @@ group by
    month(c.start_dttm),
    year(c.start_dttm);
 
-create or replace view attendance_months_years0 as select
+create
+or replace view attendance_months_years0 as
+select
    user_id,
    month,
    year,
    month(attendance_date) as attendance_month,
    year(attendance_date) as attendance_year
-from attendance_summary3;
+from
+   attendance_summary3;
 
-create or replace view attendance_months_years as select
+create
+or replace view attendance_months_years as
+select
    user_id,
    month,
    year,
    attendance_month,
    attendance_year,
    count(*) as Attendance_CurrentMonth
-from attendance_months_years0
+from
+   attendance_months_years0
 group by
    user_id,
    month,
@@ -507,9 +525,18 @@ select
    round(frww.weight, 1) as Beginning_Weight,
    round(lrww.weight, 1) as Current_Weight,
    round(lrww.weight, 1) as Ending_Weight,
-   round(frww.weight * 703 / (u.height_inches * u.height_inches), 2) as Beginning_BMI,
-   round(lrww.weight * 703 / (u.height_inches * u.height_inches), 2) as Current_BMI,
-   round(lrww.weight * 703 / (u.height_inches * u.height_inches), 2) as Ending_BMI,
+   round(
+      frww.weight * 703 / (u.height_inches * u.height_inches),
+      2
+   ) as Beginning_BMI,
+   round(
+      lrww.weight * 703 / (u.height_inches * u.height_inches),
+      2
+   ) as Current_BMI,
+   round(
+      lrww.weight * 703 / (u.height_inches * u.height_inches),
+      2
+   ) as Ending_BMI,
    round(e.waist_start, 0) as Beginning_Waist_Circumference,
    round(e.waist_end, 0) as Ending_Waist_Circumference,
    substring(e.smart_goal, 1, 255) as Program_Goal,
@@ -534,10 +561,9 @@ from
    left join last_reports_with_a1cs lrwa using (user_id, class_id)
    left join average_pa apa using(user_id, class_id)
    left join average_steps ast using (user_id, class_id)
-   left join attendance_months_years a on
-      a.month = month(c.start_dttm) and
-      a.year = year(c.start_dttm) and
-      a.user_id = e.user_id
+   left join attendance_months_years a on a.month = month(c.start_dttm)
+   and a.year = year(c.start_dttm)
+   and a.user_id = e.user_id
 where
    e.voucher_code = 'FIBCBSNC'
    and c.start_dttm < now()
