@@ -426,8 +426,8 @@ else if($_GET['report'] == 'physact_minutes') {
       select
          user_id,
          class_id,
-         sum(physact_minutes)
-      from reports_with_fitbit_hybrid
+         sum(pa0) as physact_minutes
+      from cdc_transposed_reports
       group by user_id, class_id
       order by class_id, user_id
    ', array());
