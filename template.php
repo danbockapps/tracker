@@ -41,7 +41,7 @@ function generate_page($require_logged_in, $require_logged_out, $shownav=true) {
       />
       <link
          rel="stylesheet"
-         href="wrc.css"
+         href="wrc.css?v=1"
       />
       <link
          rel="stylesheet"
