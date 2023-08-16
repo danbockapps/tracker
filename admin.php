@@ -424,11 +424,20 @@ else {
             <div class="attendance-reports-header">
                <?php echo $year; ?>
 
-               <a href="#" class="selectYearLink inline-link" data-year="<?php echo $year; ?>">
+               <a
+                  href="#"
+                  class="selectYearLink inline-link"
+                  data-year="<?php echo $year; ?>"
+               >
                   Select all
                </a>
 
-               <a href="#" class="selectYearLink inline-link" data-year="<?php echo $year; ?>" data-deselect="true">
+               <a
+                  href="#"
+                  class="selectYearLink inline-link"
+                  data-year="<?php echo $year; ?>"
+                  data-deselect="true"
+               >
                   Deselect all
                </a>
             </div>
@@ -440,11 +449,22 @@ else {
             <div class="attendance-reports-header">
                <?php echo $month; ?>
 
-               <a href="#" class="selectMonthLink inline-link" data-year="<?php echo $year; ?>" data-month="<?php echo $month; ?>">
+               <a
+                  href="#"
+                  class="selectMonthLink inline-link"
+                  data-year="<?php echo $year; ?>"
+                  data-month="<?php echo $month; ?>"
+               >
                   Select all
                </a>
 
-               <a href="#" class="selectMonthLink inline-link" data-year="<?php echo $year; ?>" data-month="<?php echo $month; ?>" data-deselect="true">
+               <a
+                  href="#"
+                  class="selectMonthLink inline-link"
+                  data-year="<?php echo $year; ?>"
+                  data-month="<?php echo $month; ?>"
+                  data-deselect="true"
+               >
                   Deselect all
                </a>
             </div>
