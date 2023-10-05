@@ -246,12 +246,7 @@ select
       else null
    end as ORGCODE,
    r.user_id as PARTICIP,
-   '' as ENROLL,
-   '' as PAYER,
    r.state as STATE,
-   '' as GLUCTEST,
-   '' as GDM,
-   '' as RISKTEST,
    r.age as AGE,
    case
       r.ethnicity
@@ -259,19 +254,13 @@ select
       when 'Not Hispanic' then 2
       else 9
    end as ETHNIC,
-   '' as AIAN,
-   '' as ASIAN,
-   '' as BLACK,
-   '' as NHOPI,
-   '' as WHITE,
    case
       r.sex
       when 'M' then 1
       when 'F' then 2
-      else null
+      else 9
    end as SEX,
    u.height_inches as HEIGHT,
-   '' as EDU,
    case
       when t.attendance_type = 2 then 2 -- makeup class
       when c.class_type in (1, 2) then 3 -- online
@@ -298,7 +287,42 @@ select
       when c.class_type in (1, 2) then t.pa0
       when c.class_type in (4, 5) then t.pai
    end as PA,
-   t.a1c
+   t.a1c,
+   -- Fields added 10/5/2023
+   r.motivation as ENROLLMOT,
+   r.healthcare_provider as ENROLLHC,
+   r.health_insurance as PAYERSOURCE,
+   r.glucoseScore as GLUCTEST,
+   r.gestationalDiabetes as GDM,
+   r.cdc as RISKTEST,
+   case
+      when registrants.race like "%AI%" then 1
+      else 2
+   end as AIAN,
+   case
+      when registrants.race like "%AI%" then 1
+      else 2
+   end as ASIAN,
+   case
+      when registrants.race like "%AA%" then 1
+      else 2
+   end as BLACK,
+   case
+      when registrants.race like "%PI%" then 1
+      else 2
+   end as NHOPI,
+   case
+      when registrants.race like "%C%" then 1
+      else 2
+   end as WHITE,
+   case
+      when registrants.gender = 'M' then 1
+      when registrants.gender = 'F' then 2
+      when registrants.gender = 'T' then 3
+      else 9
+   end as GENDER,
+   registrants.education as EDU,
+   -- End fields added 10/5/2023
 from
    cdc_transposed_reports t
    inner join wrc_users u on t.user_id = u.user_id
@@ -310,10 +334,12 @@ or replace view cdc_report as
 select
    c.ORGCODE,
    c.PARTICIP,
-   c.ENROLL,
-   c.PAYER,
+   c.ENROLLMOT,
+   c.ENROLLHC,
+   c.PAYERSOURCE,
    c.STATE,
    c.GLUCTEST,
+   c.a1c,
    c.GDM,
    c.RISKTEST,
    c.AGE,
@@ -324,6 +350,7 @@ select
    c.NHOPI,
    c.WHITE,
    c.SEX,
+   c.GENDER,
    c.HEIGHT,
    c.EDU,
    c.DMODE,
@@ -341,13 +368,6 @@ select
       and c.PA is null then 0
       else c.PA
    end as PA,
-   c.a1c,
-   case
-      when c.DATE is not null
-      and c.WEIGHT is not null
-      and c.PA is not null then 1
-      else 0
-   end as FULL_PARTICIPATION
 from
    cdc_report0 c;
 
