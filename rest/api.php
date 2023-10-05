@@ -14,8 +14,8 @@ $fetchPost = json_decode(file_get_contents('php://input'), true);
 
 // Initialize array that will be returned.
 $ok_array = array(
-  q => $_GET['q'],
-  responseString => "OK"
+  'q' => $_GET['q'],
+  'responseString' => "OK"
 );
 
 $start_time = microtime(true);
