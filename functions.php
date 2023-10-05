@@ -494,4 +494,42 @@ function execLog($command) {
    print_r($output);
 }
 
+function printPasswordInstructions() {
+   ?>
+   <p>
+      Passwords must be at least <?php echo MIN_PW_LEN; ?> characters long and
+      contain at least one uppercase letter, one lowercase letter, one number,
+      and one special character. Passwords must not contain 5 consecutive digits or single quotes.
+   </p>
+   <?php
+}
+
+function getPasswordErrors($password, $password2) {
+   $error = array();
+
+   if (empty($password)) {
+      $error[] = '<p>Please enter your password. </p>';
+   }
+   else if(empty($password2)) {
+      $error[] = '<p>Please enter your password twice. </p>';
+   }
+   else if($password !== $password2) {
+      $error[] = "<p>Please enter the same password twice. </p>";
+   }
+   else if(strlen($password) < MIN_PW_LEN) {
+      $error[] = "<p>Password must be at least " . MIN_PW_LEN . " characters. </p>";
+   }
+   else if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=!]).*$/', $password)) {
+      $error[] = "<p>Password must contain at least one uppercase letter, one lowercase letter, one number, one special character.</p>";
+   }
+   else if (preg_match('/\d{5}/', $password)) {
+      $error[] = "<p>Password must not contain 5 consecutive digits.</p>";
+   }
+   else if (strpos($password, "'") !== false) {
+      $error[] = "<p>Password must not contain a single quote.</p>";
+   }
+
+   return $error;
+}
+
 ?>

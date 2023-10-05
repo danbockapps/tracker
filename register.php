@@ -55,21 +55,8 @@ function page_content() {
          $email = $_POST['email'];
       }
 
-      if (empty($_POST['password'])) {
-         $error[] = '<p>Please enter your password. </p>';
-      }
-      else if(empty($_POST['password2'])) {
-         $error[] = '<p>Please enter your password twice. </p>';
-      }
-      else if(strlen($_POST['password']) < MIN_PW_LEN) {
-         $error[] = "<p>Password must be at least " . MIN_PW_LEN . " characters. </p>";
-      }
-      else if($_POST['password'] !== $_POST['password2']) {
-         $error[] = "<p>Please enter the same password twice. </p>";
-      }
-      else {
-         $password = $_POST['password'];
-      }
+      # append the results of getPasswordErrors
+      $error = array_merge($error, getPasswordErrors($_POST['password'], $_POST['password2']));
 
       if (empty($error)) { //send to Database if there's no error
          // Create a unique  activation code:
@@ -140,6 +127,9 @@ function page_content() {
             }
          ?>/>
       </p>
+
+      <?php printPasswordInstructions(); ?>
+
       <p>
          <label for="password">Choose a password (at least 8 characters): </label>
          <input type="password" name="password" id="password" />

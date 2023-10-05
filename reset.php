@@ -80,6 +80,8 @@ function enter_new_password() {
          "password reset email sent, <a href=\"reset.php\">click here</a>.</p>"
       );
    }
+   
+   printPasswordInstructions();
    ?>
    <form action="reset.php" method="post" class="white-form">
       <p>
@@ -106,12 +108,16 @@ function enter_new_password() {
 
 function change_password() {
    global $ini;
-   if($_POST['password'] !== $_POST['password2']) {
-      exit("<p>Your password entries did not match.</p>");
+
+   $error = getPasswordErrors($_POST['password'], $_POST['password2']);
+
+   if(!empty($error)) {
+      foreach($error as $key => $values) {
+         echo err_text($values);
+      }
+      exit();
    }
-   if(strlen($_POST['password']) < MIN_PW_LEN) {
-      exit("<p>Password must be at least " . MIN_PW_LEN . " characters. </p>");
-   }
+   
    if(!email_already_in_db($_POST['email'])) {
       exit("<p>E-mail address was not found.</p>");
    }

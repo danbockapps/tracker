@@ -26,18 +26,14 @@ function page_content() {
 
    else if(isset($_POST['formsubmitted'])) {
       $back = " <p>Please click your browser's back button and try again.</p>";
-      if (empty($_POST['password'])) {
-         echo err_text('Please enter your password.' . $back);
-      }
-      else if(empty($_POST['password2'])) {
-         echo err_text('Please enter your password twice.' . $back);
-      }
-      else if(strlen($_POST['password']) < MIN_PW_LEN) {
-         echo err_text("Password must be at least " . MIN_PW_LEN .
-               " characters. " . $back);
-      }
-      else if($_POST['password'] !== $_POST['password2']) {
-         echo err_text("Please enter the same password twice." . $back);
+
+      $error = getPasswordErrors($_POST['password'], $_POST['password2']);
+
+      if(!empty($error)) {
+         foreach($error as $key => $values) {
+            echo err_text($values . $back);
+         }
+         exit();
       }
 
       else {
@@ -113,6 +109,7 @@ function page_content() {
                </tr>
                <tr>
                   <td>
+                     <?php printPasswordInstructions(); ?>
                      <b>Choose a password (at least 8 characters):</b>
                   </td>
                   <td>
