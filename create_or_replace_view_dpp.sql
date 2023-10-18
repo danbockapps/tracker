@@ -296,33 +296,32 @@ select
    r.gestationalDiabetes as GDM,
    r.cdc as RISKTEST,
    case
-      when registrants.race like "%AI%" then 1
+      when r.race like "%AI%" then 1
       else 2
    end as AIAN,
    case
-      when registrants.race like "%AI%" then 1
+      when r.race like "%AS%" then 1
       else 2
    end as ASIAN,
    case
-      when registrants.race like "%AA%" then 1
+      when r.race like "%AA%" then 1
       else 2
    end as BLACK,
    case
-      when registrants.race like "%PI%" then 1
+      when r.race like "%PI%" then 1
       else 2
    end as NHOPI,
    case
-      when registrants.race like "%C%" then 1
+      when r.race like "%C%" then 1
       else 2
    end as WHITE,
    case
-      when registrants.gender = 'M' then 1
-      when registrants.gender = 'F' then 2
-      when registrants.gender = 'T' then 3
+      when r.gender = 'M' then 1
+      when r.gender = 'F' then 2
+      when r.gender = 'T' then 3
       else 9
    end as GENDER,
-   registrants.education as EDU,
-   -- End fields added 10/5/2023
+   r.education as EDU -- End fields added 10/5/2023
 from
    cdc_transposed_reports t
    inner join wrc_users u on t.user_id = u.user_id
@@ -367,7 +366,7 @@ select
       and c.WEIGHT is not null
       and c.PA is null then 0
       else c.PA
-   end as PA,
+   end as PA
 from
    cdc_report0 c;
 
