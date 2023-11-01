@@ -10,7 +10,7 @@ $recipient = getRecipient();
 $subject = getSubject();
 $msg = getMessage($argv[1], $argv[2], $argv[3], $recipient);
 
-if(in_array($argv[2], array(1, 2, 3, 6, 7))) {
+if(in_array($argv[2], array(1, 2, 3, 6, 7, 8))) {
    syncMailHtml($recipient, $subject, $msg);
 }
 else {
@@ -111,28 +111,31 @@ function getMessage($recipientId, $messageId, $participantId, $recipientEmail) {
       }
    }
    else if ($messageId == 7) {
-      $qr = seleqt_one_record("
-         select u.fname, u.email, u.activation, e.voucher_code
-         from wrc_users natural join " . ENR_VIEW . " e
-         where user_id = ?
-      ", $recipientId);
+      $qr = seleqt_one_record(
+         "select fname, activation from wrc_users where user_id = ?",
+         $recipientId
+      );
 
       switch(PRODUCT) {
          case 'dpp':
-            $message = welcomeEmailPd($qr['fname'], $qr['email'], $qr['activation']);
+            $message = welcomeEmailPd($qr['fname'], $recipientEmail, $qr['activation']);
             break;
          case 'esmmwl':
-            $message = welcomeEmailWl(
-               $qr['fname'],
-               $qr['email'],
-               $qr['activation'],
-               stripos($qr['voucher_code'], "ASO") === true
-            );
+            $message = welcomeEmailWl($qr['fname'], $recipientEmail, $qr['activation'], false);
             break;
          case 'esmmwl2':
-            $message = welcomeEmailWl2($qr['fname'], $qr['email'], $qr['activation']);
+            $message = welcomeEmailWl2($qr['fname'], $recipientEmail, $qr['activation']);
             break;
       }
+   }
+   else if($messageId == 8) {
+      // ESMMWL message for ASO participants
+      $qr = seleqt_one_record(
+         "select fname, activation from wrc_users where user_id = ?",
+         $recipientId
+      );
+
+      $message = welcomeEmailWl($qr['fname'], $recipientEmail, $qr['activation'], true);
    }
    else {
       exit('Invalid message ID.');

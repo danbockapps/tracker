@@ -34,7 +34,7 @@ if(count($qr) > 0) {
 }
 
 foreach($qr as $row) {
-   sendById($row['user_id'], 7);
+   sendById($row['user_id'], stripos($row['voucher_code'], "ASO") === false ? 7 : 8);
 
    $dbh = pdo_connect($ini['db_prefix'] . "_update");
    $sth = $dbh->prepare("
