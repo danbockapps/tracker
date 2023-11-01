@@ -34,30 +34,7 @@ if(count($qr) > 0) {
 }
 
 foreach($qr as $row) {
-   $msg = "Hello " . $row['fname'] . "," . $w1;
-
-   if($row['activation'] == null) {
-      // Old participant already has an activated Tracker account
-      $msg .= $w1o1 . WEBSITE_URL . $w1o2;
-   }
-   else {
-      // New participant needs to activate her Tracker account
-      $msg .= $w1n1 . WEBSITE_URL . "/setpw.php?email=" .
-            urlencode($row['email']) . "&key=" . $row['activation'] . $w1n2;
-   }
-
-   $msg .= $w2;
-
-   if(stripos($row['voucher_code'], "ASO") === false) {
-      // Non-client1 participant
-      $msg .= $w3 . $w4;
-   }
-   else {
-      // client1 participant
-      $msg .= "*" . $w3 . $w3b . $w4;
-   }
-
-   syncMail($row['email'], "Eat Smart, Move More, Weigh Less My Dashboard", $msg);
+   sendById($row['user_id'], 7);
 
    $dbh = pdo_connect($ini['db_prefix'] . "_update");
    $sth = $dbh->prepare("

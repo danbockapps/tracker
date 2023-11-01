@@ -10,7 +10,7 @@ $recipient = getRecipient();
 $subject = getSubject();
 $msg = getMessage($argv[1], $argv[2], $argv[3], $recipient);
 
-if(in_array($argv[2], array(1, 2, 3, 6))) {
+if(in_array($argv[2], array(1, 2, 3, 6, 7))) {
    syncMailHtml($recipient, $subject, $msg);
 }
 else {
@@ -57,6 +57,9 @@ function getSubject() {
                return PRODUCT_TITLE . ' - Attend your final class to earn a t-shirt';
                break;
          }
+      case 7:
+         return PROGRAM_NAME . ' ' . PRODUCT_TITLE;
+         break;
       default:
          exit('Invalid message ID.');
    }
@@ -104,6 +107,19 @@ function getMessage($recipientId, $messageId, $participantId, $recipientEmail) {
             break;
          case 'esmmwl2':
             $message = earnedShirtWl2();
+            break;
+      }
+   }
+   else if ($messageId == 7) {
+      switch(PRODUCT) {
+         case 'dpp':
+            $message = welcomeEmailPd();
+            break;
+         case 'esmmwl':
+            $message = welcomeEmailWl();
+            break;
+         case 'esmmwl2':
+            $message = welcomeEmailWl2();
             break;
       }
    }
