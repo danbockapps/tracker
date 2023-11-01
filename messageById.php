@@ -111,15 +111,26 @@ function getMessage($recipientId, $messageId, $participantId, $recipientEmail) {
       }
    }
    else if ($messageId == 7) {
+      $qr = seleqt_one_record("
+         select u.fname, u.email, u.activation, e.voucher_code
+         from wrc_users natural join " . ENR_VIEW . " e
+         where user_id = ?
+      ", $recipientId);
+
       switch(PRODUCT) {
          case 'dpp':
-            $message = welcomeEmailPd();
+            $message = welcomeEmailPd($qr['fname'], $qr['email'], $qr['activation']);
             break;
          case 'esmmwl':
-            $message = welcomeEmailWl();
+            $message = welcomeEmailWl(
+               $qr['fname'],
+               $qr['email'],
+               $qr['activation'],
+               stripos($qr['voucher_code'], "ASO") === true
+            );
             break;
          case 'esmmwl2':
-            $message = welcomeEmailWl2();
+            $message = welcomeEmailWl2($qr['fname'], $qr['email'], $qr['activation']);
             break;
       }
    }
