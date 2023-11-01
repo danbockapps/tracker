@@ -39,10 +39,6 @@ p {
   margin-right: 30%;
 }
 
-.btn-small-margin {
-  margin: 1em;
-}
-
 </style>
 </head>
 EOD;
@@ -275,7 +271,7 @@ $head
     <ol>
       <li>
         Click here:
-        <a class="btn btn-small-margin" style="color: #ffffff" href="$setPwUrl">
+        <a class="btn btn-big-margin" style="color: #ffffff" href="$setPwUrl">
           Set your password
         </a>
       </li>
@@ -338,7 +334,7 @@ EOD;
         To log into My Dashboard:
         <li>
           1. Click here:
-          <a class="btn btn-small-margin" style="color: #ffffff" href="$websiteUrl">
+          <a class="btn btn-big-margin" style="color: #ffffff" href="$websiteUrl">
             My Dashboard
           </a>
         </li>
@@ -356,7 +352,7 @@ EOD;
         To activate your My Dashboard:
         <li>
           1. Click here:
-          <a class="btn btn-small-margin" style="color: #ffffff" href="$setPwUrl">
+          <a class="btn btn-big-margin" style="color: #ffffff" href="$setPwUrl">
             Set your password
           </a>
         </li>
