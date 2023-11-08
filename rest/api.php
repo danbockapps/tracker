@@ -31,6 +31,8 @@ logtxt(
   " " .
   removePassword($contents) .
   " " .
+  json_encode($fetchPost) .
+  " " .
   strlen($response)
 );
 

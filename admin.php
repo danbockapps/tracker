@@ -224,23 +224,16 @@ else {
                )
          ", array($_GET['pl_name'], $_GET['pl_name']));
          ?>
+
+         <script>
+            var plFname = <?php echo json_encode($plqr['fname']); ?>;
+            var plLname = <?php echo json_encode($plqr['lname']); ?>;
+            var plUserId = <?php echo json_encode($plqr['user_id']); ?>;
+         </script>
+
+         <script type="text/babel" src="react/ChangeName.js"></script>
+         <div id="change-name" class="spacious-form white-form"></div>
          <table class="pl">
-            <tr>
-               <td style="font-weight: bold">First name</td>
-               <td>
-                  <?php
-                     echo htmlentities($plqr['fname']);
-                  ?>
-               </td>
-            </tr>
-            <tr>
-               <td style="font-weight: bold">Last name</td>
-               <td>
-                  <?php
-                     echo htmlentities($plqr['lname']);
-                  ?>
-               </td>
-            </tr>
             <tr>
                <td style="font-weight: bold">E-mail address</td>
                <td>
