@@ -49,6 +49,7 @@ function generate_page($require_logged_in, $require_logged_out, $shownav=true) {
 
       <hr id="navend" /><?php
          page_content();
+         logtxt("m_template.php: served " . $_SERVER['SCRIPT_NAME'] . " ?" . $_SERVER['QUERY_STRING']);
       ?>
       <div id="footer">
          <a href="<?php

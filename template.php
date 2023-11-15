@@ -136,6 +136,7 @@ function generate_page($require_logged_in, $require_logged_out, $shownav=true) {
          <div class="contentDiv">
             <?php
                page_content();
+               logtxt("template.php: served " . $_SERVER['SCRIPT_NAME'] . " ?" . $_SERVER['QUERY_STRING']);
             ?>
          </div><!--end contentDiv-->
       </div><!--end container-->
