@@ -66,7 +66,9 @@ function pdo_connect($db_user) {
 }
 
 function pdo_seleqt($query, $qs) {
-   if(!is_array($qs)) {
+   if($qs == null) {
+      $qs = array();
+   } else if(!is_array($qs)) {
       $qs = array($qs);
    }
    global $ini;
