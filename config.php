@@ -307,16 +307,6 @@ function am_i_instructor($instr_id = null) {
    return $qr['instructor'];
 }
 
-function pwhash($password) {
-   $allowed_chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789./';
-   $salt = "";
-
-   for($i=0; $i<21; $i++) { // 21 is standard salt length
-      $salt .= $allowed_chars[mt_rand(0,strlen($allowed_chars)-1)];
-   }
-   return crypt($password, BLOWFISH_PRE . $salt . BLOWFISH_SUF);
-}
-
 function err_text($text) {
    return '<div class="error">Error: ' . $text . "</div>";
 }

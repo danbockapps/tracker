@@ -63,7 +63,7 @@ function page_content() {
          $activation = md5(uniqid(rand(), true));
 
          if(pdo_insert_user(
-            pwhash($_POST['password']),
+            password_hash($_POST['password']),
             $activation,
             $_POST['first_name'],
             $_POST['last_name'],
