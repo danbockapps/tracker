@@ -12,10 +12,6 @@ $registered = null;
 
 function generate_page($require_logged_in, $require_logged_out, $shownav=true) {
    template_start($require_logged_in, $require_logged_out);
-
-   // Need empty array - blog links will not be printed for mobile users.
-   global $blogqr;
-   $blogqr = array();
 ?>
 
 <!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">

@@ -4,10 +4,6 @@ a:visited,
   color: #80298f;
 }
 
-#blogtitle {
-  background-color: #80298f;
-}
-
 #navbar ul li a {
   background-color: #80298f;
 }
@@ -38,10 +34,6 @@ div.card {
 }
 
 .fdbk_header {
-  background-color: #f099ff;
-}
-
-#bloglinks {
   background-color: #f099ff;
 }
 

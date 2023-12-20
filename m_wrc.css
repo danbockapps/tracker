@@ -9,10 +9,6 @@ body {
   display: block;
 }
 
-#blogwidget {
-  display: none;
-}
-
 #whoami h1 {
   text-align: center;
 }
