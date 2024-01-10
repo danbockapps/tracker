@@ -29,36 +29,6 @@ a img {
   margin: 16px;
 }
 
-#blogwidget {
-  width: 345px;
-  min-height: 127px;
-  float: right;
-  margin-left: 5px;
-}
-
-#blogtitle {
-  background-color: #8ec63f;
-  color: #fff;
-  font-weight: bold;
-  padding: 5px 0px;
-  text-align: center;
-}
-
-#bloglinks a:link,
-#bloglinks a:visited {
-  color: #000;
-}
-
-#bloglinks {
-  background-color: #eaffd0;
-}
-
-#bloglinks p {
-  margin: 0px;
-  padding: 7px 5px 5px 5px;
-  font-size: 82%;
-}
-
 #whoami {
   width: 400px;
   height: 90px;

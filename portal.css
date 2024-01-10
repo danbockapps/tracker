@@ -1,10 +1,10 @@
 body {
   background-color: #fff;
-  font-family: 'Lato',Arial,Helvetica,clean,sans-serif;
+  font-family: 'Lato', Arial, Helvetica, clean, sans-serif;
 }
 #container {
   width: 1020px;
-  background: #fff url("_images/walkerProgress_bkgr-faded.jpg") no-repeat;
+  background: #fff url('_images/walkerProgress_bkgr-faded.jpg') no-repeat;
   background-position: center top;
   background-size: 100% auto;
   padding: 0;
@@ -12,14 +12,14 @@ body {
 
 #container.loginPage {
   width: 1020px;
-  background: #fff url("_images/walkerProgress_bkgr.jpg") no-repeat;
+  background: #fff url('_images/walkerProgress_bkgr.jpg') no-repeat;
   background-position: center top;
   background-size: 100% auto;
   padding: 0;
 }
 
 .headerDiv {
-  background-color: rgba(255,255,255,.82);
+  background-color: rgba(255, 255, 255, 0.82);
   padding-bottom: 5px;
   position: relative;
   height: 158px;
@@ -39,10 +39,6 @@ body {
   content: '';
   display: table;
   clear: both;
-}
-#blogwidget {
-  width: 0px;
-  display: none;
 }
 #whoami h1 {
   font-weight: 300;
@@ -83,7 +79,7 @@ body {
   padding: 62px 20px 15px;
 }
 .contentDiv p {
-  background-color: rgba(255,252,252,0.83);
+  background-color: rgba(255, 252, 252, 0.83);
   padding: 10px;
 }
 #container form {
@@ -97,12 +93,12 @@ body {
 }
 #container form.attendance-reports-section {
   max-width: 650px;
-	padding-top: 0px;
+  padding-top: 0px;
 }
 #container form.attendance-reports-section input {
   margin-top: 10px;
 }
-#report_form input[type="text"] {
+#report_form input[type='text'] {
   width: 50px;
 }
 #strategy_fieldset {
@@ -114,7 +110,7 @@ body {
 #strategy_fieldset td {
   padding-left: 40px;
 }
-#strategy_fieldset input[name="newstrat_desc"] {
+#strategy_fieldset input[name='newstrat_desc'] {
   width: 120px;
 }
 fieldset {
@@ -127,7 +123,7 @@ fieldset div {
   margin-bottom: 8px;
 }
 p.resetParagraph {
-  background: #FFFFFF;
+  background: #ffffff;
   padding: 8px 20px 20px;
   max-width: 450px;
   margin-top: 0;
@@ -138,13 +134,11 @@ p.resetParagraph a {
   padding-bottom: 8px;
 }
 .error {
-  padding: .5em;
+  padding: 0.5em;
   margin-bottom: 0.5em;
   background-color: #fcebff;
   color: #d4153f;
 }
-
-
 
 /*Portal Page*/
 #loggedinas {
@@ -155,10 +149,11 @@ p.resetParagraph a {
   margin-top: 3px;
 }
 table.wrctable {
-    background: #FFFFFF;
+  background: #ffffff;
 }
-#tracker h2, .contentDiv h2 {
-  background: rgba(255,255,255,.80);
+#tracker h2,
+.contentDiv h2 {
+  background: rgba(255, 255, 255, 0.8);
   padding: 16px 12px;
   margin-bottom: 0;
 }
@@ -173,23 +168,23 @@ table.wrctable {
 }
 #bmi {
   width: 24%;
-  background-color: rgba(0,130,201,1.00);
-  color: #FFFFFF;
+  background-color: rgba(0, 130, 201, 1);
+  color: #ffffff;
   margin: 2%;
   padding: 1em;
 }
 #bmi a {
-  color: #FFFFFF;
+  color: #ffffff;
 }
 
 #goalweight {
-  background: rgba(0,130,201,.9);
-  color: #FFFFFF;
+  background: rgba(0, 130, 201, 0.9);
+  color: #ffffff;
 }
 
 /*Participant messages*/
 .sgmsg_header {
-  background-color: #97D2F3;
+  background-color: #97d2f3;
 }
 .msg_header {
   background-color: #ccc;
@@ -197,7 +192,6 @@ table.wrctable {
 .fdbk_header {
   background-color: #ff99a8;
 }
-
 
 /* td icons ---- targets first item in each category*/
 
@@ -207,27 +201,36 @@ table.wrctable {
 #strategy_fieldset td + td {
   padding-left: 12px;
 }
-#strategy_fieldset td.strategy1, #strategy_fieldset td.strategy5, #strategy_fieldset td.strategy1, #strategy_fieldset td.strategy7, #strategy_fieldset td.strategy459, #strategy_fieldset td.strategy460  {
-  background: url("_images/portal-icon-eat.png");
+#strategy_fieldset td.strategy1,
+#strategy_fieldset td.strategy5,
+#strategy_fieldset td.strategy1,
+#strategy_fieldset td.strategy7,
+#strategy_fieldset td.strategy459,
+#strategy_fieldset td.strategy460 {
+  background: url('_images/portal-icon-eat.png');
   background-repeat: no-repeat;
   padding-top: 33px;
   background-position-y: 14px;
   background-size: 40px;
 }
-#strategy_fieldset td.strategy1 + td, #strategy_fieldset td.strategy5 + td, #strategy_fieldset td.strategy1 + td, #strategy_fieldset td.strategy7 + td, #strategy_fieldset td.strategy459 + td {
+#strategy_fieldset td.strategy1 + td,
+#strategy_fieldset td.strategy5 + td,
+#strategy_fieldset td.strategy1 + td,
+#strategy_fieldset td.strategy7 + td,
+#strategy_fieldset td.strategy459 + td {
   vertical-align: bottom;
 }
 #strategy_fieldset td.strategy5 {
-  background-image: url("_images/portal-icon-screentime.png");
+  background-image: url('_images/portal-icon-screentime.png');
 }
 #strategy_fieldset td.strategy7 {
-  background-image: url("_images/portal-icon-physical.png");
+  background-image: url('_images/portal-icon-physical.png');
 }
 #strategy_fieldset td.strategy469 {
-  background-image: url("_images/portal-icon-sleep.png");
+  background-image: url('_images/portal-icon-sleep.png');
 }
 #strategy_fieldset td.strategy460 {
-  background-image: url("_images/portal-icon-stress.png");
+  background-image: url('_images/portal-icon-stress.png');
   padding-bottom: 34px;
 }
 
@@ -236,13 +239,13 @@ table#attendanceEntry {
   background-color: #fff;
 }
 .contentDiv a.showhide_closed {
-  background-color: rgba(255,255,255,.80);
-  padding: .5em .6em .5em 30px;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 0.5em 0.6em 0.5em 30px;
   margin-top: 0;
   background-position: 3px 13px;
 }
 .contentDiv ul.show {
-  background-color: rgba(255,255,255,.80);
+  background-color: rgba(255, 255, 255, 0.8);
   padding: 1px 8px 8px 30px;
   list-style-position: inside;
   margin-top: 0;
@@ -252,5 +255,5 @@ table#attendanceEntry {
 }
 
 #footer a {
-  color: rgba(0,130,201,1.00);
+  color: rgba(0, 130, 201, 1);
 }

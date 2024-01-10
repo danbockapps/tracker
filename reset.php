@@ -140,7 +140,7 @@ function change_password() {
          email_reset = null
       where email = ?
    ");
-   $sth->execute(array(pwhash($_POST['password']), $_POST['email']));
+   $sth->execute(array(password_hash($_POST['password'], PASSWORD_DEFAULT), $_POST['email']));
 
    echo "<p>Your password has been reset. You may now " .
       "<a href=\"login.php\">log in</a></p>";

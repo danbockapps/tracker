@@ -66,7 +66,9 @@ function pdo_connect($db_user) {
 }
 
 function pdo_seleqt($query, $qs) {
-   if(!is_array($qs)) {
+   if($qs == null) {
+      $qs = array();
+   } else if(!is_array($qs)) {
       $qs = array($qs);
    }
    global $ini;
@@ -305,16 +307,6 @@ function am_i_instructor($instr_id = null) {
       where user_id = ?
    ", array($instr_id));
    return $qr['instructor'];
-}
-
-function pwhash($password) {
-   $allowed_chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789./';
-   $salt = "";
-
-   for($i=0; $i<21; $i++) { // 21 is standard salt length
-      $salt .= $allowed_chars[mt_rand(0,strlen($allowed_chars)-1)];
-   }
-   return crypt($password, BLOWFISH_PRE . $salt . BLOWFISH_SUF);
 }
 
 function err_text($text) {
@@ -774,7 +766,6 @@ function template_js() {
 }
 
 function template_logo_gc() {
-   global $blogqr;
    global $am_i_instructor;
    global $ini;
    $am_i_instructor = am_i_instructor();
@@ -785,42 +776,6 @@ function template_logo_gc() {
          src="<?php echo $ini['logo_url']; ?>"
       />
    </a>
-
-   <div id="blogwidget">
-      <?php if ($blogqr) { ?>
-      <div id="blogtitle">
-         Recent posts from the <br />
-         <a
-            style="color:white"
-            href="https://www.esmmweighless.com/blog"
-            target="_blank"
-         >
-            Eat Smart, Move More, Weigh Less Blog
-         </a>
-      </div>
-      <div id="bloglinks">
-         <?php
-         foreach($blogqr as $row) {
-            echo "<p>";
-            echo "<a href='" . $row['guid'] . "' target='_blank'>";
-
-            // Hack to replace special characters in the Wordpress database
-            // See http://www.snipe.net/2008/12/fixing-curly-quotes-and-em-dashes-in-php/
-            // Use the ord() function to discover characters' ASCII codes.
-            // (150 is some kind of dash)
-            echo str_replace(
-               array(chr(150), chr(133)),
-               array("-",      "..."),
-               $row['post_title']
-            );
-
-            echo "</a><br />";
-            echo "</p>";
-         }
-         ?>
-      </div>
-      <?php } ?>
-   </div>
 
    <div id="whoami">
       <h1><?php echo PRODUCT_TITLE; ?></h1>
@@ -1103,10 +1058,12 @@ function array_to_csv($qr) {
 function logtxt($string) {
   global $ini;
 
+  $userId = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : '';
+
   file_put_contents(
    $ini['logfile'],
     date("Y-m-d G:i:s") . " " . $_SERVER['REMOTE_ADDR'] . " " .
-        $_SESSION['user_id'] . " " . $string . "\n",
+        $userId . " " . $string . "\n",
     FILE_APPEND
   );
 }

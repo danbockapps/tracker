@@ -49,7 +49,7 @@ function page_content() {
                and activation = ?
          ");
          if($sth->execute(array(
-            pwhash($_POST['password']),
+            password_hash($_POST['password'], PASSWORD_DEFAULT),
             $_GET['email'],
             $_GET['key']
          ))) {

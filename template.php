@@ -9,20 +9,6 @@ $registered = null;
 function generate_page($require_logged_in, $require_logged_out, $shownav=true) {
    global $ini;
    template_start($require_logged_in, $require_logged_out);
-   if($ini['blogposts_table']) {
-      global $blogqr;
-      $blogqr = pdo_seleqt("
-         select
-            post_title,
-            guid
-         from " . $ini['blogposts_table'] . "
-         where
-            post_type='post'
-            and post_status='publish'
-         order by post_date desc
-         limit 3
-      ", array());
-   }
 ?>
 
 

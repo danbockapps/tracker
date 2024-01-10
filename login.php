@@ -63,10 +63,8 @@ function page_content() {
          else {
             loginLog('Account is activated.');
             // Account is activated. Check password.
-            $salt = substr($result['password'], 7, 21);
-            $in_hashd_passwd = crypt($password, BLOWFISH_PRE . $salt . BLOWFISH_SUF);
 
-            if($result['password'] === $in_hashd_passwd) {
+            if(verifyPassword($password, $result['password'])) {
                loginLog('Password is correct. Logging in...');
                // Login successful
                $_SESSION['user_id'] = $result['user_id'];
