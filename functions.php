@@ -519,7 +519,7 @@ function getPasswordErrors($password, $password2) {
    else if(strlen($password) < MIN_PW_LEN) {
       $error[] = "<p>Password must be at least " . MIN_PW_LEN . " characters. </p>";
    }
-   else if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=!]).*$/', $password)) {
+   else if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=!*]).*$/', $password)) {
       $error[] = "<p>Password must contain at least one uppercase letter, one lowercase letter, one number, one special character.</p>";
    }
    else if (preg_match('/\d{5}/', $password)) {
