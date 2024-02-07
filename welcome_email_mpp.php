@@ -22,34 +22,7 @@ $qr = pdo_seleqt("
 echo "Sending mail to " . count($qr) . " recipients.\n";
 
 foreach($qr as $row) {
-   $msg = "Hello " . $row['fname'] . ",
-
-";
-
-   $msg .= 'We hope you enjoyed your first Eat Smart, Move More, Prevent Diabetes class.
- 
-As you heard from your instructor, the next step in your Eat Smart, Move More, Prevent Diabetes journey is to get started using My Progress Portal. Entering information in My Progress Portal and engaging with your instructor through My Progress Portal is essential to your success in the program. 
-
-To activate My Progress Portal:
-1. Go here: ';
-
-   $msg .= WEBSITE_URL . "/setpw.php?email=" .
-            urlencode($row['email']) . "&key=" . $row['activation'] . '
-';
-
-   $msg .= '2. Create a password; you will use this email address and the password you create to login to My Progress Portal.
-3. You can now login to My Progress Portal. Please make sure to bookmark the site so you can access easily it in the future. You can also find it through the My Progress Portal button on our website home page, https://esmmpreventdiabetes.com. If you forget your password, you can click on the link on the login page to have your password emailed to you.
-
-Your instructor will be sending out more detailed instructions throughout the week. 
-
-Please email administrator@esmmpreventdiabetes.com if you have issues setting up My Progress Portal account.
- 
- Thanks and hope that you enjoy the program!
- 
- Sincerely,
-The Eat Smart, Move More, Prevent Diabetes Team';
-
-   syncMail($row['email'], "Eat Smart, Move More, Prevent Diabetes Team - My Progress Portal", $msg);
+   sendById($row['user_id'], 7);
 
    $dbh = pdo_connect($ini['db_prefix'] . "_update");
    $sth = $dbh->prepare("

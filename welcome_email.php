@@ -21,18 +21,6 @@ $qr = pdo_seleqt("
 
 echo "Sending mail to " . count($qr) . " recipients.\n";
 
-if(count($qr) > 0) {
-   $w1   = file_get_contents("welcome_t1.txt");
-   $w1n1 = file_get_contents("welcome_t1n1.txt");
-   $w1n2 = file_get_contents("welcome_t1n2.txt");
-   $w1o1 = file_get_contents("welcome_t1o1.txt");
-   $w1o2 = file_get_contents("welcome_t1o2.txt");
-   $w2   = file_get_contents("welcome_t2.txt");
-   $w3   = file_get_contents("welcome_t3.txt");
-   $w3b  = file_get_contents("welcome_t3b.txt");
-   $w4   = file_get_contents("welcome_t4.txt");
-}
-
 foreach($qr as $row) {
    sendById($row['user_id'], stripos($row['voucher_code'], "ASO") === false ? 7 : 8);
 

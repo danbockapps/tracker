@@ -26,16 +26,7 @@ if(count($qr) > 0) {
 }
 
 foreach($qr as $row) {
-   $url = WEBSITE_URL;
-
-   if($row['activation'] != null) {
-      $url .= '/setpw.php?email=' . urlencode($row['email']) . '&key=' .
-            $row['activation'];
-   }
-
-   $msg = sprintf($format, $row['fname'], $url);
-
-   syncMail($row['email'], "Eat Smart, Move More, Weigh Less My Dashboard 2", $msg);
+   sendById($row['user_id'], 7);
 
    $dbh = pdo_connect($ini['db_prefix'] . "_update");
    $sth = $dbh->prepare("
