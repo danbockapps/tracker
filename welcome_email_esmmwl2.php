@@ -21,10 +21,6 @@ $qr = pdo_seleqt("
 
 echo "Sending mail to " . count($qr) . " recipients.\n";
 
-if(count($qr) > 0) {
-   $format = file_get_contents('welcome_esmmwl2.txt');
-}
-
 foreach($qr as $row) {
    sendById($row['user_id'], 7);
 
