@@ -451,7 +451,6 @@ EOD;
 function welcomeEmailWl2($fname, $email, $activation) {
   global $head, $img;
   $setPwUrl = WEBSITE_URL . "/setpw.php?email=" . urlencode($email) . "&key=" . $activation;
-  $websiteUrl = WEBSITE_URL;
 
   $str = <<<EOD
 <!DOCTYPE html>
@@ -461,7 +460,7 @@ $head
   $img
 
   <p style="font-size: 12px">
-    Hello %s,
+    Hello $fname,
   </p>
 
   <p style="font-size: 12px">
@@ -475,8 +474,8 @@ $head
   <p style="font-size: 12px">
     To activate your My Dashboard 2 account:
     <ol>
-      <li>
-        <a class="btn btn-big-margin" style="color: #ffffff" href="$websiteUrl">
+      <li>Click this button:
+        <a class="btn btn-big-margin" style="color: #ffffff" href="$setPwUrl">
           My Dashboard
         </a>
       </li>
