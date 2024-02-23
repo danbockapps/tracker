@@ -22,24 +22,26 @@ $qr = pdo_seleqt("
 echo "Sending mail to " . count($qr) . " recipients.\n";
 
 foreach($qr as $row) {
-   sendById($row['user_id'], 7);
+   if($row['activation'] !== null) {
+      sendById($row['user_id'], 7);
 
-   $dbh = pdo_connect($ini['db_prefix'] . "_update");
-   $sth = $dbh->prepare("
-      update " . ENR_TBL . "
-      set welcome_sent = now()
-      where
-         tracker_user_id = ?
-         and class_id = ?
-         and class_source = ?
-   ");
-   $sth->execute(array(
-      $row['user_id'],
-      $row['class_id'],
-      $row['class_source']
-   ));
+      $dbh = pdo_connect($ini['db_prefix'] . "_update");
+      $sth = $dbh->prepare("
+         update " . ENR_TBL . "
+         set welcome_sent = now()
+         where
+            tracker_user_id = ?
+            and class_id = ?
+            and class_source = ?
+      ");
+      $sth->execute(array(
+         $row['user_id'],
+         $row['class_id'],
+         $row['class_source']
+      ));
 
-   echo "Sent mail to " . $row['email'] . ".\n";
+      echo "Sent mail to " . $row['email'] . ".\n";
+   }
 }
 
 ?>
