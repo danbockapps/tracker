@@ -19,7 +19,8 @@ function generate_page($require_logged_in, $require_logged_out, $shownav=true) {
    <head>
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
       <title><?php echo PRODUCT_TITLE; ?></title>
-      <link rel="stylesheet" href="m_wrc.css" />
+      <!-- TODO remove ?a=1 after 3/28/2024 -->
+      <link rel="stylesheet" href="m_wrc.css?a=1" />
       <link rel="stylesheet" href="universal.css" />
 
       <?php if(PRODUCT == 'dpp') { ?>

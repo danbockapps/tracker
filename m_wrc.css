@@ -92,6 +92,10 @@ td.green {
   background-color: #cce0ff;
 }
 
+.message {
+  overflow-wrap: anywhere;
+}
+
 /* This is an MPP-only feature. */
 .wide-box {
   clear: both;
