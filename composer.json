@@ -1,0 +1,5 @@
+{
+    "require": {
+        "wildbit/postmark-php": "^6.0"
+    }
+}

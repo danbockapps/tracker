@@ -10,7 +10,10 @@ $recipient = getRecipient();
 $subject = getSubject();
 $msg = getMessage($argv[1], $argv[2], $argv[3], $recipient);
 
-if(in_array($argv[2], array(1, 2, 3, 6, 7, 8))) {
+if(in_array($argv[2], array(7))) {
+   syncMailPostmark($recipient, $subject, $msg);
+}
+else if(in_array($argv[2], array(1, 2, 3, 6, 8))) {
    syncMailHtml($recipient, $subject, $msg);
 }
 else {

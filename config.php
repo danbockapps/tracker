@@ -23,11 +23,15 @@ define('ENR_TBL', $ini['enrollment_table']);
 define('ADMIN_EMAIL', $ini['admin_email']);
 define('DB_PREFIX', $ini['db_prefix']);
 define('MYSQL_COMMAND', $ini['mysql_command']);
-
+define('POSTMARK_API_TOKEN', $ini['postmark_api_token']);
 validate_product();
 
 // added this so the old natural joins work
 define('ENR_VIEW', $ini['enrollment_view']);
+
+require_once('./vendor/autoload.php');
+use Postmark\PostmarkClient;
+
 
 if(PRODUCT == 'dpp') {
    define('PROGRAM_NAME', 'Eat Smart, Move More, Prevent Diabetes');
@@ -206,7 +210,7 @@ function sendById($recipientId, $messageId, $participantId=-1, $restFolder=false
       $scriptPath = 'messageById.php';
    }
 
-   $executable = "/usr/local/bin/ea-php71 " . $scriptPath .
+   $executable = "/bin/php " . $scriptPath .
          " $recipientId $messageId $participantId > /dev/null &";
    exec($executable);
 }
@@ -253,6 +257,20 @@ function syncMailHtml($recipient, $subject, $body) {
       logtxt('E-mail error:');
       logtxt($message->getMessage());
    }
+}
+
+function syncMailPostmark($recipient, $subject, $body) {
+   $message = [
+      'From' => EMAIL_FROM,
+      'To' => $recipient,
+      'TrackOpens' => true,
+      'Subject' => $subject,
+      'HtmlBody' => $body,
+      'Tag' => 'Welcome'
+   ];
+
+   $client = new PostmarkClient(POSTMARK_API_TOKEN);
+   $sendResult = $client->sendEmailBatch([$message]);
 }
 
 function full_name($user_id) {
