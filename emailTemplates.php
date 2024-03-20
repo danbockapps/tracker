@@ -213,7 +213,7 @@ EOD;
   return $str;
 }
 
-function resetPassword($recipientEmail, $emailResetKey) {
+function getResetPasswordText($recipientEmail, $emailResetKey) {
   global $head, $img, $websiteUrl;
 
   $queryString =

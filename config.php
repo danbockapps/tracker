@@ -212,6 +212,7 @@ function sendById($recipientId, $messageId, $participantId=-1, $restFolder=false
 
    $executable = "/bin/php " . $scriptPath .
          " $recipientId $messageId $participantId > /dev/null &";
+
    exec($executable);
 }
 
@@ -259,18 +260,27 @@ function syncMailHtml($recipient, $subject, $body) {
    }
 }
 
-function syncMailPostmark($recipient, $subject, $body) {
+function syncMailPostmark($recipient, $subject, $body, $tag) {
    $message = [
       'From' => EMAIL_FROM,
       'To' => $recipient,
       'TrackOpens' => true,
       'Subject' => $subject,
       'HtmlBody' => $body,
-      'Tag' => 'Welcome'
+      'Tag' => $tag
    ];
 
    $client = new PostmarkClient(POSTMARK_API_TOKEN);
    $sendResult = $client->sendEmailBatch([$message]);
+}
+
+function getPostmarkTag($messageId) {
+   switch($messageId) {
+      case 1:
+         return 'Password reset';
+      case 7:
+         return 'Welcome';
+   }
 }
 
 function full_name($user_id) {

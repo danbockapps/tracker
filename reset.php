@@ -1,5 +1,6 @@
 <?php
 require_once("template.php");
+require_once('emailTemplates.php');
 generate_page(false, true);
 
 function page_content() {
@@ -52,7 +53,12 @@ function send_reset_email() {
       exit("E-mail address not found.");
    }
 
-   sendById(get_user_id($_POST['email']), 1);
+   syncMailPostmark(
+      $_POST['email'],
+      PRODUCT_TITLE . ' - Password Reset',
+      getResetPasswordText($_POST['email'], generate_email_reset($_POST['email'])),
+      'Password reset'
+   );
 
    echo cnf_text("<p>Password-changing instructions have been sent to your " .
          "email address. <b>Please check your \"spam\" or \"junk\" folder" .

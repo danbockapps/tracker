@@ -10,10 +10,11 @@ $recipient = getRecipient();
 $subject = getSubject();
 $msg = getMessage($argv[1], $argv[2], $argv[3], $recipient);
 
-if(in_array($argv[2], array(7))) {
-   syncMailPostmark($recipient, $subject, $msg);
+if(in_array($argv[2], array(1, 7))) {
+   logtxt('in array ' . $recipient . ' ' . $subject);
+   syncMailPostmark($recipient, $subject, $msg, getPostmarkTag($argv[2]));
 }
-else if(in_array($argv[2], array(1, 2, 3, 6, 8))) {
+else if(in_array($argv[2], array(2, 3, 6, 8))) {
    syncMailHtml($recipient, $subject, $msg);
 }
 else {
@@ -71,7 +72,7 @@ function getSubject() {
 function getMessage($recipientId, $messageId, $participantId, $recipientEmail) {
    if($messageId == 1) {
       // This is called from reset.php
-      $message = resetPassword($recipientEmail, generate_email_reset($recipientEmail));
+      $message = getResetPasswordText($recipientEmail, generate_email_reset($recipientEmail));
    }
    else if($messageId == 2) {
       // This is called from the message_participant function in config.php
