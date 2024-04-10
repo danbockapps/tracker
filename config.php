@@ -29,7 +29,11 @@ validate_product();
 // added this so the old natural joins work
 define('ENR_VIEW', $ini['enrollment_view']);
 
-require_once('./vendor/autoload.php');
+$postmarkAutoload = isset($_SERVER['DOCUMENT_ROOT']) ?
+   $_SERVER['DOCUMENT_ROOT'] . '/mpp/vendor/autoload.php' :
+   './vendor/autoload.php';
+
+require_once($postmarkAutoload);
 use Postmark\PostmarkClient;
 
 
