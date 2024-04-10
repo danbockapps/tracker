@@ -94,7 +94,7 @@ function page_content() {
                height: 236,
                width: 462,
                colors: getColor(),
-               backgroundColor: getBackgroundColor(),
+               backgroundColor: '#fff',
                legend: {position: 'none'},
                series: {
                   0: {
@@ -112,22 +112,7 @@ function page_content() {
 
          function getColor() {
             <?php      if(PRODUCT == 'dpp') { ?>     return ['#80298f']; <?php }
-                  else if(PRODUCT == 'esmmwl2') { ?> return ['#27bdad']; <?php }
-                  else                          { ?> return ['#8ec63f']; <?php }
-            ?>
-         }
-
-         function getBackgroundColor() {
-            <?php
-               if(PRODUCT == 'dpp' or PRODUCT == 'esmmwl2') {
-            ?>
-                  return '#eee';
-            <?php
-               } else {
-            ?>
-                  return '#eaffd0';
-            <?php
-               }
+                  else                          { ?> return ['#27bdad']; <?php }
             ?>
          }
 
@@ -178,25 +163,14 @@ function page_content() {
                            if(PRODUCT == 'dpp') {
                         ?>#80298f<?php
                            }
-                           else if(PRODUCT == 'esmmwl2') {
-                        ?>#27bdad<?php
-                           }
                            else {
-                        ?>#8ec63f<?php
+                        ?>#25bdad<?php
                            }
                         ?>"],
-                        backgroundColor: "<?php
-                           if(PRODUCT == 'dpp' || PRODUCT == 'esmmwl2') {
-                        ?>#eee<?php
-                           }
-                        else {
-                        ?>#eaffd0<?php
-                           }
-                        ?>",
+                        backgroundColor: "#fff",
                         vAxis: {viewWindow: {min: 0}}
                      }
                   );
-                  $("#pes_ajax").css("padding-left", "18px");
                })
                .fail(function() {
                   $("#pes_ajax").html("An error occurred.");

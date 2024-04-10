@@ -27,7 +27,7 @@ function generate_page($require_logged_in, $require_logged_out, $shownav=true) {
       />
       <link
          rel="stylesheet"
-         href="wrc.css?v=1"
+         href="wrc.css"
       />
       <link
          rel="stylesheet"
@@ -37,7 +37,7 @@ function generate_page($require_logged_in, $require_logged_out, $shownav=true) {
       <?php if(PRODUCT == 'esmmwl') { ?>
          <link
             rel="stylesheet"
-            href="dashboard.css"
+            href="dashboard.css?a=1"
          />
       <?php } ?>
 
@@ -66,7 +66,7 @@ function generate_page($require_logged_in, $require_logged_out, $shownav=true) {
       <?php template_js(); ?>
    </head>
    <body>
-      <div id="container" <?php containerClasses(); ?>>
+      <div id="container" class="loginPage">
          <div class="headerDiv">
             <?php
             template_logo_gc();
@@ -144,10 +144,5 @@ function generate_page($require_logged_in, $require_logged_out, $shownav=true) {
 <?php
 }
 
-function containerClasses() {
-   if(PRODUCT == 'dpp' && strpos($_SERVER['REQUEST_URI'], 'login.php') != false) {
-      echo 'class = "loginPage"';
-   }
-}
 
 ?>
