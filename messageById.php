@@ -10,12 +10,8 @@ $recipient = getRecipient();
 $subject = getSubject();
 $msg = getMessage($argv[1], $argv[2], $argv[3], $recipient);
 
-if(in_array($argv[2], array(1, 7))) {
-   logtxt('in array ' . $recipient . ' ' . $subject);
+if(in_array($argv[2], array(1, 2, 3, 6, 7))) {
    syncMailPostmark($recipient, $subject, $msg, getPostmarkTag($argv[2]));
-}
-else if(in_array($argv[2], array(2, 3, 6, 8))) {
-   syncMailHtml($recipient, $subject, $msg);
 }
 else {
    syncMail($recipient, $subject, $msg);
@@ -131,15 +127,6 @@ function getMessage($recipientId, $messageId, $participantId, $recipientEmail) {
             $message = welcomeEmailWl2($qr['fname'], $recipientEmail, $qr['activation']);
             break;
       }
-   }
-   else if($messageId == 8) {
-      // ESMMWL message for ASO participants
-      $qr = seleqt_one_record(
-         "select fname, activation from wrc_users where user_id = ?",
-         $recipientId
-      );
-
-      $message = welcomeEmailWl($qr['fname'], $recipientEmail, $qr['activation'], true);
    }
    else {
       exit('Invalid message ID.');

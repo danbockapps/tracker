@@ -24,18 +24,18 @@ define('ADMIN_EMAIL', $ini['admin_email']);
 define('DB_PREFIX', $ini['db_prefix']);
 define('MYSQL_COMMAND', $ini['mysql_command']);
 define('POSTMARK_API_TOKEN', $ini['postmark_api_token']);
+define('ROOT_PATH', $ini['root_path']);
 validate_product();
 
 // added this so the old natural joins work
 define('ENR_VIEW', $ini['enrollment_view']);
 
 $postmarkAutoload = isset($_SERVER['DOCUMENT_ROOT']) ?
-   $_SERVER['DOCUMENT_ROOT'] . '/mpp/vendor/autoload.php' :
+   $_SERVER['DOCUMENT_ROOT'] . '/' . ROOT_PATH . '/vendor/autoload.php' :
    './vendor/autoload.php';
 
 require_once($postmarkAutoload);
 use Postmark\PostmarkClient;
-
 
 if(PRODUCT == 'dpp') {
    define('PROGRAM_NAME', 'Eat Smart, Move More, Prevent Diabetes');
@@ -282,6 +282,12 @@ function getPostmarkTag($messageId) {
    switch($messageId) {
       case 1:
          return 'Password reset';
+      case 2:
+         return 'New message';
+      case 3:
+         return 'New instructor feedback';
+      case 6:
+         return 'T-shirt earned';
       case 7:
          return 'Welcome';
    }
