@@ -206,18 +206,29 @@ function sendById($recipientId, $messageId, $participantId=-1, $restFolder=false
       exit("Error: participant ID is not numeric.");
    }
 
-   if($restFolder) {
-      // This function is being called from the rest/ folder
-      $scriptPath = '../messageById.php';
+   if(in_array($messageId, array(1, 2, 3, 6, 7))) {
+      $recipient = getRecipient($recipientId);
+      syncMailPostmark(
+         $recipient,
+         getSubject($messageId),
+         getMessage($recipientId, $messageId, $participantId, $recipient),
+         getPostmarkTag($messageId)
+      );
    }
    else {
-      $scriptPath = 'messageById.php';
+      if($restFolder) {
+         // This function is being called from the rest/ folder
+         $scriptPath = '../messageById.php';
+      }
+      else {
+         $scriptPath = 'messageById.php';
+      }
+
+      $executable = "/bin/php " . $scriptPath .
+            " $recipientId $messageId $participantId > /dev/null &";
+
+      exec($executable);
    }
-
-   $executable = "/bin/php " . $scriptPath .
-         " $recipientId $messageId $participantId > /dev/null &";
-
-   exec($executable);
 }
 
 // Synchronous mail-sending function. Call only in batch or background.
@@ -233,37 +244,6 @@ function syncMail($recipient, $subject, $message) {
    mail($recipient, $subject, $message, $headers);
 }
 
-// Synchronous mail-sending function. Call only in batch or background.
-function syncMailHtml($recipient, $subject, $body) {
-   $headers['From'] = EMAIL_FROM;
-   $headers['To'] = $recipient;
-   $headers['Subject'] = $subject;
-   $headers['Content-type'] = 'text/html;charset=iso-8859-1';
-
-   $smtp_params['host'] = EMAIL_HOST;
-   $smtp_params['auth'] = true;
-   $smtp_params['username'] = EMAIL_FROM;
-   $smtp_params['password'] = EMAIL_PASSWORD;
-
-   logtxt(print_r($headers, true));
-   logtxt(print_r($smtp_params, true));
-
-   if(EMAIL_LOGGER !== null) {
-      $recipients = [$recipient, EMAIL_LOGGER];
-   }
-   else {
-      $recipients = $recipient;
-   }
-   
-   $message = Mail::factory('smtp', $smtp_params);
-   $message->send($recipients, $headers, $body);
-
-   if(PEAR::isError($message)) {
-      logtxt('E-mail error:');
-      logtxt($message->getMessage());
-   }
-}
-
 function syncMailPostmark($recipient, $subject, $body, $tag) {
    $message = [
       'From' => EMAIL_FROM,
@@ -276,21 +256,7 @@ function syncMailPostmark($recipient, $subject, $body, $tag) {
 
    $client = new PostmarkClient(POSTMARK_API_TOKEN);
    $sendResult = $client->sendEmailBatch([$message]);
-}
-
-function getPostmarkTag($messageId) {
-   switch($messageId) {
-      case 1:
-         return 'Password reset';
-      case 2:
-         return 'New message';
-      case 3:
-         return 'New instructor feedback';
-      case 6:
-         return 'T-shirt earned';
-      case 7:
-         return 'Welcome';
-   }
+   logtxt('Postmark send result: ' . print_r($sendResult, true));
 }
 
 function full_name($user_id) {
@@ -1390,5 +1356,7 @@ function uriWithQueryString() {
 }
 
 require_once('functions.php');
+require_once('mailHelpers.php');
+require_once('emailTemplates.php');
 
 ?>
