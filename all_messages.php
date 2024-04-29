@@ -121,7 +121,7 @@ function page_content() {
          Date:    <?php echo date("D, n/j/Y g:i a",
                strtotime($msg['create_dttm'])); ?>
       </div>
-      <div class="message">
+      <div class="fade">
          <?php echo nl2br(htmlentities($msg['message'])); ?>
       </div>
       <?php
