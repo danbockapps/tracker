@@ -103,7 +103,6 @@ from
 where
    instrs.instructor = 1 -- datediff on c.start_dttm was here. Not sure why.
    and e.paid != '0'
-   and e.status = '1'
 order by
    start_dttm desc,
    lname,
