@@ -15,11 +15,11 @@ select
    u.lname as Last_Name,
    u.email as Email,
    e.referred_by as Referred_By,
-   date_joined as Date_Joined,
+   e.date_added as Date_Joined,
    c.class_id as Class_ID,
    c.start_dttm as Class_Start,
    c.start_dttm + interval (weeks - 1) week + interval 1 hour as Class_End,
-   e.voucher_code as Coupon_Code,
+   e.coup_voucher as Coupon_Code,
    substring_index(e.claim_id, '-', 1) as BCBS_Subscriber_ID,
    case
       when claim_id like "%-%" then lpad(substring_index(e.claim_id, '-', -1), 2, '0')
