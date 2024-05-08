@@ -1,6 +1,29 @@
 <?php
 require_once("config.php");
 
+$bcbsReportFields = "
+   First_Name,
+   Last_Name,
+   Email,
+   Referred_By,
+   Date_Joined,
+   Class_Start,
+   Class_End,
+   Coupon_Code,
+   BCBS_Subscriber_ID,
+   Member_Number,
+   Attendance,
+   Beginning_Weight,
+   Ending_Weight,
+   Height,
+   Beginning_BMI,
+   Ending_BMI,
+   Beginning_Waist_Circumference,
+   Ending_Waist_Circumference,
+   Tracker_Activity_Score,
+   Program_Goals
+";
+
 $aqr = pdo_seleqt("
    select voucher_code
    from bcbs_voucher_codes
@@ -21,7 +44,7 @@ foreach($aqr as $row) {
    file_put_contents(
       "/home/esmmwl/aso/upload/" . $dataFileName,
       array_to_csv(pdo_seleqt("
-         select *
+         select $bcbsReportFields
          from bcbs_report
          where Coupon_Code = ?
       ", array($row['voucher_code'])))
@@ -35,7 +58,7 @@ foreach($aqr as $row) {
 $dataFileName = "ESMMWL_ASONCMS_" . date("Y-m-d_H-i-s") . ".csv";
 
 file_put_contents("/home/esmmwl/aso/upload/" . $dataFileName, array_to_csv(pdo_seleqt("
-   select * from bcbs_report where Coupon_Code like 'ASONCMS%'
+   select $bcbsReportFields from bcbs_report where Coupon_Code like 'ASONCMS%'
 ", array())));
 
 generateControlFile('ASONCMS', $dataFileName);
