@@ -16,6 +16,7 @@ select
    u.email as Email,
    e.referred_by as Referred_By,
    date_joined as Date_Joined,
+   c.class_id as Class_ID,
    c.start_dttm as Class_Start,
    c.start_dttm + interval (weeks - 1) week + interval 1 hour as Class_End,
    e.voucher_code as Coupon_Code,
@@ -79,5 +80,6 @@ from
    bcbs_report b
    left join wrc_users u on b.Email = u.email
    left join registrants r on u.user_id = r.tracker_user_id
+   and b.Class_ID = r.class_id
 where
    b.Coupon_Code like "ASO%";
