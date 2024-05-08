@@ -37,23 +37,25 @@ select
    e.smart_goal as Program_Goals
 from
    wrc_users u natural
-   join enrollment_view e natural
+   join registrants e natural
    join classes_aw c
-   left join beginning_weights bw on e.user_id = bw.user_id
+   left join beginning_weights bw on e.tracker_user_id = bw.user_id
    and e.class_id = bw.class_id
    and e.class_source = bw.class_source
-   left join ending_weights ew on e.user_id = ew.user_id
+   left join ending_weights ew on e.tracker_user_id = ew.user_id
    and e.class_id = ew.class_id
    and e.class_source = ew.class_source
-   left join pes on e.user_id = pes.user_id
+   left join pes on e.tracker_user_id = pes.user_id
    and e.class_id = pes.class_id
    and e.class_source = pes.class_source
-   left join attendance_sum a on e.user_id = a.user_id
+   left join attendance_sum a on e.tracker_user_id = a.user_id
    and e.class_id = a.class_id
    and e.class_source = a.class_source
-   left join attendance_sum_legacy al on e.user_id = al.user_id
+   left join attendance_sum_legacy al on e.tracker_user_id = al.user_id
    and e.class_id = al.class_id
    and e.class_source = al.class_source
+where
+   paid != '0'
 order by
    c.start_dttm desc,
    u.lname,
