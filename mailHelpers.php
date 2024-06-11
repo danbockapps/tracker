@@ -17,9 +17,6 @@ function getSubject($messageId) {
      case 2:
         return PRODUCT_TITLE . ' - New Message';
         break;
-     case 3:
-        return PRODUCT_TITLE . ' - New Instructor Feedback';
-        break;
      case 4:
         return PRODUCT_TITLE . ' - Registration Confirmation';
         break;
@@ -54,10 +51,6 @@ function getMessage($recipientId, $messageId, $participantId, $recipientEmail) {
   else if($messageId == 2) {
      // This is called from the message_participant function in config.php
      $message = newMessage($participantId);
-  }
-  else if($messageId == 3) {
-     // This is called from report.php
-     $message = instructorFeedback();
   }
   else if($messageId == 4) {
      // This is called from register.php
@@ -122,8 +115,6 @@ function getPostmarkTag($messageId) {
         return 'Password reset';
      case 2:
         return 'New message';
-     case 3:
-        return 'New instructor feedback';
      case 6:
         return 'T-shirt earned';
      case 7:

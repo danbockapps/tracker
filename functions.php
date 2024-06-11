@@ -464,8 +464,7 @@ function getReports($userId, $startDttm) {
          aerobic_minutes,
          strength_minutes,
          physact_minutes,
-         avgsteps,
-         notes
+         avgsteps
       from
          reports_with_fitbit_hybrid r
          inner join classes_aw c

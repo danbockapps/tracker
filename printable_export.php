@@ -17,7 +17,6 @@ foreach($qr2 as $row) {
   $reports['strength'][$row['week_id']-1] = $row['strength_minutes'];
   $reports['physact'][$row['week_id']-1] = $row['physact_minutes'];
   $reports['avgsteps'][$row['week_id']-1] = $row['avgsteps'];
-  $reports['notes'][$row['week_id']-1] = $row['notes'];
 }
 
 
@@ -30,7 +29,6 @@ for($i=0; $i<$numWeeks; $i++) {
     Strength minutes: <?= $reports['strength'][$i] ?><br/>
     Physical activity minutes: <?= $reports['physact'][$i] ?><br/>
     Average steps: <?= round($reports['avgsteps'][$i], 0) ?><br/>
-    Notes: <?= $reports['notes'][$i] ?><br/>
   </p>
   <?php
 }

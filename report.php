@@ -61,10 +61,6 @@ function page_content() {
          }
       }
 
-      if(isset($_POST['notes'])) {
-         sendById($_GET['user'], 3);
-      }
-
       // If record doesn't exist, create it.
       $uqr = seleqt_one_record("
          select count(*) as count
@@ -286,7 +282,6 @@ function page_content() {
                "Weight instructions",
                true,
                true,
-               false,
                getWeightFromDb($_GET['user'], $report_date)
             );
 
@@ -411,7 +406,6 @@ function page_content() {
                   "Aerobic activity instructions",
                   true,
                   true,
-                  false,
                   getActiveMinutesFromDb($_GET['user'], $report_date)
                );
 
@@ -443,7 +437,6 @@ function page_content() {
                   null,
                   true,
                   true,
-                  false,
                   getActiveMinutesFromDb($_GET['user'],  $report_date)
                );
             }
@@ -551,7 +544,6 @@ function page_content() {
                'Average Steps instructions',
                true, // report true
                true, // required numeric
-               false, // instructor input
                getAvgStepsFromDb($_GET['user'], $report_date)
             );
          ?>
@@ -687,42 +679,6 @@ function page_content() {
 
       <?php } ?>
 
-      <?php
-         $nqr = pdo_seleqt("
-            select
-               notes,
-               fdbk_dttm
-            from wrc_reports
-            where
-               user_id = ? and
-               class_id = ? and
-               class_source = ? and
-               week_id = ?
-         ", array($_GET['user'], $qr['class_id'], $qr['class_source'], $_GET['week']));
-
-         if(
-            $_SESSION['user_id'] != $_GET['user'] || (
-               isset($nqr[0]['notes']) && $nqr[0]['notes'] != ""
-            )
-         ) {
-            ?><fieldset style="margin-top:1em"><table><?php
-               $err_count += report_var(
-                  "notes",
-                  $qr['class_id'],
-                  $qr['class_source'],
-                  "notes",
-                  "Instructor feedback<br /><span class='small'>(" .
-                        rstr_date($nqr[0]['fdbk_dttm']) . ")</span>",
-                  "",
-                  "",
-                  "",
-                  true,
-                  false,
-                  true
-               );
-            ?></table></fieldset><?php
-         }
-      ?>
       <br />
       <input type="hidden" name="formsubmitted" value="true" />
       <input type="submit" id="reportsubmit" value="Submit changes" />
@@ -834,7 +790,6 @@ function report_var (
    $popup_title,       //  title for the alert
    $rept_enrf,         //  report true, enrollment false
    $req_num=true,      //  required to be numeric
-   $inst_input=false,  //  instructor inputs this field.
    $fitbit_value=0     //  value received from Fitbit
 ) {
    global $ini;
@@ -860,7 +815,7 @@ function report_var (
                   update wrc_reports
                   set
                      " . $db_col . " = ?,
-                     " . ($inst_input ? "fdbk_dttm" : "create_dttm") . " = now()
+                     create_dttm = now()
                   where
                      user_id = ? and
                      class_id = ? and
@@ -940,24 +895,14 @@ function report_var (
          }
          if($_SESSION['user_id'] == $_GET['user']) {
             // participant is looking at his own report
-            if($inst_input) {
-               readonly($cvqr, $db_col, $fitbit_value);
-            }
-            else {
-               report_input($post_var, $cvqr, $db_col, $fitbit_value);
-               if($popup_link) {
-                  popup($popup_link, $popup_text, $popup_title);
-               }
+            report_input($post_var, $cvqr, $db_col, $fitbit_value);
+            if($popup_link) {
+               popup($popup_link, $popup_text, $popup_title);
             }
          }
          else {
             // instructor or admin is looking at participant's report.
-            if($inst_input) {
-               report_input($post_var, $cvqr, $db_col, 0, true);
-            }
-            else {
-               readonly($cvqr, $db_col, $fitbit_value);
-            }
+            readonly($cvqr, $db_col, $fitbit_value);
          }
       ?>
    </td></tr>

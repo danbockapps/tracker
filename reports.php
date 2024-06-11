@@ -49,7 +49,6 @@ function page_content() {
          $reports['strength'][$row['week_id']-1] = $row['strength_minutes'];
          $reports['physact'][$row['week_id']-1] = $row['physact_minutes'];
          $reports['avgsteps'][$row['week_id']-1] = $row['avgsteps'];
-         $reports['notes'][$row['week_id']-1] = $row['notes'];
       }
       ?>
 
@@ -252,7 +251,6 @@ function page_content() {
             ?>
 
             <th>Avg. <br /> steps</th>
-            <th>Instructor <br /> feedback</th>
          </tr>
       <?php
       $am_i_instructor = am_i_instructor();
@@ -323,16 +321,7 @@ function page_content() {
          <td class="center"><?php
             echo isset($reports['avgsteps'][$i]) ? round($reports['avgsteps'][$i]) : ''; ?>
          </td>
-         <td class="center"><?php
-            if($link) {
-               if(isset($reports['notes'][$i]) && $reports['notes'][$i] != "") {
-                  echo linkify("<img src='chat.png' />", $i+1, false);
-               }
-               else if($am_i_instructor) {
-                  echo linkify("<img src='chat_bw.png' />", $i+1, false);
-               }
-            }
-         ?></td></tr><?php
+         </tr><?php
       }
       ?>
       </table>

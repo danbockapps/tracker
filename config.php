@@ -206,7 +206,7 @@ function sendById($recipientId, $messageId, $participantId=-1, $restFolder=false
       exit("Error: participant ID is not numeric.");
    }
 
-   if(in_array($messageId, array(1, 2, 3, 6, 7))) {
+   if(in_array($messageId, array(1, 2, 6, 7))) {
       $recipient = getRecipient($recipientId);
       syncMailPostmark(
          $recipient,

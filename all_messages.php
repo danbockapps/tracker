@@ -31,10 +31,7 @@ function page_content() {
          u_name,
          r_name,
          message,
-         create_dttm,
-         week_id,
-         start_dttm,
-         feedback
+         create_dttm
       from msgfdbk
       where
          user_id = ? or
@@ -95,31 +92,18 @@ function page_content() {
          }
       ?>_header">
          From: <b><?php echo htmlentities($msg['u_name']); ?></b>
-         <?php
-            if($msg['feedback']) {
-               ?>(instructor feedback for <a href="report.php?user=<?php
-                  echo htmlentities($msg['recip_id']);
-               ?>&week=<?php
-                  echo htmlentities($msg['week_id']);
-               ?>"><?php
-                  echo htmlentities(wrcdate($msg['start_dttm'] . " + " .
-                        ($msg['week_id'] - 1) . " weeks"));
-               ?> report</a>)<?php
-            }
-         ?>
          <br />
 
          <?php
             // If sender==recipient (e.g. a SMART goal change), don't show "To:"
             if($msg['recip_id'] != $msg['user_id']) {
                ?>
-               To:      <?php echo htmlentities($msg['r_name']); ?><br />
+               To: <?php echo htmlentities($msg['r_name']); ?><br />
                <?php
             }
          ?>
 
-         Date:    <?php echo date("D, n/j/Y g:i a",
-               strtotime($msg['create_dttm'])); ?>
+         Date: <?php echo date("D, n/j/Y g:i a", strtotime($msg['create_dttm'])); ?>
       </div>
       <div class="fade">
          <?php echo nl2br(htmlentities($msg['message'])); ?>
