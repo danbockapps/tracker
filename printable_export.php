@@ -2,6 +2,15 @@
 session_start();
 require_once("config.php");
 
+?>
+  <img
+    id="logo"
+    src="<?php echo $ini['logo_url']; ?>"
+  />
+
+  <h1><?php echo full_name($_GET['user']); ?></h1>
+<?php
+
 $qr = current_class_and_sg();
 access_restrict($qr);
 $numWeeks = getNumWeeks($qr['class_id'], $qr['class_source']);
