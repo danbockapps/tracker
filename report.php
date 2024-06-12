@@ -255,10 +255,6 @@ function page_content() {
           });
       });
    </script>
-   <h2>
-      Report for the week of
-      <?php echo htmlentities(wrcdate($report_date)); ?>
-   </h2>
 
    <?php
       reportComponent(array(

@@ -73,6 +73,10 @@ a,
   background-color: white;
 }
 
+.clear-left {
+  clear: left;
+}
+
 #change-email {
   width: 50%;
   margin: 2em;

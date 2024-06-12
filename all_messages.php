@@ -3,6 +3,7 @@ if(!isset($all_messagesphp_mode)) {
    $all_messagesphp_mode = "";
 }
 require_once($all_messagesphp_mode . "template.php");
+require_once("reportComponent.php");
 generate_page(true, false);
 
 function page_content() {
@@ -48,7 +49,24 @@ function page_content() {
       // user is the instructor or an admin
       $recip_name = full_name($_GET['user']);
       $recip_id = htmlentities($_GET['user']);
+
+      $lrwww = seleqt_one_record("
+         select week_id
+         from last_reports_with_weights_weeks
+         where class_id = ? and class_source = ? and user_id = ?
+      ", array($qr['class_id'], $qr['class_source'], $_GET['user']));
+
+      global $report_date;
+      $report_date = $qr['start_dttm'] . " + " . ($lrwww['week_id'] - 1) . " weeks";
+
+      reportComponent(array(
+         "classId" => $qr['class_id'],
+         "classSource" => $qr['class_source'],
+         "userId" => $_GET['user'],
+         "week" => $lrwww['week_id']
+      ));
    }
+
    if($recip_id == null) {
       echo err_text("<p>You cannot send messages because your class does not " .
             "have an instructor assigned. Please " .
@@ -62,7 +80,8 @@ function page_content() {
                echo htmlentities($_GET['user']);
             ?>"
             method="post"
-            class="white-form">
+            class="white-form clear-left"
+            style="clear: left;"><!-- TODO delete this after 7/12/2024 -->
          <fieldset>
             <legend>Compose new message</legend>
             To: <b><?php echo htmlentities($recip_name); ?></b><br />

@@ -10,8 +10,12 @@ global $ini;
 
   $classId = $params['classId'];
   $classSource = $params['classSource'];
-
   ?>
+
+   <h2>
+      Report for the week of
+      <?php echo htmlentities(wrcdate($report_date)); ?>
+   </h2>
 
   <form id="report_form"
           action="report.php?week=<?php
