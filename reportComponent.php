@@ -1,13 +1,23 @@
 <?php
 
-function reportComponent($classId, $classSource) {
+/*
+Accepts an associative array with keys classId, classSource, userId, and week.
+*/
+
+function reportComponent($params) {
+global $ini;
+  global $report_date;
+
+  $classId = $params['classId'];
+  $classSource = $params['classSource'];
+
   ?>
 
   <form id="report_form"
           action="report.php?week=<?php
-              echo htmlentities($_GET['week']);
+              echo htmlentities($params['week']);
           ?>&user=<?php
-              echo htmlentities($_GET['user']);
+              echo htmlentities($params['userId']);
           ?>"
           method="post"
           class="white-form">
@@ -16,6 +26,7 @@ function reportComponent($classId, $classSource) {
           <?php
               $err_count = 0;
               $err_count += report_var(
+                $params,
                 "weight",
                 $classId,
                 $classSource,
@@ -27,7 +38,7 @@ function reportComponent($classId, $classSource) {
                 "Weight instructions",
                 true,
                 true,
-                getWeightFromDb($_GET['user'], $report_date)
+                getWeightFromDb($params['userId'], $report_date)
               );
 
               if(
@@ -66,7 +77,7 @@ function reportComponent($classId, $classSource) {
                       set height_inches = ?
                       where user_id = ?
                     ");
-                    if($sth->execute(array($height_total, $_GET['user']))) {
+                    if($sth->execute(array($height_total, $params['userId']))) {
                       // Success
                     }
                     else {
@@ -76,16 +87,16 @@ function reportComponent($classId, $classSource) {
                 }
               }
 
-              $first_class = first_class();
-              $last_class = last_class($classId, $classSource);
-              $p1end_class = PRODUCT == 'dpp' && isP1End($classId, $_GET['week']);
+              $first_class = first_class($params['week']);
+              $last_class = last_class($classId, $classSource, $params['week']);
+              $p1end_class = PRODUCT == 'dpp' && isP1End($classId, $params['week']);
 
               if($first_class) {
                 $hiqr = seleqt_one_record("
                     select height_inches
                     from wrc_users
                     where user_id = ?
-                ", array($_GET['user']));
+                ", array($params['userId']));
                 if($hiqr['height_inches'] != null) {
                     $height_feet = round(($hiqr['height_inches'] - 6 )/ 12);
                     $height_inches = $hiqr['height_inches'] - $height_feet * 12;
@@ -104,7 +115,7 @@ function reportComponent($classId, $classSource) {
                     </table>
                 </td><td>
                     <?php
-                      if($_SESSION['user_id'] == $_GET['user']) {
+                      if($_SESSION['user_id'] == $params['userId']) {
                           ?>
                           <input size="3" type="text" name="height_feet"<?php
                             if(isset($height_feet)) {
@@ -139,6 +150,7 @@ function reportComponent($classId, $classSource) {
               global $ini;
               if($ini['product'] == 'esmmwl' || $ini['product'] == 'esmmwl2') {
                 $err_count += report_var(
+                    $params,
                     "aerobic",
                     $classId,
                     $classSource,
@@ -151,10 +163,11 @@ function reportComponent($classId, $classSource) {
                     "Aerobic activity instructions",
                     true,
                     true,
-                    getActiveMinutesFromDb($_GET['user'], $report_date)
+                    getActiveMinutesFromDb($params['userId'], $report_date)
                 );
 
                 $err_count += report_var(
+                    $params,
                     "strength",
                     $classId,
                     $classSource,
@@ -172,6 +185,7 @@ function reportComponent($classId, $classSource) {
 
               else if($ini['product'] == 'dpp') {
                 $err_count += report_var(
+                    $params,
                     "physact",
                     $classId,
                     $classSource,
@@ -182,7 +196,7 @@ function reportComponent($classId, $classSource) {
                     null,
                     true,
                     true,
-                    getActiveMinutesFromDb($_GET['user'],  $report_date)
+                    getActiveMinutesFromDb($params['userId'],  $report_date)
                 );
               }
 
@@ -198,6 +212,7 @@ function reportComponent($classId, $classSource) {
                 }
 
                 $err_count += report_var(
+                    $params,
                     "syst" . $suffix,
                     $classId,
                     $classSource,
@@ -218,6 +233,7 @@ function reportComponent($classId, $classSource) {
                 );
 
                 $err_count += report_var(
+                    $params,
                     "dias" . $suffix,
                     $classId,
                     $classSource,
@@ -238,6 +254,7 @@ function reportComponent($classId, $classSource) {
                 );
 
                 $err_count += report_var(
+                    $params,
                     "waist" . $suffix,
                     $classId,
                     $classSource,
@@ -263,6 +280,7 @@ function reportComponent($classId, $classSource) {
 
               if($ini['product'] == 'dpp') {
                 $err_count += report_var(
+                    $params,
                     'a1c',
                     $classId,
                     $classSource,
@@ -279,6 +297,7 @@ function reportComponent($classId, $classSource) {
               }
 
               $err_count += report_var(
+                $params,
                 'avgsteps',
                 $classId,
                 $classSource,
@@ -289,7 +308,7 @@ function reportComponent($classId, $classSource) {
                 'Average Steps instructions',
                 true, // report true
                 true, // required numeric
-                getAvgStepsFromDb($_GET['user'], $report_date)
+                getAvgStepsFromDb($params['userId'], $report_date)
               );
           ?>
           </table>
@@ -351,11 +370,11 @@ function reportComponent($classId, $classSource) {
                     su.user_id = ?
                 order by s.display_order
               ", array(
-                $_GET['user'],
+                $params['userId'],
                 $classId,
                 $classSource,
-                $_GET['week'],
-                $_GET['user']
+                $params['week'],
+                $params['userId']
               ));
           ?>
           <table>
@@ -363,12 +382,12 @@ function reportComponent($classId, $classSource) {
               foreach ($sqr as $strat) {
                 ?><tr><td class="strategy<?=$strat['strategy_id']?>"><?php
                     echo htmlentities($strat['strategy_description']);
-                    if($strat['custom'] && $_GET['user'] == $_SESSION['user_id']) {
+                    if($strat['custom'] && $params['userId'] == $_SESSION['user_id']) {
                       // delete link
                       ?> <a  style="font-size:small" href="report.php?user=<?php
-                          echo htmlentities($_GET['user']);
+                          echo htmlentities($params['userId']);
                       ?>&week=<?php
-                          echo htmlentities($_GET['week']);
+                          echo htmlentities($params['week']);
                       ?>&delete=<?php
                           echo htmlentities($strat['strategy_id']);
                       ?>" onclick="return delStratConfirm();">delete</a><?php
@@ -377,12 +396,13 @@ function reportComponent($classId, $classSource) {
                     <?php
                       strat_numdays_dd(
                           "strategy[" . $strat['strategy_id'] . "]",
-                          $strat['num_days'] == null ? -1 : $strat['num_days']
+                          $strat['num_days'] == null ? -1 : $strat['num_days'],
+                          $params['userId']
                       );
                     ?>
                 </td></tr><?php
               }
-              if($_GET['user'] == $_SESSION['user_id']) {
+              if($params['userId'] == $_SESSION['user_id']) {
                 ?>
                 <tr>
                     <td>
@@ -412,7 +432,7 @@ function reportComponent($classId, $classSource) {
                     </td>
                     <td>
                       <?php
-                          strat_numdays_dd("newstrat_numdays");
+                          strat_numdays_dd("newstrat_numdays", -1, $params['userId']);
                       ?>
                     </td>
                 </tr>
@@ -433,6 +453,7 @@ function reportComponent($classId, $classSource) {
 }
 
 function report_var (
+  $params,
   $post_var,          //  x in $_POST['x']
   $class_id,          //  id of participant's current class
   $class_source,      //  "a" or "w"
@@ -462,7 +483,7 @@ function report_var (
         $dbh = pdo_connect($ini['db_prefix'] . "_update");
         if($rept_enrf) {
            global $report_date;
-           if(!fitbitValue($_GET['user'], $report_date, $post_var, $_POST[$post_var])) {
+           if(!fitbitValue($params['userId'], $report_date, $post_var, $_POST[$post_var])) {
               // update wrc_reports table
               $sth = $dbh->prepare("
                  update wrc_reports
@@ -477,10 +498,10 @@ function report_var (
               ");
               $db_array = array(
                  blank_null($db_col, $_POST[$post_var]),
-                 $_GET['user'],
+                 $params['userId'],
                  $class_id,
                  $class_source,
-                 $_GET['week']
+                 $params['week']
               );
            }
            else {
@@ -499,7 +520,7 @@ function report_var (
            ");
            $db_array = array(
               blank_null($db_col, $_POST[$post_var]),
-              $_GET['user'],
+              $params['userId'],
               $class_id,
               $class_source
            );
@@ -534,7 +555,7 @@ function report_var (
                  class_id = ? and
                  class_source = ? and
                  week_id = ?
-           ", array($_GET['user'], $class_id, $class_source, $_GET['week']));
+           ", array($params['userId'], $class_id, $class_source, $params['week']));
         }
         else {
            $cvqr = pdo_seleqt("
@@ -544,9 +565,9 @@ function report_var (
                  user_id = ? and
                  class_id = ? and
                  class_source = ?
-           ", array($_GET['user'], $class_id, $class_source));
+           ", array($params['userId'], $class_id, $class_source));
         }
-        if($_SESSION['user_id'] == $_GET['user']) {
+        if($_SESSION['user_id'] == $params['userId']) {
            // participant is looking at his own report
            report_input($post_var, $cvqr, $db_col, $fitbit_value);
            if($popup_link) {
@@ -596,11 +617,11 @@ function report_input($post_var, $cvqr, $db_col, $fitbit_value, $textarea=false)
   }
 }
 
-function first_class() {
-  return $_GET['week'] == 1;
+function first_class($week) {
+  return $week == 1;
 }
 
-function last_class($class_id, $class_source) {
+function last_class($class_id, $class_source, $week) {
   $qr = seleqt_one_record("
      select weeks
      from classes_aw
@@ -608,7 +629,8 @@ function last_class($class_id, $class_source) {
         class_id = ?
         and class_source = ?
   ", array($class_id, $class_source));
-  return $_GET['week'] == $qr['weeks'];
+
+  return $week == $qr['weeks'];
 }
 
 function readonly($cvqr, $db_col, $fitbit_value) {
@@ -627,8 +649,8 @@ function readonly($cvqr, $db_col, $fitbit_value) {
   ?></b><?php
 }
 
-function strat_numdays_dd($form_name, $selected = -1) {
-  if($_GET['user'] == $_SESSION['user_id']) {
+function strat_numdays_dd($form_name, $selected, $userId) {
+  if($userId == $_SESSION['user_id']) {
      // Participant viewing her own report
      ?><select name="<?php
         echo $form_name;

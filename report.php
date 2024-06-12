@@ -260,7 +260,14 @@ function page_content() {
       <?php echo htmlentities(wrcdate($report_date)); ?>
    </h2>
 
-   <?php reportComponent($qr['class_id'], $qr['class_source']); ?>
+   <?php
+      reportComponent(array(
+         "classId" => $qr['class_id'], 
+         "classSource" => $qr['class_source'],
+         "userId" => $_GET['user'],
+         "week" => $_GET['week']
+      ));
+   ?>
 
    <div id="bmi">
    BMI:
