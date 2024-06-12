@@ -2,6 +2,9 @@
 session_start();
 require_once("config.php");
 
+$qr = current_class_and_sg();
+access_restrict($qr);
+
 ?>
   <img
     id="logo"
@@ -11,8 +14,6 @@ require_once("config.php");
   <h1><?php echo full_name($_GET['user']); ?></h1>
 <?php
 
-$qr = current_class_and_sg();
-access_restrict($qr);
 $numWeeks = getNumWeeks($qr['class_id'], $qr['class_source']);
 
 $qr2 = getReports($_GET['user'], $qr['start_dttm']);
