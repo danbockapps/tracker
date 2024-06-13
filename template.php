@@ -98,7 +98,11 @@ function generate_page($require_logged_in, $require_logged_out, $shownav=true) {
                            ?>">Weekly reports</a></li>
                            <li><a href="all_messages.php?user=<?php
                               echo $_SESSION['user_id'];
-                           ?>">Messages</a></li><?php
+                           ?>">Messages</a></li>
+                           <li><a target="_blank" href="printable_export.php?user=<?php
+                              echo $_SESSION['user_id'];
+                           ?>">Print report</a></li>
+                           <?php
                         }
                      }
                      if(am_i_admin()) {
