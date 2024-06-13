@@ -107,6 +107,20 @@ group by
    class_source;
 
 create
+or replace view most_recent_reports as
+select
+   user_id,
+   class_id,
+   class_source,
+   max(week_id) as week_id
+from
+   wrc_reports
+group by
+   user_id,
+   class_id,
+   class_source;
+
+create
 or replace view ending_weights as
 select
    r.user_id,

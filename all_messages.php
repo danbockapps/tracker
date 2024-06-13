@@ -52,7 +52,7 @@ function page_content() {
 
       $lrwww = seleqt_one_record("
          select week_id
-         from last_reports_with_weights_weeks
+         from most_recent_reports
          where class_id = ? and class_source = ? and user_id = ?
       ", array($qr['class_id'], $qr['class_source'], $_GET['user']));
 
