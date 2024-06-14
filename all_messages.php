@@ -50,21 +50,23 @@ function page_content() {
       $recip_name = full_name($_GET['user']);
       $recip_id = htmlentities($_GET['user']);
 
-      $lrwww = seleqt_one_record("
+      $lrwww = pdo_seleqt("
          select week_id
          from most_recent_reports
          where class_id = ? and class_source = ? and user_id = ?
       ", array($qr['class_id'], $qr['class_source'], $_GET['user']));
 
-      global $report_date;
-      $report_date = $qr['start_dttm'] . " + " . ($lrwww['week_id'] - 1) . " weeks";
+      if(count($lrwww) > 0) {
+         global $report_date;
+         $report_date = $qr['start_dttm'] . " + " . ($lrwww[0]['week_id'] - 1) . " weeks";
 
-      reportComponent(array(
-         "classId" => $qr['class_id'],
-         "classSource" => $qr['class_source'],
-         "userId" => $_GET['user'],
-         "week" => $lrwww['week_id']
-      ));
+         reportComponent(array(
+            "classId" => $qr['class_id'],
+            "classSource" => $qr['class_source'],
+            "userId" => $_GET['user'],
+            "week" => $lrwww[0]['week_id']
+         ));
+      }
    }
 
    if($recip_id == null) {
