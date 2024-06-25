@@ -24,10 +24,7 @@ if ($result['activation'] != null) {
    logtxt('Account activated.');
 }
 
-$salt = substr($result['password'], 7, 21);
-$in_hashd_passwd = crypt($fetchPost['password'], BLOWFISH_PRE . $salt . BLOWFISH_SUF);
-
-if ($result['password'] === $in_hashd_passwd) {
+if (verifyPassword($fetchPost['password'], $result['password'])) {
    logtxt('Password is correct. Logging in...');
    // Login successful
    $_SESSION['user_id'] = $result['user_id'];
@@ -36,6 +33,7 @@ if ($result['password'] === $in_hashd_passwd) {
 
    $ok_array['responseString'] = "Login successful.";
 } else {
+   logtxt('Password is incorrect.');
    http_response_code(401); // Unauthorized
 }
 ?>
