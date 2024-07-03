@@ -36,8 +36,8 @@ select
    pes.pes as Tracker_Activity_Score,
    e.smart_goal as Program_Goals
 from
-   wrc_users u natural
-   join registrants e natural
+   wrc_users u
+   inner join registrants e on u.user_id = e.user_id natural
    join classes_aw c
    left join beginning_weights bw on e.tracker_user_id = bw.user_id
    and e.class_id = bw.class_id
