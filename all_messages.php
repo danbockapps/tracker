@@ -134,7 +134,7 @@ function page_content() {
 
    ?>
    <script>
-      $('.message').linkify({target: '_blank'});
+      $('.fade').linkify({target: '_blank'});
    </script>
    <?php
 
