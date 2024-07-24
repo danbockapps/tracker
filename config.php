@@ -1211,7 +1211,7 @@ function goalWeightCard($userId, $classId, $classSource) {
 }
 
 function shirtCard($userId, $classId) {
-  if(PRODUCT == 'dpp' && !am_i_instructor() && userQualifiesForShirt($userId, $classId)) {
+  if(PRODUCT !== 'esmmwl2' && !am_i_instructor() && userQualifiesForShirt($userId, $classId)) {
 
     $currentShirt = seleqt_one_record('
       select shirt_id
@@ -1294,7 +1294,6 @@ function userQualifiesForShirt($userId, $classId) {
      if(PRODUCT == 'esmmwl2' && $perfectCount >= 11) return true;
      return false;
   }
-
 
   if(attendancePhases($userId, $classId)['phase1'] < 9) return false;
   else return true;
