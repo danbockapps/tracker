@@ -102,16 +102,12 @@ from
    and month(zc.start_date_time) = am.month
    and year(zc.start_date_time) = am.year
    left join shirts s on e.shirt_id = s.shirt_id
-
-   -- This seems to slow down the query quite a bit.
-   left join first_reports_with_weights frww
-      on e.user_id = frww.user_id
-      and e.class_id = frww.class_id
-      and e.class_source = frww.class_source
-   left join last_reports_with_weights lrww
-      on e.user_id = lrww.user_id
-      and e.class_id = lrww.class_id
-      and e.class_source = lrww.class_source
+   left join first_reports_with_weights frww on e.tracker_user_id = frww.user_id -- This seems to slow down the query quite a bit.
+   and e.class_id = frww.class_id
+   and e.class_source = frww.class_source
+   left join last_reports_with_weights lrww on e.tracker_user_id = lrww.user_id
+   and e.class_id = lrww.class_id
+   and e.class_source = lrww.class_source
 where
    instrs.instructor = 1 -- datediff on c.start_dttm was here. Not sure why.
    and e.paid != '0'
