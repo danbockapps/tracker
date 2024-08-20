@@ -284,7 +284,7 @@ function page_content() {
          }
          ?><td class="center"><?php
          echo (isset($reports['weight'][$i]) ?
-               round(zero_blank($reports['weight'][$i]), 1) : "");
+               zero_blank(round($reports['weight'][$i]), 1) : "");
          ?></td><td class="center"><?php
          echo (isset($reports['weight'][$i]) && isset($reports['weight'][0])
                && $reports['weight'][$i] != 0 ?
