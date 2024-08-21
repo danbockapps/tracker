@@ -73,6 +73,9 @@ else if($_GET['report'] == $ini['client1']) {
       where Coupon_Code = ?
    ", array($_GET['voucher_code']));
 }
+else if($_GET['report'] == $ini['client1_reports'] . '_v2') {
+   $qr = pdo_seleqt("select * from " . $ini['client1_reports'] . "_v2", null);
+}
 else if($_GET['report'] == 'aso_codes') {
    $qr = pdo_seleqt("select * from aso_codes", null);
 }
