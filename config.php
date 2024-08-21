@@ -1211,7 +1211,7 @@ function goalWeightCard($userId, $classId, $classSource) {
 }
 
 function shirtCard($userId, $classId) {
-  if(PRODUCT !== 'esmmwl2' && !am_i_instructor() && userQualifiesForShirt($userId, $classId)) {
+  if(!am_i_instructor() && userQualifiesForShirt($userId, $classId)) {
 
     $currentShirt = seleqt_one_record('
       select shirt_id
