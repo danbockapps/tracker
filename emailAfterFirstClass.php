@@ -51,7 +51,7 @@ foreach($qr as $row) {
       "The Eat Smart, Move More, Prevent Diabetes Team";
 
    logtxt($msg);
-   syncMail($row['email'], "Eat Smart, Move More, Weigh Less Reminder", $msg);
+   syncMail($row['email'], "Eat Smart, Move More, Prevent Diabetes - Activate your My Progress Portal", $msg);
 }
 
 
