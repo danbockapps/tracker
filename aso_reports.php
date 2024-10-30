@@ -1,5 +1,6 @@
 <?php
 require_once("config.php");
+ini_set('error_log', '/home/esmmwl/aso/error_log');
 
 $bcbsReportFields = "
    First_Name,
@@ -69,9 +70,7 @@ generateControlFile('ASONCMS', $dataFileName);
 // List of active ASO codes
 
 file_put_contents(
-   "/home/" .
-   exec('whoami') .
-   "/aso/upload/ESMMWL_List_of_active_ASO_codes_" . date("Y-m-d_H-i-s")  . ".csv",
+   "/home/esmmwl/aso/upload/ESMMWL_List_of_active_ASO_codes_" . date("Y-m-d_H-i-s")  . ".csv",
    array_to_csv(pdo_seleqt("select * from aso_codes where code != 'ASONCMSMailing'", ""))
 );
 
