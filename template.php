@@ -27,7 +27,7 @@ function generate_page($require_logged_in, $require_logged_out, $shownav=true) {
       />
       <link
          rel="stylesheet"
-         href="wrc.css"
+         href="wrc.css?a=1114"
       />
       <link
          rel="stylesheet"
@@ -37,7 +37,7 @@ function generate_page($require_logged_in, $require_logged_out, $shownav=true) {
       <?php if(PRODUCT == 'esmmwl') { ?>
          <link
             rel="stylesheet"
-            href="dashboard.css?a=1"
+            href="dashboard.css?a=1114"
          />
       <?php } ?>
 
@@ -48,7 +48,7 @@ function generate_page($require_logged_in, $require_logged_out, $shownav=true) {
          />
          <link
             rel="stylesheet"
-            href="portal.css"
+            href="portal.css?a=1114"
          />
          <link
             href="https://fonts.googleapis.com/css?family=Lato:300,400,400i,700,700i"
@@ -70,7 +70,13 @@ function generate_page($require_logged_in, $require_logged_out, $shownav=true) {
          <div class="headerDiv">
             <?php
             template_logo_gc();
-            if($shownav) {
+            
+            ?>
+            <hr id="navend" />
+         </div><!--end headerDiv-->
+
+         <?php
+         if($shownav) {
             ?>
             <div id="navbar">
                <ul>
@@ -120,10 +126,10 @@ function generate_page($require_logged_in, $require_logged_out, $shownav=true) {
             <?php
                // end if($shownav)
                }
-            ?>
-            <hr id="navend" />
-         </div><!--end headerDiv-->
+               ?>
+
          <div class="contentDiv">
+         
             <?php
                page_content();
                logtxt("template.php: served " . $_SERVER['SCRIPT_NAME'] . " ?" . $_SERVER['QUERY_STRING']);

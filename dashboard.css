@@ -1,7 +1,7 @@
-@import url('https://fonts.googleapis.com/css?family=Lato:300,300i,400,400i,700,700i&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Lato:300,300i,400,400i,700,700i&display=swap");
 body {
   background-color: #fff;
-  font-family: 'Lato', Arial, Helvetica, clean, sans-serif;
+  font-family: "Lato", Arial, Helvetica, clean, sans-serif;
 }
 #container {
   width: 1020px;
@@ -11,7 +11,8 @@ body {
 
 #container.loginPage {
   width: 1020px;
-  background: #fff url('https://esmmweighless.com/wp-content/uploads/2024/02/Dashboard_bkgr.jpg')
+  background: #fff
+    url("https://esmmweighless.com/wp-content/uploads/2024/02/Dashboard_bkgr.jpg")
     no-repeat;
   background-position: center top;
   background-size: 100% auto;
@@ -41,7 +42,7 @@ body {
   padding-bottom: 14px;
 }
 #whoami:after {
-  content: '';
+  content: "";
   display: table;
   clear: both;
 }
@@ -54,13 +55,8 @@ body {
   font-weight: 400;
 }
 #navbar {
-  float: none;
-  clear: both;
-  position: absolute;
-  bottom: -42px;
-  left: 290px;
-  height: auto;
-  width: 640px;
+  display: flex;
+  justify-content: center;
 }
 #navbar ul {
   background-color: transparent;
@@ -85,7 +81,7 @@ body {
 
 .contentDiv {
   min-height: 610px;
-  padding: 62px 20px 15px;
+  padding: 20px 20px 15px;
 }
 .contentDiv div.card {
   background-color: #fff;
@@ -110,7 +106,7 @@ body {
 #container form.attendance-reports-section input {
   margin-top: 10px;
 }
-#report_form input[type='text'] {
+#report_form input[type="text"] {
   width: 50px;
 }
 #strategy_fieldset {
@@ -122,7 +118,7 @@ body {
 #strategy_fieldset td {
   padding-left: 40px;
 }
-#strategy_fieldset input[name='newstrat_desc'] {
+#strategy_fieldset input[name="newstrat_desc"] {
   width: 120px;
 }
 fieldset {
@@ -220,7 +216,7 @@ table.wrctable {
 #strategy_fieldset td.strategy7,
 #strategy_fieldset td.strategy459,
 #strategy_fieldset td.strategy460 {
-  background: url('_images/portal-icon-eat.png');
+  background: url("_images/portal-icon-eat.png");
   background-repeat: no-repeat;
   padding-top: 33px;
   background-position-y: 14px;
@@ -234,16 +230,16 @@ table.wrctable {
   vertical-align: bottom;
 }
 #strategy_fieldset td.strategy5 {
-  background-image: url('_images/portal-icon-screentime.png');
+  background-image: url("_images/portal-icon-screentime.png");
 }
 #strategy_fieldset td.strategy7 {
-  background-image: url('_images/portal-icon-physical.png');
+  background-image: url("_images/portal-icon-physical.png");
 }
 #strategy_fieldset td.strategy469 {
-  background-image: url('_images/portal-icon-sleep.png');
+  background-image: url("_images/portal-icon-sleep.png");
 }
 #strategy_fieldset td.strategy460 {
-  background-image: url('_images/portal-icon-stress.png');
+  background-image: url("_images/portal-icon-stress.png");
   padding-bottom: 34px;
 }
 

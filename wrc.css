@@ -50,20 +50,8 @@ a img {
 #yourclass {
   font-size: 71%;
 }
-
-#navbar {
-  width: 400px;
-  height: 78px;
-  float: right;
-  margin-left: 22px;
-}
-
 #navbar ul {
-  width: 100%;
-  height: 100%;
-  float: left;
   margin: 0;
-  padding: 0;
   list-style: none;
   background-color: #fff;
 }
@@ -182,7 +170,7 @@ div.cardfooter {
 }
 .showhide_closed {
   font-size: large;
-  background-image: url('toggle_expand.png');
+  background-image: url("toggle_expand.png");
   background-repeat: no-repeat;
   padding-left: 20px;
   padding-bottom: 0.2em;
@@ -191,7 +179,7 @@ div.cardfooter {
 }
 #showhide_strat {
   font-size: large;
-  background-image: url('toggle_expand.png');
+  background-image: url("toggle_expand.png");
   background-repeat: no-repeat;
   padding-left: 20px;
 }
