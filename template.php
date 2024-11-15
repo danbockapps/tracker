@@ -27,7 +27,7 @@ function generate_page($require_logged_in, $require_logged_out, $shownav=true) {
       />
       <link
          rel="stylesheet"
-         href="wrc.css?a=1114"
+         href="wrc.css?a=1114a"
       />
       <link
          rel="stylesheet"
@@ -59,7 +59,7 @@ function generate_page($require_logged_in, $require_logged_out, $shownav=true) {
       <?php if(PRODUCT == 'esmmwl2') { ?>
          <link
             rel="stylesheet"
-            href="teal.css"
+            href="teal.css?a=1114"
          />
       <?php } ?>
       

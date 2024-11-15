@@ -54,10 +54,7 @@ body {
 #whoami p {
   font-weight: 400;
 }
-#navbar {
-  display: flex;
-  justify-content: center;
-}
+
 #navbar ul {
   background-color: transparent;
 }
@@ -75,7 +72,6 @@ body {
 }
 #navend {
   height: 0;
-  margin-bottom: 0;
   clear: none;
 }
 

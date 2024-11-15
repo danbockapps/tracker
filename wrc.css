@@ -50,6 +50,12 @@ a img {
 #yourclass {
   font-size: 71%;
 }
+
+#navbar {
+  display: flex;
+  justify-content: center;
+}
+
 #navbar ul {
   margin: 0;
   list-style: none;
@@ -80,7 +86,7 @@ a img {
 #navend {
   clear: left;
   width: 100%;
-  margin-bottom: 15px;
+  margin-bottom: 0;
   height: 5px;
   color: #8ec63f;
   background-color: #8ec63f;
