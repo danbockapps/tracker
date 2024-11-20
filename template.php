@@ -59,7 +59,7 @@ function generate_page($require_logged_in, $require_logged_out, $shownav=true) {
       <?php if(PRODUCT == 'esmmwl2') { ?>
          <link
             rel="stylesheet"
-            href="teal.css?a=1114"
+            href="teal.css?a=1119"
          />
       <?php } ?>
       
