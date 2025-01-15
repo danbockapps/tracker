@@ -186,7 +186,6 @@ function change_email($old_email, $new_email) {
       limit 1
    ");
    $result = $sth->execute(array($new_email, $old_email));
-   
    logtxt('Result: ' . $result);
    return true;
 }
